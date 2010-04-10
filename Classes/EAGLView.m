@@ -1,0 +1,361 @@
+//
+//  EAGLView.m
+//  Tutorial1
+//
+//  Created by Michael Daley on 25/02/2009.
+//  Copyright __MyCompanyName__ 2009. All rights reserved.
+//
+
+
+
+#import <QuartzCore/QuartzCore.h>
+#import <OpenGLES/EAGLDrawable.h>
+
+#import "EAGLView.h"
+
+
+#define USE_DEPTH_BUFFER 0
+
+// A class extension to declare private methods
+@interface EAGLView ()
+
+@property (nonatomic, retain) EAGLContext *context;
+@property (nonatomic, assign) NSTimer *animationTimer;
+
+- (BOOL) createFramebuffer;
+- (void) destroyFramebuffer;
+- (void) updateScene:(float)delta;
+- (void) renderScene;
+
+@end
+
+
+@implementation EAGLView
+
+@synthesize context;
+@synthesize animationTimer;
+@synthesize animationInterval;
+
+
+// You must implement this method
++ (Class)layerClass {
+    return [CAEAGLLayer class];
+}
+
+- (void)dealloc {
+    
+    [self stopAnimation];
+    
+    if ([EAGLContext currentContext] == context) {
+        [EAGLContext setCurrentContext:nil];
+    }
+    
+	[input release];
+	
+	[playerShip release];
+	[output release];
+	
+    [context release];  
+    [super dealloc];
+}
+
+//The GL view is stored in the nib file. When it's unarchived it's sent -initWithCoder:
+- (id)initWithCoder:(NSCoder*)coder {
+    
+    if ((self = [super initWithCoder:coder])) {
+        // Get the layer
+        CAEAGLLayer *eaglLayer = (CAEAGLLayer *)self.layer;
+        
+        eaglLayer.opaque = YES;
+        eaglLayer.drawableProperties = [NSDictionary dictionaryWithObjectsAndKeys:
+                                        [NSNumber numberWithBool:NO], kEAGLDrawablePropertyRetainedBacking, kEAGLColorFormatRGBA8, kEAGLDrawablePropertyColorFormat, nil];
+        
+        context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
+        
+        if (!context || ![EAGLContext setCurrentContext:context]) {
+            [self release];
+            return nil;
+        }
+        
+        animationInterval = 1.0 / 60.0;
+		
+		CGRect rect = [[UIScreen mainScreen] bounds];
+		
+		// Set up OpenGL projection matrix
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		glOrthof(0, rect.size.width, 0, rect.size.height, -1, 1);
+		glMatrixMode(GL_MODELVIEW);
+		
+
+		//GLuint  texture[1];      // Storage For One Texture ( NEW ) 
+		
+		glGenTextures(1, &texture[0]);
+		
+		//[self loadTexture:@"hero1.png" intoLocation:texture[0]];
+		
+		/*
+		glBindTexture(GL_TEXTURE_2D, texture[0]);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		
+		NSString *path = [[NSBundle mainBundle] pathForResource:@"hero1" ofType:@"pvr"];
+		NSData *texData = [[NSData alloc] initWithContentsOfFile:path];
+		// Instead of glTexImage2D, we have to use glCompressedTexImage2D
+		//glCompressedTexImage2D(GL_TEXTURE_2D, 0, GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG, 64.0, 64.0, 0, (64.0 * 64.0) / 2, [texData bytes]);
+		glCompressedTexImage2D(GL_TEXTURE_2D, 0, GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG, 64.0, 64.0, 0, [texData length], [texData bytes]);
+		[texData release];
+		
+		 
+		
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR); 
+		 */
+		
+		// Initialize OpenGL states
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_TEXTURE_2D);
+		glDisable(GL_DEPTH_TEST);
+		glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND_SRC);
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		
+		
+		//glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+		// Enable blending
+		//glEnable(GL_BLEND);
+		
+		// init images
+		playerShip = [[Texture2D alloc] initWithImage:[UIImage imageNamed:@"hero1.png"]];
+		/*playerShip = [[Texture2D alloc] initWithImage:[UIImage imageNamed:@"hero1.png"]];
+		output = [[Texture2D alloc] initWithString:@"This is my output" dimensions:CGSizeMake(256.0f, 16.0f) alignment:UITextAlignmentLeft fontName:@"Courier" fontSize:12.0f];
+		output2 = [[Texture2D alloc] initWithString:@"You touched me!" dimensions:CGSizeMake(256.0f, 16.0f) alignment:UITextAlignmentLeft fontName:@"Courier" fontSize:12.0f];
+		 */
+		
+		
+		xPos = 160.0f;
+		yPos = 240.0f;
+		speed = 0.1f;
+		dx = 1.0f;
+		dy = 1.3f;
+		
+		input = [[InputManager alloc] init];
+    }
+    return self;
+}
+
+
+- (void)mainGameLoop {
+	CFTimeInterval		time;
+	float				delta;
+	time = CFAbsoluteTimeGetCurrent();
+	delta = (time - lastTime);
+	
+	[input update];
+	
+	if ([input isButtonPressed]) {
+		xPos = input.currentState.touchLocation.x;
+		yPos = 480 - input.currentState.touchLocation.y;
+	}
+	
+	//[self updateScene:delta];
+	[self renderScene];
+	
+	lastTime = time;
+}
+
+
+- (void)updateScene:(float)delta {
+	xPos += dx;
+	yPos += dy;
+	
+	if (xPos < 20.0 || xPos > 300.0f) {
+		dx = -dx;
+	}
+	
+	if (yPos < 20.0 || yPos > 460.0f) {
+		dy = -dy;
+	}
+	
+}
+
+
+- (void)renderScene {
+    
+    [EAGLContext setCurrentContext:context];
+    
+    glBindFramebufferOES(GL_FRAMEBUFFER_OES, viewFramebuffer);
+    glViewport(0, 0, backingWidth, backingHeight);
+    
+	// Clear screen
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	
+	GLfloat		coordinates[] = {	0.0f,	1.0f,
+									1.0f,	1.0f,
+									0.0f,	0.0f,
+									1.0f,	0.0f };
+
+	GLfloat		vertices[] = {	0.0f, 0.0f, 0.0f,
+								64.0f, 0.0f, 0.0f,
+								0.0f, 64.0f, 0.0f,
+								64.0f, 64.0f, 0.0f };
+	
+	//glBindTexture(GL_TEXTURE_2D, texture[0]);
+	[playerShip bind];
+	glVertexPointer(3, GL_FLOAT, 0, vertices);
+	glTexCoordPointer(2, GL_FLOAT, 0, coordinates);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	
+	
+	
+	
+	// Render player ship
+	//[playerShip drawAtPoint:CGPointMake(xPos, yPos)];
+/*	
+	if (![input isTouched]) {
+		[output drawAtPoint:CGPointMake(200.0f, 100.0f)];
+	} else {
+		[output2 drawAtPoint:CGPointMake(200.0f, 100.0f)];
+	}*/
+
+	
+    glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
+    [context presentRenderbuffer:GL_RENDERBUFFER_OES];
+}
+
+
+- (void)layoutSubviews {
+    [EAGLContext setCurrentContext:context];
+    [self destroyFramebuffer];
+    [self createFramebuffer];
+    [self renderScene];
+}
+
+
+- (BOOL)createFramebuffer {
+    
+    glGenFramebuffersOES(1, &viewFramebuffer);
+    glGenRenderbuffersOES(1, &viewRenderbuffer);
+    
+    glBindFramebufferOES(GL_FRAMEBUFFER_OES, viewFramebuffer);
+    glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
+    [context renderbufferStorage:GL_RENDERBUFFER_OES fromDrawable:(CAEAGLLayer*)self.layer];
+    glFramebufferRenderbufferOES(GL_FRAMEBUFFER_OES, GL_COLOR_ATTACHMENT0_OES, GL_RENDERBUFFER_OES, viewRenderbuffer);
+    
+    glGetRenderbufferParameterivOES(GL_RENDERBUFFER_OES, GL_RENDERBUFFER_WIDTH_OES, &backingWidth);
+    glGetRenderbufferParameterivOES(GL_RENDERBUFFER_OES, GL_RENDERBUFFER_HEIGHT_OES, &backingHeight);
+    
+    if (USE_DEPTH_BUFFER) {
+        glGenRenderbuffersOES(1, &depthRenderbuffer);
+        glBindRenderbufferOES(GL_RENDERBUFFER_OES, depthRenderbuffer);
+        glRenderbufferStorageOES(GL_RENDERBUFFER_OES, GL_DEPTH_COMPONENT16_OES, backingWidth, backingHeight);
+        glFramebufferRenderbufferOES(GL_FRAMEBUFFER_OES, GL_DEPTH_ATTACHMENT_OES, GL_RENDERBUFFER_OES, depthRenderbuffer);
+    }
+    
+    if(glCheckFramebufferStatusOES(GL_FRAMEBUFFER_OES) != GL_FRAMEBUFFER_COMPLETE_OES) {
+        NSLog(@"failed to make complete framebuffer object %x", glCheckFramebufferStatusOES(GL_FRAMEBUFFER_OES));
+        return NO;
+    }
+    
+    return YES;
+}
+
+
+- (void)destroyFramebuffer {
+    
+    glDeleteFramebuffersOES(1, &viewFramebuffer);
+    viewFramebuffer = 0;
+    glDeleteRenderbuffersOES(1, &viewRenderbuffer);
+    viewRenderbuffer = 0;
+    
+    if(depthRenderbuffer) {
+        glDeleteRenderbuffersOES(1, &depthRenderbuffer);
+        depthRenderbuffer = 0;
+    }
+}
+
+
+- (void)startAnimation {
+    self.animationTimer = [NSTimer scheduledTimerWithTimeInterval:animationInterval target:self selector:@selector(mainGameLoop) userInfo:nil repeats:YES];
+}
+
+
+- (void)stopAnimation {
+    self.animationTimer = nil;
+}
+
+
+- (void)setAnimationTimer:(NSTimer *)newTimer {
+    [animationTimer invalidate];
+    animationTimer = newTimer;
+}
+
+
+- (void)setAnimationInterval:(NSTimeInterval)interval {
+    
+    animationInterval = interval;
+    if (animationTimer) {
+        [self stopAnimation];
+        [self startAnimation];
+    }
+}
+
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+	[input touchesBegan:touches withEvent:event InView:self  WithTimer:animationTimer];
+}
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+	[input touchesMoved:touches withEvent:event InView:self  WithTimer:animationTimer];
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+	[input touchesEnded:touches withEvent:event InView:self  WithTimer:animationTimer];
+}
+
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
+	[input touchesCancelled:touches withEvent:event InView:self  WithTimer:animationTimer];
+}
+
+
+
+/*- (void)loadTexture:(NSString *)name intoLocation:(GLuint)location {
+	
+	CGImageRef textureImage = [UIImage imageNamed:name].CGImage;
+	if (textureImage == nil) {
+        NSLog(@"Failed to load texture image");
+		return;
+    }
+	
+    NSInteger texWidth = 64.0f; //CGImageGetWidth(textureImage);
+    NSInteger texHeight = 64.0f; //CGImageGetHeight(textureImage);
+	
+	GLubyte *textureData = (GLubyte *)malloc(texWidth * texHeight * 4);
+	
+    CGContextRef textureContext = CGBitmapContextCreate(textureData,
+														texWidth, texHeight,
+														8, texWidth * 4,
+														CGImageGetColorSpace(textureImage),
+														kCGImageAlphaPremultipliedLast);
+
+
+	
+	// Rotate the image
+	//CGContextTranslateCTM(textureContext, 0, texHeight);
+	//CGContextScaleCTM(textureContext, 1.0, -1.0);
+	
+	CGContextDrawImage(textureContext, CGRectMake(0.0, 0.0, (float)texWidth, (float)texHeight), textureImage);
+	CGContextRelease(textureContext);
+	
+	glBindTexture(GL_TEXTURE_2D, location);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texWidth, texHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, textureData);
+	
+	free(textureData);
+	
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+}*/
+
+@end
