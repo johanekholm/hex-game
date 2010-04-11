@@ -40,7 +40,7 @@
 	CFTimeInterval lastTime;
 	
 	Texture2D *output, *output2;
-	Texture2D *playerShip;
+	Texture2D *player;
 	float xPos, yPos, dx, dy, speed;
 	
 	InputManager *input;

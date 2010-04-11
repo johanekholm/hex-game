@@ -52,7 +52,7 @@
     
 	[input release];
 	
-	[playerShip release];
+	[player release];
 	[output release];
 	
     [context release];  
@@ -92,7 +92,6 @@
 		
 		glGenTextures(1, &texture[0]);
 		
-		//[self loadTexture:@"hero1.png" intoLocation:texture[0]];
 		
 		/*
 		glBindTexture(GL_TEXTURE_2D, texture[0]);
@@ -127,7 +126,7 @@
 		//glEnable(GL_BLEND);
 		
 		// init images
-		playerShip = [[Texture2D alloc] initWithImage:[UIImage imageNamed:@"hero1.png"]];
+		player = [[Texture2D alloc] initWithImage:[UIImage imageNamed:@"hero1.png"]];
 		/*playerShip = [[Texture2D alloc] initWithImage:[UIImage imageNamed:@"hero1.png"]];
 		output = [[Texture2D alloc] initWithString:@"This is my output" dimensions:CGSizeMake(256.0f, 16.0f) alignment:UITextAlignmentLeft fontName:@"Courier" fontSize:12.0f];
 		output2 = [[Texture2D alloc] initWithString:@"You touched me!" dimensions:CGSizeMake(256.0f, 16.0f) alignment:UITextAlignmentLeft fontName:@"Courier" fontSize:12.0f];
@@ -159,7 +158,7 @@
 		yPos = 480 - input.currentState.touchLocation.y;
 	}
 	
-	//[self updateScene:delta];
+	[self updateScene:delta];
 	[self renderScene];
 	
 	lastTime = time;
@@ -167,17 +166,7 @@
 
 
 - (void)updateScene:(float)delta {
-	xPos += dx;
-	yPos += dy;
-	
-	if (xPos < 20.0 || xPos > 300.0f) {
-		dx = -dx;
-	}
-	
-	if (yPos < 20.0 || yPos > 460.0f) {
-		dy = -dy;
-	}
-	
+
 }
 
 
@@ -197,29 +186,22 @@
 									0.0f,	0.0f,
 									1.0f,	0.0f };
 
-	GLfloat		vertices[] = {	0.0f, 0.0f, 0.0f,
-								64.0f, 0.0f, 0.0f,
-								0.0f, 64.0f, 0.0f,
-								64.0f, 64.0f, 0.0f };
+	GLfloat		vertices[] = {	-32.0f, -32.0f, 0.0f,
+								32.0f, -32.0f, 0.0f,
+								-32.0f, 32.0f, 0.0f,
+								32.0f, 32.0f, 0.0f };
 	
-	//glBindTexture(GL_TEXTURE_2D, texture[0]);
-	[playerShip bind];
+	
+	glLoadIdentity();
+	glTranslatef(xPos, yPos, 0.0f);
+
+	glBindTexture(GL_TEXTURE_2D, texture[0]);
+	[player bind];
 	glVertexPointer(3, GL_FLOAT, 0, vertices);
 	glTexCoordPointer(2, GL_FLOAT, 0, coordinates);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	
 	
-	
-	
-	// Render player ship
-	//[playerShip drawAtPoint:CGPointMake(xPos, yPos)];
-/*	
-	if (![input isTouched]) {
-		[output drawAtPoint:CGPointMake(200.0f, 100.0f)];
-	} else {
-		[output2 drawAtPoint:CGPointMake(200.0f, 100.0f)];
-	}*/
-
 	
     glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
     [context presentRenderbuffer:GL_RENDERBUFFER_OES];
@@ -320,42 +302,5 @@
 }
 
 
-
-/*- (void)loadTexture:(NSString *)name intoLocation:(GLuint)location {
-	
-	CGImageRef textureImage = [UIImage imageNamed:name].CGImage;
-	if (textureImage == nil) {
-        NSLog(@"Failed to load texture image");
-		return;
-    }
-	
-    NSInteger texWidth = 64.0f; //CGImageGetWidth(textureImage);
-    NSInteger texHeight = 64.0f; //CGImageGetHeight(textureImage);
-	
-	GLubyte *textureData = (GLubyte *)malloc(texWidth * texHeight * 4);
-	
-    CGContextRef textureContext = CGBitmapContextCreate(textureData,
-														texWidth, texHeight,
-														8, texWidth * 4,
-														CGImageGetColorSpace(textureImage),
-														kCGImageAlphaPremultipliedLast);
-
-
-	
-	// Rotate the image
-	//CGContextTranslateCTM(textureContext, 0, texHeight);
-	//CGContextScaleCTM(textureContext, 1.0, -1.0);
-	
-	CGContextDrawImage(textureContext, CGRectMake(0.0, 0.0, (float)texWidth, (float)texHeight), textureImage);
-	CGContextRelease(textureContext);
-	
-	glBindTexture(GL_TEXTURE_2D, location);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texWidth, texHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, textureData);
-	
-	free(textureData);
-	
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-}*/
 
 @end
