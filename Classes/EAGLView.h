@@ -12,7 +12,9 @@
 #import <OpenGLES/ES1/gl.h>
 #import <OpenGLES/ES1/glext.h>
 #import "Texture2D.h"
+#import "TextureMap.h"
 #import "InputManager.h"
+#import "GameImage.h"
 
 /*
  This class wraps the CAEAGLLayer from CoreAnimation into a convenient UIView subclass.
@@ -39,13 +41,14 @@
 	
 	CFTimeInterval lastTime;
 	
-	Texture2D *output, *output2;
 	Texture2D *player;
-	float xPos, yPos, dx, dy, speed;
+	TextureMap *texMap;
+	
+	GameImage *sprite;
 	
 	InputManager *input;
 	
-	GLuint  texture[1];
+	//GLuint  texture[1];
 	
 }
 

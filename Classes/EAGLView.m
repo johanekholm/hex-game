@@ -52,8 +52,11 @@
     
 	[input release];
 	
+	[sprite release];
+	
 	[player release];
-	[output release];
+	[texMap release];
+	
 	
     [context release];  
     [super dealloc];
@@ -84,31 +87,13 @@
 		// Set up OpenGL projection matrix
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		glOrthof(0, rect.size.width, 0, rect.size.height, -1, 1);
+		//glOrthof(0, rect.size.width, 0, rect.size.height, -1, 1);
+		
+		// flipped ortho-view
+		glOrthof(0, rect.size.width, rect.size.height, 0, -1, 1);
 		glMatrixMode(GL_MODELVIEW);
 		
 
-		//GLuint  texture[1];      // Storage For One Texture ( NEW ) 
-		
-		glGenTextures(1, &texture[0]);
-		
-		
-		/*
-		glBindTexture(GL_TEXTURE_2D, texture[0]);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		
-		NSString *path = [[NSBundle mainBundle] pathForResource:@"hero1" ofType:@"pvr"];
-		NSData *texData = [[NSData alloc] initWithContentsOfFile:path];
-		// Instead of glTexImage2D, we have to use glCompressedTexImage2D
-		//glCompressedTexImage2D(GL_TEXTURE_2D, 0, GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG, 64.0, 64.0, 0, (64.0 * 64.0) / 2, [texData bytes]);
-		glCompressedTexImage2D(GL_TEXTURE_2D, 0, GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG, 64.0, 64.0, 0, [texData length], [texData bytes]);
-		[texData release];
-		
-		 
-		
-		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR); 
-		 */
 		
 		// Initialize OpenGL states
 		glEnable(GL_BLEND);
@@ -127,18 +112,14 @@
 		
 		// init images
 		player = [[Texture2D alloc] initWithImage:[UIImage imageNamed:@"hero1.png"]];
-		/*playerShip = [[Texture2D alloc] initWithImage:[UIImage imageNamed:@"hero1.png"]];
-		output = [[Texture2D alloc] initWithString:@"This is my output" dimensions:CGSizeMake(256.0f, 16.0f) alignment:UITextAlignmentLeft fontName:@"Courier" fontSize:12.0f];
-		output2 = [[Texture2D alloc] initWithString:@"You touched me!" dimensions:CGSizeMake(256.0f, 16.0f) alignment:UITextAlignmentLeft fontName:@"Courier" fontSize:12.0f];
-		 */
 		
+		texMap = [[TextureMap alloc] initWithSubdivisions:2 ofImage:[UIImage imageNamed:@"texmap.png"]];
 		
-		xPos = 160.0f;
-		yPos = 240.0f;
-		speed = 0.1f;
-		dx = 1.0f;
-		dy = 1.3f;
+		//texMap = [[TextureMap alloc] initWithImage:[UIImage imageNamed:@"texmap.png"]];
+		//[texMap setNumSubdivisions:2];
 		
+		sprite = [[GameImage alloc] initWithSize: CGSizeMake(64.0f, 64.0f) andTexture:texMap withIndex:1];
+				
 		input = [[InputManager alloc] init];
     }
     return self;
@@ -154,8 +135,11 @@
 	[input update];
 	
 	if ([input isButtonPressed]) {
-		xPos = input.currentState.touchLocation.x;
-		yPos = 480 - input.currentState.touchLocation.y;
+		[sprite setPosition:input.currentState.touchLocation];
+
+		//xPos = input.currentState.touchLocation.x;
+		//yPos = 480 - input.currentState.touchLocation.y;
+		//yPos = input.currentState.touchLocation.y;
 	}
 	
 	[self updateScene:delta];
@@ -181,7 +165,7 @@
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	
-	GLfloat		coordinates[] = {	0.0f,	1.0f,
+	/*GLfloat		coordinates[] = {	0.0f,	1.0f,
 									1.0f,	1.0f,
 									0.0f,	0.0f,
 									1.0f,	0.0f };
@@ -191,16 +175,25 @@
 								-32.0f, 32.0f, 0.0f,
 								32.0f, 32.0f, 0.0f };
 	
+	GLfloat	texCoords[8];
+	
+	[texMap getTexCoordsForSubWithIndex:0 into:texCoords];
 	
 	glLoadIdentity();
-	glTranslatef(xPos, yPos, 0.0f);
+	//glTranslatef(xPos, yPos, 0.0f);
+	glTranslatef(32.0f, 32.0f, 0.0f);
 
-	glBindTexture(GL_TEXTURE_2D, texture[0]);
-	[player bind];
-	glVertexPointer(3, GL_FLOAT, 0, vertices);
-	glTexCoordPointer(2, GL_FLOAT, 0, coordinates);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	//glBindTexture(GL_TEXTURE_2D, texture[0]);
+	//[player bind];
+	[texMap bind];
 	
+	glVertexPointer(3, GL_FLOAT, 0, vertices);
+	//glTexCoordPointer(2, GL_FLOAT, 0, coordinates);
+	glTexCoordPointer(2, GL_FLOAT, 0, texCoords);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	*/
+	
+	[sprite draw];
 	
 	
     glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
@@ -304,3 +297,35 @@
 
 
 @end
+
+
+// Kan-va-bra-att-komma-ihåg-kod:
+ 
+ /*
+ output = [[Texture2D alloc] initWithString:@"This is my output" dimensions:CGSizeMake(256.0f, 16.0f) alignment:UITextAlignmentLeft fontName:@"Courier" fontSize:12.0f];
+ output2 = [[Texture2D alloc] initWithString:@"You touched me!" dimensions:CGSizeMake(256.0f, 16.0f) alignment:UITextAlignmentLeft fontName:@"Courier" fontSize:12.0f];
+ */
+
+
+ 
+ /*
+ GLuint  texture[1];      // Storage For One Texture ( NEW ) 
+ glGenTextures(1, &texture[0]);
+
+ glBindTexture(GL_TEXTURE_2D, texture[0]);
+ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+ 
+ NSString *path = [[NSBundle mainBundle] pathForResource:@"hero1" ofType:@"pvr"];
+ NSData *texData = [[NSData alloc] initWithContentsOfFile:path];
+ // Instead of glTexImage2D, we have to use glCompressedTexImage2D
+ //glCompressedTexImage2D(GL_TEXTURE_2D, 0, GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG, 64.0, 64.0, 0, (64.0 * 64.0) / 2, [texData bytes]);
+ glCompressedTexImage2D(GL_TEXTURE_2D, 0, GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG, 64.0, 64.0, 0, [texData length], [texData bytes]);
+ [texData release];
+ 
+ 
+ 
+ glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+ glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR); 
+ */
+
+
