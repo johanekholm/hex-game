@@ -16,5 +16,6 @@
 - (id) initWithSubdivisions:(int)numDivs ofImage:(UIImage *)uiImage;
 - (void) setNumSubdivisions:(int)numDivs;
 - (void) getTexCoordsForSubWithIndex: (int)index  into: (GLfloat[8])array;
+- (void) getTriangleTexCoordsForSubWithIndex: (int)index into: (GLfloat[12])array;
 
 @end

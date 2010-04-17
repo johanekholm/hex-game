@@ -52,6 +52,7 @@
     
 	[input release];
 	
+	[board release];
 	[sprite release];
 	
 	[player release];
@@ -119,7 +120,7 @@
 		//[texMap setNumSubdivisions:2];
 		
 		sprite = [[GameImage alloc] initWithSize: CGSizeMake(64.0f, 64.0f) andTexture:texMap withIndex:1];
-				
+		board = [[TileMap alloc] initWithMapWidth:2 andMapHeight:2 withTileSize:CGSizeMake(64.0f, 64.0f) andTexture:texMap];
 		input = [[InputManager alloc] init];
     }
     return self;
@@ -194,6 +195,7 @@
 	*/
 	
 	[sprite draw];
+	[board draw];
 	
 	
     glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);

@@ -37,22 +37,32 @@
 }
 
 - (void) draw {
-	GLfloat	texCoords[8];
-	GLfloat	vertices[] = {	-size.width/2.0f, -size.height/2.0f, 0.0f,
+	//GLfloat	texCoords[8];
+	GLfloat	texCoords[12];
+/*	GLfloat	vertices[] = {	-size.width/2.0f, -size.height/2.0f, 0.0f,
 							size.width/2.0f, -size.height/2.0f, 0.0f,
 							-size.width/2.0f, size.height/2.0f, 0.0f,
 							size.width/2.0f, size.height/2.0f, 0.0f };
-
+*/
+	GLfloat	vertices[] = {	-size.width/2.0f, -size.height/2.0f, 0.0f,
+		size.width/2.0f, -size.height/2.0f, 0.0f,
+		-size.width/2.0f, size.height/2.0f, 0.0f,
+		-size.width/2.0f, size.height/2.0f, 0.0f,
+		size.width/2.0f, -size.height/2.0f, 0.0f,		
+		size.width/2.0f, size.height/2.0f, 0.0f };
+	
 	glLoadIdentity();
 	glTranslatef(position.x, position.y, 0.0f);
 
 	
-	[texture getTexCoordsForSubWithIndex:texIndex into:texCoords];	
+	//[texture getTexCoordsForSubWithIndex:texIndex into:texCoords];	
+	[texture getTriangleTexCoordsForSubWithIndex:texIndex into:texCoords];	
 	[texture bind];
 	
 	glVertexPointer(3, GL_FLOAT, 0, vertices);
 	glTexCoordPointer(2, GL_FLOAT, 0, texCoords);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	//glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
 	
 }
 

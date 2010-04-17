@@ -15,6 +15,7 @@
 #import "TextureMap.h"
 #import "InputManager.h"
 #import "GameImage.h"
+#import	"TileMap.h"
 
 /*
  This class wraps the CAEAGLLayer from CoreAnimation into a convenient UIView subclass.
@@ -45,6 +46,7 @@
 	TextureMap *texMap;
 	
 	GameImage *sprite;
+	TileMap *board;
 	
 	InputManager *input;
 	
