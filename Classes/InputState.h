@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "toolkit.h";
 
 class InputState {
 public:
@@ -15,12 +16,12 @@ public:
 	
 	bool touched();
 
-	CGPoint touchLocation();
+	GPoint touchLocation();
 	
-	void setTouchLocation(CGPoint touchLocation);
+	void setTouchLocation(GPoint touchLocation);
 	void setTouched(bool touched);
 	
 private:
 	bool _touched;
-	CGPoint _touchLocation;
+	GPoint _touchLocation;
 };

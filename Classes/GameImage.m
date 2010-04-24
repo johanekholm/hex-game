@@ -19,7 +19,7 @@
 		texture = [texMap retain];
 		texIndex = index;
 		size = CGSizeMake(32.0f, 32.0f);
-		position = CGPointMake(0.0f, 0.0f);
+		position = GPointMake(0.0f, 0.0f);
 	}
 	return self;
 }
@@ -28,7 +28,7 @@
 	self = [super init];
 	if (self != nil) {
 		size = CGSizeMake(newSize.width, newSize.height);
-		position = CGPointMake(size.width/2.0f, size.height/2.0f);
+		position = GPointMake(size.width/2.0f, size.height/2.0f);
 		
 		texture = [texMap retain];
 		texIndex = index;

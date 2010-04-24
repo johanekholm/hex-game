@@ -7,6 +7,7 @@
  *
  */
 
+#include "toolkit_iphone.h"
 #include "InputManager.h"
 #include "InputState.h"
 
@@ -35,16 +36,19 @@ InputState * InputManager::currentState() {
 
 void InputManager::touchesBegan(NSSet *touches, UIEvent *event, UIView *view, NSTimer *deltaTimer) {
 	_queryState->setTouched(true);
-	_queryState->setTouchLocation([[touches anyObject] locationInView:view]);
+	GPoint point = GPointFromCGPoint([[touches anyObject] locationInView:view]);
+	_queryState->setTouchLocation(point);
 }
 
 void InputManager::touchesMoved(NSSet *touches, UIEvent *event, UIView *view, NSTimer *deltaTimer) {
-	_queryState->setTouchLocation([[touches anyObject] locationInView:view]);
+	GPoint point = GPointFromCGPoint([[touches anyObject] locationInView:view]);
+	_queryState->setTouchLocation(point);
 }
 
 void InputManager::touchesEnded(NSSet *touches, UIEvent *event, UIView *view, NSTimer *deltaTimer) {
 	_queryState->setTouched(false);
-	_queryState->setTouchLocation([[touches anyObject] locationInView:view]);
+	GPoint point = GPointFromCGPoint([[touches anyObject] locationInView:view]);
+	_queryState->setTouchLocation(point);
 }
 
 void InputManager::touchesCancelled(NSSet *touches, UIEvent *event, UIView *view, NSTimer *deltaTimer) {

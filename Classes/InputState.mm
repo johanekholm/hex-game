@@ -13,18 +13,18 @@ InputState::~InputState() {
 
 InputState::InputState() {
 	_touched = false;
-	_touchLocation = CGPointMake(0, 0);
+	_touchLocation = GPointMake(0.0, 0.0);
 }
 
 bool InputState::touched() {
 	return _touched;
 }
 
-CGPoint InputState::touchLocation() {
+GPoint InputState::touchLocation() {
 	return _touchLocation;
 }
 
-void InputState::setTouchLocation(CGPoint touchLocation) {
+void InputState::setTouchLocation(GPoint touchLocation) {
 	_touchLocation = touchLocation;
 }
 

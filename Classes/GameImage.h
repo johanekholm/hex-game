@@ -7,16 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "toolkit.h"
 #import "TextureMap.h"
 
 @interface GameImage : NSObject {
-	CGPoint position;
+	GPoint position;
 	CGSize size;
 	TextureMap *texture;
 	int texIndex;
 }
 
-@property (nonatomic, readwrite) CGPoint position;
+@property (nonatomic, readwrite) GPoint position;
 
 - (id) initWithTextureMap: (TextureMap*)texMap withIndex: (int)index;
 - (id) initWithSize: (CGSize)newSize andTexture: (TextureMap*)texMap withIndex: (int)index;

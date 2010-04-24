@@ -21,6 +21,8 @@
 		E953B38E1171445C00E38438 /* Texture2D.m in Sources */ = {isa = PBXBuildFile; fileRef = E953B38D1171445C00E38438 /* Texture2D.m */; };
 		E953B3901171446D00E38438 /* hero1.png in Resources */ = {isa = PBXBuildFile; fileRef = E953B38F1171446D00E38438 /* hero1.png */; };
 		E991067D115546A80038ABD7 /* InputManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = E991067C115546A80038ABD7 /* InputManager.mm */; };
+		F7557ED51183816D00213A0E /* toolkit.m in Sources */ = {isa = PBXBuildFile; fileRef = F7557ED41183816D00213A0E /* toolkit.m */; };
+		F7557FB211838E9100213A0E /* toolkit_iphone.c in Sources */ = {isa = PBXBuildFile; fileRef = F7557FB011838E9100213A0E /* toolkit_iphone.c */; };
 		F760F5A311725EFD00688A01 /* GameImage.m in Sources */ = {isa = PBXBuildFile; fileRef = F760F5A011725EFD00688A01 /* GameImage.m */; };
 		F760F5A411725EFD00688A01 /* TextureMap.m in Sources */ = {isa = PBXBuildFile; fileRef = F760F5A211725EFD00688A01 /* TextureMap.m */; };
 		F760F5AA11725F2B00688A01 /* texmap.png in Resources */ = {isa = PBXBuildFile; fileRef = F760F5A911725F2B00688A01 /* texmap.png */; };
@@ -50,6 +52,10 @@
 		E953B38F1171446D00E38438 /* hero1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = hero1.png; path = Resources/hero1.png; sourceTree = "<group>"; };
 		E991067C115546A80038ABD7 /* InputManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = InputManager.mm; sourceTree = "<group>"; };
 		F7557E59118364D000213A0E /* InputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputManager.h; sourceTree = "<group>"; };
+		F7557ED41183816D00213A0E /* toolkit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = toolkit.m; path = Toolkit/toolkit.m; sourceTree = "<group>"; };
+		F7557F8211838BEF00213A0E /* toolkit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = toolkit.h; path = Toolkit/toolkit.h; sourceTree = "<group>"; };
+		F7557FB011838E9100213A0E /* toolkit_iphone.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = toolkit_iphone.c; path = Toolkit/toolkit_iphone.c; sourceTree = "<group>"; };
+		F7557FB111838E9100213A0E /* toolkit_iphone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = toolkit_iphone.h; path = Toolkit/toolkit_iphone.h; sourceTree = "<group>"; };
 		F760F59F11725EFD00688A01 /* GameImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameImage.h; sourceTree = "<group>"; };
 		F760F5A011725EFD00688A01 /* GameImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameImage.m; sourceTree = "<group>"; };
 		F760F5A111725EFD00688A01 /* TextureMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureMap.h; sourceTree = "<group>"; };
@@ -109,6 +115,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				F7557F8311838C1100213A0E /* Toolkit */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -149,6 +156,17 @@
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F7557F8311838C1100213A0E /* Toolkit */ = {
+			isa = PBXGroup;
+			children = (
+				F7557F8211838BEF00213A0E /* toolkit.h */,
+				F7557ED41183816D00213A0E /* toolkit.m */,
+				F7557FB111838E9100213A0E /* toolkit_iphone.h */,
+				F7557FB011838E9100213A0E /* toolkit_iphone.c */,
+			);
+			name = Toolkit;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -216,6 +234,8 @@
 				F760F5A311725EFD00688A01 /* GameImage.m in Sources */,
 				F760F5A411725EFD00688A01 /* TextureMap.m in Sources */,
 				F7CC8A72117A1E4A00831B04 /* TileMap.m in Sources */,
+				F7557ED51183816D00213A0E /* toolkit.m in Sources */,
+				F7557FB211838E9100213A0E /* toolkit_iphone.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
