@@ -9,7 +9,7 @@
 
 #include "toolkit.h"
 
-GPoint GPointMake(float x, float y) {
+GPoint GPointMake(GLfloat x, GLfloat y) {
 	GPoint point;
 	point.x = x;
 	point.y = y;
