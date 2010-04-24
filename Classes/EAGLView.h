@@ -13,10 +13,10 @@
 #import <OpenGLES/ES1/glext.h>
 #import "Texture2D.h"
 #import "TextureMap.h"
-#import "InputManager.h"
 #import "GameImage.h"
 #import	"TileMap.h"
 
+class InputManager;
 /*
  This class wraps the CAEAGLLayer from CoreAnimation into a convenient UIView subclass.
  The view content is basically an EAGL surface you render your OpenGL scene into.

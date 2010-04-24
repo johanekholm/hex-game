@@ -8,14 +8,19 @@
 
 #import <Foundation/Foundation.h>
 
-@interface InputState : NSObject
-{
-	bool isBeingTouched;
-	CGPoint touchLocation;
-}
+class InputState {
+public:
+	InputState();
+	~InputState();
+	
+	bool touched();
 
-@property (nonatomic, readwrite) bool isBeingTouched;
-@property (nonatomic, readwrite) CGPoint touchLocation;
-
-@end
-
+	CGPoint touchLocation();
+	
+	void setTouchLocation(CGPoint touchLocation);
+	void setTouched(bool touched);
+	
+private:
+	bool _touched;
+	CGPoint _touchLocation;
+};

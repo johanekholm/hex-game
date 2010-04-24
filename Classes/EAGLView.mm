@@ -12,7 +12,8 @@
 #import <OpenGLES/EAGLDrawable.h>
 
 #import "EAGLView.h"
-
+#import "InputManager.h"
+#import "InputState.h"
 
 #define USE_DEPTH_BUFFER 0
 
@@ -50,7 +51,7 @@
         [EAGLContext setCurrentContext:nil];
     }
     
-	[input release];
+	delete input;
 	
 	[board release];
 	[sprite release];
@@ -121,7 +122,7 @@
 		
 		sprite = [[GameImage alloc] initWithSize: CGSizeMake(64.0f, 64.0f) andTexture:texMap withIndex:1];
 		board = [[TileMap alloc] initWithMapWidth:2 andMapHeight:2 withTileSize:CGSizeMake(64.0f, 64.0f) andTexture:texMap];
-		input = [[InputManager alloc] init];
+		input = new InputManager();
     }
     return self;
 }
@@ -133,10 +134,10 @@
 	time = CFAbsoluteTimeGetCurrent();
 	delta = (time - lastTime);
 	
-	[input update];
+	input->update();
 	
-	if ([input isButtonPressed]) {
-		[sprite setPosition:input.currentState.touchLocation];
+	if (input->isButtonPressed()) {
+		[sprite setPosition:input->currentState()->touchLocation()];
 
 		//xPos = input.currentState.touchLocation.x;
 		//yPos = 480 - input.currentState.touchLocation.y;
@@ -281,19 +282,19 @@
 
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-	[input touchesBegan:touches withEvent:event InView:self  WithTimer:animationTimer];
+	input->touchesBegan(touches, event, self, animationTimer);
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-	[input touchesMoved:touches withEvent:event InView:self  WithTimer:animationTimer];
+	input->touchesMoved(touches, event, self, animationTimer);
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-	[input touchesEnded:touches withEvent:event InView:self  WithTimer:animationTimer];
+	input->touchesEnded(touches, event, self, animationTimer);
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
-	[input touchesCancelled:touches withEvent:event InView:self  WithTimer:animationTimer];
+	input->touchesCancelled(touches, event, self, animationTimer);
 }
 
 
