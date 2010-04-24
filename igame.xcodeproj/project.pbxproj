@@ -22,9 +22,10 @@
 		E953B3901171446D00E38438 /* hero1.png in Resources */ = {isa = PBXBuildFile; fileRef = E953B38F1171446D00E38438 /* hero1.png */; };
 		E954061D1183996600CE3914 /* GameImage.mm in Sources */ = {isa = PBXBuildFile; fileRef = E954061C1183996600CE3914 /* GameImage.mm */; };
 		E954061F1183997100CE3914 /* TextureMap.mm in Sources */ = {isa = PBXBuildFile; fileRef = E954061E1183997100CE3914 /* TextureMap.mm */; };
+		E954062C1183A77D00CE3914 /* RobotModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = E954062B1183A77D00CE3914 /* RobotModel.mm */; };
 		E991067D115546A80038ABD7 /* InputManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = E991067C115546A80038ABD7 /* InputManager.mm */; };
-		F7557ED51183816D00213A0E /* toolkit.m in Sources */ = {isa = PBXBuildFile; fileRef = F7557ED41183816D00213A0E /* toolkit.m */; };
-		F7557FB211838E9100213A0E /* toolkit_iphone.c in Sources */ = {isa = PBXBuildFile; fileRef = F7557FB011838E9100213A0E /* toolkit_iphone.c */; };
+		F7557ED51183816D00213A0E /* toolkit.mm in Sources */ = {isa = PBXBuildFile; fileRef = F7557ED41183816D00213A0E /* toolkit.mm */; };
+		F7557FB211838E9100213A0E /* toolkit_iphone.mm in Sources */ = {isa = PBXBuildFile; fileRef = F7557FB011838E9100213A0E /* toolkit_iphone.mm */; };
 		F760F5AA11725F2B00688A01 /* texmap.png in Resources */ = {isa = PBXBuildFile; fileRef = F760F5A911725F2B00688A01 /* texmap.png */; };
 		F7CC8A72117A1E4A00831B04 /* TileMap.m in Sources */ = {isa = PBXBuildFile; fileRef = F7CC8A71117A1E4A00831B04 /* TileMap.m */; };
 /* End PBXBuildFile section */
@@ -52,11 +53,13 @@
 		E953B38F1171446D00E38438 /* hero1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = hero1.png; path = Resources/hero1.png; sourceTree = "<group>"; };
 		E954061C1183996600CE3914 /* GameImage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GameImage.mm; sourceTree = "<group>"; };
 		E954061E1183997100CE3914 /* TextureMap.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TextureMap.mm; sourceTree = "<group>"; };
+		E954062A1183A77D00CE3914 /* RobotModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobotModel.h; sourceTree = "<group>"; };
+		E954062B1183A77D00CE3914 /* RobotModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RobotModel.mm; sourceTree = "<group>"; };
 		E991067C115546A80038ABD7 /* InputManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = InputManager.mm; sourceTree = "<group>"; };
 		F7557E59118364D000213A0E /* InputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputManager.h; sourceTree = "<group>"; };
-		F7557ED41183816D00213A0E /* toolkit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = toolkit.m; path = Toolkit/toolkit.m; sourceTree = "<group>"; };
+		F7557ED41183816D00213A0E /* toolkit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = toolkit.mm; path = Toolkit/toolkit.mm; sourceTree = "<group>"; };
 		F7557F8211838BEF00213A0E /* toolkit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = toolkit.h; path = Toolkit/toolkit.h; sourceTree = "<group>"; };
-		F7557FB011838E9100213A0E /* toolkit_iphone.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = toolkit_iphone.c; path = Toolkit/toolkit_iphone.c; sourceTree = "<group>"; };
+		F7557FB011838E9100213A0E /* toolkit_iphone.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = toolkit_iphone.mm; path = Toolkit/toolkit_iphone.mm; sourceTree = "<group>"; };
 		F7557FB111838E9100213A0E /* toolkit_iphone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = toolkit_iphone.h; path = Toolkit/toolkit_iphone.h; sourceTree = "<group>"; };
 		F760F59F11725EFD00688A01 /* GameImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameImage.h; sourceTree = "<group>"; };
 		F760F5A111725EFD00688A01 /* TextureMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureMap.h; sourceTree = "<group>"; };
@@ -100,6 +103,8 @@
 				E991067C115546A80038ABD7 /* InputManager.mm */,
 				E953B2511170E5E800E38438 /* InputState.h */,
 				E953B2521170E5E800E38438 /* InputState.mm */,
+				E954062A1183A77D00CE3914 /* RobotModel.h */,
+				E954062B1183A77D00CE3914 /* RobotModel.mm */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -162,9 +167,9 @@
 			isa = PBXGroup;
 			children = (
 				F7557F8211838BEF00213A0E /* toolkit.h */,
-				F7557ED41183816D00213A0E /* toolkit.m */,
+				F7557ED41183816D00213A0E /* toolkit.mm */,
 				F7557FB111838E9100213A0E /* toolkit_iphone.h */,
-				F7557FB011838E9100213A0E /* toolkit_iphone.c */,
+				F7557FB011838E9100213A0E /* toolkit_iphone.mm */,
 			);
 			name = Toolkit;
 			sourceTree = "<group>";
@@ -232,10 +237,11 @@
 				E953B2531170E5E800E38438 /* InputState.mm in Sources */,
 				E953B38E1171445C00E38438 /* Texture2D.m in Sources */,
 				F7CC8A72117A1E4A00831B04 /* TileMap.m in Sources */,
-				F7557ED51183816D00213A0E /* toolkit.m in Sources */,
-				F7557FB211838E9100213A0E /* toolkit_iphone.c in Sources */,
+				F7557ED51183816D00213A0E /* toolkit.mm in Sources */,
+				F7557FB211838E9100213A0E /* toolkit_iphone.mm in Sources */,
 				E954061D1183996600CE3914 /* GameImage.mm in Sources */,
 				E954061F1183997100CE3914 /* TextureMap.mm in Sources */,
+				E954062C1183A77D00CE3914 /* RobotModel.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

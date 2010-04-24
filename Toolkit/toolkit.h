@@ -12,11 +12,28 @@
 #ifndef TOOLKIT_H
 #define TOOLKIT_H
 
+
+
 struct GPoint {
 	GLfloat x;
 	GLfloat y;
+	
+	GPoint operator+(const GPoint& other) { 
+		GPoint result;
+		result.x = this->x + other.x;
+		result.y = this->y + other.y;
+		return result;
+	}
+	
+	void operator+=(const GPoint& other) { 
+		this->x += other.x;
+		this->y += other.y;
+	}
+	
 };
+
 typedef struct GPoint GPoint;
+
 
 struct GPointInTime {
 	GLfloat x;
