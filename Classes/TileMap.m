@@ -6,9 +6,9 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import "TileMap.h"
+/*#import "TileMap.h"
 
-
+/*
 @implementation TileMap
 
 - (void) dealloc {
@@ -94,3 +94,4 @@
 }
 
 @end
+*/

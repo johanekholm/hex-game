@@ -8,8 +8,20 @@
 
 #import <Foundation/Foundation.h>
 #import "Texture2D.h"
+#include <string>
 
-@interface TextureMap : Texture2D {
+class TextureMap {
+	GLuint _name;
+	int _numSubdivisions;
+
+public:
+	TextureMap(const std::string& filename, int numDivs);
+	~TextureMap();
+	void getTriangleTexCoordsForSub(GLfloat target[12], int index);
+	void bind();
+};
+
+/*@interface TextureMap : Texture2D {
 	int numSubdivisions;
 }
 
@@ -19,3 +31,4 @@
 - (void) getTriangleTexCoordsForSubWithIndex: (int)index into: (GLfloat[12])array;
 
 @end
+*/

@@ -7,25 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-//#import "TextureMap.h"
-#import <OpenGLES/ES1/gl.h>
+#import "TextureMap.h"
 
-class TextureMap;
-
-class GameImage {
-	GLfloat x, y;
-	GLfloat width, height;
-	TextureMap *texture;
-	int texIndex;
-
-public:
-	GameImage(GLfloat aWidth, GLfloat aHeight, TextureMap* tex, int index);
-	//~GameImageCPP();
-	void draw();
-	void setPosition(GLfloat aX, GLfloat aY);
-};
-
-/*@interface GameImage : NSObject {
+@interface GameImage : NSObject {
 	CGPoint position;
 	CGSize size;
 	TextureMap *texture;
@@ -39,4 +23,3 @@ public:
 - (void) draw;
 
 @end
-*/

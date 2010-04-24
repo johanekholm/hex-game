@@ -52,11 +52,14 @@
     
 	[input release];
 	
-	[board release];
-	[sprite release];
+	//[board release];
+	//[sprite release];
+	
+	delete sprite;
 	
 	[player release];
-	[texMap release];
+	//[texMap release];
+	delete texMap;
 	
 	
     [context release];  
@@ -114,14 +117,21 @@
 		// init images
 		player = [[Texture2D alloc] initWithImage:[UIImage imageNamed:@"hero1.png"]];
 		
-		texMap = [[TextureMap alloc] initWithSubdivisions:2 ofImage:[UIImage imageNamed:@"texmap.png"]];
+		//texMap = [[TextureMap alloc] initWithSubdivisions:2 ofImage:[UIImage imageNamed:@"texmap.png"]];
 		
 		//texMap = [[TextureMap alloc] initWithImage:[UIImage imageNamed:@"texmap.png"]];
 		//[texMap setNumSubdivisions:2];
 		
-		sprite = [[GameImage alloc] initWithSize: CGSizeMake(64.0f, 64.0f) andTexture:texMap withIndex:1];
-		board = [[TileMap alloc] initWithMapWidth:2 andMapHeight:2 withTileSize:CGSizeMake(64.0f, 64.0f) andTexture:texMap];
+		texMap = new TextureMap("texmap.png", 2);
+		
+		
+		//sprite = [[GameImage alloc] initWithSize: CGSizeMake(64.0f, 64.0f) andTexture:texMap withIndex:1];
+		
+		//board = [[TileMap alloc] initWithMapWidth:2 andMapHeight:2 withTileSize:CGSizeMake(64.0f, 64.0f) andTexture:texMap];
 		input = [[InputManager alloc] init];
+		
+		sprite = new GameImage(64.0f, 64.0f, texMap, 1);
+		sprite->setPosition(250.0f, 250.0f);
     }
     return self;
 }
@@ -136,7 +146,9 @@
 	[input update];
 	
 	if ([input isButtonPressed]) {
-		[sprite setPosition:input.currentState.touchLocation];
+		//[sprite setPosition:input.currentState.touchLocation];
+		
+		sprite->setPosition(input.currentState.touchLocation.x, input.currentState.touchLocation.y);
 
 		//xPos = input.currentState.touchLocation.x;
 		//yPos = 480 - input.currentState.touchLocation.y;
@@ -194,9 +206,10 @@
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	*/
 	
-	[sprite draw];
-	[board draw];
+	//[board draw];
+	//[sprite draw];
 	
+	sprite->draw();
 	
     glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
     [context presentRenderbuffer:GL_RENDERBUFFER_OES];

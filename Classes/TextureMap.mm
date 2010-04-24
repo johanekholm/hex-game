@@ -8,7 +8,54 @@
 
 #import "TextureMap.h"
 
+TextureMap::~TextureMap() {
+	glDeleteTextures(1, &_name);
+}
 
+TextureMap::TextureMap(const std::string& filename, int numDivs) {
+	NSString *objCFilename;
+	Texture2D *tex;
+	
+	_numSubdivisions = numDivs;
+	
+	objCFilename = [[NSString alloc] initWithCString: filename.c_str() encoding: NSASCIIStringEncoding]; //NSASCIIStringEncoding
+	
+	NSLog(@"filename: %@", objCFilename);
+	
+	tex = [[Texture2D alloc] initWithImage: [UIImage imageNamed: objCFilename]];
+	_name = [tex name];
+	[tex dealloc];
+	
+}
+
+void TextureMap::bind() {
+	glBindTexture(GL_TEXTURE_2D, _name);	
+}
+
+void TextureMap::getTriangleTexCoordsForSub(GLfloat target[12], int index) {
+	GLfloat tx, ty, size;
+	
+	size = 1.0f / _numSubdivisions;
+	tx = index % _numSubdivisions * size;
+	ty = index / _numSubdivisions * size;
+	
+	
+	// flipped
+	target[0] = tx;
+	target[1] = ty;
+	target[2] = tx + size;
+	target[3] = ty;
+	target[4] = tx;
+	target[5] = ty + size;
+	target[6] = tx;
+	target[7] = ty + size;
+	target[8] = tx + size;
+	target[9] = ty;	
+	target[10] = tx + size;
+	target[11] = ty + size;
+}
+
+/*
 @implementation TextureMap
 
 - (id) initWithSubdivisions:(int)numDivs ofImage:(UIImage *)uiImage {
@@ -30,19 +77,7 @@
 	
 	//NSLog(@"size: %f, tx: %f, ty: %f", size, tx, ty);
 	
-	/*GLfloat		coordinates[] = {	tx,	ty + size,
-									tx + size,	ty + size,
-									tx,	ty,
-									tx + size,	ty };*/
-	
-/*	array[0] = tx;
-	array[1] = ty + size;
-	array[2] = tx + size;
-	array[3] = ty + size;
-	array[4] = tx;
-	array[5] = ty;
-	array[6] = tx + size;
-	array[7] = ty;*/
+
 
 	// flipped
 	array[0] = tx;
@@ -83,3 +118,4 @@
 }
 
 @end
+*/

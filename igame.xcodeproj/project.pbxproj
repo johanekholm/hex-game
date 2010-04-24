@@ -8,31 +8,35 @@
 
 /* Begin PBXBuildFile section */
 		182D63B00F6C23A700BF1C24 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 182D63AF0F6C23A700BF1C24 /* CoreGraphics.framework */; };
-		1D3623260D0F684500981E51 /* OGLGameAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* OGLGameAppDelegate.m */; };
+		1D3623260D0F684500981E51 /* OGLGameAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* OGLGameAppDelegate.mm */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
-		28FD14FE0DC6FC130079059D /* EAGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28FD14FD0DC6FC130079059D /* EAGLView.m */; };
+		28FD14FE0DC6FC130079059D /* EAGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28FD14FD0DC6FC130079059D /* EAGLView.mm */; };
 		28FD15000DC6FC520079059D /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD14FF0DC6FC520079059D /* OpenGLES.framework */; };
 		28FD15080DC6FC5B0079059D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD15070DC6FC5B0079059D /* QuartzCore.framework */; };
 		E953B2531170E5E800E38438 /* InputState.m in Sources */ = {isa = PBXBuildFile; fileRef = E953B2521170E5E800E38438 /* InputState.m */; };
 		E953B2BE11710FEA00E38438 /* hero1.pvr in Resources */ = {isa = PBXBuildFile; fileRef = E953B2BD11710FEA00E38438 /* hero1.pvr */; };
 		E953B38E1171445C00E38438 /* Texture2D.m in Sources */ = {isa = PBXBuildFile; fileRef = E953B38D1171445C00E38438 /* Texture2D.m */; };
 		E953B3901171446D00E38438 /* hero1.png in Resources */ = {isa = PBXBuildFile; fileRef = E953B38F1171446D00E38438 /* hero1.png */; };
+		E95405491183587900CE3914 /* GameImage.mm in Sources */ = {isa = PBXBuildFile; fileRef = E95405481183587900CE3914 /* GameImage.mm */; };
 		E991067D115546A80038ABD7 /* InputManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E991067C115546A80038ABD7 /* InputManager.m */; };
+		E9D42CD11171B145006F6EDC /* TextureMap.mm in Sources */ = {isa = PBXBuildFile; fileRef = E9D42CD01171B145006F6EDC /* TextureMap.mm */; };
+		E9D42D7C117204EF006F6EDC /* texmap.png in Resources */ = {isa = PBXBuildFile; fileRef = E9D42D7B117204EF006F6EDC /* texmap.png */; };
+		E9E0B2D81173B3B4006E7E5C /* TileMap.m in Sources */ = {isa = PBXBuildFile; fileRef = E9E0B2D71173B3B4006E7E5C /* TileMap.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		182D63AF0F6C23A700BF1C24 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* OGLGameAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OGLGameAppDelegate.h; sourceTree = "<group>"; };
-		1D3623250D0F684500981E51 /* OGLGameAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OGLGameAppDelegate.m; sourceTree = "<group>"; };
+		1D3623250D0F684500981E51 /* OGLGameAppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OGLGameAppDelegate.mm; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* igame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = igame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		28AD733E0D9D9553002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		28FD14FC0DC6FC130079059D /* EAGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EAGLView.h; sourceTree = "<group>"; };
-		28FD14FD0DC6FC130079059D /* EAGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EAGLView.m; sourceTree = "<group>"; };
+		28FD14FD0DC6FC130079059D /* EAGLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EAGLView.mm; sourceTree = "<group>"; };
 		28FD14FF0DC6FC520079059D /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		28FD15070DC6FC5B0079059D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -44,8 +48,15 @@
 		E953B38C1171445C00E38438 /* Texture2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Texture2D.h; sourceTree = "<group>"; };
 		E953B38D1171445C00E38438 /* Texture2D.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Texture2D.m; sourceTree = "<group>"; };
 		E953B38F1171446D00E38438 /* hero1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = hero1.png; path = Resources/hero1.png; sourceTree = "<group>"; };
+		E95405471183587900CE3914 /* GameImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameImage.h; sourceTree = "<group>"; };
+		E95405481183587900CE3914 /* GameImage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GameImage.mm; sourceTree = "<group>"; };
 		E991067B115546A80038ABD7 /* InputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputManager.h; sourceTree = "<group>"; };
 		E991067C115546A80038ABD7 /* InputManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InputManager.m; sourceTree = "<group>"; };
+		E9D42CCF1171B145006F6EDC /* TextureMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureMap.h; sourceTree = "<group>"; };
+		E9D42CD01171B145006F6EDC /* TextureMap.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TextureMap.mm; sourceTree = "<group>"; };
+		E9D42D7B117204EF006F6EDC /* texmap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = texmap.png; path = Resources/texmap.png; sourceTree = "<group>"; };
+		E9E0B2D61173B3B4006E7E5C /* TileMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileMap.h; sourceTree = "<group>"; };
+		E9E0B2D71173B3B4006E7E5C /* TileMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TileMap.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,16 +78,22 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				E95405471183587900CE3914 /* GameImage.h */,
+				E95405481183587900CE3914 /* GameImage.mm */,
 				E953B38C1171445C00E38438 /* Texture2D.h */,
 				E953B38D1171445C00E38438 /* Texture2D.m */,
 				28FD14FC0DC6FC130079059D /* EAGLView.h */,
-				28FD14FD0DC6FC130079059D /* EAGLView.m */,
+				28FD14FD0DC6FC130079059D /* EAGLView.mm */,
 				1D3623240D0F684500981E51 /* OGLGameAppDelegate.h */,
-				1D3623250D0F684500981E51 /* OGLGameAppDelegate.m */,
+				1D3623250D0F684500981E51 /* OGLGameAppDelegate.mm */,
 				E991067B115546A80038ABD7 /* InputManager.h */,
 				E991067C115546A80038ABD7 /* InputManager.m */,
 				E953B2511170E5E800E38438 /* InputState.h */,
 				E953B2521170E5E800E38438 /* InputState.m */,
+				E9D42CCF1171B145006F6EDC /* TextureMap.h */,
+				E9D42CD01171B145006F6EDC /* TextureMap.mm */,
+				E9E0B2D61173B3B4006E7E5C /* TileMap.h */,
+				E9E0B2D71173B3B4006E7E5C /* TileMap.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -113,6 +130,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E9D42D7B117204EF006F6EDC /* texmap.png */,
 				E953B38F1171446D00E38438 /* hero1.png */,
 				E953B2BD11710FEA00E38438 /* hero1.pvr */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
@@ -178,6 +196,7 @@
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
 				E953B2BE11710FEA00E38438 /* hero1.pvr in Resources */,
 				E953B3901171446D00E38438 /* hero1.png in Resources */,
+				E9D42D7C117204EF006F6EDC /* texmap.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -189,11 +208,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
-				1D3623260D0F684500981E51 /* OGLGameAppDelegate.m in Sources */,
-				28FD14FE0DC6FC130079059D /* EAGLView.m in Sources */,
+				1D3623260D0F684500981E51 /* OGLGameAppDelegate.mm in Sources */,
+				28FD14FE0DC6FC130079059D /* EAGLView.mm in Sources */,
 				E991067D115546A80038ABD7 /* InputManager.m in Sources */,
 				E953B2531170E5E800E38438 /* InputState.m in Sources */,
 				E953B38E1171445C00E38438 /* Texture2D.m in Sources */,
+				E9D42CD11171B145006F6EDC /* TextureMap.mm in Sources */,
+				E9E0B2D81173B3B4006E7E5C /* TileMap.m in Sources */,
+				E95405491183587900CE3914 /* GameImage.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

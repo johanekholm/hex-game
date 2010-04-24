@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "TextureMap.h"
-
+/*
 @interface TileMap : NSObject {
 	CGPoint position;
 	//CGSize mapSize; 
@@ -26,3 +26,4 @@
 - (void) draw;
 
 @end
+*/
