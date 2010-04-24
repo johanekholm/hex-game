@@ -16,9 +16,8 @@ GameImage::GameImage(GLfloat aWidth, GLfloat aHeight, TextureMap* tex, int index
 	texIndex = index;
 }
 
-void GameImage::setPosition(GLfloat aX, GLfloat aY) {
-	x = aX;
-	y = aY;
+void GameImage::setPosition(GPoint point) {
+	position = point;
 }
 
 void GameImage::draw() {
@@ -31,7 +30,7 @@ void GameImage::draw() {
 		width/2.0f, height/2.0f, 0.0f };
 	
 	glLoadIdentity();
-	glTranslatef(x, y, 0.0f);
+	glTranslatef(position.x, position.y, 0.0f);
 	
 	
 	//[texture getTriangleTexCoordsForSubWithIndex:texIndex into:texCoords];	

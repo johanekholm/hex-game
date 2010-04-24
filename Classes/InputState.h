@@ -7,15 +7,21 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "toolkit.h";
 
-@interface InputState : NSObject
-{
-	bool isBeingTouched;
-	CGPoint touchLocation;
-}
+class InputState {
+public:
+	InputState();
+	~InputState();
+	
+	bool touched();
 
-@property (nonatomic, readwrite) bool isBeingTouched;
-@property (nonatomic, readwrite) CGPoint touchLocation;
-
-@end
-
+	GPoint touchLocation();
+	
+	void setTouchLocation(GPoint touchLocation);
+	void setTouched(bool touched);
+	
+private:
+	bool _touched;
+	GPoint _touchLocation;
+};
