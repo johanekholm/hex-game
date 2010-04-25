@@ -16,6 +16,8 @@
 #import "GameImage.h"
 //#import	"TileMap.h"
 
+class RobotModel;
+class ObjectView;
 
 class InputManager;
 /*
@@ -47,13 +49,13 @@ class InputManager;
 	TextureMap *texMap;
 	
 	GameImage *sprite;
-	//GameImageCPP *spriteCPP;
+	
+	RobotModel *robot;
+	ObjectView *robotView;
 	
 	//TileMap *board;
 	
 	InputManager *input;
-	
-	//GLuint  texture[1];
 	
 }
 

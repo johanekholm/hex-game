@@ -23,6 +23,7 @@ public:
 	GameImage(GLfloat aWidth, GLfloat aHeight, TextureMap* tex, int index);
 	//~GameImageCPP();
 	void draw();
+	void drawAt(const GPoint &pos);
 	void setPosition(GPoint point);
 };
 

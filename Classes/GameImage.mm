@@ -21,6 +21,10 @@ void GameImage::setPosition(GPoint point) {
 }
 
 void GameImage::draw() {
+	this->drawAt(position);
+}
+
+void GameImage::drawAt(const GPoint &pos) {
 	GLfloat	texCoords[12];
 	GLfloat	vertices[] = {	-width/2.0f, -height/2.0f, 0.0f,
 		width/2.0f, -height/2.0f, 0.0f,
@@ -30,20 +34,14 @@ void GameImage::draw() {
 		width/2.0f, height/2.0f, 0.0f };
 	
 	glLoadIdentity();
-	glTranslatef(position.x, position.y, 0.0f);
-	
-	
-	//[texture getTriangleTexCoordsForSubWithIndex:texIndex into:texCoords];	
-	//[texture bind];
+	glTranslatef(pos.x, pos.y, 0.0f);
 	
 	texture->getTriangleTexCoordsForSub(texCoords, texIndex);
 	texture->bind();
 	
 	glVertexPointer(3, GL_FLOAT, 0, vertices);
 	glTexCoordPointer(2, GL_FLOAT, 0, texCoords);
-	//glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-	glDrawArrays(GL_TRIANGLES, 0, 6);
-	
+	glDrawArrays(GL_TRIANGLES, 0, 6);	
 }
 
 /*@implementation GameImage

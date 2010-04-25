@@ -14,6 +14,8 @@
 #import "EAGLView.h"
 #import "InputManager.h"
 #import "InputState.h"
+#include "RobotModel.h"
+#include "ObjectView.h"
 
 #define USE_DEPTH_BUFFER 0
 
@@ -57,6 +59,8 @@
 	//[sprite release];
 	
 	delete sprite;
+	delete robot;
+	delete robotView;
 	
 	[player release];
 	//[texMap release];
@@ -125,6 +129,9 @@
 		
 		texMap = new TextureMap("texmap.png", 2);
 		
+		robot = new RobotModel(3, 7);
+		robotView = new ObjectView(64.0f, 64.0f, texMap, 0);
+		robotView->setObject(robot);
 		
 		//sprite = [[GameImage alloc] initWithSize: CGSizeMake(64.0f, 64.0f) andTexture:texMap withIndex:1];
 		
@@ -144,11 +151,12 @@
 	time = CFAbsoluteTimeGetCurrent();
 	delta = (time - lastTime);
 	
+	robot->update();
 	input->update();
 	
 	if (input->isButtonPressed()) {
 		sprite->setPosition(input->currentState()->touchLocation());
-
+		robot->setVelocity(GPointMake(0.5f, 0.0f));
 		//xPos = input.currentState.touchLocation.x;
 		//yPos = 480 - input.currentState.touchLocation.y;
 		//yPos = input.currentState.touchLocation.y;
@@ -209,6 +217,7 @@
 	//[sprite draw];
 	
 	sprite->draw();
+	robotView->draw();
 	
     glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
     [context presentRenderbuffer:GL_RENDERBUFFER_OES];
