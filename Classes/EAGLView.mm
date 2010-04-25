@@ -13,7 +13,6 @@
 
 #import "EAGLView.h"
 #import "InputManager.h"
-#import "InputState.h"
 #include "RobotModel.h"
 #include "ObjectView.h"
 #include "toolkit_iphone.h"

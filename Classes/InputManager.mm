@@ -10,7 +10,6 @@
 
 #include "toolkit.h"
 #include "InputManager.h"
-#include "InputState.h"
 #include <math.h>
 
 const int HISTORY_SIZE = 20;
