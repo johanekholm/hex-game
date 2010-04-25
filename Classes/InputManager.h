@@ -7,6 +7,9 @@
  *
  */
 
+#ifndef INPUTMANAGER_H
+#define INPUTMANAGER_H
+
 #import <Foundation/Foundation.h>
 
 class InputState;
@@ -16,18 +19,29 @@ public:
 	InputManager();
 	~InputManager();
 	
-	bool isButtonPressed();
+	bool wasFlicked();
 	
+	GPoint flickedVelocity();
+
 	InputState* currentState();
 
-	void touchesBegan(NSSet *touches, UIEvent *event, UIView *view, NSTimer *deltaTimer);
-	void touchesMoved(NSSet *touches, UIEvent *event, UIView *view, NSTimer *deltaTimer);
-	void touchesEnded(NSSet *touches, UIEvent *event, UIView *view, NSTimer *deltaTimer);
-	void touchesCancelled(NSSet *touches, UIEvent *event, UIView *view, NSTimer *deltaTimer);
+	void touchesBegan(const GPoint& touchPoint);
+	void touchesMoved(const GPoint& touchPoint);
+	void touchesEnded(const GPoint& touchPoint);
+	void touchesCancelled(const GPoint& touchPoint);
 	void update();
 	
 private:
-	InputState *_currentState;
-	InputState *_previousState;
-	InputState *_queryState;
+	bool _wasFlicked;
+	int _historyCount;
+	int _historyHead;
+	GPoint _flickedVelocity;
+	GPointInTime* _touchHistory;
+	
+	double currentTime();
+	void addToHistory(const GPoint& point);
+	GPointInTime lastTouchPoint();
+	GPointInTime pointInTimeAtIndex(int index);
 };
+
+#endif

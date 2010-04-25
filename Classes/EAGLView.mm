@@ -16,6 +16,7 @@
 #import "InputState.h"
 #include "RobotModel.h"
 #include "ObjectView.h"
+#include "toolkit_iphone.h"
 
 #define USE_DEPTH_BUFFER 0
 
@@ -154,9 +155,9 @@
 	robot->update();
 	input->update();
 	
-	if (input->isButtonPressed()) {
-		sprite->setPosition(input->currentState()->touchLocation());
-		robot->setVelocity(GPointMake(0.5f, 0.0f));
+	if (input->wasFlicked()) {
+//		sprite->setPosition(input->currentState()->touchLocation());
+		robot->setVelocity(input->flickedVelocity());
 		//xPos = input.currentState.touchLocation.x;
 		//yPos = 480 - input.currentState.touchLocation.y;
 		//yPos = input.currentState.touchLocation.y;
@@ -302,20 +303,26 @@
 
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-	input->touchesBegan(touches, event, self, animationTimer);
+	GPoint touchPoint = GPointFromCGPoint([[touches anyObject] locationInView:self]);
+	input->touchesBegan(touchPoint);
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-	input->touchesMoved(touches, event, self, animationTimer);
+	GPoint touchPoint = GPointFromCGPoint([[touches anyObject] locationInView:self]);
+	input->touchesMoved(touchPoint);
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-	input->touchesEnded(touches, event, self, animationTimer);
+	GPoint touchPoint = GPointFromCGPoint([[touches anyObject] locationInView:self]);
+	input->touchesEnded(touchPoint);
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
-	input->touchesCancelled(touches, event, self, animationTimer);
+	NSLog(@"Cancelled, crashing!");
+	GPoint touchPoint = GPointFromCGPoint([[touches anyObject] locationInView:self]);
+	input->touchesCancelled(touchPoint);
 }
+
 
 
 

@@ -37,9 +37,11 @@ void RobotModel::update() {
 		_transitPos += _vel;		
 	}
 	
-	if (_transitPos.x > 100.0f || _transitPos.x < -100.0f) {
+	if (_transitPos.x > 100.0f || _transitPos.x < -100.0f || _transitPos.y > 100.0f || _transitPos.y < -100.0f) {
 		_vel.x = 0.0f;
 		_vel.y = 0.0f;
+		_transitPos.x = 0.0f;
+		_transitPos.y = 0.0f;		
 		_inTransit = false;
 	}
 }
