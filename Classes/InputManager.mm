@@ -12,8 +12,12 @@
 #include "InputManager.h"
 #include <math.h>
 
-const int HISTORY_SIZE = 20;
 const double FLICK_TIME_BACK = 0.07;
+const double FLICK_DAMPENING = 0.05;
+const int HISTORY_SIZE = 20;
+const int FLICK_TRESHOLD = 30;
+const int FLICK_MAXSPEED = 10;
+
 
 InputManager::~InputManager() {
 	free(_touchHistory);
@@ -75,50 +79,47 @@ void InputManager::touchesEnded(const GPoint& touchPoint) {
 	
 	GPointInTime startTouchBeforeTime = this->pointInTimeAtIndex(startIndex - 1); 
 	GPointInTime startTouchAfterTime = this->pointInTimeAtIndex(startIndex);
-	double startTimePercent = FLICK_TIME_BACK / (startTouchAfterTime.time - startTouchBeforeTime.time);
-	NSLog(@"Percent: %f (by %f / (%f - %f)", startTimePercent, FLICK_TIME_BACK, startTouchAfterTime.time, startTouchBeforeTime.time);
+	double startTimePercent = linearMap(startTime, startTouchBeforeTime.time, startTouchAfterTime.time, 0.0, 1.0);
+	double flickX = linearInterpolate(startTouchBeforeTime.x, startTouchAfterTime.x, startTimePercent);
+	double flickY = linearInterpolate(startTouchBeforeTime.y, startTouchAfterTime.y, startTimePercent);
 
-	NSLog(@"beforeX: %f",startTouchBeforeTime.x);
-	NSLog(@"beforeY: %f",startTouchBeforeTime.y);
-	NSLog(@"afterX: %f",startTouchAfterTime.x);
-	NSLog(@"afterY: %f",startTouchAfterTime.y);
-
-	double flickX = startTouchAfterTime.x * (1.0 - startTimePercent) + startTouchBeforeTime.x * startTimePercent;
-	double flickY = startTouchAfterTime.y * (1.0 - startTimePercent) + startTouchBeforeTime.y * startTimePercent;
-	
-	if (abs(flickX) < 50) {
+	if (fabs(flickX-lastPoint.x) < FLICK_TRESHOLD) {
 		flickX = lastPoint.x;
 	}
-	if (abs(flickY) < 50) {
+	if (fabs(flickY-lastPoint.y) < FLICK_TRESHOLD) {
 		flickY = lastPoint.y;
 	}
-	if (abs(flickY) < 50 && abs(flickX) < 50) {
+	
+	if ((flickX == lastPoint.x) && (flickY == lastPoint.y)) {
 		_wasFlicked = false;
 		return;
 	}
-	_flickedVelocity.x = (lastPoint.x - flickX) * 0.05;
-	_flickedVelocity.y = (lastPoint.y - flickY) * 0.05;
-	NSLog(@"X: %f",_flickedVelocity.x);
-	NSLog(@"Y: %f",_flickedVelocity.y);
-
+	
+	double speedX = (lastPoint.x - flickX) * FLICK_DAMPENING;
+	double speedY = (lastPoint.y - flickY) * FLICK_DAMPENING;
+	
+	double absX = fabs(speedX);
+	double absY = fabs(speedY);
+	
+	if (absX > FLICK_MAXSPEED && absX >= absY) {
+		double speedModifier = FLICK_MAXSPEED / absX;
+		speedX *= speedModifier;
+		speedY *= speedModifier;
+	} else if (absY > FLICK_MAXSPEED) {
+		double speedModifier = FLICK_MAXSPEED / absY;
+		speedX *= speedModifier;
+		speedY *= speedModifier;
+	}
+	
+	_flickedVelocity.x = speedX;
+	_flickedVelocity.y = speedY;
+	
 	_wasFlicked = true;
 }
 
 void InputManager::touchesCancelled(const GPoint& touchPoint) {
-	NSLog(@"Cancelled, crashing!");
-//	_queryState->setTouched(false);
+	// IMPLEMENT ME
 }
-
-void InputManager::update() {
-	//	Sets previous state to current state
-//	_previousState->setTouched( _currentState->touched() );
-//	_previousState->setTouchLocation( _currentState->touchLocation() );
-
-	//	Sets the current state to the query state
-//	_currentState->setTouched( _queryState->touched() );
-//	_currentState->setTouchLocation( _queryState->touchLocation() );
-}
-
 
 /* 
  * Private functions
@@ -126,6 +127,19 @@ void InputManager::update() {
 
 double InputManager::currentTime() {
 	return [[NSDate date] timeIntervalSince1970];
+}
+
+double InputManager::linearMap(double value, double minValue, double maxValue, double minTarget, double maxTarget) {
+    double zeroValue = value - minValue;
+    double valueRange = maxValue - minValue;
+    double targetRange = maxTarget - minTarget;
+    double zeroTargetValue = zeroValue * (targetRange / valueRange);
+    double targetValue = zeroTargetValue + minTarget;
+	return targetValue;
+}
+
+double InputManager::linearInterpolate(double from, double to, double percent) {
+	return (from * (1.0f - percent)) + (to * percent);
 }
 
 GPointInTime InputManager::pointInTimeAtIndex(int index) {

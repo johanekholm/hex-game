@@ -152,10 +152,8 @@
 	delta = (time - lastTime);
 	
 	robot->update();
-	input->update();
 	
 	if (input->wasFlicked()) {
-//		sprite->setPosition(input->currentState()->touchLocation());
 		robot->setVelocity(input->flickedVelocity());
 		//xPos = input.currentState.touchLocation.x;
 		//yPos = 480 - input.currentState.touchLocation.y;

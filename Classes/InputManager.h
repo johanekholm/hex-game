@@ -29,7 +29,6 @@ public:
 	void touchesMoved(const GPoint& touchPoint);
 	void touchesEnded(const GPoint& touchPoint);
 	void touchesCancelled(const GPoint& touchPoint);
-	void update();
 	
 private:
 	bool _wasFlicked;
@@ -39,6 +38,8 @@ private:
 	GPointInTime* _touchHistory;
 	
 	double currentTime();
+	double linearMap(double value, double minValue, double maxValue, double minTarget, double maxTarget);
+	double linearInterpolate(double from, double to, double percent);
 	void addToHistory(const GPoint& point);
 	GPointInTime lastTouchPoint();
 	GPointInTime pointInTimeAtIndex(int index);
