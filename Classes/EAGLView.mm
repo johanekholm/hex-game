@@ -159,7 +159,7 @@
 		//sprite = [[GameImage alloc] initWithSize: CGSizeMake(64.0f, 64.0f) andTexture:texMap withIndex:1];
 		
 		//board = [[TileMap alloc] initWithMapWidth:2 andMapHeight:2 withTileSize:CGSizeMake(64.0f, 64.0f) andTexture:texMap];
-		board = new TileMap(8, 12, 40.0f, 40.0f, boardTexMap, &vData);
+		board = new TileMap(10, 15, 32.0f, 32.0f, boardTexMap, &vData);
 		input = new InputManager();
 		
 		sprite = new GameImage(64.0f, 64.0f, texMap, 1);
