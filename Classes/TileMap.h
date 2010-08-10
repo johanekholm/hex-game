@@ -6,8 +6,37 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import "TextureMap.h"
+#ifndef TILEMAP_H
+#define TILEMAP_H
+
+#include <vector>
+//#import <Foundation/Foundation.h>
+//#import "TextureMap.h"
+
+#include "toolkit.h"
+
+using namespace std;
+
+class TextureMap;
+
+class TileMap {
+	int _width, _height;
+	GPoint _tileSize;
+	TextureMap *_texture;
+	GLfloat *_vertices;
+	GLfloat *_texCoords;
+	int _numVertices;
+	
+public:
+	~TileMap();
+	TileMap(int aWidth, int aHeight, GLfloat aTileWidth, GLfloat aTileHeight, TextureMap* tex, vector<int>* tileData);
+	//~GameImageCPP();
+	void draw();
+	//void drawAt(const GPoint &pos);
+	//void setPosition(GPoint point);
+};
+
+
 /*
 @interface TileMap : NSObject {
 	CGPoint position;
@@ -27,3 +56,5 @@
 
 @end
 */
+
+#endif
