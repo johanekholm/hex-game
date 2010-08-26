@@ -54,7 +54,7 @@ TileMap::TileMap(int aWidth, int aHeight, GLfloat aTileWidth, GLfloat aTileHeigh
 			_vertices[vIndex + 16] = ty + _tileSize.y;
 			_vertices[vIndex + 17] = 0;
 			
-			NSLog(@"vx: %f, vy: %f, index: %i data_i: %i", _vertices[vIndex + 12], _vertices[vIndex + 13], index, i * _width + j);
+			//NSLog(@"vx: %f, vy: %f, index: %i data_i: %i", _vertices[vIndex + 12], _vertices[vIndex + 13], index, i * _width + j);
 			
 			//[texture getTriangleTexCoordsForSubWithIndex:0 into:&texCoords[tIndex]];
 			_texture->getTriangleTexCoordsForSub(&_texCoords[tIndex], tileData->at(index));

@@ -19,6 +19,7 @@
 class RobotModel;
 class ObjectView;
 class TileMap;
+class HexMap;
 
 class InputManager;
 /*
@@ -47,7 +48,7 @@ class InputManager;
 	CFTimeInterval lastTime;
 	
 	Texture2D *player;
-	TextureMap *texMap, *boardTexMap;
+	TextureMap *texMap, *boardTexMap, *hexTexMap;
 	
 	GameImage *sprite;
 	
@@ -55,6 +56,7 @@ class InputManager;
 	ObjectView *robotView;
 	
 	TileMap *board;
+	HexMap *hexMap;
 	
 	InputManager *input;
 	

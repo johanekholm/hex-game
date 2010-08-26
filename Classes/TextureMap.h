@@ -18,6 +18,7 @@ public:
 	TextureMap(const std::string& filename, int numDivs);
 	~TextureMap();
 	void getTriangleTexCoordsForSub(GLfloat target[12], int index);
+	void getHexTexCoordsForSub(GLfloat target[24], int index, GLfloat hexPointRatio);
 	void bind();
 };
 

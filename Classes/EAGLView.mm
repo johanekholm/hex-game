@@ -17,6 +17,7 @@
 #include "ObjectView.h"
 #include "toolkit_iphone.h"
 #include "TileMap.h"
+#include "HexMap.h"
 
 #define USE_DEPTH_BUFFER 0
 
@@ -56,6 +57,8 @@
     
 	delete input;
 	
+	delete hexTexMap;
+	delete hexMap;
 	delete board;
 	//[board release];
 	//[sprite release];
@@ -151,6 +154,7 @@
 		
 		texMap = new TextureMap("texmap.png", 2);
 		boardTexMap = new TextureMap("floortilemap.png", 4);
+		hexTexMap = new TextureMap("texmap_hex.png", 2);
 		
 		robot = new RobotModel(3, 7);
 		robotView = new ObjectView(64.0f, 64.0f, texMap, 0);
@@ -159,6 +163,9 @@
 		//sprite = [[GameImage alloc] initWithSize: CGSizeMake(64.0f, 64.0f) andTexture:texMap withIndex:1];
 		
 		//board = [[TileMap alloc] initWithMapWidth:2 andMapHeight:2 withTileSize:CGSizeMake(64.0f, 64.0f) andTexture:texMap];
+
+		hexMap = new HexMap(hexTexMap);
+		
 		board = new TileMap(10, 15, 32.0f, 32.0f, boardTexMap, &vData);
 		input = new InputManager();
 		
@@ -240,9 +247,11 @@
 	//[board draw];
 	//[sprite draw];
 	
-	board->draw();
+	//board->draw();
 	sprite->draw();
 	robotView->draw();
+	
+	hexMap->draw();
 	
     glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
     [context presentRenderbuffer:GL_RENDERBUFFER_OES];

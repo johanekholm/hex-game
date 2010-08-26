@@ -55,6 +55,54 @@ void TextureMap::getTriangleTexCoordsForSub(GLfloat target[12], int index) {
 	target[11] = ty + size;
 }
 
+void TextureMap::getHexTexCoordsForSub(GLfloat target[24], int index, GLfloat hexPointRatio) {
+	GLfloat tx, ty, size, y1, y2;
+	
+	y1 = hexPointRatio;
+	y2 = 1.0f - hexPointRatio;
+	
+	size = 1.0f / _numSubdivisions;
+	tx = index % _numSubdivisions * size;
+	ty = index / _numSubdivisions * size;
+	
+	
+	// flipped
+/*	target[0] = tx;
+	target[1] = ty;
+	target[2] = tx + size;
+	target[3] = ty;
+	target[4] = tx;
+	target[5] = ty + size;
+	target[6] = tx;
+	target[7] = ty + size;
+	target[8] = tx + size;
+	target[9] = ty;	
+	target[10] = tx + size;
+	target[11] = ty + size;
+*/
+	
+	GLfloat texCoords[4*3*2] = { 0.0f, y1, // top triangle
+		0.5f, 0.0f,
+		1.0f, y1,
+		0.0f, y1, // top half of square
+		1.0f, y1,
+		1.0f, y2,
+		0.0f, y1, // bottom half of square
+		1.0f, y2,
+		0.0f, y2,
+		0.0f, y2, // bottom triangle
+		1.0f, y2,
+		0.5f, 1.0f
+	};
+	
+	for (int i = 0; i < 4*3*2; i += 2) {
+		target[i] = tx + texCoords[i] * size;
+		target[i+1] = ty + texCoords[i+1] * size;
+	}
+	
+}
+
+
 /*
 @implementation TextureMap
 
