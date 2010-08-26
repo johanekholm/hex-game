@@ -42,11 +42,33 @@ struct GPointInTime {
 };
 typedef struct GPointInTime GPointInTime;
 
+
+struct MPoint {
+	int x;
+	int y;
+	
+	MPoint operator+(const MPoint& other) { 
+		MPoint result;
+		result.x = this->x + other.x;
+		result.y = this->y + other.y;
+		return result;
+	}
+	
+	void operator+=(const MPoint& other) { 
+		this->x += other.x;
+		this->y += other.y;
+	}
+	
+};
+
+typedef struct MPoint MPoint;
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 GPoint GPointMake(GLfloat x, GLfloat y);
+MPoint MPointMake(int x, int y);
 
 #ifdef __cplusplus
 }

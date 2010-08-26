@@ -17,4 +17,11 @@ GPoint GPointMake(GLfloat x, GLfloat y) {
 	return point;
 }
 
+MPoint MPointMake(int x, int y) {
+	MPoint point;
+	point.x = x;
+	point.y = y;
+	
+	return point;
+}
 
