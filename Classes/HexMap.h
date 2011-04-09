@@ -19,6 +19,7 @@
 #define HEX_TEX_Y1 HEX_POINTINESS / (HEX_TOTAL_HEIGHT)
 #define HEX_TEX_Y2 1.0f - HEX_TEX_Y1
 
+
 #include <vector>
 //#import <Foundation/Foundation.h>
 //#import "TextureMap.h"
@@ -39,7 +40,7 @@ class HexMap {
 	
 public:
 	~HexMap();
-	HexMap(TextureMap* tex);  //int aWidth, int aHeight, GLfloat aHexWidth, GLfloat aHexHeight, TextureMap* tex, vector<int>* tileData);
+	HexMap(TextureMap* tex, int aWidth, int aHeight, GLfloat aHexWidth, GLfloat aHexHeight);  //int aWidth, int aHeight, GLfloat aHexWidth, GLfloat aHexHeight, TextureMap* tex, vector<int>* tileData);
 	//~GameImageCPP();
 	void draw();
 	//void drawAt(const GPoint &pos);

@@ -29,7 +29,17 @@ struct GPoint {
 		this->x += other.x;
 		this->y += other.y;
 	}
+
+	void operator-=(const GPoint& other) { 
+		this->x -= other.x;
+		this->y -= other.y;
+	}
 	
+	void operator=(GLfloat scalar) {
+		this->x = scalar;
+		this->y = scalar;
+	}
+		
 };
 
 typedef struct GPoint GPoint;
@@ -52,6 +62,18 @@ struct MPoint {
 		result.x = this->x + other.x;
 		result.y = this->y + other.y;
 		return result;
+	}
+	
+	GPoint operator*(GLfloat scalar) { 
+		GPoint result;
+		result.x = this->x * scalar;
+		result.y = this->y * scalar;
+		return result;
+	}
+	
+	void operator=(int scalar) {
+		this->x = scalar;
+		this->y = scalar;
 	}
 	
 	void operator+=(const MPoint& other) { 

@@ -14,7 +14,7 @@
 #import "EAGLView.h"
 #import "InputManager.h"
 #include "RobotModel.h"
-#include "ObjectView.h"
+#include "RobotView.h"
 #include "toolkit_iphone.h"
 #include "TileMap.h"
 #include "HexMap.h"
@@ -157,14 +157,15 @@
 		hexTexMap = new TextureMap("texmap_hex.png", 2);
 		
 		robot = new RobotModel(3, 7);
-		robotView = new ObjectView(64.0f, 64.0f, texMap, 0);
-		robotView->setObject(robot);
+		robotView = new RobotView(64.0f, 64.0f, texMap, 0);
+		robot->registerView(robotView);
+		robotView->setModel(robot);
 		
 		//sprite = [[GameImage alloc] initWithSize: CGSizeMake(64.0f, 64.0f) andTexture:texMap withIndex:1];
 		
 		//board = [[TileMap alloc] initWithMapWidth:2 andMapHeight:2 withTileSize:CGSizeMake(64.0f, 64.0f) andTexture:texMap];
 
-		hexMap = new HexMap(hexTexMap);
+		hexMap = new HexMap(hexTexMap, 4, 4, 80.0f, 80.0f);
 		
 		board = new TileMap(10, 15, 32.0f, 32.0f, boardTexMap, &vData);
 		input = new InputManager();
@@ -216,36 +217,6 @@
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	
-	/*GLfloat		coordinates[] = {	0.0f,	1.0f,
-									1.0f,	1.0f,
-									0.0f,	0.0f,
-									1.0f,	0.0f };
-
-	GLfloat		vertices[] = {	-32.0f, -32.0f, 0.0f,
-								32.0f, -32.0f, 0.0f,
-								-32.0f, 32.0f, 0.0f,
-								32.0f, 32.0f, 0.0f };
-	
-	GLfloat	texCoords[8];
-	
-	[texMap getTexCoordsForSubWithIndex:0 into:texCoords];
-	
-	glLoadIdentity();
-	//glTranslatef(xPos, yPos, 0.0f);
-	glTranslatef(32.0f, 32.0f, 0.0f);
-
-	//glBindTexture(GL_TEXTURE_2D, texture[0]);
-	//[player bind];
-	[texMap bind];
-	
-	glVertexPointer(3, GL_FLOAT, 0, vertices);
-	//glTexCoordPointer(2, GL_FLOAT, 0, coordinates);
-	glTexCoordPointer(2, GL_FLOAT, 0, texCoords);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-	*/
-	
-	//[board draw];
-	//[sprite draw];
 	
 	//board->draw();
 	sprite->draw();

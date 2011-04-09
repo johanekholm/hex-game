@@ -22,20 +22,20 @@ HexMap::~HexMap() {
 	delete [] _texCoords;
 }
 
-HexMap::HexMap(TextureMap* tex) {	//int aWidth, int aHeight, GLfloat aHexWidth, GLfloat aHexHeight, TextureMap* tex, vector<int>* tileData) {
-	//int index = 0, vIndex = 0, tIndex = 0;
-	/* GLfloat tx, ty;
+HexMap::HexMap(TextureMap* tex, int aWidth, int aHeight, GLfloat aHexWidth, GLfloat aHexHeight) {
+	int index = 0, vIndex = 0, tIndex = 0;
+	GLfloat tx, ty;
 
 	_width = aWidth;
 	_height = aHeight;
 
 	_tileSize = GPointMake(aHexWidth, aHexHeight);
-	 */
+
 	_texture = tex;
 
-	_numVertices = 3*4; //_width * _height * 6;
-	_vertices = new GLfloat[_numVertices * 3]; //(GLfloat *)malloc(_size.x * _size.y * 18 * sizeof(GLfloat));
-	_texCoords = new GLfloat[_numVertices * 2];			//(GLfloat *)malloc(widthMap * heightMap * 12 * sizeof(GLfloat));
+	_numVertices = _width * _height * 3*4;
+	_vertices = new GLfloat[_numVertices * 3];
+	_texCoords = new GLfloat[_numVertices * 2];
 
 	
 	NSLog(@"w: %i, h: %i, numV: %i", _width, _height, _numVertices);
@@ -54,6 +54,58 @@ HexMap::HexMap(TextureMap* tex) {	//int aWidth, int aHeight, GLfloat aHexWidth, 
 		HEX_HALF_WIDTH, HEX_HALF_HEIGHT, 0,
 		0, HEX_HALF_HEIGHT + HEX_POINTINESS, 0
 	};
+	
+	for (int i = 0; i < _height; i++) {
+		for (int j = 0; j < _width; j++) {
+			tx = j * (HEX_WIDTH + 0.0f) + (i % 2) * HEX_WIDTH / 2;
+			ty = i * (HEX_HEIGHT + HEX_POINTINESS);
+			
+			_vertices[vIndex + 0] = vertices[0] + tx;
+			_vertices[vIndex + 3] = vertices[3] + tx;
+			_vertices[vIndex + 6] = vertices[6] + tx;
+			_vertices[vIndex + 9] = vertices[9] + tx;
+			_vertices[vIndex + 12] = vertices[12] + tx;
+			_vertices[vIndex + 15] = vertices[15] + tx;
+			_vertices[vIndex + 18] = vertices[18] + tx;
+			_vertices[vIndex + 21] = vertices[21] + tx;
+			_vertices[vIndex + 24] = vertices[24] + tx;
+			_vertices[vIndex + 27] = vertices[27] + tx;
+			_vertices[vIndex + 30] = vertices[30] + tx;
+			_vertices[vIndex + 33] = vertices[33] + tx;
+
+			_vertices[vIndex + 1] = vertices[1] + ty;
+			_vertices[vIndex + 4] = vertices[4] + ty;
+			_vertices[vIndex + 7] = vertices[7] + ty;
+			_vertices[vIndex + 10] = vertices[10] + ty;
+			_vertices[vIndex + 13] = vertices[13] + ty;
+			_vertices[vIndex + 16] = vertices[16] + ty;
+			_vertices[vIndex + 19] = vertices[19] + ty;
+			_vertices[vIndex + 22] = vertices[22] + ty;
+			_vertices[vIndex + 25] = vertices[25] + ty;
+			_vertices[vIndex + 28] = vertices[28] + ty;
+			_vertices[vIndex + 31] = vertices[31] + ty;
+			_vertices[vIndex + 34] = vertices[34] + ty;
+
+			_vertices[vIndex + 2] = 0;
+			_vertices[vIndex + 5] = 0;
+			_vertices[vIndex + 8] = 0;
+			_vertices[vIndex + 11] = 0;
+			_vertices[vIndex + 14] = 0;
+			_vertices[vIndex + 17] = 0;
+			_vertices[vIndex + 20] = 0;
+			_vertices[vIndex + 23] = 0;
+			_vertices[vIndex + 26] = 0;
+			_vertices[vIndex + 29] = 0;
+			_vertices[vIndex + 32] = 0;
+			_vertices[vIndex + 35] = 0;
+
+			_texture->getHexTexCoordsForSub(&_texCoords[tIndex], 1, HEX_TEX_Y1);
+			
+			index++;
+			vIndex = index * 36;
+			tIndex = index * 24;
+		}
+	}
 	
 /*	GLfloat texCoords[4*3*2] = { 0.0f, HEX_TEX_Y1, // top triangle
 		0.5f, 0.0f,
@@ -74,7 +126,7 @@ HexMap::HexMap(TextureMap* tex) {	//int aWidth, int aHeight, GLfloat aHexWidth, 
 	}
 */	
 	
-	memcpy(_vertices, vertices, sizeof(vertices));
+	//memcpy(_vertices, vertices, sizeof(vertices));
 	//memcpy(_texCoords, texCoords, sizeof(texCoords));
 	
 	_texture->getHexTexCoordsForSub(_texCoords, 1, HEX_TEX_Y1); //tileData->at(index));
@@ -85,6 +137,8 @@ HexMap::HexMap(TextureMap* tex) {	//int aWidth, int aHeight, GLfloat aHexWidth, 
 	NSLog(@"sq3 - x: %f, y: %f", _texCoords[10], _texCoords[11]);
 	NSLog(@"sq4 - x: %f, y: %f", _texCoords[16], _texCoords[17]);
 
+	
+	
 	/*int mapData[] = { 0, 0, 0, 0,
 		0, 0, 0, 0,
 		0, 0, 0, 0,

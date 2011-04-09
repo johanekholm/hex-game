@@ -8,44 +8,72 @@
  */
 
 #include "RobotModel.h"
+#include "IRobotView.h"
 #include <math.h>
 
 RobotModel::RobotModel(int tx, int ty) {
-	_tx = tx;
-	_ty = ty;
-	_vel.x = 0.0f;
-	_vel.y = 0.0f;
-	_transitPos.x = 0.0f;
-	_transitPos.y = 0.0f;
+	_tilePos.x = tx;
+	_tilePos.y = ty;
+	_vel = 0.0f;
+	_transitPos = 0.0f;
 	_inTransit = false;
-
 }
 
 void RobotModel::setVelocity(GPoint vel) {
 	if ((vel.x != 0.0f || vel.y != 0.0f) && _inTransit == false) {
 		if (abs(vel.x) >= abs(vel.y)) {
 			_vel.x = vel.x;
+			if (_vel.x > 0) {
+				_direction = GEOM_DIR_EAST;				
+			} else if (_vel.x < 0) {
+				_direction = GEOM_DIR_WEST;				
+			}
 		} else {
 			_vel.y = vel.y;
+			if (_vel.y > 0) {
+				_direction = GEOM_DIR_SOUTH;				
+			} else if (_vel.y < 0) {
+				_direction = GEOM_DIR_NORTH;				
+			}
+			
 		}
 		_inTransit = true;	
 	}
 }
 
 void RobotModel::update() {
+	MPoint delta;
+	
 	if (_inTransit) {
-		_transitPos += _vel;		
+		_transitPos += _vel;
+		
+		
+		if (_transitPos.x > GEOM_TILE_SIZE) {
+			delta.x = (int)(_transitPos.x / GEOM_TILE_SIZE);
+			delta.y = (int)(_transitPos.y / GEOM_TILE_SIZE);
+			
+			// adjust tile position and reduce transit position
+			_tilePos += delta;
+			_transitPos -= delta * GEOM_TILE_SIZE;		
+			
+			if (true/*!_board->canIPass(_tilePos, _direction)*/) {
+				_inTransit = false;
+				_vel = 0.0f;
+				_transitPos = 0.0f;
+			}	
+		}
+
+		// send updated position to view
+		_view->updatePosition(this->getPosition());
 	}
 	
-	if (_transitPos.x > 100.0f || _transitPos.x < -100.0f || _transitPos.y > 100.0f || _transitPos.y < -100.0f) {
-		_vel.x = 0.0f;
-		_vel.y = 0.0f;
-		_transitPos.x = 0.0f;
-		_transitPos.y = 0.0f;		
-		_inTransit = false;
-	}
+	
 }
 
-GPoint RobotModel::getDrawPosition() {
-	return GPointMake(_tx * 32.0f + _transitPos.x, _ty * 32.0f + _transitPos.y); //GPointMake(100.0f, 100.0f);
+GPoint RobotModel::getPosition() {
+	return _tilePos * GEOM_TILE_SIZE + _transitPos; 
+}
+
+void RobotModel::registerView(IRobotView* view) {
+	_view = view;
 }

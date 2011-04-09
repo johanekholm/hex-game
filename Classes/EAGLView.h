@@ -17,7 +17,7 @@
 //#import	"TileMap.h"
 
 class RobotModel;
-class ObjectView;
+class RobotView;
 class TileMap;
 class HexMap;
 
@@ -50,10 +50,10 @@ class InputManager;
 	Texture2D *player;
 	TextureMap *texMap, *boardTexMap, *hexTexMap;
 	
-	GameImage *sprite;
+	GameImage* sprite;
 	
-	RobotModel *robot;
-	ObjectView *robotView;
+	RobotModel* robot;
+	RobotView* robotView;
 	
 	TileMap *board;
 	HexMap *hexMap;
