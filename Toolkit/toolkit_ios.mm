@@ -7,7 +7,7 @@
  *
  */
 
-#include "toolkit_iphone.h"
+#include "toolkit_ios.h"
 
 GPoint GPointFromCGPoint(CGPoint cgPoint) {
 	GPoint point;

@@ -7,8 +7,12 @@
  *
  */
 
-//#import <OpenGLES/ES1/gl.h>
-#include <QGLWidget>
+//#if defined(PLATFORM_IOS)
+	#import <Foundation/Foundation.h>
+	#import <OpenGLES/ES1/gl.h>
+//#elif defined(PLATFORM_MEEGO)
+//	#include <QGLContext>
+//#endif
 
 #ifndef TOOLKIT_H
 #define TOOLKIT_H
