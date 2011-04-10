@@ -13,8 +13,12 @@ LIST(APPEND HEADERS
 	Toolkit/toolkit_ios.h
 )
 
+LIST(APPEND RESOURCES
+	iOS/MainWindow.xib
+)
+
 LIST(APPEND LIBRARIES
-	"-framework Foundation -framework UIKit -framework CoreGraphics -framework OpenGLES"
+	"-framework Foundation -framework UIKit -framework CoreGraphics -framework OpenGLES -framework QuartzCore"
 )
 
 SET(SDK_VERSION "iphoneos4.0" CACHE STRING "The sdk version")
