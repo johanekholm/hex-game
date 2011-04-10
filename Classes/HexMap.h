@@ -25,6 +25,7 @@
 //#import "TextureMap.h"
 
 #include "toolkit.h"
+#include <QGLWidget>
 
 using namespace std;
 

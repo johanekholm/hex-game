@@ -10,7 +10,7 @@
 #ifndef INPUTMANAGER_H
 #define INPUTMANAGER_H
 
-#import <Foundation/Foundation.h>
+//#import <Foundation/Foundation.h>
 
 class InputState;
 

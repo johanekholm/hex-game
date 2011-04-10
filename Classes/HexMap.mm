@@ -38,7 +38,7 @@ HexMap::HexMap(TextureMap* tex, int aWidth, int aHeight, GLfloat aHexWidth, GLfl
 	_texCoords = new GLfloat[_numVertices * 2];
 
 	
-	NSLog(@"w: %i, h: %i, numV: %i", _width, _height, _numVertices);
+	//NSLog(@"w: %i, h: %i, numV: %i", _width, _height, _numVertices);
 	
 	
 	GLfloat vertices[4*3*3] = { -HEX_HALF_WIDTH, -HEX_HALF_HEIGHT, 0, // top triangle
@@ -132,10 +132,10 @@ HexMap::HexMap(TextureMap* tex, int aWidth, int aHeight, GLfloat aHexWidth, GLfl
 	_texture->getHexTexCoordsForSub(_texCoords, 1, HEX_TEX_Y1); //tileData->at(index));
 
 	//NSLog(@"sq1: %i, h: %i, numV: %i", _width, _height, _numVertices);
-	NSLog(@"sq1 - x: %f, y: %f", _texCoords[6], _texCoords[7]);
-	NSLog(@"sq2 - x: %f, y: %f", _texCoords[8], _texCoords[9]);
-	NSLog(@"sq3 - x: %f, y: %f", _texCoords[10], _texCoords[11]);
-	NSLog(@"sq4 - x: %f, y: %f", _texCoords[16], _texCoords[17]);
+	//NSLog(@"sq1 - x: %f, y: %f", _texCoords[6], _texCoords[7]);
+	//NSLog(@"sq2 - x: %f, y: %f", _texCoords[8], _texCoords[9]);
+	//NSLog(@"sq3 - x: %f, y: %f", _texCoords[10], _texCoords[11]);
+	//NSLog(@"sq4 - x: %f, y: %f", _texCoords[16], _texCoords[17]);
 
 	
 	

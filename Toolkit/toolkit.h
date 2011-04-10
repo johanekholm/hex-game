@@ -7,7 +7,8 @@
  *
  */
 
-#import <OpenGLES/ES1/gl.h>
+//#import <OpenGLES/ES1/gl.h>
+#include <QGLWidget>
 
 #ifndef TOOLKIT_H
 #define TOOLKIT_H

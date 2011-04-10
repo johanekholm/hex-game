@@ -126,7 +126,8 @@ void InputManager::touchesCancelled(const GPoint& touchPoint) {
  */
 
 double InputManager::currentTime() {
-	return [[NSDate date] timeIntervalSince1970];
+	return 1.0;
+	//return [[NSDate date] timeIntervalSince1970];
 }
 
 double InputManager::linearMap(double value, double minValue, double maxValue, double minTarget, double maxTarget) {

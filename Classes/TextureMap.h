@@ -6,16 +6,17 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import "Texture2D.h"
+//#import <Foundation/Foundation.h>
+//#import "Texture2D.h"
 #include <string>
+#include <QGLWidget>
 
 class TextureMap {
 	GLuint _name;
 	int _numSubdivisions;
 
 public:
-	TextureMap(const std::string& filename, int numDivs);
+	TextureMap(GLuint texture, int numDivs);
 	~TextureMap();
 	void getTriangleTexCoordsForSub(GLfloat target[12], int index);
 	void getHexTexCoordsForSub(GLfloat target[24], int index, GLfloat hexPointRatio);
