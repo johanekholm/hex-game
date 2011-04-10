@@ -6,6 +6,7 @@ FIND_PACKAGE(OpenGL REQUIRED)
 
 LIST(APPEND SOURCES
 	Meego/main.cpp
+	Classes/EAGLView.cpp
 )
 
 LIST(APPEND HEADERS

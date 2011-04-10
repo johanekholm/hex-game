@@ -6,7 +6,6 @@ endif(COMMAND cmake_policy)
 
 
 SET( SOURCES
-	Classes/EAGLView.cpp
 	Classes/GameImage.mm
 #	Classes/GameImageObjC.m
 	Classes/HexMap.mm

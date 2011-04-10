@@ -1,12 +1,20 @@
 
 LIST(APPEND SOURCES
+	iOS/main.m
+	iOS/EAGLView.mm
+	iOS/OGLGameAppDelegate.mm
+	iOS/main.m
+	Toolkit/toolkit_ios.mm
 )
 
 LIST(APPEND HEADERS
+	iOS/EAGLView.h
+	iOS/OGLGameAppDelegate.h
+	Toolkit/toolkit_ios.h
 )
 
 LIST(APPEND LIBRARIES
-	"-framework Foundation -framework UIKit -framework CoreGraphics"
+	"-framework Foundation -framework UIKit -framework CoreGraphics -framework OpenGLES"
 )
 
 SET(SDK_VERSION "iphoneos4.0" CACHE STRING "The sdk version")
