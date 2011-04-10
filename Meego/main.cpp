@@ -1,6 +1,6 @@
 
 #include <QtGui>
-#include "Classes/EAGLView.h"
+#include "EAGLView.h"
 
 int main(int argc, char *argv[])
 {

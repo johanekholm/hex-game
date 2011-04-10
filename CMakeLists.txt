@@ -1,10 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
-
-FIND_PACKAGE( Qt4 REQUIRED )
-SET(QT_USE_QTOPENGL TRUE)
-INCLUDE( ${QT_USE_FILE} )
-
-FIND_PACKAGE(OpenGL REQUIRED)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 if(COMMAND cmake_policy)
 	cmake_policy(SET CMP0003 NEW)
@@ -25,7 +19,6 @@ SET( SOURCES
 #	Classes/TileMap.mm
 #	Classes/UnitModel.mm
 	Toolkit/toolkit.mm
-	main.cpp
 )
 
 SET( HEADERS
@@ -44,25 +37,19 @@ SET( HEADERS
 	Toolkit/toolkit.h
 )
 
-SET( MOC_HEADERS
-	Classes/EAGLView.h
-)
-
 INCLUDE_DIRECTORIES( Toolkit )
+INCLUDE_DIRECTORIES( Classes )
 
-QT4_WRAP_CPP(  MOC_SOURCES  ${MOC_HEADERS} )
-QT4_AUTOMOC (  ${SOURCES} )
-
-SET( LIBRARIES
-	${QT_LIBRARIES}
-	${OPENGL_gl_LIBRARY}
-)
+SET(TARGET_PLATFORM "" CACHE STRING "Sets the target platform. Valid values are 'iOS' or 'Meego'")
+IF (NOT TARGET_PLATFORM)
+	MESSAGE(FATAL_ERROR "Please set the target platform with -DTARGET_PLATFORM='platform'")
+ELSE (NOT TARGET_PLATFORM)
+	INCLUDE( ${TARGET_PLATFORM}/rules.cmake NO_POLICY_SCOPE )
+ENDIF(NOT TARGET_PLATFORM)
 
 ADD_EXECUTABLE(HexGame MACOSX_BUNDLE
 	${SOURCES}
 	${HEADERS}
-	${MOC_HEADERS}
-	${MOC_SOURCES}
 )
 
 TARGET_LINK_LIBRARIES( HexGame ${LIBRARIES} )
