@@ -6,9 +6,6 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-//#import <Foundation/Foundation.h>
-//#import <OpenGLES/ES1/gl.h>
-#include <QGLContext>
 #include "toolkit.h"
 
 class TextureMap;

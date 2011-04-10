@@ -9,7 +9,7 @@
 //#import <Foundation/Foundation.h>
 //#import "Texture2D.h"
 #include <string>
-#include <QGLWidget>
+#include "toolkit.h"
 
 class TextureMap {
 	GLuint _name;
