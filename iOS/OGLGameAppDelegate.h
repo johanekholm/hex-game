@@ -13,10 +13,12 @@
 @interface OGLGameAppDelegate : NSObject <UIApplicationDelegate> {
     UIWindow *window;
     EAGLView *glView;
+	UIView *uiView;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
-@property (nonatomic, retain) IBOutlet EAGLView *glView;
+@property (nonatomic, retain) IBOutlet UIView *uiView;
+@property (nonatomic, retain) EAGLView *glView;
 
 @end
 
