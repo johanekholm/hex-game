@@ -6,14 +6,14 @@ FIND_PACKAGE(OpenGL REQUIRED)
 
 LIST(APPEND SOURCES
 	Meego/main.cpp
-	Classes/EAGLView.cpp
+	Meego/EAGLView.cpp
 )
 
 LIST(APPEND HEADERS
 )
 
 SET( MOC_HEADERS
-	Classes/EAGLView.h
+	Meego/EAGLView.h
 )
 
 QT4_WRAP_CPP(  MOC_SOURCES  ${MOC_HEADERS} )
