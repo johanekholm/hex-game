@@ -11,11 +11,6 @@
 
 
 
-//GLfloat* getHexGeometry() {
-//}
-
-
-
 
 HexMap::~HexMap() {
 	delete [] _vertices;
@@ -107,27 +102,6 @@ HexMap::HexMap(TextureMap* tex, int aWidth, int aHeight, GLfloat aHexWidth, GLfl
 		}
 	}
 	
-/*	GLfloat texCoords[4*3*2] = { 0.0f, HEX_TEX_Y1, // top triangle
-		0.5f, 0.0f,
-		1.0f, HEX_TEX_Y1,
-		0.0f, HEX_TEX_Y1, // top half of square
-		1.0f, HEX_TEX_Y1,
-		1.0f, HEX_TEX_Y2,
-		0.0f, HEX_TEX_Y1, // bottom half of square
-		1.0f, HEX_TEX_Y2,
-		0.0f, HEX_TEX_Y2,
-		0.0f, HEX_TEX_Y2, // bottom triangle
-		1.0f, HEX_TEX_Y2,
-		0.5f, 1.0f
-	};
-
-	for (int i = 0; i < 4*3*2; i++) {
-		texCoords[i] = texCoords[i] / 2.0f;
-	}
-*/	
-	
-	//memcpy(_vertices, vertices, sizeof(vertices));
-	//memcpy(_texCoords, texCoords, sizeof(texCoords));
 	
 	_texture->getHexTexCoordsForSub(_texCoords, 1, HEX_TEX_Y1); //tileData->at(index));
 
@@ -137,28 +111,6 @@ HexMap::HexMap(TextureMap* tex, int aWidth, int aHeight, GLfloat aHexWidth, GLfl
 	NSLog(@"sq3 - x: %f, y: %f", _texCoords[10], _texCoords[11]);
 	NSLog(@"sq4 - x: %f, y: %f", _texCoords[16], _texCoords[17]);
 
-	
-	
-	/*int mapData[] = { 0, 0, 0, 0,
-		0, 0, 0, 0,
-		0, 0, 0, 0,
-		0, 0, 0, 0  };
-	
-	int tx, ty, odd, i;
-	GLfloat px, py;
-	*/
-	
-	
-	/*
-	for (i = 0; i < 16; i++) {
-		tx = i % 4;
-		ty = i / 4;
-		even = ty % 2;
-		px = tx * HEX_WIDTH + even * HEX_HALF_WIDTH;
-		py = ty * HEX_HEIGHT;
-		glTranslatef(px, py, 0);
-	}*/
-	
 
 }
 

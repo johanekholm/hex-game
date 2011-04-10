@@ -12,6 +12,12 @@
 #ifndef TOOLKIT_H
 #define TOOLKIT_H
 
+struct GPointInTime {
+	GLfloat x;
+	GLfloat	y;
+	double time;
+};
+typedef struct GPointInTime GPointInTime;
 
 
 struct GPoint {
@@ -34,6 +40,11 @@ struct GPoint {
 		this->x -= other.x;
 		this->y -= other.y;
 	}
+
+	void operator=(const GPointInTime& other) { 
+		this->x = other.x;
+		this->y = other.y;
+	}
 	
 	void operator=(GLfloat scalar) {
 		this->x = scalar;
@@ -45,12 +56,6 @@ struct GPoint {
 typedef struct GPoint GPoint;
 
 
-struct GPointInTime {
-	GLfloat x;
-	GLfloat	y;
-	double time;
-};
-typedef struct GPointInTime GPointInTime;
 
 
 struct MPoint {

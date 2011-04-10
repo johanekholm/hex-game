@@ -8,9 +8,17 @@
  */
 
 #include "UnitModel.h"
+#include "IUnitView.h"
+#include "geometry.h"
 
 UnitModel::~UnitModel() {
 	//delete _actions;
+}
+
+UnitModel::UnitModel(int x, int y) {
+	_pos.x = x;
+	_pos.y = y;
+	_direction = GEOM_DIR_E;
 }
 
 
@@ -22,7 +30,10 @@ void UnitModel::registerAction(Action *aAction) {
 
 */
 
-
+void UnitModel::registerView(IUnitView* view) {
+	_view = view;
+	this->updateViews();
+}
 
 bool UnitModel::spendAP(int cost) {
 	if (_ap >= cost) {
@@ -33,9 +44,19 @@ bool UnitModel::spendAP(int cost) {
 	}
 }
 
-
+void UnitModel::updateViews() {
+	_view->updatePosition(_pos);
+}
 
 MPoint UnitModel::getPosition() {
-	return MPointMake(this->_x, this->_y);
+	return MPointMake(_pos.x, _pos.y);
+}
+
+void UnitModel::move(int distance) {
+
+	MPoint v = getHexVector(_direction, _pos);
+	_pos += v;
+	
+	this->updateViews();
 }
 

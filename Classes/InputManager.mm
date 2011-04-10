@@ -30,6 +30,7 @@ InputManager::InputManager() {
 	_flickedVelocity.x = 0;
 	_flickedVelocity.y = 0;
 	_wasFlicked = false;
+	_wasClicked = false;
 }
 
 bool InputManager::wasFlicked() {
@@ -38,6 +39,30 @@ bool InputManager::wasFlicked() {
 		return true;
 	}
 	return false;
+}
+
+bool InputManager::wasPressed() {
+	if (_wasPressed) {
+		_wasPressed = false;
+		return true;
+	}
+	return false;
+}
+
+bool InputManager::wasClicked() {
+	if (_wasClicked) {
+		_wasClicked = false;
+		return true;
+	}
+	return false;
+}
+
+GPoint InputManager::clickPoint() {
+	return _clickPos;
+}
+
+GPoint InputManager::pressPoint() {
+	return _pressPos;
 }
 
 GPoint InputManager::flickedVelocity() {
@@ -49,7 +74,10 @@ void InputManager::touchesBegan(const GPoint& touchPoint) {
 	_historyHead = 0;
 	_flickedVelocity.x = 0;
 	_flickedVelocity.y = 0;	
-	this->addToHistory(touchPoint);	
+	this->addToHistory(touchPoint);
+	
+	_wasPressed = true;
+	_pressPos = touchPoint;
 }
 
 void InputManager::touchesMoved(const GPoint& touchPoint) {
@@ -59,9 +87,16 @@ void InputManager::touchesMoved(const GPoint& touchPoint) {
 void InputManager::touchesEnded(const GPoint& touchPoint) {
 	this->addToHistory(touchPoint);
 	
-	GPointInTime lastPoint = this->lastTouchPoint();
+	//GPointInTime lastPoint = this->lastTouchPoint();
+	GPointInTime firstPoint = this->firstTouchPoint();
 	
-	double startTime = lastPoint.time - FLICK_TIME_BACK;
+	if (fmax(fabs(touchPoint.x - firstPoint.x), fabs(touchPoint.y - firstPoint.y)) < 10.0f) {
+		_wasClicked = true;
+		_clickPos = touchPoint;
+	}
+	
+	
+/*	double startTime = lastPoint.time - FLICK_TIME_BACK;
 	int startIndex = 0;
 	
 	for (int testIndex = 0; testIndex < _historyCount; testIndex++) {
@@ -114,7 +149,7 @@ void InputManager::touchesEnded(const GPoint& touchPoint) {
 	_flickedVelocity.x = speedX;
 	_flickedVelocity.y = speedY;
 	
-	_wasFlicked = true;
+	_wasFlicked = true;*/
 }
 
 void InputManager::touchesCancelled(const GPoint& touchPoint) {
@@ -155,6 +190,10 @@ GPointInTime InputManager::pointInTimeAtIndex(int index) {
 
 GPointInTime InputManager::lastTouchPoint() {
 	return this->pointInTimeAtIndex(_historyCount - 1);
+}
+
+GPointInTime InputManager::firstTouchPoint() {
+	return this->pointInTimeAtIndex(0);
 }
 
 void InputManager::addToHistory(const GPoint& point) {
