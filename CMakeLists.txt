@@ -38,6 +38,13 @@ SET( HEADERS
 	Toolkit/toolkit.h
 )
 
+SET(RESOURCES
+	Resources/floortilemap.png
+	Resources/texmap.png
+	Resources/texmap_hex.png
+)
+
+
 INCLUDE_DIRECTORIES( Toolkit )
 INCLUDE_DIRECTORIES( Classes )
 
@@ -53,6 +60,9 @@ ENDIF(NOT TARGET_PLATFORM)
 ADD_EXECUTABLE(HexGame MACOSX_BUNDLE
 	${SOURCES}
 	${HEADERS}
+	${RESOURCES}
 )
+
+SET_SOURCE_FILES_PROPERTIES(${RESOURCES} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
 
 TARGET_LINK_LIBRARIES( HexGame ${LIBRARIES} )
