@@ -13,12 +13,10 @@ SET( SOURCES
 	Classes/geometry.mm
 	Classes/HexMap.mm
 	Classes/InputManager.mm
-#	Classes/OGLGameAppDelegate.mm
 	Classes/RobotModel.mm
 	Classes/RobotView.mm
 	Classes/TextureCatalog.mm
 	Classes/TextureMap.mm
-#	Classes/TileMap.mm
 	Classes/UnitModel.mm
 	Classes/UnitView.mm
 	Toolkit/toolkit.mm
@@ -30,12 +28,10 @@ SET( HEADERS
 	Classes/HexMap.h
 	Classes/InputManager.h
 	Classes/IRobotView.h
-#	Classes/OGLGameAppDelegate.h
 	Classes/RobotModel.h
 	Classes/RobotView.h
 	Classes/TextureCatalog.h
 	Classes/TextureMap.h
-#	Classes/TileMap.h
 	Classes/UnitModel.h
 	Classes/UnitView.h
 	Toolkit/toolkit.h
