@@ -18,7 +18,6 @@ class Action {
 	//IActionView _view;
 	
 public:
-	Action(int anId);
-	void doAction();
-	//void Action::registerView(IActionView view)
+	Action(int anId, UnitModel* unit);
+	void doIt();
 };

@@ -9,6 +9,7 @@ PROJECT( HexGame )
 SET(PRODUCT_NAME HexGame)
 
 SET( SOURCES
+	Classes/Action.mm
 	Classes/GameImage.mm
 	Classes/geometry.mm
 	Classes/HexMap.mm
@@ -23,6 +24,7 @@ SET( SOURCES
 )
 
 SET( HEADERS
+	Classes/Action.h
 	Classes/GameImage.h
 	Classes/geometry.h
 	Classes/HexMap.h

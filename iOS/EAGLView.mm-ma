@@ -161,13 +161,26 @@
 		robot->registerView(robotView);
 		robotView->setModel(robot);
 		
+<<<<<<< HEAD:iOS/EAGLView.mm-ma
 		//sprite = [[GameImage alloc] initWithSize: CGSizeMake(64.0f, 64.0f) andTexture:texMap withIndex:1];
+=======
+		catalog->addAndLoad("units", "texmap.png", 2);
+		catalog->addAndLoad("hexTiles", "texmap_hex.png", 2);
+		catalog->addAndLoad("actions", "actions.png", 4);
+>>>>>>> 97979fb80c9c59771a07d21ba9dcd353d361883c:Classes/EAGLView.mm
 		
 		//board = [[TileMap alloc] initWithMapWidth:2 andMapHeight:2 withTileSize:CGSizeMake(64.0f, 64.0f) andTexture:texMap];
 
 		hexMap = new HexMap(hexTexMap, 4, 4, 80.0f, 80.0f);
 		
+<<<<<<< HEAD:iOS/EAGLView.mm-ma
 		board = new TileMap(10, 15, 32.0f, 32.0f, boardTexMap, &vData);
+=======
+		unit = new UnitModel(1, 1);
+		unitView = new UnitView(64.0f, 64.0f, catalog->get("units"), 0);
+		unit->registerView(unitView);
+				
+>>>>>>> 97979fb80c9c59771a07d21ba9dcd353d361883c:Classes/EAGLView.mm
 		input = new InputManager();
 		
 		sprite = new GameImage(64.0f, 64.0f, texMap, 1);
@@ -184,6 +197,7 @@
 	float				delta;
 	time = CFAbsoluteTimeGetCurrent();
 	delta = (time - lastTime);
+<<<<<<< HEAD:iOS/EAGLView.mm-ma
 	
 	robot->update();
 	
@@ -192,6 +206,20 @@
 		//xPos = input.currentState.touchLocation.x;
 		//yPos = 480 - input.currentState.touchLocation.y;
 		//yPos = input.currentState.touchLocation.y;
+=======
+	int action = 0;
+	
+	if (input->wasClicked()) {
+		/*if (unitView->wasTouched(input->clickPoint())) {
+			unit->move(1);
+		}*/
+		if ((action = unitView->touchedAction(input->clickPoint())) > -1) {
+			NSLog(@"action: %i", action);
+
+			unit->doAction(action);
+			//unit->move(1);
+		}
+>>>>>>> 97979fb80c9c59771a07d21ba9dcd353d361883c:Classes/EAGLView.mm
 	}
 	
 	[self updateScene:delta];
@@ -223,6 +251,11 @@
 	robotView->draw();
 	
 	hexMap->draw();
+<<<<<<< HEAD:iOS/EAGLView.mm-ma
+=======
+	unitView->draw();
+	unitView->drawActions();
+>>>>>>> 97979fb80c9c59771a07d21ba9dcd353d361883c:Classes/EAGLView.mm
 	
     glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
     [context presentRenderbuffer:GL_RENDERBUFFER_OES];

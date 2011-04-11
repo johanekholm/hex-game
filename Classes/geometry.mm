@@ -48,7 +48,7 @@ MPoint getHexVector(int direction, const MPoint& pos) {
 				v.y = 1;
 				v.x = -1;
 			} else {
-				v.y = -1;
+				v.y = 1;
 				v.x = 0;				
 			}
 			break;
@@ -58,7 +58,7 @@ MPoint getHexVector(int direction, const MPoint& pos) {
 				v.y = 1;
 				v.x = 0;
 			} else {
-				v.y = -1;
+				v.y = 1;
 				v.x = 1;				
 			}
 			break;

@@ -42,10 +42,17 @@ void EAGLView::mainGameLoop() {
 	float				delta;
 	time = QDateTime::currentMSecsSinceEpoch();
 	delta = (time - d->lastTime);
-
+	int action = 0;
+	
 	if (d->input->wasClicked()) {
-		if (d->unitView->wasTouched(d->input->clickPoint())) {
+		/*if (d->unitView->wasTouched(d->input->clickPoint())) {
 			d->unit->move(1);
+		}*/
+		if ((action = d->unitView->touchedAction(d->input->clickPoint())) > -1) {
+			//NSLog(@"action: %i", action);
+			
+			d->unit->doAction(action);
+			//unit->move(1);
 		}
 	}
 
@@ -67,6 +74,7 @@ void EAGLView::paintGL () {
 	
 	d->hexMap->draw();
 	d->unitView->draw();
+	d->unitView->drawActions();
 
 }
 
@@ -94,10 +102,12 @@ void EAGLView::initializeGL() {
 	
 	catalog->addAndLoad("units", loadTexture("texmap.png"), 2);
 	catalog->addAndLoad("hexTiles", loadTexture("texmap_hex.png"), 2);
+	catalog->addAndLoad("actions", loadTexture("actions.png"), 4);
+
 	
 	d->hexMap = new HexMap(catalog->get("hexTiles"), 4, 4, 80.0f, 80.0f);
 	
-	d->unit = new UnitModel(0, 0);
+	d->unit = new UnitModel(1, 1);
 	d->unitView = new UnitView(64.0f, 64.0f, catalog->get("units"), 0);
 	d->unit->registerView(d->unitView);
 	
