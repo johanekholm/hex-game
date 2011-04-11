@@ -5,6 +5,7 @@
 #include "UnitView.h"
 #include "TextureCatalog.h"
 #include "InputManager.h"
+#include <QMouseEvent>
 #include <QDebug>
 
 class EAGLView::PrivateData {
@@ -76,6 +77,18 @@ void EAGLView::initializeGL() {
 	d->unit->registerView(d->unitView);
 	
 	d->input = new InputManager();
+}
+
+void EAGLView::mouseMoveEvent ( QMouseEvent * event ) {
+	d->input->touchesMoved(GPointMake(event->x(), event->y()));
+}
+
+void EAGLView::mousePressEvent ( QMouseEvent * event ) {
+	d->input->touchesBegan(GPointMake(event->x(), event->y()));
+}
+
+void EAGLView::mouseReleaseEvent ( QMouseEvent * event ) {
+	d->input->touchesEnded(GPointMake(event->x(), event->y()));
 }
 
 GLuint EAGLView::loadTexture(const std::string &filename) {

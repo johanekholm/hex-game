@@ -38,6 +38,9 @@ public:
 protected:
 	void paintGL ();
 	void initializeGL ();
+	virtual void mouseMoveEvent ( QMouseEvent * event );
+	virtual void mousePressEvent ( QMouseEvent * event );
+	virtual void mouseReleaseEvent ( QMouseEvent * event );
 	
 	GLuint loadTexture(const std::string &filename);
 private:
