@@ -11,18 +11,23 @@
 #include "IUnitView.h"
 
 //#include <vector>
-
+#define ACTION_ANGLE_INITIAL -PI/2.0f
+#define ACTION_ANGLE_INCREMENT PI/3.0f
+#define ACTION_RADIUS 64.0f
 
 class UnitView : public GameImage, public IUnitView {
 	GPoint _pos;
 	std::vector<int> _actions;
 	GameImage* _actionImage;
 	
+	GPoint getActionPosition(int index);
 public:
+	~UnitView();
 	UnitView(GLfloat aWidth, GLfloat aHeight, TextureMap* tex, int index);
 	void draw();
 	void drawActions();
 	void updatePosition(const MPoint& pos);
 	void updateActions(std::vector<int> actions);
 	bool wasTouched(GPoint point);
+	int touchedAction(GPoint point);
 };

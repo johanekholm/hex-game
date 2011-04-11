@@ -144,10 +144,11 @@
 		
 		catalog->addAndLoad("units", "texmap.png", 2);
 		catalog->addAndLoad("hexTiles", "texmap_hex.png", 2);
+		catalog->addAndLoad("actions", "actions.png", 4);
 		
 		hexMap = new HexMap(catalog->get("hexTiles"), 4, 4, 80.0f, 80.0f);
 		
-		unit = new UnitModel(0, 0);
+		unit = new UnitModel(1, 1);
 		unitView = new UnitView(64.0f, 64.0f, catalog->get("units"), 0);
 		unit->registerView(unitView);
 				
@@ -163,11 +164,17 @@
 	float				delta;
 	time = CFAbsoluteTimeGetCurrent();
 	delta = (time - lastTime);
-	
+	int action = 0;
 	
 	if (input->wasClicked()) {
-		if (unitView->wasTouched(input->clickPoint())) {
+		/*if (unitView->wasTouched(input->clickPoint())) {
 			unit->move(1);
+		}*/
+		if ((action = unitView->touchedAction(input->clickPoint())) > -1) {
+			NSLog(@"action: %i", action);
+
+			unit->doAction(action);
+			//unit->move(1);
 		}
 	}
 	
@@ -196,6 +203,7 @@
 	
 	hexMap->draw();
 	unitView->draw();
+	unitView->drawActions();
 	
     glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
     [context presentRenderbuffer:GL_RENDERBUFFER_OES];

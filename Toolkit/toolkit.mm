@@ -25,3 +25,11 @@ MPoint MPointMake(int x, int y) {
 	return point;
 }
 
+/*bool PointWithin(GPoint point, GPoint pos, GPoint size) {
+	return (point.x >= pos.x - size.x/2.0f && point.x <= pos.x + size.x/2.0f && point.y >= pos.y - size.y/2.0f && point.y <= pos.y + size.y/2.0f);
+}*/
+
+bool PointWithin(const GPoint& point, const GPoint& pos, GLfloat size) {
+	return (point.x >= pos.x - size/2.0f && point.x <= pos.x + size/2.0f && point.y >= pos.y - size/2.0f && point.y <= pos.y + size/2.0f);
+}
+

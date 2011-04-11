@@ -19,6 +19,8 @@
 #define GEOM_DIR_SW 5
 #define GEOM_DIR_W 6
 
+#define PI 3.14159265
+
 MPoint getHexVector(int direction, const MPoint& pos);
 
 #endif

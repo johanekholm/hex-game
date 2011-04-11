@@ -13,22 +13,27 @@
 
 //using namespace std;
 
-Action::Action(int anId) {
+Action::Action(int anId, UnitModel* unit) {
 	_id = anId;	
+	_unit = unit;
 }
 
-void Action::doAction() {
+void Action::doIt() {
 	switch (_id) {
-		case 1:
+		case 0:
 			_unit->move(1);			
+			break;
+		case 1:
+			_unit->rotate(1);			
+			break;
+		case 2:
+			_unit->rotate(-1);			
+			break;
+		case 3:
+			_unit->strike();			
 			break;
 			
 		default:
 			break;
 	}
-
 }
-/*
-void Action::registerView(IActionView view) {
-	_view = view;
-}*/
