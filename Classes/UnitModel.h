@@ -11,14 +11,17 @@
 #include "toolkit.h"
 
 class Action;
+class IUnitView;
 
 using namespace std;
 
 class UnitModel {
-	int _x, _y;	
+	MPoint _pos;
+	int _direction;
 	int _ap;
 	int _health;
 	vector<Action*> _actions;
+	IUnitView* _view;
 	
 public:
 	
@@ -30,7 +33,9 @@ public:
 	void registerAction(Action *aAction);
 	*/
 	bool spendAP(int cost);
-	//void move(int distance);
+	void move(int distance);
 	MPoint getPosition();
+	void registerView(IUnitView* view);
+	void updateViews();
 	
 };

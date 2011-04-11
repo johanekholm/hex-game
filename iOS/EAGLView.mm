@@ -13,11 +13,12 @@
 
 #import "EAGLView.h"
 #import "InputManager.h"
-#include "RobotModel.h"
-#include "RobotView.h"
+#include "UnitModel.h"
+#include "UnitView.h"
+
 #include "toolkit_ios.h"
-#include "TileMap.h"
 #include "HexMap.h"
+#include "TextureCatalog.h"
 
 #define USE_DEPTH_BUFFER 0
 
@@ -71,16 +72,21 @@
 	//[texMap release];
 //	delete texMap;
 //	delete boardTexMap;
+	delete unit;
+	delete unitView;
+	delete hexMap;
 	
+	TextureCatalog::instance()->destroy();
+		
 	
     [context release];  
     [super dealloc];
 }
 
 //The GL view is stored in the nib file. When it's unarchived it's sent -initWithCoder:
-- (id)init {
+- (id)initWithCoder:(NSCoder*)coder {
     
-    if ((self = [super init])) {
+    if ((self = [super initWithCoder:coder])) {
         // Get the layer
         CAEAGLLayer *eaglLayer = (CAEAGLLayer *)self.layer;
         
@@ -133,7 +139,7 @@
 		//texMap = [[TextureMap alloc] initWithImage:[UIImage imageNamed:@"texmap.png"]];
 		//[texMap setNumSubdivisions:2];
 		
-		int boardData[150] = {	7,3,3,3,7,3,3,3,3,8,
+		/*int boardData[150] = {	7,3,3,3,7,3,3,3,3,8,
 								6,0,0,0,0,0,0,5,0,4,
 								2,0,0,0,0,0,0,0,0,8,
 								2,0,0,7,0,0,0,0,0,4,
@@ -160,19 +166,23 @@
 //		robotView = new RobotView(64.0f, 64.0f, texMap, 0);
 //		robot->registerView(robotView);
 //		robotView->setModel(robot);
+		//board = new TileMap(10, 15, 32.0f, 32.0f, boardTexMap, &vData);
+		*/
 		
-		//sprite = [[GameImage alloc] initWithSize: CGSizeMake(64.0f, 64.0f) andTexture:texMap withIndex:1];
+		TextureCatalog* catalog = TextureCatalog::instance();
+		
+		catalog->addAndLoad("units", "texmap.png", 2);
+		catalog->addAndLoad("hexTiles", "texmap_hex.png", 2);
 		
 		//board = [[TileMap alloc] initWithMapWidth:2 andMapHeight:2 withTileSize:CGSizeMake(64.0f, 64.0f) andTexture:texMap];
-
-//		hexMap = new HexMap(hexTexMap, 4, 4, 80.0f, 80.0f);
 		
-//		board = new TileMap(10, 15, 32.0f, 32.0f, boardTexMap, &vData);
-//		input = new InputManager();
+		hexMap = new HexMap(catalog->get("hexTiles"), 4, 4, 80.0f, 80.0f);
 		
-//		sprite = new GameImage(64.0f, 64.0f, texMap, 1);
-//		sprite->setPosition(GPointMake(250.0f, 250.0f));
-		
+		unit = new UnitModel(0, 0);
+		unitView = new UnitView(64.0f, 64.0f, catalog->get("units"), 0);
+		unit->registerView(unitView);
+				
+		input = new InputManager();
 		
     }
     return self;
@@ -184,16 +194,13 @@
 	float				delta;
 	time = CFAbsoluteTimeGetCurrent();
 	delta = (time - lastTime);
-	
-//	robot->update();
-	
-/*	if (input->wasFlicked()) {
-		robot->setVelocity(input->flickedVelocity());
-		//xPos = input.currentState.touchLocation.x;
-		//yPos = 480 - input.currentState.touchLocation.y;
-		//yPos = input.currentState.touchLocation.y;
+		
+	if (input->wasClicked()) {
+		if (unitView->wasTouched(input->clickPoint())) {
+			unit->move(1);
+		}
 	}
-*/	
+	
 	[self updateScene:delta];
 	[self renderScene];
 	
@@ -217,12 +224,8 @@
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	
-	
-	//board->draw();
-//	sprite->draw();
-//	robotView->draw();
-	
-//	hexMap->draw();
+	hexMap->draw();
+	unitView->draw();
 	
     glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
     [context presentRenderbuffer:GL_RENDERBUFFER_OES];
@@ -331,35 +334,5 @@
 
 
 @end
-
-
-// Kan-va-bra-att-komma-ihåg-kod:
- 
- /*
- output = [[Texture2D alloc] initWithString:@"This is my output" dimensions:CGSizeMake(256.0f, 16.0f) alignment:UITextAlignmentLeft fontName:@"Courier" fontSize:12.0f];
- output2 = [[Texture2D alloc] initWithString:@"You touched me!" dimensions:CGSizeMake(256.0f, 16.0f) alignment:UITextAlignmentLeft fontName:@"Courier" fontSize:12.0f];
- */
-
-
- 
- /*
- GLuint  texture[1];      // Storage For One Texture ( NEW ) 
- glGenTextures(1, &texture[0]);
-
- glBindTexture(GL_TEXTURE_2D, texture[0]);
- glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
- 
- NSString *path = [[NSBundle mainBundle] pathForResource:@"hero1" ofType:@"pvr"];
- NSData *texData = [[NSData alloc] initWithContentsOfFile:path];
- // Instead of glTexImage2D, we have to use glCompressedTexImage2D
- //glCompressedTexImage2D(GL_TEXTURE_2D, 0, GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG, 64.0, 64.0, 0, (64.0 * 64.0) / 2, [texData bytes]);
- glCompressedTexImage2D(GL_TEXTURE_2D, 0, GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG, 64.0, 64.0, 0, [texData length], [texData bytes]);
- [texData release];
- 
- 
- 
- glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
- glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR); 
- */
 
 

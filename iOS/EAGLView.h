@@ -17,12 +17,10 @@
 #import "GameImage.h"
 #import	"TileMap.h"
 
-//class RobotModel;
-//class RobotView;
-//class TileMap;
-//class HexMap;
-
-//class InputManager;
+class HexMap;
+class UnitModel;
+class UnitView;
+class InputManager;
 /*
  This class wraps the CAEAGLLayer from CoreAnimation into a convenient UIView subclass.
  The view content is basically an EAGL surface you render your OpenGL scene into.
@@ -62,19 +60,12 @@ private:
     NSTimeInterval animationInterval;
 	
 	CFTimeInterval lastTime;
+
+	UnitModel* unit;
+	UnitView* unitView;
+	HexMap *hexMap;
 	
-//	Texture2D *player;
-//	TextureMap *texMap, *boardTexMap, *hexTexMap;
-	
-//	GameImage* sprite;
-	
-//	RobotModel* robot;
-//	RobotView* robotView;
-	
-//	TileMap *board;
-//	HexMap *hexMap;
-	
-//	InputManager *input;
+	InputManager *input;
 	
 };
 

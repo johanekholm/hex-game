@@ -15,7 +15,7 @@
 #import "InputManager.h"
 #include "RobotModel.h"
 #include "RobotView.h"
-#include "toolkit_ios.h"
+#include "toolkit_iphone.h"
 #include "TileMap.h"
 #include "HexMap.h"
 
@@ -55,22 +55,22 @@
         [EAGLContext setCurrentContext:nil];
     }
     
-//	delete input;
+	delete input;
 	
-//	delete hexTexMap;
-//	delete hexMap;
-//	delete board;
+	delete hexTexMap;
+	delete hexMap;
+	delete board;
 	//[board release];
 	//[sprite release];
 	
-//	delete sprite;
-//	delete robot;
-//	delete robotView;
+	delete sprite;
+	delete robot;
+	delete robotView;
 	
-//	[player release];
+	[player release];
 	//[texMap release];
-//	delete texMap;
-//	delete boardTexMap;
+	delete texMap;
+	delete boardTexMap;
 	
 	
     [context release];  
@@ -126,7 +126,7 @@
 		//glEnable(GL_BLEND);
 		
 		// init images
-//		player = [[Texture2D alloc] initWithImage:[UIImage imageNamed:@"hero1.png"]];
+		player = [[Texture2D alloc] initWithImage:[UIImage imageNamed:@"hero1.png"]];
 		
 		//texMap = [[TextureMap alloc] initWithSubdivisions:2 ofImage:[UIImage imageNamed:@"texmap.png"]];
 		
@@ -152,26 +152,26 @@
 		vector<int> vData(150);
 		vData.assign(boardData, boardData + 150);
 		
-//		texMap = new TextureMap("texmap.png", 2);
-//		boardTexMap = new TextureMap("floortilemap.png", 4);
-//		hexTexMap = new TextureMap("texmap_hex.png", 2);
+		texMap = new TextureMap("texmap.png", 2);
+		boardTexMap = new TextureMap("floortilemap.png", 4);
+		hexTexMap = new TextureMap("texmap_hex.png", 2);
 		
-//		robot = new RobotModel(3, 7);
-//		robotView = new RobotView(64.0f, 64.0f, texMap, 0);
-//		robot->registerView(robotView);
-//		robotView->setModel(robot);
+		robot = new RobotModel(3, 7);
+		robotView = new RobotView(64.0f, 64.0f, texMap, 0);
+		robot->registerView(robotView);
+		robotView->setModel(robot);
 		
 		//sprite = [[GameImage alloc] initWithSize: CGSizeMake(64.0f, 64.0f) andTexture:texMap withIndex:1];
 		
 		//board = [[TileMap alloc] initWithMapWidth:2 andMapHeight:2 withTileSize:CGSizeMake(64.0f, 64.0f) andTexture:texMap];
 
-//		hexMap = new HexMap(hexTexMap, 4, 4, 80.0f, 80.0f);
+		hexMap = new HexMap(hexTexMap, 4, 4, 80.0f, 80.0f);
 		
-//		board = new TileMap(10, 15, 32.0f, 32.0f, boardTexMap, &vData);
-//		input = new InputManager();
+		board = new TileMap(10, 15, 32.0f, 32.0f, boardTexMap, &vData);
+		input = new InputManager();
 		
-//		sprite = new GameImage(64.0f, 64.0f, texMap, 1);
-//		sprite->setPosition(GPointMake(250.0f, 250.0f));
+		sprite = new GameImage(64.0f, 64.0f, texMap, 1);
+		sprite->setPosition(GPointMake(250.0f, 250.0f));
 		
 		
     }
@@ -185,15 +185,15 @@
 	time = CFAbsoluteTimeGetCurrent();
 	delta = (time - lastTime);
 	
-//	robot->update();
+	robot->update();
 	
-/*	if (input->wasFlicked()) {
+	if (input->wasFlicked()) {
 		robot->setVelocity(input->flickedVelocity());
 		//xPos = input.currentState.touchLocation.x;
 		//yPos = 480 - input.currentState.touchLocation.y;
 		//yPos = input.currentState.touchLocation.y;
 	}
-*/	
+	
 	[self updateScene:delta];
 	[self renderScene];
 	
@@ -219,10 +219,10 @@
 	
 	
 	//board->draw();
-//	sprite->draw();
-//	robotView->draw();
+	sprite->draw();
+	robotView->draw();
 	
-//	hexMap->draw();
+	hexMap->draw();
 	
     glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
     [context presentRenderbuffer:GL_RENDERBUFFER_OES];
@@ -308,23 +308,23 @@
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
 	GPoint touchPoint = GPointFromCGPoint([[touches anyObject] locationInView:self]);
-//	input->touchesBegan(touchPoint);
+	input->touchesBegan(touchPoint);
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
 	GPoint touchPoint = GPointFromCGPoint([[touches anyObject] locationInView:self]);
-//	input->touchesMoved(touchPoint);
+	input->touchesMoved(touchPoint);
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
 	GPoint touchPoint = GPointFromCGPoint([[touches anyObject] locationInView:self]);
-//	input->touchesEnded(touchPoint);
+	input->touchesEnded(touchPoint);
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
 	NSLog(@"Cancelled, crashing!");
 	GPoint touchPoint = GPointFromCGPoint([[touches anyObject] locationInView:self]);
-//	input->touchesCancelled(touchPoint);
+	input->touchesCancelled(touchPoint);
 }
 
 

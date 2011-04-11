@@ -28,6 +28,10 @@
 		E98DE6581218679D0069CCBB /* HexMap.mm in Sources */ = {isa = PBXBuildFile; fileRef = E98DE6571218679D0069CCBB /* HexMap.mm */; };
 		E991067D115546A80038ABD7 /* InputManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = E991067C115546A80038ABD7 /* InputManager.mm */; };
 		E9BD7FB0122AE27B0018A981 /* RobotView.mm in Sources */ = {isa = PBXBuildFile; fileRef = E9BD7FAF122AE27B0018A981 /* RobotView.mm */; };
+		E9C92F1713521673008CFBB2 /* TextureCatalog.mm in Sources */ = {isa = PBXBuildFile; fileRef = E9C92F1613521673008CFBB2 /* TextureCatalog.mm */; };
+		E9F5BAB813510596008B6357 /* UnitView.mm in Sources */ = {isa = PBXBuildFile; fileRef = E9F5BAB713510596008B6357 /* UnitView.mm */; };
+		E9F5BB1113511243008B6357 /* geometry.mm in Sources */ = {isa = PBXBuildFile; fileRef = E9F5BB1013511243008B6357 /* geometry.mm */; };
+		E9F5BB61135121BF008B6357 /* Action.mm in Sources */ = {isa = PBXBuildFile; fileRef = E9F5BB60135121BF008B6357 /* Action.mm */; };
 		F7557ED51183816D00213A0E /* toolkit.mm in Sources */ = {isa = PBXBuildFile; fileRef = F7557ED41183816D00213A0E /* toolkit.mm */; };
 		F7557FB211838E9100213A0E /* toolkit_iphone.mm in Sources */ = {isa = PBXBuildFile; fileRef = F7557FB011838E9100213A0E /* toolkit_iphone.mm */; };
 		F760F5AA11725F2B00688A01 /* texmap.png in Resources */ = {isa = PBXBuildFile; fileRef = F760F5A911725F2B00688A01 /* texmap.png */; };
@@ -67,6 +71,15 @@
 		E9BD7F97122AD4C60018A981 /* IRobotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRobotView.h; sourceTree = "<group>"; };
 		E9BD7FAE122AE27B0018A981 /* RobotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobotView.h; sourceTree = "<group>"; };
 		E9BD7FAF122AE27B0018A981 /* RobotView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RobotView.mm; sourceTree = "<group>"; };
+		E9C92F1513521673008CFBB2 /* TextureCatalog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureCatalog.h; sourceTree = "<group>"; };
+		E9C92F1613521673008CFBB2 /* TextureCatalog.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TextureCatalog.mm; sourceTree = "<group>"; };
+		E9F5BAB513510596008B6357 /* IUnitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IUnitView.h; sourceTree = "<group>"; };
+		E9F5BAB613510596008B6357 /* UnitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitView.h; sourceTree = "<group>"; };
+		E9F5BAB713510596008B6357 /* UnitView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UnitView.mm; sourceTree = "<group>"; };
+		E9F5BB0B13511129008B6357 /* geometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = geometry.h; sourceTree = "<group>"; };
+		E9F5BB1013511243008B6357 /* geometry.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = geometry.mm; sourceTree = "<group>"; };
+		E9F5BB5F135121BF008B6357 /* Action.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Action.h; sourceTree = "<group>"; };
+		E9F5BB60135121BF008B6357 /* Action.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Action.mm; sourceTree = "<group>"; };
 		F7557E59118364D000213A0E /* InputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputManager.h; sourceTree = "<group>"; };
 		F7557ED41183816D00213A0E /* toolkit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = toolkit.mm; path = Toolkit/toolkit.mm; sourceTree = "<group>"; };
 		F7557F8211838BEF00213A0E /* toolkit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = toolkit.h; path = Toolkit/toolkit.h; sourceTree = "<group>"; };
@@ -98,6 +111,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				E9F5BB0B13511129008B6357 /* geometry.h */,
+				E9F5BB1013511243008B6357 /* geometry.mm */,
 				E9BD7FAE122AE27B0018A981 /* RobotView.h */,
 				E9BD7FAF122AE27B0018A981 /* RobotView.mm */,
 				E98DE6561218679D0069CCBB /* HexMap.h */,
@@ -121,6 +136,13 @@
 				E910DFD51226E89E008354C2 /* UnitModel.h */,
 				E910DFD61226E89E008354C2 /* UnitModel.mm */,
 				E9BD7F97122AD4C60018A981 /* IRobotView.h */,
+				E9F5BAB513510596008B6357 /* IUnitView.h */,
+				E9F5BAB613510596008B6357 /* UnitView.h */,
+				E9F5BAB713510596008B6357 /* UnitView.mm */,
+				E9F5BB5F135121BF008B6357 /* Action.h */,
+				E9F5BB60135121BF008B6357 /* Action.mm */,
+				E9C92F1513521673008CFBB2 /* TextureCatalog.h */,
+				E9C92F1613521673008CFBB2 /* TextureCatalog.mm */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -264,6 +286,10 @@
 				E98DE6581218679D0069CCBB /* HexMap.mm in Sources */,
 				E910DFD71226E89E008354C2 /* UnitModel.mm in Sources */,
 				E9BD7FB0122AE27B0018A981 /* RobotView.mm in Sources */,
+				E9F5BAB813510596008B6357 /* UnitView.mm in Sources */,
+				E9F5BB1113511243008B6357 /* geometry.mm in Sources */,
+				E9F5BB61135121BF008B6357 /* Action.mm in Sources */,
+				E9C92F1713521673008CFBB2 /* TextureCatalog.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

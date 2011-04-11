@@ -1,18 +1,17 @@
 #include "EAGLView.h"
 #include "HexMap.h"
 #include "TextureMap.h"
-#include "RobotModel.h"
-#include "RobotView.h"
+#include "UnitModel.h"
+#include "UnitView.h"
+#include "TextureCatalog.h"
 #include "InputManager.h"
 #include <QDebug>
 
 class EAGLView::PrivateData {
 public:
-	TextureMap *hexTexMap, *texMap, *boardTexMap;
 	HexMap *hexMap;
-	RobotModel* robot;
-	RobotView* robotView;	
-	GameImage* sprite;
+	UnitModel *unit;
+	UnitView *unitView;
 	InputManager *input;
 };
 
@@ -23,15 +22,12 @@ EAGLView::EAGLView(QWidget *parent)
 }
 
 EAGLView::~EAGLView() {
+	delete d->unit;
+	delete d->unitView;
 	delete d->hexMap;
-	delete d->hexTexMap;
-	delete d->texMap;
-	delete d->boardTexMap;
-	delete d->robot;
-	delete d->robotView;
-	delete d->sprite;
 	delete d->input;
 	delete d;
+	TextureCatalog::instance()->destroy();
 }
 	
 void EAGLView::paintGL () {
@@ -43,9 +39,9 @@ void EAGLView::paintGL () {
 	
 	glLoadIdentity();
 	
-	d->hexMap->draw();	
-	d->sprite->draw();
-	d->robotView->draw();
+	d->hexMap->draw();
+	d->unitView->draw();
+
 }
 
 void EAGLView::initializeGL() {
@@ -68,22 +64,18 @@ void EAGLView::initializeGL() {
 	
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	
-	d->texMap = new TextureMap(loadTexture("texmap.png"), 2);
-	d->boardTexMap = new TextureMap(loadTexture("floortilemap.png"), 4);
+	TextureCatalog* catalog = TextureCatalog::instance();
 	
-	d->robot = new RobotModel(3, 7);
-	d->robotView = new RobotView(64.0f, 64.0f, d->texMap, 0);
-	d->robot->registerView(d->robotView);
-	d->robotView->setModel(d->robot);
+	catalog->addAndLoad("units", loadTexture("texmap.png"), 2);
+	catalog->addAndLoad("hexTiles", loadTexture("texmap_hex.png"), 2);
 	
-	//board = new TileMap(10, 15, 32.0f, 32.0f, boardTexMap, &vData);
+	d->hexMap = new HexMap(catalog->get("hexTiles"), 4, 4, 80.0f, 80.0f);
+	
+	d->unit = new UnitModel(0, 0);
+	d->unitView = new UnitView(64.0f, 64.0f, catalog->get("units"), 0);
+	d->unit->registerView(d->unitView);
+	
 	d->input = new InputManager();
-	
-	d->sprite = new GameImage(64.0f, 64.0f, d->texMap, 1);
-	d->sprite->setPosition(GPointMake(250.0f, 250.0f));
-	
-	d->hexTexMap = new TextureMap(loadTexture("texmap_hex.png"), 2);
-	d->hexMap = new HexMap(d->hexTexMap, 4, 4, 80.0f, 80.0f);
 }
 
 GLuint EAGLView::loadTexture(const std::string &filename) {

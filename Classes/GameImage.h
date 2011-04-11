@@ -12,16 +12,19 @@ class TextureMap;
 
 class GameImage {
 	//GLfloat x, y;
-	GPoint position;
-	GLfloat width, height;
+	//GPoint position;
 	TextureMap *texture;
 	int texIndex;
+
+protected:
+	GLfloat width, height;
 
 public:
 	GameImage(GLfloat aWidth, GLfloat aHeight, TextureMap* tex, int index);
 	//~GameImageCPP();
 	void draw();
 	void drawAt(const GPoint &pos);
+	void drawAtWithSubTexture(const GPoint &pos, int subTexture);
 	void setPosition(GPoint point);
 };
 
