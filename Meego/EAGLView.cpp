@@ -6,6 +6,8 @@
 #include "TextureCatalog.h"
 #include "InputManager.h"
 #include <QMouseEvent>
+#include <QTimer>
+#include <QDateTime>
 #include <QDebug>
 
 class EAGLView::PrivateData {
@@ -14,12 +16,16 @@ public:
 	UnitModel *unit;
 	UnitView *unitView;
 	InputManager *input;
+	QTimer timer;
+	qint64 lastTime;
 };
 
 EAGLView::EAGLView(QWidget *parent)
 :QGLWidget(parent)
 {
 	d = new PrivateData;
+	d->timer.setInterval(1000.0 / 60.0);
+	connect(&d->timer, SIGNAL(timeout()), this, SLOT(mainGameLoop()));
 }
 
 EAGLView::~EAGLView() {
@@ -29,6 +35,25 @@ EAGLView::~EAGLView() {
 	delete d->input;
 	delete d;
 	TextureCatalog::instance()->destroy();
+}
+
+void EAGLView::mainGameLoop() {
+	qint64		time;
+	float				delta;
+	time = QDateTime::currentMSecsSinceEpoch();
+	delta = (time - d->lastTime);
+
+	if (d->input->wasClicked()) {
+		if (d->unitView->wasTouched(d->input->clickPoint())) {
+			d->unit->move(1);
+		}
+	}
+
+//	[self updateScene:delta];
+	this->updateGL();
+
+	d->lastTime = time;
+
 }
 	
 void EAGLView::paintGL () {
@@ -77,6 +102,7 @@ void EAGLView::initializeGL() {
 	d->unit->registerView(d->unitView);
 	
 	d->input = new InputManager();
+	d->timer.start();
 }
 
 void EAGLView::mouseMoveEvent ( QMouseEvent * event ) {

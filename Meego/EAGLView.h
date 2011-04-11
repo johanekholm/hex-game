@@ -43,6 +43,10 @@ protected:
 	virtual void mouseReleaseEvent ( QMouseEvent * event );
 	
 	GLuint loadTexture(const std::string &filename);
+
+protected slots:
+	void mainGameLoop();
+
 private:
 	class PrivateData;
 	PrivateData *d;
