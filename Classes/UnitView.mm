@@ -43,7 +43,6 @@ void UnitView::drawActions() {
 	GPoint actionPos;
 	
 	for (std::vector<int>::iterator it = _actions.begin(); it != _actions.end(); ++it) {
-		//p = GPointMake(cos(startAngle + increment*i), sin(startAngle + increment*i)) * 64.0f;
 		actionPos = _pos + this->getActionPosition(i);
 		i++;
 		_actionImage->drawAtWithSubTexture(actionPos, *it);

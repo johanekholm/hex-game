@@ -10,12 +10,10 @@
 #include <string>
 
 class UnitModel;
-//class IActionView;
 
 class Action {
 	int _id;
 	UnitModel* _unit;
-	//IActionView _view;
 	
 public:
 	Action(int anId, UnitModel* unit);

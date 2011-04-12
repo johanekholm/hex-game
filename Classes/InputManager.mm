@@ -215,3 +215,8 @@ void InputManager::addToHistory(const GPoint& point) {
 	_touchHistory[rawIndex].y = point.y;
 	_touchHistory[rawIndex].time = this->currentTime();	
 }
+
+void InputManager::createEvent(int aType, GPoint aPoint) {
+	TouchEvent event(aType, aPoint);
+	_events.push_back(event);
+}

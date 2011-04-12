@@ -11,8 +11,15 @@
 #define INPUTMANAGER_H
 
 #import <Foundation/Foundation.h>
+#include <vector>
 
 class InputState;
+
+struct TouchEvent {
+	int type;
+	GPoint point;
+	TouchEvent(int t, GPoint p) : type(t), point(p) {}
+};
 
 class InputManager {
 public:
@@ -45,6 +52,7 @@ private:
 	GPointInTime* _touchHistory;
 	GPoint _clickPos;
 	GPoint _pressPos;
+	std::vector<TouchEvent> _events;
 	
 	double currentTime();
 	double linearMap(double value, double minValue, double maxValue, double minTarget, double maxTarget);
@@ -53,6 +61,7 @@ private:
 	GPointInTime lastTouchPoint();
 	GPointInTime firstTouchPoint();
 	GPointInTime pointInTimeAtIndex(int index);
+	void createEvent(int aType, GPoint aPoint);
 };
 
 #endif
