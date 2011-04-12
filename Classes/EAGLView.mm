@@ -165,11 +165,41 @@
 	time = CFAbsoluteTimeGetCurrent();
 	delta = (time - lastTime);
 	int action = 0;
+	TouchEvent event;
+	// TO-DO: change to member in control class
+	static UnitView* _selectedUnit = 0;
 	
-	if (input->wasClicked()) {
-		/*if (unitView->wasTouched(input->clickPoint())) {
-			unit->move(1);
-		}*/
+	if (input->hasEvent()) {
+
+		event = input->popEvent();
+		
+		switch (1) {
+		case 1:
+			if (event.type == 1) {
+				if (unitView->wasTouched(event.point)) {
+					_selectedUnit = unitView;
+					//this->switchToMode("focus");
+					NSLog(@"unit selected");
+				}
+			}
+				
+			if (event.type == 3) {
+				if ((action = unitView->touchedAction(event.point)) > -1) {
+					NSLog(@"action: %i", action);
+					
+					unit->doAction(action);
+				}
+			}
+			break;
+						
+		case 2:
+						
+			break;
+						
+		}
+	}
+						
+/*	if (input->wasClicked()) {
 		if ((action = unitView->touchedAction(input->clickPoint())) > -1) {
 			NSLog(@"action: %i", action);
 
@@ -177,7 +207,7 @@
 			//unit->move(1);
 		}
 	}
-	
+*/	
 	[self updateScene:delta];
 	[self renderScene];
 	

@@ -76,16 +76,19 @@ void InputManager::touchesBegan(const GPoint& touchPoint) {
 	_flickedVelocity.y = 0;	
 	this->addToHistory(touchPoint);
 	
-	_wasPressed = true;
-	_pressPos = touchPoint;
+	//_wasPressed = true;
+	//_pressPos = touchPoint;
+	this->registerEvent(TOUCH_EVENT_PRESS, touchPoint);
 }
 
 void InputManager::touchesMoved(const GPoint& touchPoint) {
 	this->addToHistory(touchPoint);
+	this->registerEvent(TOUCH_EVENT_MOVE, touchPoint);
 }
 
 void InputManager::touchesEnded(const GPoint& touchPoint) {
 	this->addToHistory(touchPoint);
+	this->registerEvent(TOUCH_EVENT_LIFT, touchPoint);
 	
 	//GPointInTime lastPoint = this->lastTouchPoint();
 	GPointInTime firstPoint = this->firstTouchPoint();
@@ -216,7 +219,18 @@ void InputManager::addToHistory(const GPoint& point) {
 	_touchHistory[rawIndex].time = this->currentTime();	
 }
 
-void InputManager::createEvent(int aType, GPoint aPoint) {
+void InputManager::registerEvent(int aType, const GPoint& aPoint) {
 	TouchEvent event(aType, aPoint);
 	_events.push_back(event);
+}
+
+TouchEvent InputManager::popEvent() {
+	TouchEvent event;
+	event = _events.back();
+	_events.pop_back();
+	return event;
+}
+
+bool InputManager::hasEvent() {
+	return (!_events.empty());
 }
