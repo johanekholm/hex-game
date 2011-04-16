@@ -169,53 +169,8 @@
 	time = CFAbsoluteTimeGetCurrent();
 	delta = (time - lastTime);
 
-	
 	centralControl->update();
 	
-/*	int action = 0;
-	TouchEvent event;
-	// TO-DO: change to member in control class
-	static UnitView* _selectedUnit = 0;
-	
-	if (input->hasEvent()) {
-
-		event = input->popEvent();
-		
-		switch (1) {
-		case 1:
-			if (event.type == 1) {
-				if (unitView->wasTouched(event.point)) {
-					_selectedUnit = unitView;
-					//this->switchToMode("focus");
-					NSLog(@"unit selected");
-				}
-			}
-				
-			if (event.type == 3) {
-				if ((action = unitView->touchedAction(event.point)) > -1) {
-					NSLog(@"action: %i", action);
-					
-					unit->doAction(action);
-				}
-			}
-			break;
-						
-		case 2:
-						
-			break;
-						
-		}
-	}*/
-						
-/*	if (input->wasClicked()) {
-		if ((action = unitView->touchedAction(input->clickPoint())) > -1) {
-			NSLog(@"action: %i", action);
-
-			unit->doAction(action);
-			//unit->move(1);
-		}
-	}
-*/	
 	[self updateScene:delta];
 	[self renderScene];
 	
@@ -239,11 +194,7 @@
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	centralControl->draw();
-	
-/*	hexMap->draw();
-	unitView->draw();
-	unitView->drawActions();
-*/	
+
     glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
     [context presentRenderbuffer:GL_RENDERBUFFER_OES];
 }
