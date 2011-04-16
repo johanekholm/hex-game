@@ -24,6 +24,8 @@ class UnitModel;
 class UnitView;
 
 class InputManager;
+class CentralControl;
+
 /*
  This class wraps the CAEAGLLayer from CoreAnimation into a convenient UIView subclass.
  The view content is basically an EAGL surface you render your OpenGL scene into.
@@ -55,6 +57,7 @@ class InputManager;
 	HexMap *hexMap;
 	
 	InputManager *input;
+	CentralControl* centralControl;
 	
 }
 

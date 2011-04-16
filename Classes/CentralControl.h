@@ -44,6 +44,7 @@ public:
 	}
 	
 	void update();
+	void draw();
 	void handleEventNormal(const TouchEvent& event);
 	void handleEventFocus(const TouchEvent& event);
 

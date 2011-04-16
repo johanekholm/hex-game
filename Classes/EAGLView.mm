@@ -19,6 +19,7 @@
 #include "toolkit_iphone.h"
 #include "HexMap.h"
 #include "TextureCatalog.h"
+#include "CentralControl.h"
 
 #define USE_DEPTH_BUFFER 0
 
@@ -56,6 +57,7 @@
         [EAGLContext setCurrentContext:nil];
     }
     
+	delete centralControl;
 	delete input;
 	
 	delete unit;
@@ -154,6 +156,8 @@
 				
 		input = new InputManager();
 		
+		centralControl = CentralControl::setup(input, unit, unitView, hexMap);
+		
     }
     return self;
 }
@@ -164,7 +168,11 @@
 	float				delta;
 	time = CFAbsoluteTimeGetCurrent();
 	delta = (time - lastTime);
-	int action = 0;
+
+	
+	centralControl->update();
+	
+/*	int action = 0;
 	TouchEvent event;
 	// TO-DO: change to member in control class
 	static UnitView* _selectedUnit = 0;
@@ -197,7 +205,7 @@
 			break;
 						
 		}
-	}
+	}*/
 						
 /*	if (input->wasClicked()) {
 		if ((action = unitView->touchedAction(input->clickPoint())) > -1) {
@@ -230,11 +238,12 @@
 	// Clear screen
 	glClear(GL_COLOR_BUFFER_BIT);
 
+	centralControl->draw();
 	
-	hexMap->draw();
+/*	hexMap->draw();
 	unitView->draw();
 	unitView->drawActions();
-	
+*/	
     glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
     [context presentRenderbuffer:GL_RENDERBUFFER_OES];
 }
