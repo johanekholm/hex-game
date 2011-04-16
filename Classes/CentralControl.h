@@ -24,6 +24,7 @@ class CentralControl {
 	
 	CentralControl() { }
 	CentralControl(InputManager* input, UnitModel* unit, UnitView* unitView, HexMap* hexMap) {
+		_mode = 1;
 		_input = input;
 		_unit = unit; 
 		_unitView = unitView; 

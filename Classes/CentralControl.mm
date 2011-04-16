@@ -37,8 +37,19 @@ void CentralControl::update() {
 }
 
 void CentralControl::draw() {
-	_hexMap->draw();
-	_unitView->draw();
+	
+	switch(_mode) {
+		case 1:
+			_hexMap->draw();
+			_unitView->draw();
+			break;
+		case 2:
+			_hexMap->draw();
+			_unitView->draw();
+			_unitView->drawActions();
+			break;
+	}
+	
 }
 
 void CentralControl::handleEventNormal(const TouchEvent& event) {
@@ -70,8 +81,8 @@ void CentralControl::handleEventFocus(const TouchEvent& event) {
 			NSLog(@"action: %i", action);
 			
 			_unit->doAction(action);
-			this->switchMode(1);
 		}
+		this->switchMode(1);
 	}
 	
 }
