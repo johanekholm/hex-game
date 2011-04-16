@@ -17,8 +17,10 @@
 
 class UnitView : public GameImage, public IUnitView {
 	GPoint _pos;
+	GLfloat _facing;
 	std::vector<int> _actions;
 	GameImage* _actionImage;
+	GameImage* _directionImage;
 	
 	GPoint getActionPosition(int index);
 public:
@@ -26,7 +28,7 @@ public:
 	UnitView(GLfloat aWidth, GLfloat aHeight, TextureMap* tex, int index);
 	void draw();
 	void drawActions();
-	void updatePosition(const MPoint& pos);
+	void updatePosition(const MPoint& pos, int direction);
 	void updateActions(std::vector<int> actions);
 	bool wasTouched(GPoint point);
 	int touchedAction(GPoint point);

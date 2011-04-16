@@ -147,6 +147,7 @@
 		catalog->addAndLoad("units", "texmap.png", 2);
 		catalog->addAndLoad("hexTiles", "texmap_hex.png", 2);
 		catalog->addAndLoad("actions", "actions.png", 4);
+		catalog->addAndLoad("icons", "icons.png", 4);
 		
 		hexMap = new HexMap(catalog->get("hexTiles"), 4, 4, 80.0f, 80.0f);
 		

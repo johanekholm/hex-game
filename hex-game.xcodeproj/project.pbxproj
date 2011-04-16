@@ -29,6 +29,7 @@
 		E98DE6581218679D0069CCBB /* HexMap.mm in Sources */ = {isa = PBXBuildFile; fileRef = E98DE6571218679D0069CCBB /* HexMap.mm */; };
 		E991067D115546A80038ABD7 /* InputManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = E991067C115546A80038ABD7 /* InputManager.mm */; };
 		E9B5587A1359B3BA00E35F6E /* CentralControl.mm in Sources */ = {isa = PBXBuildFile; fileRef = E9B558791359B3BA00E35F6E /* CentralControl.mm */; };
+		E9B558B51359D9EE00E35F6E /* icons.png in Resources */ = {isa = PBXBuildFile; fileRef = E9B558B41359D9EE00E35F6E /* icons.png */; };
 		E9BD7FB0122AE27B0018A981 /* RobotView.mm in Sources */ = {isa = PBXBuildFile; fileRef = E9BD7FAF122AE27B0018A981 /* RobotView.mm */; };
 		E9C92F1713521673008CFBB2 /* TextureCatalog.mm in Sources */ = {isa = PBXBuildFile; fileRef = E9C92F1613521673008CFBB2 /* TextureCatalog.mm */; };
 		E9F5BAB813510596008B6357 /* UnitView.mm in Sources */ = {isa = PBXBuildFile; fileRef = E9F5BAB713510596008B6357 /* UnitView.mm */; };
@@ -73,6 +74,7 @@
 		E991067C115546A80038ABD7 /* InputManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = InputManager.mm; sourceTree = "<group>"; };
 		E9B558781359B3BA00E35F6E /* CentralControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CentralControl.h; sourceTree = "<group>"; };
 		E9B558791359B3BA00E35F6E /* CentralControl.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CentralControl.mm; sourceTree = "<group>"; };
+		E9B558B41359D9EE00E35F6E /* icons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icons.png; path = Resources/icons.png; sourceTree = "<group>"; };
 		E9BD7F97122AD4C60018A981 /* IRobotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRobotView.h; sourceTree = "<group>"; };
 		E9BD7FAE122AE27B0018A981 /* RobotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobotView.h; sourceTree = "<group>"; };
 		E9BD7FAF122AE27B0018A981 /* RobotView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RobotView.mm; sourceTree = "<group>"; };
@@ -187,6 +189,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E9B558B41359D9EE00E35F6E /* icons.png */,
 				E901696C13538EEB003F1CFB /* actions.png */,
 				E90BFD6B121879BC00C83749 /* texmap_hex.png */,
 				E900A8F81211E96700B0F29C /* floortilemap.png */,
@@ -271,6 +274,7 @@
 				E900A8F91211E96700B0F29C /* floortilemap.png in Resources */,
 				E90BFD6C121879BC00C83749 /* texmap_hex.png in Resources */,
 				E901696D13538EEB003F1CFB /* actions.png in Resources */,
+				E9B558B51359D9EE00E35F6E /* icons.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -30,9 +30,9 @@
 	};
 	28FD14FD0DC6FC130079059D /* EAGLView.mm */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1097, 4017}}";
-			sepNavSelRange = "{4203, 0}";
-			sepNavVisRange = "{5097, 1698}";
+			sepNavIntBoundsRect = "{{0, 0}, {1202, 3952}}";
+			sepNavSelRange = "{3768, 0}";
+			sepNavVisRange = "{3246, 1083}";
 		};
 	};
 	29B97313FDCFA39411CA2CEA /* Project object */ = {
@@ -350,7 +350,7 @@
 		fRef = E910DFD61226E89E008354C2 /* UnitModel.mm */;
 		name = "UnitModel.mm: 78";
 		rLen = 0;
-		rLoc = 1259;
+		rLoc = 1271;
 		rType = 0;
 		vrLen = 659;
 		vrLoc = 860;
@@ -420,7 +420,7 @@
 		fRef = E9F5BAB713510596008B6357 /* UnitView.mm */;
 		name = "UnitView.mm: 45";
 		rLen = 0;
-		rLoc = 1021;
+		rLoc = 1284;
 		rType = 0;
 		vrLen = 936;
 		vrLoc = 0;
@@ -436,8 +436,8 @@
 	E910DFD61226E89E008354C2 /* UnitModel.mm */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {958, 1287}}";
-			sepNavSelRange = "{1259, 0}";
-			sepNavVisRange = "{860, 659}";
+			sepNavSelRange = "{1056, 0}";
+			sepNavVisRange = "{143, 721}";
 			sepNavWindowFrame = "{{15, 215}, {750, 558}}";
 		};
 	};
@@ -446,7 +446,7 @@
 		fRef = E9F5BAB513510596008B6357 /* IUnitView.h */;
 		name = "IUnitView.h: 20";
 		rLen = 0;
-		rLoc = 367;
+		rLoc = 382;
 		rType = 0;
 		vrLen = 375;
 		vrLoc = 0;
@@ -506,7 +506,7 @@
 		fRef = 28FD14FD0DC6FC130079059D /* EAGLView.mm */;
 		name = "EAGLView.mm: 182";
 		rLen = 0;
-		rLoc = 4233;
+		rLoc = 4281;
 		rType = 0;
 		vrLen = 885;
 		vrLoc = 3947;
@@ -645,9 +645,9 @@
 	};
 	E954061C1183996600CE3914 /* GameImage.mm */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {958, 1664}}";
-			sepNavSelRange = "{1029, 0}";
-			sepNavVisRange = "{138, 1116}";
+			sepNavIntBoundsRect = "{{0, 0}, {958, 1937}}";
+			sepNavSelRange = "{1644, 77}";
+			sepNavVisRange = "{659, 1321}";
 		};
 	};
 	E954061E1183997100CE3914 /* TextureMap.mm */ = {
@@ -748,8 +748,8 @@
 	E9B558791359B3BA00E35F6E /* CentralControl.mm */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {958, 1196}}";
-			sepNavSelRange = "{1544, 0}";
-			sepNavVisRange = "{745, 830}";
+			sepNavSelRange = "{1142, 0}";
+			sepNavVisRange = "{723, 850}";
 		};
 	};
 	E9B5589D1359C2C400E35F6E /* PBXTextBookmark */ = {
@@ -867,7 +867,7 @@
 		fRef = 28FD14FD0DC6FC130079059D /* EAGLView.mm */;
 		name = "EAGLView.mm: 171";
 		rLen = 30;
-		rLoc = 4203;
+		rLoc = 4251;
 		rType = 0;
 		vrLen = 775;
 		vrLoc = 4072;
@@ -877,7 +877,7 @@
 		fRef = 28FD14FD0DC6FC130079059D /* EAGLView.mm */;
 		name = "EAGLView.mm: 171";
 		rLen = 0;
-		rLoc = 4203;
+		rLoc = 4251;
 		rType = 0;
 		vrLen = 1698;
 		vrLoc = 5097;
@@ -949,23 +949,23 @@
 	};
 	E9F5BAB513510596008B6357 /* IUnitView.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {958, 558}}";
-			sepNavSelRange = "{367, 0}";
-			sepNavVisRange = "{0, 375}";
+			sepNavIntBoundsRect = "{{0, 0}, {958, 555}}";
+			sepNavSelRange = "{299, 15}";
+			sepNavVisRange = "{0, 390}";
 		};
 	};
 	E9F5BAB613510596008B6357 /* UnitView.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {958, 558}}";
-			sepNavSelRange = "{245, 0}";
-			sepNavVisRange = "{0, 761}";
+			sepNavIntBoundsRect = "{{0, 0}, {958, 555}}";
+			sepNavSelRange = "{705, 0}";
+			sepNavVisRange = "{0, 823}";
 		};
 	};
 	E9F5BAB713510596008B6357 /* UnitView.mm */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {943, 962}}";
-			sepNavSelRange = "{1799, 0}";
-			sepNavVisRange = "{1078, 569}";
+			sepNavIntBoundsRect = "{{0, 0}, {958, 1144}}";
+			sepNavSelRange = "{921, 0}";
+			sepNavVisRange = "{216, 1185}";
 		};
 	};
 	E9F5BB0613510F1B008B6357 /* PBXTextBookmark */ = {
@@ -980,8 +980,8 @@
 	};
 	E9F5BB0B13511129008B6357 /* geometry.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {958, 561}}";
-			sepNavSelRange = "{421, 0}";
+			sepNavIntBoundsRect = "{{0, 0}, {958, 555}}";
+			sepNavSelRange = "{226, 0}";
 			sepNavVisRange = "{0, 421}";
 		};
 	};
@@ -1066,8 +1066,8 @@
 	F760F59F11725EFD00688A01 /* GameImage.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {958, 555}}";
-			sepNavSelRange = "{470, 0}";
-			sepNavVisRange = "{0, 618}";
+			sepNavSelRange = "{665, 0}";
+			sepNavVisRange = "{0, 703}";
 		};
 	};
 	F760F5A111725EFD00688A01 /* TextureMap.h */ = {
