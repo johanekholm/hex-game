@@ -128,6 +128,6 @@ void EAGLView::mouseReleaseEvent ( QMouseEvent * event ) {
 }
 
 GLuint EAGLView::loadTexture(const std::string &filename) {
-	QString path = QString("/Users/micke/Documents/dev/hex-game/Resources/") + filename.c_str();
+	QString path = QString(":/Resources/") + filename.c_str();
 	return bindTexture(QPixmap(path), GL_TEXTURE_2D, GL_RGBA, QGLContext::NoBindOption);	
 }
