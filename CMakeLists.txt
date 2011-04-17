@@ -9,18 +9,16 @@ PROJECT( HexGame )
 SET(PRODUCT_NAME HexGame)
 
 SET( SOURCES
-	Classes/Action.mm
-	Classes/GameImage.mm
-	Classes/geometry.mm
-	Classes/HexMap.mm
-	Classes/InputManager.mm
-	Classes/RobotModel.mm
-	Classes/RobotView.mm
-	Classes/TextureCatalog.mm
-	Classes/TextureMap.mm
-	Classes/UnitModel.mm
-	Classes/UnitView.mm
-	Toolkit/toolkit.mm
+	Classes/Action.cpp
+	Classes/GameImage.cpp
+	Classes/geometry.cpp
+	Classes/HexMap.cpp
+	Classes/InputManager.cpp
+	Classes/TextureCatalog.cpp
+	Classes/TextureMap.cpp
+	Classes/UnitModel.cpp
+	Classes/UnitView.cpp
+	Toolkit/toolkit.cpp
 )
 
 SET( HEADERS
@@ -29,9 +27,6 @@ SET( HEADERS
 	Classes/geometry.h
 	Classes/HexMap.h
 	Classes/InputManager.h
-	Classes/IRobotView.h
-	Classes/RobotModel.h
-	Classes/RobotView.h
 	Classes/TextureCatalog.h
 	Classes/TextureMap.h
 	Classes/UnitModel.h
@@ -40,6 +35,7 @@ SET( HEADERS
 )
 
 SET(RESOURCES
+	Resources/actions.png
 	Resources/floortilemap.png
 	Resources/texmap.png
 	Resources/texmap_hex.png
