@@ -64,6 +64,27 @@ void GameImage::drawAtWithSubTexture(const GPoint &pos, int subTexture) {
 	glDrawArrays(GL_TRIANGLES, 0, 6);	
 }
 
+void GameImage::drawAtRotatedWithSubTexture(const GPoint &pos, GLfloat angle, int subTexture) {
+	GLfloat	texCoords[12];
+	GLfloat	vertices[] = {	-width/2.0f, -height/2.0f, 0.0f,
+		width/2.0f, -height/2.0f, 0.0f,
+		-width/2.0f, height/2.0f, 0.0f,
+		-width/2.0f, height/2.0f, 0.0f,
+		width/2.0f, -height/2.0f, 0.0f,		
+		width/2.0f, height/2.0f, 0.0f };
+	
+	glLoadIdentity();
+	glTranslatef(pos.x, pos.y, 0.0f);
+	glRotatef(angle, 0.0f, 0.0f, 1.0f);
+	
+	texture->getTriangleTexCoordsForSub(texCoords, subTexture);
+	texture->bind();
+	
+	glVertexPointer(3, GL_FLOAT, 0, vertices);
+	glTexCoordPointer(2, GL_FLOAT, 0, texCoords);
+	glDrawArrays(GL_TRIANGLES, 0, 6);	
+}
+
 
 /*@implementation GameImage
 

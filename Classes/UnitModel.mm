@@ -63,7 +63,7 @@ bool UnitModel::spendAP(int cost) {
 }
 
 void UnitModel::updateViews() {
-	_view->updatePosition(_pos);
+	_view->updatePosition(_pos, _direction);
 }
 
 MPoint UnitModel::getPosition() {
@@ -88,7 +88,10 @@ void UnitModel::rotate(int rotation) {
 	} else if (_direction > 6) {
 		_direction -= 6;
 	}
-	//NSLog(@"direction: %i", _direction);
+	
+	this->updateViews();
+	
+	NSLog(@"direction: %i", _direction);
 }
 
 void UnitModel::strike() {
