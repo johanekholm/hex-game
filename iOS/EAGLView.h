@@ -12,10 +12,6 @@
 #import <OpenGLES/EAGL.h>
 #import <OpenGLES/ES1/gl.h>
 #import <OpenGLES/ES1/glext.h>
-#import "Texture2D.h"
-#import "TextureMap.h"
-#import "GameImage.h"
-#import	"TileMap.h"
 
 class HexMap;
 class UnitModel;
@@ -62,7 +58,7 @@ private:
     NSTimeInterval animationInterval;
 	
 	CFTimeInterval lastTime;
-
+	
 	UnitModel* unit;
 	UnitView* unitView;
 	HexMap *hexMap;
