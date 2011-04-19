@@ -13,10 +13,9 @@
 
 @synthesize window;
 @synthesize glView;
-@synthesize uiView;
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
-	[[UIApplication sharedApplication] setStatusBarHidden:YES animated:YES];
+	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
 	
 	
 	glView.animationInterval = 1.0 / 60.0;
@@ -35,7 +34,6 @@
 
 
 - (void)dealloc {
-	[uiView release];
 	[window release];
 	[glView release];
 	[super dealloc];

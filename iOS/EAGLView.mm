@@ -13,9 +13,13 @@
 
 #import "EAGLView.h"
 #import "InputManager.h"
+#import "Texture2D.h"
+
 #include "UnitModel.h"
 #include "UnitView.h"
 
+#include "CentralControl.h"
+#include "toolkit.h"
 #include "toolkit_ios.h"
 #include "HexMap.h"
 #include "TextureCatalog.h"
@@ -32,6 +36,7 @@
 - (void) destroyFramebuffer;
 - (void) updateScene:(float)delta;
 - (void) renderScene;
+- (GLuint) loadTexture:(NSString *)fileName;
 
 @end
 
@@ -171,8 +176,10 @@
 		
 		TextureCatalog* catalog = TextureCatalog::instance();
 		
-		catalog->addAndLoad("units", "texmap.png", 2);
-		catalog->addAndLoad("hexTiles", "texmap_hex.png", 2);
+		catalog->addAndLoad("units", [self loadTexture:@"texmap.png"], 2);
+		catalog->addAndLoad("hexTiles", [self loadTexture:@"texmap_hex.png"], 2);
+		catalog->addAndLoad("actions", [self loadTexture:@"actions.png"], 4);
+		catalog->addAndLoad("icons", [self loadTexture:@"icons.png"], 4);
 		
 		//board = [[TileMap alloc] initWithMapWidth:2 andMapHeight:2 withTileSize:CGSizeMake(64.0f, 64.0f) andTexture:texMap];
 		
@@ -184,6 +191,7 @@
 				
 		input = new InputManager();
 		
+		centralControl = CentralControl::setup(input, unit, unitView, hexMap);
     }
     return self;
 }
@@ -200,6 +208,8 @@
 			unit->move(1);
 		}
 	}
+	
+	centralControl->update();
 	
 	[self updateScene:delta];
 	[self renderScene];
@@ -280,6 +290,13 @@
         glDeleteRenderbuffersOES(1, &depthRenderbuffer);
         depthRenderbuffer = 0;
     }
+}
+
+- (GLuint)loadTexture:(NSString *)fileName {
+	Texture2D *tex = [[Texture2D alloc] initWithImage: [UIImage imageNamed: @"texmap.png"]];
+	GLuint texRef = [tex name];
+	[tex dealloc];
+	return texRef;
 }
 
 

@@ -14,10 +14,13 @@
 
 UnitView::~UnitView() {
 	delete _actionImage;
+	delete _directionImage;
 }
 
 UnitView::UnitView(GLfloat aWidth, GLfloat aHeight, TextureMap* tex, int index) : GameImage(aWidth, aHeight, tex, index){
+	_facing = 0.0f;
 	_actionImage = new GameImage(32.0f, 32.0f, TextureCatalog::instance()->get("actions"), 0);
+	_directionImage = new GameImage(16.0f, 16.0f, TextureCatalog::instance()->get("icons"), 0);
 	_actions.push_back(0);
 	_actions.push_back(1);
 	_actions.push_back(2);
@@ -26,9 +29,10 @@ UnitView::UnitView(GLfloat aWidth, GLfloat aHeight, TextureMap* tex, int index) 
 }
 
 
-void UnitView::updatePosition(const MPoint& pos) {
+void UnitView::updatePosition(const MPoint& pos, int direction) {
 	_pos.x = 64.0f + (GLfloat)pos.x * 64.0f + (pos.y % 2) * 32.0f;
 	_pos.y = 64.0f + (GLfloat)pos.y * 50.0f;
+	_facing = (GLfloat)direction;
 }
 
 void UnitView::updateActions(std::vector<int> actions) {
@@ -37,6 +41,7 @@ void UnitView::updateActions(std::vector<int> actions) {
 
 void UnitView::draw() {
 	this->drawAt(_pos);
+	_directionImage->drawAtRotatedWithSubTexture(_pos, (GLfloat)_facing * 60.0f + 180.0f, 0);
 }
 
 void UnitView::drawActions() {
@@ -44,7 +49,6 @@ void UnitView::drawActions() {
 	GPoint actionPos;
 	
 	for (std::vector<int>::iterator it = _actions.begin(); it != _actions.end(); ++it) {
-		//p = GPointMake(cos(startAngle + increment*i), sin(startAngle + increment*i)) * 64.0f;
 		actionPos = _pos + this->getActionPosition(i);
 		i++;
 		_actionImage->drawAtWithSubTexture(actionPos, *it);

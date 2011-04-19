@@ -12,15 +12,13 @@
 #import <OpenGLES/EAGL.h>
 #import <OpenGLES/ES1/gl.h>
 #import <OpenGLES/ES1/glext.h>
-#import "Texture2D.h"
-#import "TextureMap.h"
-#import "GameImage.h"
-#import	"TileMap.h"
 
 class HexMap;
 class UnitModel;
 class UnitView;
 class InputManager;
+class CentralControl;
+
 /*
  This class wraps the CAEAGLLayer from CoreAnimation into a convenient UIView subclass.
  The view content is basically an EAGL surface you render your OpenGL scene into.
@@ -60,12 +58,13 @@ private:
     NSTimeInterval animationInterval;
 	
 	CFTimeInterval lastTime;
-
+	
 	UnitModel* unit;
 	UnitView* unitView;
 	HexMap *hexMap;
 	
 	InputManager *input;
+	CentralControl* centralControl;
 	
 };
 

@@ -15,7 +15,7 @@
 class IUnitView {
 public:
 	virtual ~IUnitView() {}
-	virtual void updatePosition(const MPoint& pos) = 0;
+	virtual void updatePosition(const MPoint& pos, int direction) = 0;
 	virtual	void updateActions(std::vector<int> actions) = 0;
 };
 

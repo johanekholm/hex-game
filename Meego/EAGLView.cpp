@@ -5,6 +5,7 @@
 #include "UnitView.h"
 #include "TextureCatalog.h"
 #include "InputManager.h"
+#include "CentralControl.h"
 #include <QMouseEvent>
 #include <QTimer>
 #include <QDateTime>
@@ -16,6 +17,7 @@ public:
 	UnitModel *unit;
 	UnitView *unitView;
 	InputManager *input;
+	CentralControl* centralControl;
 	QTimer timer;
 	qint64 lastTime;
 };
@@ -29,6 +31,7 @@ EAGLView::EAGLView(QWidget *parent)
 }
 
 EAGLView::~EAGLView() {
+	delete d->centralControl;
 	delete d->unit;
 	delete d->unitView;
 	delete d->hexMap;
@@ -42,20 +45,9 @@ void EAGLView::mainGameLoop() {
 	float				delta;
 	time = QDateTime::currentMSecsSinceEpoch();
 	delta = (time - d->lastTime);
-	int action = 0;
 	
-	if (d->input->wasClicked()) {
-		/*if (d->unitView->wasTouched(d->input->clickPoint())) {
-			d->unit->move(1);
-		}*/
-		if ((action = d->unitView->touchedAction(d->input->clickPoint())) > -1) {
-			//NSLog(@"action: %i", action);
-			
-			d->unit->doAction(action);
-			//unit->move(1);
-		}
-	}
-
+	d->centralControl->update();
+	
 //	[self updateScene:delta];
 	this->updateGL();
 
@@ -72,10 +64,7 @@ void EAGLView::paintGL () {
 	
 	glLoadIdentity();
 	
-	d->hexMap->draw();
-	d->unitView->draw();
-	d->unitView->drawActions();
-
+	d->centralControl->draw();
 }
 
 void EAGLView::initializeGL() {
@@ -103,6 +92,7 @@ void EAGLView::initializeGL() {
 	catalog->addAndLoad("units", loadTexture("texmap.png"), 2);
 	catalog->addAndLoad("hexTiles", loadTexture("texmap_hex.png"), 2);
 	catalog->addAndLoad("actions", loadTexture("actions.png"), 4);
+	catalog->addAndLoad("icons", loadTexture("icons.png"), 4);
 
 	
 	d->hexMap = new HexMap(catalog->get("hexTiles"), 4, 4, 80.0f, 80.0f);
@@ -112,6 +102,8 @@ void EAGLView::initializeGL() {
 	d->unit->registerView(d->unitView);
 	
 	d->input = new InputManager();
+	
+	d->centralControl = CentralControl::setup(d->input, d->unit, d->unitView, d->hexMap);
 	d->timer.start();
 }
 

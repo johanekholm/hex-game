@@ -10,6 +10,7 @@ SET(PRODUCT_NAME HexGame)
 
 SET( SOURCES
 	Classes/Action.cpp
+	Classes/CentralControl.cpp
 	Classes/GameImage.cpp
 	Classes/geometry.cpp
 	Classes/HexMap.cpp
@@ -23,7 +24,9 @@ SET( SOURCES
 
 SET( HEADERS
 	Classes/Action.h
+	Classes/CentralControl.h
 	Classes/GameImage.h
+#	Classes/GameEngine.h
 	Classes/geometry.h
 	Classes/HexMap.h
 	Classes/InputManager.h
@@ -39,6 +42,8 @@ SET(RESOURCES
 	Resources/floortilemap.png
 	Resources/texmap.png
 	Resources/texmap_hex.png
+	Resources/icons.png
+	Resources/actions.png
 )
 
 
