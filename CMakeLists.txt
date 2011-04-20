@@ -43,7 +43,6 @@ SET(RESOURCES
 	Resources/texmap.png
 	Resources/texmap_hex.png
 	Resources/icons.png
-	Resources/actions.png
 )
 
 
