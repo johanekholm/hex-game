@@ -14,7 +14,7 @@
 #define TOUCH_EVENT_MOVE 2
 #define TOUCH_EVENT_LIFT 3
 
-#import "toolkit.h"
+#include "toolkit.h"
 #include <vector>
 
 class InputState;
