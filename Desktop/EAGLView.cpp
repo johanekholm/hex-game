@@ -1,10 +1,5 @@
 #include "EAGLView.h"
-#include "HexMap.h"
-#include "TextureMap.h"
-#include "UnitModel.h"
-#include "UnitView.h"
 #include "TextureCatalog.h"
-#include "InputManager.h"
 #include "CentralControl.h"
 #include <QMouseEvent>
 #include <QTimer>
@@ -13,10 +8,6 @@
 
 class EAGLView::PrivateData {
 public:
-	HexMap *hexMap;
-	UnitModel *unit;
-	UnitView *unitView;
-	InputManager *input;
 	CentralControl* centralControl;
 	QTimer timer;
 	qint64 lastTime;
@@ -32,12 +23,8 @@ EAGLView::EAGLView(QWidget *parent)
 
 EAGLView::~EAGLView() {
 	delete d->centralControl;
-	delete d->unit;
-	delete d->unitView;
-	delete d->hexMap;
-	delete d->input;
 	delete d;
-	TextureCatalog::instance()->destroy();
+	TextureCatalog::destroy();
 }
 
 void EAGLView::mainGameLoop() {
@@ -94,29 +81,20 @@ void EAGLView::initializeGL() {
 	catalog->addAndLoad("actions", loadTexture("actions.png"), 4);
 	catalog->addAndLoad("icons", loadTexture("icons.png"), 4);
 
-	
-	d->hexMap = new HexMap(catalog->get("hexTiles"), 4, 4, 80.0f, 80.0f);
-	
-	d->unit = new UnitModel(1, 1);
-	d->unitView = new UnitView(64.0f, 64.0f, catalog->get("units"), 0);
-	d->unit->registerView(d->unitView);
-	
-	d->input = new InputManager();
-	
-	d->centralControl = CentralControl::setup(d->input, d->unit, d->unitView, d->hexMap);
+	d->centralControl = CentralControl::instance();
 	d->timer.start();
 }
 
 void EAGLView::mouseMoveEvent ( QMouseEvent * event ) {
-	d->input->touchesMoved(GPointMake(event->x(), event->y()));
+	d->centralControl->touchesMoved(GPointMake(event->x(), event->y()));
 }
 
 void EAGLView::mousePressEvent ( QMouseEvent * event ) {
-	d->input->touchesBegan(GPointMake(event->x(), event->y()));
+	d->centralControl->touchesBegan(GPointMake(event->x(), event->y()));
 }
 
 void EAGLView::mouseReleaseEvent ( QMouseEvent * event ) {
-	d->input->touchesEnded(GPointMake(event->x(), event->y()));
+	d->centralControl->touchesEnded(GPointMake(event->x(), event->y()));
 }
 
 GLuint EAGLView::loadTexture(const std::string &filename) {

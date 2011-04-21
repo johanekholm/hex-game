@@ -1,10 +1,5 @@
 #include "EAGLView.h"
-#include "HexMap.h"
-#include "TextureMap.h"
-#include "UnitModel.h"
-#include "UnitView.h"
 #include "TextureCatalog.h"
-#include "InputManager.h"
 #include "CentralControl.h"
 
 #include "SDL_image.h"
@@ -14,10 +9,6 @@
 
 class EAGLView::PrivateData {
 public:
-	HexMap *hexMap;
-	UnitModel *unit;
-	UnitView *unitView;
-	InputManager *input;
 	CentralControl* centralControl;
 	SDL_Surface *surface;
 	int videoFlags;
@@ -79,19 +70,13 @@ EAGLView::EAGLView()
 	catalog->addAndLoad("actions", loadTexture("actions.png"), 4);
 	catalog->addAndLoad("icons", loadTexture("icons.png"), 4);
 
-	d->hexMap = new HexMap(catalog->get("hexTiles"), 4, 4, 80.0f, 80.0f);
-
-	d->unit = new UnitModel(1, 1);
-	d->unitView = new UnitView(64.0f, 64.0f, catalog->get("units"), 0);
-	d->unit->registerView(d->unitView);
-
-	d->input = new InputManager();
-
-	d->centralControl = CentralControl::setup(d->input, d->unit, d->unitView, d->hexMap);
+	d->centralControl = CentralControl::instance();
 }
 
 EAGLView::~EAGLView() {
+	delete d->centralControl;
 	delete d;
+	TextureCatalog::destroy();
 }
 
 void EAGLView::draw() {
@@ -146,13 +131,13 @@ int EAGLView::run() {
 					SDL_SetVideoMode( event.resize.w, event.resize.h, 16, d->videoFlags );
 					break;
 				case SDL_MOUSEMOTION:
-					d->input->touchesMoved(GPointMake(event.motion.x, event.motion.y));
+					d->centralControl->touchesMoved(GPointMake(event.motion.x, event.motion.y));
 					break;
 				case SDL_MOUSEBUTTONDOWN:
-					d->input->touchesBegan(GPointMake(event.button.x, event.button.y));
+					d->centralControl->touchesBegan(GPointMake(event.button.x, event.button.y));
 					break;
 				case SDL_MOUSEBUTTONUP:
-					d->input->touchesEnded(GPointMake(event.button.x, event.button.y));
+					d->centralControl->touchesEnded(GPointMake(event.button.x, event.button.y));
 					break;
 				case SDL_QUIT:
 					return 0;

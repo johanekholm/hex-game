@@ -5,15 +5,15 @@ INCLUDE( ${QT_USE_FILE} )
 FIND_PACKAGE(OpenGL REQUIRED)
 
 LIST(APPEND SOURCES
-	Meego/main.cpp
-	Meego/EAGLView.cpp
+	Desktop/main.cpp
+	Desktop/EAGLView.cpp
 )
 
 LIST(APPEND HEADERS
 )
 
 SET( MOC_HEADERS
-	Meego/EAGLView.h
+	Desktop/EAGLView.h
 )
 
 QT4_WRAP_CPP(  MOC_SOURCES  ${MOC_HEADERS} )
