@@ -7,6 +7,8 @@
 #include "InputManager.h"
 #include "CentralControl.h"
 
+#include "SDL_image.h"
+
 class EAGLView::PrivateData {
 public:
 	HexMap *hexMap;
@@ -110,5 +112,21 @@ void EAGLView::draw() {
 }
 
 GLuint EAGLView::loadTexture(const std::string &filename) {
-	return 0;
+	GLuint texture;
+	std::string path = "/home/micke/Documents/dev/hex-game/Resources/";
+	path.append(filename);
+	SDL_Surface *surface = IMG_Load( path.c_str() );
+
+	glGenTextures( 1, &texture );
+	glBindTexture( GL_TEXTURE_2D, texture );
+
+	glTexImage2D( GL_TEXTURE_2D, 0, 3, surface->w, surface->h, 0, GL_BGR, GL_UNSIGNED_BYTE, surface->pixels );
+
+	/* Linear Filtering */
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+
+	/* Free up any memory we may have used */
+	SDL_FreeSurface( surface );
+	return texture;
 }
