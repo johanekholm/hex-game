@@ -29,7 +29,7 @@ public:
 		return _instance;
 	}
 	
-	void destroy();
+	static void destroy();
 	
 	void add(TextureMap* texMap, const std::string& name);
 	void addAndLoad(const std::string& name, GLuint texture, int numDivs);

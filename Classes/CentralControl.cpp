@@ -8,12 +8,28 @@
  */
 
 #include "CentralControl.h"
+#include "TextureCatalog.h"
 #include "UnitModel.h"
 #include "UnitView.h"
 #include "HexMap.h"
 #include "InputManager.h"
+#include "toolkit.h"
 
 CentralControl* CentralControl::_instance = 0;
+
+CentralControl::CentralControl() {
+	_mode = 1;
+	
+	TextureCatalog* catalog = TextureCatalog::instance();
+		
+	_hexMap = new HexMap(catalog->get("hexTiles"), 4, 4, 80.0f, 80.0f);
+	
+	_unit = new UnitModel(0, 0);
+	_unitView = new UnitView(64.0f, 64.0f, catalog->get("units"), 0);
+	_unit->registerView(_unitView);
+	
+	_input = new InputManager();
+}
 
 void CentralControl::update() {
 	TouchEvent event;
@@ -86,6 +102,23 @@ void CentralControl::handleEventFocus(const TouchEvent& event) {
 	}
 	
 }
+
+void CentralControl::touchesBegan(const GPoint& touchPoint) {
+	_input->touchesBegan(touchPoint);
+}
+
+void CentralControl::touchesMoved(const GPoint& touchPoint) {
+	_input->touchesMoved(touchPoint);
+}
+
+void CentralControl::touchesEnded(const GPoint& touchPoint) {
+	_input->touchesEnded(touchPoint);
+}
+
+void CentralControl::touchesCancelled(const GPoint& touchPoint) {
+	_input->touchesCancelled(touchPoint);
+}
+
 
 void CentralControl::switchMode(int mode) {
 	_mode = mode;

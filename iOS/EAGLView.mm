@@ -21,7 +21,6 @@
 #include "CentralControl.h"
 #include "toolkit.h"
 #include "toolkit_ios.h"
-#include "HexMap.h"
 #include "TextureCatalog.h"
 
 #define USE_DEPTH_BUFFER 0
@@ -61,28 +60,9 @@
         [EAGLContext setCurrentContext:nil];
     }
     
-//	delete input;
-	
-//	delete hexTexMap;
-//	delete hexMap;
-//	delete board;
-	//[board release];
-	//[sprite release];
-	
-//	delete sprite;
-//	delete robot;
-//	delete robotView;
-	
-//	[player release];
-	//[texMap release];
-//	delete texMap;
-//	delete boardTexMap;
-	delete unit;
-	delete unitView;
-	delete hexMap;
-	
-	TextureCatalog::instance()->destroy();
-		
+	delete centralControl;
+
+	TextureCatalog::destroy();
 	
     [context release];  
     [super dealloc];
@@ -118,9 +98,7 @@
 		// flipped ortho-view
 		glOrthof(0, rect.size.width, rect.size.height, 0, -1, 1);
 		glMatrixMode(GL_MODELVIEW);
-		
 
-		
 		// Initialize OpenGL states
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -131,67 +109,14 @@
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		
-		
-		//glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-		// Enable blending
-		//glEnable(GL_BLEND);
-		
-		// init images
-//		player = [[Texture2D alloc] initWithImage:[UIImage imageNamed:@"hero1.png"]];
-		
-		//texMap = [[TextureMap alloc] initWithSubdivisions:2 ofImage:[UIImage imageNamed:@"texmap.png"]];
-		
-		//texMap = [[TextureMap alloc] initWithImage:[UIImage imageNamed:@"texmap.png"]];
-		//[texMap setNumSubdivisions:2];
-		
-		/*int boardData[150] = {	7,3,3,3,7,3,3,3,3,8,
-								6,0,0,0,0,0,0,5,0,4,
-								2,0,0,0,0,0,0,0,0,8,
-								2,0,0,7,0,0,0,0,0,4,
-								2,0,0,0,0,0,0,0,8,4,
-								2,5,0,0,0,0,0,0,0,4,
-								2,0,0,0,0,0,6,0,0,4,
-								2,0,0,0,0,0,0,0,0,4,
-								2,0,0,0,0,0,0,0,0,4,
-								2,0,0,0,0,0,0,0,0,4,
-								2,0,5,0,0,0,0,0,0,8,
-								2,0,0,0,0,0,0,7,0,4,
-								7,0,0,6,0,0,0,0,0,4,
-								2,0,0,0,0,0,0,0,8,4,
-								6,1,1,1,1,1,6,1,1,5};
-		
-		vector<int> vData(150);
-		vData.assign(boardData, boardData + 150);
-		
-//		texMap = new TextureMap("texmap.png", 2);
-//		boardTexMap = new TextureMap("floortilemap.png", 4);
-//		hexTexMap = new TextureMap("texmap_hex.png", 2);
-		
-//		robot = new RobotModel(3, 7);
-//		robotView = new RobotView(64.0f, 64.0f, texMap, 0);
-//		robot->registerView(robotView);
-//		robotView->setModel(robot);
-		//board = new TileMap(10, 15, 32.0f, 32.0f, boardTexMap, &vData);
-		*/
-		
 		TextureCatalog* catalog = TextureCatalog::instance();
 		
-		catalog->addAndLoad("units", [self loadTexture:@"texmap.png"], 2);
 		catalog->addAndLoad("hexTiles", [self loadTexture:@"texmap_hex.png"], 2);
 		catalog->addAndLoad("actions", [self loadTexture:@"actions.png"], 4);
 		catalog->addAndLoad("icons", [self loadTexture:@"icons.png"], 4);
+		catalog->addAndLoad("units", [self loadTexture:@"texmap.png"], 2);
 		
-		//board = [[TileMap alloc] initWithMapWidth:2 andMapHeight:2 withTileSize:CGSizeMake(64.0f, 64.0f) andTexture:texMap];
-		
-		hexMap = new HexMap(catalog->get("hexTiles"), 4, 4, 80.0f, 80.0f);
-		
-		unit = new UnitModel(0, 0);
-		unitView = new UnitView(64.0f, 64.0f, catalog->get("units"), 0);
-		unit->registerView(unitView);
-				
-		input = new InputManager();
-		
-		centralControl = CentralControl::setup(input, unit, unitView, hexMap);
+		centralControl = CentralControl::instance();
     }
     return self;
 }
@@ -202,12 +127,6 @@
 	float				delta;
 	time = CFAbsoluteTimeGetCurrent();
 	delta = (time - lastTime);
-		
-	if (input->wasClicked()) {
-		if (unitView->wasTouched(input->clickPoint())) {
-			unit->move(1);
-		}
-	}
 	
 	centralControl->update();
 	
@@ -233,9 +152,7 @@
 	// Clear screen
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	
-	hexMap->draw();
-	unitView->draw();
+	centralControl->draw();
 	
     glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
     [context presentRenderbuffer:GL_RENDERBUFFER_OES];
@@ -293,7 +210,7 @@
 }
 
 - (GLuint)loadTexture:(NSString *)fileName {
-	Texture2D *tex = [[Texture2D alloc] initWithImage: [UIImage imageNamed: @"texmap.png"]];
+	Texture2D *tex = [[Texture2D alloc] initWithImage: [UIImage imageNamed:fileName]];
 	GLuint texRef = [tex name];
 	[tex dealloc];
 	return texRef;
@@ -328,27 +245,23 @@
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
 	GPoint touchPoint = GPointFromCGPoint([[touches anyObject] locationInView:self]);
-//	input->touchesBegan(touchPoint);
+	centralControl->touchesBegan(touchPoint);
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
 	GPoint touchPoint = GPointFromCGPoint([[touches anyObject] locationInView:self]);
-//	input->touchesMoved(touchPoint);
+	centralControl->touchesMoved(touchPoint);
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
 	GPoint touchPoint = GPointFromCGPoint([[touches anyObject] locationInView:self]);
-//	input->touchesEnded(touchPoint);
+	centralControl->touchesEnded(touchPoint);
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
-	NSLog(@"Cancelled, crashing!");
 	GPoint touchPoint = GPointFromCGPoint([[touches anyObject] locationInView:self]);
-//	input->touchesCancelled(touchPoint);
+	centralControl->touchesCancelled(touchPoint);
 }
-
-
-
 
 @end
 

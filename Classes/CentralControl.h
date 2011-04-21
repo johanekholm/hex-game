@@ -12,6 +12,7 @@ class UnitView;
 class UnitModel;
 class HexMap;
 struct TouchEvent;
+struct GPoint;
 
 class CentralControl {
 	int _mode;
@@ -22,25 +23,12 @@ class CentralControl {
 	UnitView* _unitView;
 	HexMap* _hexMap;
 	
-	CentralControl() { }
-	CentralControl(InputManager* input, UnitModel* unit, UnitView* unitView, HexMap* hexMap) {
-		_mode = 1;
-		_input = input;
-		_unit = unit; 
-		_unitView = unitView; 
-		_hexMap = hexMap; 
-	}
-	
-	
 public:
-	static CentralControl* setup(InputManager* input, UnitModel* unit, UnitView* unitView, HexMap* hexMap) {
-		if (_instance == 0) {
-			_instance = new CentralControl(input, unit, unitView, hexMap);
-		} 
-		return _instance;
-	}
-	
+	CentralControl();
 	static CentralControl* instance() {
+		if (_instance == 0) {
+			_instance = new CentralControl();
+		} 
 		return _instance;
 	}
 	
@@ -49,6 +37,11 @@ public:
 	void handleEventNormal(const TouchEvent& event);
 	void handleEventFocus(const TouchEvent& event);
 
+	void touchesBegan(const GPoint& touchPoint);
+	void touchesMoved(const GPoint& touchPoint);
+	void touchesEnded(const GPoint& touchPoint);
+	void touchesCancelled(const GPoint& touchPoint);
+		
 public:
 	void switchMode(int mode);
 };
