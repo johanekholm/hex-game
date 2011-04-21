@@ -14,7 +14,8 @@
 	#include <QGLContext>
 #elif defined(PLATFORM_MAEMO)
 	#include "SDL.h"
-	#include <SDL_opengl.h>
+	#include <SDL_gles.h>
+	#include <GLES/gl.h>
 #endif
 
 #ifndef TOOLKIT_H

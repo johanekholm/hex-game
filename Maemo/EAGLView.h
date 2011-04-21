@@ -21,6 +21,7 @@ public:
 	int run();
 
 protected:
+	int resizeWindow( int width, int height );
 	GLuint loadTexture(const std::string &filename);
 	
 private:
