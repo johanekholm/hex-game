@@ -9,6 +9,8 @@
 
 #include "SDL_image.h"
 
+#include <stdio.h>
+
 class EAGLView::PrivateData {
 public:
 	HexMap *hexMap;
@@ -17,13 +19,12 @@ public:
 	InputManager *input;
 	CentralControl* centralControl;
 	SDL_Surface *surface;
+	int videoFlags;
 };
 
 EAGLView::EAGLView()
 {
 	d = new PrivateData;
-
-	int videoFlags;
 	
 	/* this holds some info about our display */
 	const SDL_VideoInfo *videoInfo;
@@ -32,28 +33,28 @@ EAGLView::EAGLView()
 
 	videoInfo = SDL_GetVideoInfo( );
 
-	videoFlags  = SDL_OPENGL;          /* Enable OpenGL in SDL */
-	videoFlags |= SDL_GL_DOUBLEBUFFER; /* Enable double buffering */
-	videoFlags |= SDL_HWPALETTE;       /* Store the palette in hardware */
-	videoFlags |= SDL_RESIZABLE;       /* Enable window resizing */
+	d->videoFlags  = SDL_OPENGL;          /* Enable OpenGL in SDL */
+	d->videoFlags |= SDL_GL_DOUBLEBUFFER; /* Enable double buffering */
+	d->videoFlags |= SDL_HWPALETTE;       /* Store the palette in hardware */
+	d->videoFlags |= SDL_RESIZABLE;       /* Enable window resizing */
 
 	/* This checks to see if surfaces can be stored in memory */
 	if ( videoInfo->hw_available ) {
-		videoFlags |= SDL_HWSURFACE;
+		d->videoFlags |= SDL_HWSURFACE;
 	} else {
-		videoFlags |= SDL_SWSURFACE;
+		d->videoFlags |= SDL_SWSURFACE;
 	}
 
 	/* This checks if hardware blits can be done */
 	if ( videoInfo->blit_hw ) {
-		videoFlags |= SDL_HWACCEL;
+		d->videoFlags |= SDL_HWACCEL;
 	}
 
 	/* Sets up OpenGL double buffering */
 	SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
 
 	/* get a SDL surface */
-	d->surface = SDL_SetVideoMode( 640, 480, 16, videoFlags );
+	d->surface = SDL_SetVideoMode( 640, 480, 16, d->videoFlags );
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -109,6 +110,29 @@ void EAGLView::draw() {
 
 	SDL_GL_SwapBuffers( );
 
+}
+
+int EAGLView::run() {
+	SDL_Event event;
+
+	while(1) {
+
+		while ( SDL_PollEvent( &event ) ) {
+			switch( event.type ) {
+				case SDL_VIDEORESIZE:
+					SDL_SetVideoMode( event.resize.w, event.resize.h, 16, d->videoFlags );
+					break;
+				case SDL_QUIT:
+					return 0;
+// 				default:
+// 					printf("default %i\n", event.type);
+			}
+		}
+		draw();
+		usleep(1000);
+	}
+
+	return 0;
 }
 
 GLuint EAGLView::loadTexture(const std::string &filename) {

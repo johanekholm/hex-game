@@ -18,6 +18,8 @@ public:
 
 	void draw();
 
+	int run();
+
 protected:
 	GLuint loadTexture(const std::string &filename);
 	
