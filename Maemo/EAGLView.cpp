@@ -145,6 +145,7 @@ int EAGLView::run() {
 // 					printf("default %i\n", event.type);
 			}
 		}
+		d->centralControl->update();
 		draw();
 		usleep(1000);
 	}
