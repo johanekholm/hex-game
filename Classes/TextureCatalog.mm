@@ -17,11 +17,11 @@
 TextureCatalog* TextureCatalog::_instance = 0;
 
 void TextureCatalog::destroy() {
-
-	_textureMaps.clear();
-	
-	delete _instance;
-	_instance=0;
+	if (_instance != 0) {
+		_instance->_textureMaps.clear();
+		delete _instance;
+		_instance=0;
+	}
 }
 
 void TextureCatalog::add(TextureMap* texMap, const std::string& name) {

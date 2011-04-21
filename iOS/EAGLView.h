@@ -25,21 +25,6 @@ class CentralControl;
  Note that setting the view non-opaque will only work if the EAGL surface has an alpha channel.
  */
 @interface EAGLView : UIView {
-/*
-	Q_OBJECT
-public:
-	EAGLView(QWidget *parent = 0);
-	~EAGLView();
-	
-protected:
-	void paintGL ();
-	void initializeGL ();
-	
-	GLuint loadTexture(const std::string &filename);
-private:
-	class PrivateData;
-	PrivateData *d;
-*/
  
 @private
     /* The pixel dimensions of the backbuffer */
@@ -59,11 +44,6 @@ private:
 	
 	CFTimeInterval lastTime;
 	
-	UnitModel* unit;
-	UnitView* unitView;
-	HexMap *hexMap;
-	
-	InputManager *input;
 	CentralControl* centralControl;
 	
 };
@@ -73,6 +53,5 @@ private:
 - (void)startAnimation;
 - (void)stopAnimation;
 - (void)renderScene;
-//- (void)loadTexture:(NSString *)name intoLocation:(GLuint)location;
 
 @end
