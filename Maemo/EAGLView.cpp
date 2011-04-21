@@ -122,6 +122,15 @@ int EAGLView::run() {
 				case SDL_VIDEORESIZE:
 					SDL_SetVideoMode( event.resize.w, event.resize.h, 16, d->videoFlags );
 					break;
+				case SDL_MOUSEMOTION:
+					d->input->touchesMoved(GPointMake(event.motion.x, event.motion.y));
+					break;
+				case SDL_MOUSEBUTTONDOWN:
+					d->input->touchesBegan(GPointMake(event.button.x, event.button.y));
+					break;
+				case SDL_MOUSEBUTTONUP:
+					d->input->touchesEnded(GPointMake(event.button.x, event.button.y));
+					break;
 				case SDL_QUIT:
 					return 0;
 // 				default:
