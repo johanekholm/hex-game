@@ -26,10 +26,12 @@
 		E954061D1183996600CE3914 /* GameImage.mm in Sources */ = {isa = PBXBuildFile; fileRef = E954061C1183996600CE3914 /* GameImage.mm */; };
 		E954061F1183997100CE3914 /* TextureMap.mm in Sources */ = {isa = PBXBuildFile; fileRef = E954061E1183997100CE3914 /* TextureMap.mm */; };
 		E954062C1183A77D00CE3914 /* RobotModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = E954062B1183A77D00CE3914 /* RobotModel.mm */; };
+		E9569EBE135B4FD500790A13 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = E9569EBD135B4FD500790A13 /* ViewController.mm */; };
 		E98DE6581218679D0069CCBB /* HexMap.mm in Sources */ = {isa = PBXBuildFile; fileRef = E98DE6571218679D0069CCBB /* HexMap.mm */; };
 		E991067D115546A80038ABD7 /* InputManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = E991067C115546A80038ABD7 /* InputManager.mm */; };
 		E9B5587A1359B3BA00E35F6E /* CentralControl.mm in Sources */ = {isa = PBXBuildFile; fileRef = E9B558791359B3BA00E35F6E /* CentralControl.mm */; };
 		E9B558B51359D9EE00E35F6E /* icons.png in Resources */ = {isa = PBXBuildFile; fileRef = E9B558B41359D9EE00E35F6E /* icons.png */; };
+		E9B558BE135B4E0E00E35F6E /* ViewControllerManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = E9B558BD135B4E0E00E35F6E /* ViewControllerManager.mm */; };
 		E9BD7FB0122AE27B0018A981 /* RobotView.mm in Sources */ = {isa = PBXBuildFile; fileRef = E9BD7FAF122AE27B0018A981 /* RobotView.mm */; };
 		E9C92F1713521673008CFBB2 /* TextureCatalog.mm in Sources */ = {isa = PBXBuildFile; fileRef = E9C92F1613521673008CFBB2 /* TextureCatalog.mm */; };
 		E9F5BAB813510596008B6357 /* UnitView.mm in Sources */ = {isa = PBXBuildFile; fileRef = E9F5BAB713510596008B6357 /* UnitView.mm */; };
@@ -69,12 +71,16 @@
 		E954061E1183997100CE3914 /* TextureMap.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TextureMap.mm; sourceTree = "<group>"; };
 		E954062A1183A77D00CE3914 /* RobotModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobotModel.h; sourceTree = "<group>"; };
 		E954062B1183A77D00CE3914 /* RobotModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RobotModel.mm; sourceTree = "<group>"; };
+		E9569EBC135B4FD500790A13 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		E9569EBD135B4FD500790A13 /* ViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
 		E98DE6561218679D0069CCBB /* HexMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HexMap.h; sourceTree = "<group>"; };
 		E98DE6571218679D0069CCBB /* HexMap.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HexMap.mm; sourceTree = "<group>"; };
 		E991067C115546A80038ABD7 /* InputManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = InputManager.mm; sourceTree = "<group>"; };
 		E9B558781359B3BA00E35F6E /* CentralControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CentralControl.h; sourceTree = "<group>"; };
 		E9B558791359B3BA00E35F6E /* CentralControl.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CentralControl.mm; sourceTree = "<group>"; };
 		E9B558B41359D9EE00E35F6E /* icons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icons.png; path = Resources/icons.png; sourceTree = "<group>"; };
+		E9B558BC135B4E0E00E35F6E /* ViewControllerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewControllerManager.h; sourceTree = "<group>"; };
+		E9B558BD135B4E0E00E35F6E /* ViewControllerManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewControllerManager.mm; sourceTree = "<group>"; };
 		E9BD7F97122AD4C60018A981 /* IRobotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRobotView.h; sourceTree = "<group>"; };
 		E9BD7FAE122AE27B0018A981 /* RobotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobotView.h; sourceTree = "<group>"; };
 		E9BD7FAF122AE27B0018A981 /* RobotView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RobotView.mm; sourceTree = "<group>"; };
@@ -152,6 +158,10 @@
 				E9C92F1613521673008CFBB2 /* TextureCatalog.mm */,
 				E9B558781359B3BA00E35F6E /* CentralControl.h */,
 				E9B558791359B3BA00E35F6E /* CentralControl.mm */,
+				E9B558BC135B4E0E00E35F6E /* ViewControllerManager.h */,
+				E9B558BD135B4E0E00E35F6E /* ViewControllerManager.mm */,
+				E9569EBC135B4FD500790A13 /* ViewController.h */,
+				E9569EBD135B4FD500790A13 /* ViewController.mm */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -304,6 +314,8 @@
 				E9F5BB61135121BF008B6357 /* Action.mm in Sources */,
 				E9C92F1713521673008CFBB2 /* TextureCatalog.mm in Sources */,
 				E9B5587A1359B3BA00E35F6E /* CentralControl.mm in Sources */,
+				E9B558BE135B4E0E00E35F6E /* ViewControllerManager.mm in Sources */,
+				E9569EBE135B4FD500790A13 /* ViewController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
