@@ -19,10 +19,10 @@ bool ViewController::isWithin(const GPoint& point) {
 	}
 }
 
-bool ViewController::handleEvent(const TouchEvent& event) {
+/*bool ViewController::handleEvent(const TouchEvent& event) {
 	if (this->isWithin(event.point)) {
 		this->reactToEvent(event.type);
 		return true;
 	}
 	return false;
-}
+}*/

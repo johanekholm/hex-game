@@ -16,10 +16,10 @@ class ViewController {
 	GPoint _pos;
 	GLfloat _width, _height;
 	
-	virtual void reactToEvent(int eventType) = 0;
+	//virtual void reactToEvent(int eventType) = 0;
 	
 public:
 	bool isWithin(const GPoint& point);
-	bool handleEvent(const TouchEvent& event);
+	virtual bool handleEvent(const TouchEvent& event) = 0;
 	virtual void draw() = 0;
 };

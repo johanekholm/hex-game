@@ -16,9 +16,11 @@ UnitView::~UnitView() {
 	delete _unitImage;
 	delete _actionImage;
 	delete _directionImage;
+	_unitModel = 0;
 }
 
-UnitView::UnitView(GLfloat aWidth, GLfloat aHeight, int index) {
+UnitView::UnitView(UnitModel* model, GLfloat aWidth, GLfloat aHeight, int index) {
+	_unitModel = model;
 	_facing = 0.0f;
 	_actionImage = new GameImage(aWidth, aHeight, TextureCatalog::instance()->get("units"), index);
 	_actionImage = new GameImage(32.0f, 32.0f, TextureCatalog::instance()->get("actions"), 0);
@@ -53,8 +55,10 @@ GPoint UnitView::getActionPosition(int index) {
 					  sin(ACTION_ANGLE_INITIAL + ACTION_ANGLE_INCREMENT*(float)index)) * ACTION_RADIUS;
 }
 
-void reactToEvent(int eventType) {
-	
+bool UnitView::handleEvent(const TouchEvent& event) {
+	if (event.type == 3) {
+		_unitModel->doAction(this->touchedAction(event.point));	
+	}
 }
 
 int UnitView::touchedAction(GPoint point) {
