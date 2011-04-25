@@ -27,6 +27,9 @@ class UnitView : public ViewController, public IObservable {
 	GameImage* _directionImage;
 	
 	GPoint getActionPosition(int index);
+	void updatePosition(const MPoint& pos, int direction);
+	void updateActions(std::vector<int> actions);
+
 public:
 	~UnitView();
 	UnitView(UnitModel* model, GLfloat aWidth, GLfloat aHeight, int index);

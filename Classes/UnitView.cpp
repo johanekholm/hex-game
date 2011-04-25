@@ -76,8 +76,12 @@ int UnitView::touchedAction(GPoint point) {
 	return (-1);
 }
 
+void UnitView::update() {
+	this->updatePosition(_unitModel->getPosition(), _unitModel->getDirection());
+	this->updateActions(_unitModel->getActions());	
+}
 
-/*void UnitView::updatePosition(const MPoint& pos, int direction) {
+void UnitView::updatePosition(const MPoint& pos, int direction) {
 	_pos.x = 64.0f + (GLfloat)pos.x * 64.0f + (pos.y % 2) * 32.0f;
 	_pos.y = 64.0f + (GLfloat)pos.y * 50.0f;
 	_facing = (GLfloat)direction;
@@ -85,7 +89,7 @@ int UnitView::touchedAction(GPoint point) {
 
 void UnitView::updateActions(std::vector<int> actions) {
 	_actions = actions;
-}*/
+}
 
 
 /*bool UnitView::wasTouched(GPoint point) {
