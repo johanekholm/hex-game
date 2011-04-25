@@ -32,12 +32,6 @@ UnitView::UnitView(UnitModel* model, GLfloat aWidth, GLfloat aHeight, int index)
 	
 }
 
-
-void UnitView::draw() {
-	_unitImage->drawAt(_pos);
-	_directionImage->drawAtRotatedWithSubTexture(_pos, (GLfloat)_facing * 60.0f + 180.0f, 0);
-}
-
 void UnitView::drawActions() {
 	float i = 0;
 	GPoint actionPos;
@@ -50,10 +44,32 @@ void UnitView::drawActions() {
 
 }
 
+
 GPoint UnitView::getActionPosition(int index) {
 	return GPointMake(cos(ACTION_ANGLE_INITIAL + ACTION_ANGLE_INCREMENT*(float)index), 
 					  sin(ACTION_ANGLE_INITIAL + ACTION_ANGLE_INCREMENT*(float)index)) * ACTION_RADIUS;
 }
+
+void UnitView::updateActions(std::vector<int> actions) {
+	_actions = actions;
+}
+
+void UnitView::updatePosition(const MPoint& pos, int direction) {
+	_pos.x = 64.0f + (GLfloat)pos.x * 64.0f + (pos.y % 2) * 32.0f;
+	_pos.y = 64.0f + (GLfloat)pos.y * 50.0f;
+	_facing = (GLfloat)direction;
+}
+
+
+void UnitView::draw() {
+	_unitImage->drawAt(_pos);
+}
+
+void UnitView::drawGUI() {
+	_directionImage->drawAtRotatedWithSubTexture(_pos, (GLfloat)_facing * 60.0f + 180.0f, 0);
+	this->drawActions();
+}
+
 
 bool UnitView::handleEvent(const TouchEvent& event) {
 	if (event.type == 3) {
@@ -81,15 +97,6 @@ void UnitView::update() {
 	this->updateActions(_unitModel->getActions());	
 }
 
-void UnitView::updatePosition(const MPoint& pos, int direction) {
-	_pos.x = 64.0f + (GLfloat)pos.x * 64.0f + (pos.y % 2) * 32.0f;
-	_pos.y = 64.0f + (GLfloat)pos.y * 50.0f;
-	_facing = (GLfloat)direction;
-}
-
-void UnitView::updateActions(std::vector<int> actions) {
-	_actions = actions;
-}
 
 
 /*bool UnitView::wasTouched(GPoint point) {

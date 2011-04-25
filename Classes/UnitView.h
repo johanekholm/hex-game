@@ -25,19 +25,20 @@ class UnitView : public ViewController, public IObservable {
 	GameImage* _unitImage;
 	GameImage* _actionImage;
 	GameImage* _directionImage;
-	
+
+	void drawActions();	
 	GPoint getActionPosition(int index);
-	void updatePosition(const MPoint& pos, int direction);
 	void updateActions(std::vector<int> actions);
+	void updatePosition(const MPoint& pos, int direction);
 
 public:
 	~UnitView();
 	UnitView(UnitModel* model, GLfloat aWidth, GLfloat aHeight, int index);
 	void draw();
-	void drawActions();
-	void update();
-	int touchedAction(GPoint point);
+	void drawGUI();
 	bool handleEvent(const TouchEvent& event);
+	int touchedAction(GPoint point);
+	void update();
 };
 
 /*class UnitView : public GameImage, public IUnitView {

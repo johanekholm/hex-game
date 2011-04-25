@@ -22,4 +22,5 @@ public:
 	bool isWithin(const GPoint& point);
 	virtual bool handleEvent(const TouchEvent& event) = 0;
 	virtual void draw() = 0;
+	virtual void drawGUI() = 0;
 };
