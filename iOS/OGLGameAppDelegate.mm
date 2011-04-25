@@ -15,8 +15,9 @@
 @synthesize glView;
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
-	[[UIApplication sharedApplication] setStatusBarHidden:YES animated:YES];
-
+	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+	
+	
 	glView.animationInterval = 1.0 / 60.0;
 	[glView startAnimation];
 }

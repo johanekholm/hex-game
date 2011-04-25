@@ -75,7 +75,7 @@ void UnitModel::move(int distance) {
 	MPoint v = getHexVector(_direction, _pos);
 	_pos += v;
 	
-	NSLog(@"moved - x: %i, y: %i", v.x, v.y);
+	//NSLog(@"moved - x: %i, y: %i", v.x, v.y);
 	
 	this->updateViews();
 }
@@ -91,7 +91,7 @@ void UnitModel::rotate(int rotation) {
 	
 	this->updateViews();
 	
-	NSLog(@"direction: %i", _direction);
+	//NSLog(@"direction: %i", _direction);
 }
 
 void UnitModel::strike() {

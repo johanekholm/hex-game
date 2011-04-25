@@ -13,13 +13,15 @@
 
 #import "EAGLView.h"
 #import "InputManager.h"
+#import "Texture2D.h"
+
 #include "UnitModel.h"
 #include "UnitView.h"
 
-#include "toolkit_iphone.h"
-#include "HexMap.h"
-#include "TextureCatalog.h"
 #include "CentralControl.h"
+#include "toolkit.h"
+#include "toolkit_ios.h"
+#include "TextureCatalog.h"
 
 #define USE_DEPTH_BUFFER 0
 
@@ -33,6 +35,7 @@
 - (void) destroyFramebuffer;
 - (void) updateScene:(float)delta;
 - (void) renderScene;
+- (GLuint) loadTexture:(NSString *)fileName;
 
 @end
 
@@ -58,14 +61,8 @@
     }
     
 	delete centralControl;
-	delete input;
-	
-	delete unit;
-	delete unitView;
-	delete hexMap;
-	
-	TextureCatalog::instance()->destroy();
-		
+
+	TextureCatalog::destroy();
 	
     [context release];  
     [super dealloc];
@@ -101,9 +98,7 @@
 		// flipped ortho-view
 		glOrthof(0, rect.size.width, rect.size.height, 0, -1, 1);
 		glMatrixMode(GL_MODELVIEW);
-		
 
-		
 		// Initialize OpenGL states
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -114,51 +109,14 @@
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		
-		
-		//glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-		// Enable blending
-		//glEnable(GL_BLEND);
-		
-				
-		/*int boardData[150] = {	7,3,3,3,7,3,3,3,3,8,
-								6,0,0,0,0,0,0,5,0,4,
-								2,0,0,0,0,0,0,0,0,8,
-								2,0,0,7,0,0,0,0,0,4,
-								2,0,0,0,0,0,0,0,8,4,
-								2,5,0,0,0,0,0,0,0,4,
-								2,0,0,0,0,0,6,0,0,4,
-								2,0,0,0,0,0,0,0,0,4,
-								2,0,0,0,0,0,0,0,0,4,
-								2,0,0,0,0,0,0,0,0,4,
-								2,0,5,0,0,0,0,0,0,8,
-								2,0,0,0,0,0,0,7,0,4,
-								7,0,0,6,0,0,0,0,0,4,
-								2,0,0,0,0,0,0,0,8,4,
-								6,1,1,1,1,1,6,1,1,5};
-		
-		vector<int> vData(150);
-		vData.assign(boardData, boardData + 150);
-		
-		//board = new TileMap(10, 15, 32.0f, 32.0f, boardTexMap, &vData);
-		*/
-		
 		TextureCatalog* catalog = TextureCatalog::instance();
 		
-		catalog->addAndLoad("units", "texmap.png", 2);
-		catalog->addAndLoad("hexTiles", "texmap_hex.png", 2);
-		catalog->addAndLoad("actions", "actions.png", 4);
-		catalog->addAndLoad("icons", "icons.png", 4);
+		catalog->addAndLoad("hexTiles", [self loadTexture:@"texmap_hex.png"], 2);
+		catalog->addAndLoad("actions", [self loadTexture:@"actions.png"], 4);
+		catalog->addAndLoad("icons", [self loadTexture:@"icons.png"], 4);
+		catalog->addAndLoad("units", [self loadTexture:@"texmap.png"], 2);
 		
-		hexMap = new HexMap(catalog->get("hexTiles"), 4, 4, 80.0f, 80.0f);
-		
-		unit = new UnitModel(1, 1);
-		unitView = new UnitView(64.0f, 64.0f, catalog->get("units"), 0);
-		unit->registerView(unitView);
-				
-		input = new InputManager();
-		
-		centralControl = CentralControl::setup(input, unit, unitView, hexMap);
-		
+		centralControl = CentralControl::instance();
     }
     return self;
 }
@@ -169,7 +127,7 @@
 	float				delta;
 	time = CFAbsoluteTimeGetCurrent();
 	delta = (time - lastTime);
-
+	
 	centralControl->update();
 	
 	[self updateScene:delta];
@@ -195,7 +153,7 @@
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	centralControl->draw();
-
+	
     glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
     [context presentRenderbuffer:GL_RENDERBUFFER_OES];
 }
@@ -251,6 +209,13 @@
     }
 }
 
+- (GLuint)loadTexture:(NSString *)fileName {
+	Texture2D *tex = [[Texture2D alloc] initWithImage: [UIImage imageNamed:fileName]];
+	GLuint texRef = [tex name];
+	[tex dealloc];
+	return texRef;
+}
+
 
 - (void)startAnimation {
     self.animationTimer = [NSTimer scheduledTimerWithTimeInterval:animationInterval target:self selector:@selector(mainGameLoop) userInfo:nil repeats:YES];
@@ -280,27 +245,23 @@
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
 	GPoint touchPoint = GPointFromCGPoint([[touches anyObject] locationInView:self]);
-	input->touchesBegan(touchPoint);
+	centralControl->touchesBegan(touchPoint);
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
 	GPoint touchPoint = GPointFromCGPoint([[touches anyObject] locationInView:self]);
-	input->touchesMoved(touchPoint);
+	centralControl->touchesMoved(touchPoint);
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
 	GPoint touchPoint = GPointFromCGPoint([[touches anyObject] locationInView:self]);
-	input->touchesEnded(touchPoint);
+	centralControl->touchesEnded(touchPoint);
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
-	NSLog(@"Cancelled, crashing!");
 	GPoint touchPoint = GPointFromCGPoint([[touches anyObject] locationInView:self]);
-	input->touchesCancelled(touchPoint);
+	centralControl->touchesCancelled(touchPoint);
 }
-
-
-
 
 @end
 

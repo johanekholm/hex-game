@@ -17,19 +17,19 @@
 TextureCatalog* TextureCatalog::_instance = 0;
 
 void TextureCatalog::destroy() {
-
-	_textureMaps.clear();
-	
-	delete _instance;
-	_instance=0;
+	if (_instance != 0) {
+		_instance->_textureMaps.clear();
+		delete _instance;
+		_instance=0;
+	}
 }
 
 void TextureCatalog::add(TextureMap* texMap, const std::string& name) {
 	_textureMaps[name] = texMap;
 }
 
-void TextureCatalog::addAndLoad(const std::string& name, const std::string& filename, int numDivs) {
-	TextureMap* newTex = new TextureMap(filename, numDivs);
+void TextureCatalog::addAndLoad(const std::string& name, GLuint texture, int numDivs) {
+	TextureMap* newTex = new TextureMap(texture, numDivs);
 	
 	_textureMaps[name] = newTex;
 }

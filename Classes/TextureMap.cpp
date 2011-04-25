@@ -12,19 +12,9 @@ TextureMap::~TextureMap() {
 	glDeleteTextures(1, &_name);
 }
 
-TextureMap::TextureMap(const std::string& filename, int numDivs) {
-	NSString *objCFilename;
-	Texture2D *tex;
-	
+TextureMap::TextureMap(GLuint texture, int numDivs) {
 	_numSubdivisions = numDivs;
-	
-	objCFilename = [[NSString alloc] initWithCString: filename.c_str() encoding: NSASCIIStringEncoding]; //NSASCIIStringEncoding
-	
-	NSLog(@"filename: %@", objCFilename);
-	
-	tex = [[Texture2D alloc] initWithImage: [UIImage imageNamed: objCFilename]];
-	_name = [tex name];
-	[tex dealloc];
+	_name = texture;
 	
 }
 

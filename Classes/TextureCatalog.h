@@ -9,6 +9,7 @@
 
 #include <map>
 #include <string>
+#include "toolkit.h"
 
 class TextureMap;
 
@@ -28,10 +29,10 @@ public:
 		return _instance;
 	}
 	
-	void destroy();
+	static void destroy();
 	
 	void add(TextureMap* texMap, const std::string& name);
-	void addAndLoad(const std::string& name, const std::string& filename, int numDivs);
+	void addAndLoad(const std::string& name, GLuint texture, int numDivs);
 	TextureMap* get(const std::string name);
 	
 };

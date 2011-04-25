@@ -7,7 +7,16 @@
  *
  */
 
-#import <OpenGLES/ES1/gl.h>
+#if defined(PLATFORM_IOS)
+	#import <Foundation/Foundation.h>
+	#import <OpenGLES/ES1/gl.h>
+#elif defined(PLATFORM_DESKTOP)
+	#include <QGLContext>
+#elif defined(PLATFORM_MAEMO)
+	#include "SDL.h"
+	#include <SDL_gles.h>
+	#include <GLES/gl.h>
+#endif
 
 #ifndef TOOLKIT_H
 #define TOOLKIT_H

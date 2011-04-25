@@ -7,22 +7,15 @@
 //
 
 
+//#include <QGLWidget>
 #import <UIKit/UIKit.h>
 #import <OpenGLES/EAGL.h>
 #import <OpenGLES/ES1/gl.h>
 #import <OpenGLES/ES1/glext.h>
-#import "Texture2D.h"
-#import "TextureMap.h"
-#import "GameImage.h"
-//#import	"TileMap.h"
 
-class RobotModel;
-class RobotView;
-class TileMap;
 class HexMap;
 class UnitModel;
 class UnitView;
-
 class InputManager;
 class CentralControl;
 
@@ -32,7 +25,7 @@ class CentralControl;
  Note that setting the view non-opaque will only work if the EAGL surface has an alpha channel.
  */
 @interface EAGLView : UIView {
-    
+ 
 @private
     /* The pixel dimensions of the backbuffer */
     GLint backingWidth;
@@ -51,21 +44,14 @@ class CentralControl;
 	
 	CFTimeInterval lastTime;
 	
-
-	UnitModel* unit;
-	UnitView* unitView;
-	HexMap *hexMap;
-	
-	InputManager *input;
 	CentralControl* centralControl;
 	
-}
+};
 
 @property NSTimeInterval animationInterval;
 
 - (void)startAnimation;
 - (void)stopAnimation;
 - (void)renderScene;
-//- (void)loadTexture:(NSString *)name intoLocation:(GLuint)location;
 
 @end

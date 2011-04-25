@@ -10,6 +10,7 @@
 #include "UnitView.h"
 #include "geometry.h"
 #include "TextureCatalog.h"
+#include <math.h>
 
 UnitView::~UnitView() {
 	delete _actionImage;
