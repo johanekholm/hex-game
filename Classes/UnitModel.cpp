@@ -70,6 +70,21 @@ MPoint UnitModel::getPosition() {
 	return MPointMake(_pos.x, _pos.y);
 }
 
+int UnitModel::getDirection() {
+	return _direction;
+}
+
+std::vector<int> UnitModel::getActions() {
+	vector<int> v;
+	
+	for(std::map<int, Action*>::iterator it = _actions.begin(); it != _actions.end(); ++it) {
+        v.push_back(it->first);
+    }
+    
+	return v;
+}
+
+
 void UnitModel::move(int distance) {
 
 	MPoint v = getHexVector(_direction, _pos);

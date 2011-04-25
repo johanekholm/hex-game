@@ -8,6 +8,7 @@
  */
 
 #include <map>
+#include <vector>
 #include "toolkit.h"
 
 class Action;
@@ -35,7 +36,11 @@ public:
 	void move(int distance);
 	void rotate(int rotation);
 	void strike();
+	
 	MPoint getPosition();
+	int getDirection();
+	std::vector<int> getActions();
+	
 	void registerView(IUnitView* view);
 	void updateViews();
 	Action* addAction(int action);
