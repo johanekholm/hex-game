@@ -8,14 +8,35 @@
  */
 
 #include "GameImage.h"
-#include "IUnitView.h"
+//#include "IUnitView.h"
+#include "IObservable.h"
 
-//#include <vector>
+#include <vector>
+
 #define ACTION_ANGLE_INITIAL -PI/2.0f
 #define ACTION_ANGLE_INCREMENT PI/3.0f
 #define ACTION_RADIUS 64.0f
 
-class UnitView : public GameImage, public IUnitView {
+class UnitView : public ViewController, public IObservable {
+	GPoint _pos;
+	GLfloat _facing;
+	std::vector<int> _actions;
+	GameImage* _unitImage;
+	GameImage* _actionImage;
+	GameImage* _directionImage;
+	
+	GPoint getActionPosition(int index);
+	void reactToEvent(int eventType);
+public:
+	~UnitView();
+	UnitView(GLfloat aWidth, GLfloat aHeight, int index);
+	void draw();
+	void drawActions();
+	void update();
+	int touchedAction(GPoint point);
+};
+
+/*class UnitView : public GameImage, public IUnitView {
 	GPoint _pos;
 	GLfloat _facing;
 	std::vector<int> _actions;
@@ -32,4 +53,4 @@ public:
 	void updateActions(std::vector<int> actions);
 	bool wasTouched(GPoint point);
 	int touchedAction(GPoint point);
-};
+};*/
