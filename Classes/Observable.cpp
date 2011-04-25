@@ -10,6 +10,10 @@
 #include "Observable.h"
 #include "IObserver.h"
 
+/*Observable::~Observable() {
+	
+}*/
+
 void Observable::addObserver(IObserver* observer) {
 	_observers.push_back(observer);
 }

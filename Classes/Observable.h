@@ -17,6 +17,7 @@ class IObserver;
 class Observable {
 	vector<Observer*> _observers;
 public:
+	//~Observable();
 	void addObserver(IObserver* observer);
 	void updateObservers();
 

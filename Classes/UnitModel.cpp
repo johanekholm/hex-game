@@ -8,7 +8,7 @@
  */
 
 #include "UnitModel.h"
-#include "IUnitView.h"
+//#include "IUnitView.h"
 #include "Action.h"
 #include "geometry.h"
 
@@ -35,10 +35,6 @@ void UnitModel::registerAction(Action *aAction) {
 
 */
 
-void UnitModel::registerView(IUnitView* view) {
-	_view = view;
-	this->updateViews();
-}
 
 Action* UnitModel::addAction(int action) {
 	_actions[action] = new Action(action, this);
@@ -60,10 +56,6 @@ bool UnitModel::spendAP(int cost) {
 	} else {
 		return false;
 	}
-}
-
-void UnitModel::updateViews() {
-	_view->updatePosition(_pos, _direction);
 }
 
 MPoint UnitModel::getPosition() {
@@ -92,7 +84,7 @@ void UnitModel::move(int distance) {
 	
 	//NSLog(@"moved - x: %i, y: %i", v.x, v.y);
 	
-	this->updateViews();
+	this->updateObservers();
 }
 
 void UnitModel::rotate(int rotation) {
@@ -104,7 +96,7 @@ void UnitModel::rotate(int rotation) {
 		_direction -= 6;
 	}
 	
-	this->updateViews();
+	this->updateObservers();
 	
 	//NSLog(@"direction: %i", _direction);
 }
@@ -113,4 +105,13 @@ void UnitModel::strike() {
 	
 }
 
+/*void UnitModel::registerView(IUnitView* view) {
+	_view = view;
+	this->updateViews();
+}*/
+
+
+/*void UnitModel::updateViews() {
+	_view->updatePosition(_pos, _direction);
+}*/
 
