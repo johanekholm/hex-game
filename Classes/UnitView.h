@@ -17,7 +17,7 @@
 #define ACTION_ANGLE_INCREMENT PI/3.0f
 #define ACTION_RADIUS 64.0f
 
-class UnitView : public ViewController, public IObservable {
+class UnitView : public ViewController, public IObserver {
 	GPoint _pos;
 	GLfloat _facing;
 	UnitModel* _unitModel;

@@ -12,8 +12,7 @@
 #include "toolkit.h"
 
 class Action;
-class IUnitView;
-
+//class IUnitView;
 
 class UnitModel {
 	MPoint _pos;
