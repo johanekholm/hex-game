@@ -10,6 +10,7 @@
 #include "RobotModel.h"
 #include "IRobotView.h"
 #include <math.h>
+#include <stdlib.h>
 
 RobotModel::RobotModel(int tx, int ty) {
 	_tilePos.x = tx;

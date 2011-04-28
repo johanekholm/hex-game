@@ -6,8 +6,8 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import "GameImage.h"
-#import "TextureMap.h"
+#include "GameImage.h"
+#include "TextureMap.h"
 
 GameImage::GameImage(GLfloat aWidth, GLfloat aHeight, TextureMap* tex, int index) {
 	width = aWidth;

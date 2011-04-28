@@ -14,17 +14,16 @@
 
 const double FLICK_TIME_BACK = 0.07;
 const double FLICK_DAMPENING = 0.05;
-const int HISTORY_SIZE = 20;
 const int FLICK_TRESHOLD = 30;
 const int FLICK_MAXSPEED = 10;
 
 
 InputManager::~InputManager() {
-	free(_touchHistory);
+//	free(_touchHistory);
 }
 
 InputManager::InputManager() {
-	_touchHistory = (GPointInTime*) malloc(sizeof(GPointInTime) * HISTORY_SIZE);
+//	_touchHistory = (GPointInTime*) malloc(sizeof(GPointInTime) * HISTORY_SIZE);
 	_historyCount = 0;
 	_historyHead = 0;
 	_flickedVelocity.x = 0;

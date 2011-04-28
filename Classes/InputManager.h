@@ -14,8 +14,10 @@
 #define TOUCH_EVENT_MOVE 2
 #define TOUCH_EVENT_LIFT 3
 
-#import "toolkit.h"
+#include "toolkit.h"
 #include <vector>
+
+const int HISTORY_SIZE = 20;
 
 class InputState;
 
@@ -57,7 +59,7 @@ private:
 	int _historyCount;
 	int _historyHead;
 	GPoint _flickedVelocity;
-	GPointInTime* _touchHistory;
+	GPointInTime _touchHistory[HISTORY_SIZE];
 	GPoint _clickPos;
 	GPoint _pressPos;
 	std::vector<TouchEvent> _events;

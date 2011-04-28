@@ -6,7 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import "TextureMap.h"
+#include "TextureMap.h"
 
 TextureMap::~TextureMap() {
 	glDeleteTextures(1, &_name);

@@ -90,8 +90,6 @@ void UnitModel::rotate(int rotation) {
 	}
 	
 	this->updateViews();
-	
-	NSLog(@"direction: %i", _direction);
 }
 
 void UnitModel::strike() {

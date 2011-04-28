@@ -7,10 +7,7 @@
 //
 
 #include "HexMap.h"
-#import "TextureMap.h"
-
-
-
+#include "TextureMap.h"
 
 HexMap::~HexMap() {
 	delete [] _vertices;

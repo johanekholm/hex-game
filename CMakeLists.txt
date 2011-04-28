@@ -9,27 +9,25 @@ PROJECT( HexGame )
 SET(PRODUCT_NAME HexGame)
 
 SET( SOURCES
-	Classes/Action.mm
-	Classes/CentralControl.mm
-	Classes/GameImage.mm
-#	Classes/GameEngine.cpp
-	Classes/geometry.mm
-	Classes/HexMap.mm
-	Classes/InputManager.mm
-	Classes/RobotModel.mm
-	Classes/RobotView.mm
-	Classes/TextureCatalog.mm
-	Classes/TextureMap.mm
-	Classes/UnitModel.mm
-	Classes/UnitView.mm
-	Toolkit/toolkit.mm
+	Classes/Action.cpp
+	Classes/CentralControl.cpp
+	Classes/GameImage.cpp
+	Classes/geometry.cpp
+	Classes/HexMap.cpp
+	Classes/InputManager.cpp
+	Classes/RobotModel.cpp
+	Classes/RobotView.cpp
+	Classes/TextureCatalog.cpp
+	Classes/TextureMap.cpp
+	Classes/UnitModel.cpp
+	Classes/UnitView.cpp
+	Toolkit/toolkit.cpp
 )
 
 SET( HEADERS
 	Classes/Action.h
 	Classes/CentralControl.h
 	Classes/GameImage.h
-#	Classes/GameEngine.h
 	Classes/geometry.h
 	Classes/HexMap.h
 	Classes/InputManager.h
@@ -55,7 +53,7 @@ SET(RESOURCES
 INCLUDE_DIRECTORIES( Toolkit )
 INCLUDE_DIRECTORIES( Classes )
 
-SET(TARGET_PLATFORM "" CACHE STRING "Sets the target platform. Valid values are 'iOS' or 'Meego'")
+SET(TARGET_PLATFORM "" CACHE STRING "Sets the target platform. Valid values are 'iOS', 'Android' or 'Meego'")
 IF (NOT TARGET_PLATFORM)
 	MESSAGE(FATAL_ERROR "Please set the target platform with -DTARGET_PLATFORM='platform'")
 ELSE (NOT TARGET_PLATFORM)
@@ -67,11 +65,19 @@ ELSE (NOT TARGET_PLATFORM)
 	ENDIF(COMMAND CONFIGURE)
 ENDIF(NOT TARGET_PLATFORM)
 
-ADD_EXECUTABLE(HexGame MACOSX_BUNDLE
-	${SOURCES}
-	${HEADERS}
-	${RESOURCES}
-)
+IF (${TARGET_PLATFORM} MATCHES "Android")
+	ADD_LIBRARY(HexGame SHARED
+		${SOURCES}
+		${HEADERS}
+		${RESOURCES}
+	)
+ELSE (${TARGET_PLATFORM} MATCHES "Android")
+	ADD_EXECUTABLE(HexGame MACOSX_BUNDLE
+		${SOURCES}
+		${HEADERS}
+		${RESOURCES}
+	)
+ENDIF (${TARGET_PLATFORM} MATCHES "Android")	
 
 SET_SOURCE_FILES_PROPERTIES(${RESOURCES} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
 
