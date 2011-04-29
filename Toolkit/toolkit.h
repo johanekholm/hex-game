@@ -10,10 +10,13 @@
 #if defined(PLATFORM_IOS)
 	#import <Foundation/Foundation.h>
 	#import <OpenGLES/ES1/gl.h>
-#elif defined(PLATFORM_MEEGO)
+#elif defined(PLATFORM_DESKTOP)
 	#include <QGLContext>
 #elif defined(PLATFORM_ANDROID)
 	#include <GLES/gl.h>
+#elif defined(PLATFORM_MAEMO)
+	#include "SDL.h"
+	#include <SDL_gles.h>
 #endif
 
 #ifndef TOOLKIT_H

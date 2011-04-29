@@ -84,6 +84,7 @@ void CentralControl::handleEventNormal(const TouchEvent& event) {
 		if (_unitView->wasTouched(event.point)) {
 			_selectedUnit = _unitView;
 			this->switchMode(2);
+			//NSLog(@"unit selected");
 		}
 	}
 }
@@ -93,6 +94,8 @@ void CentralControl::handleEventFocus(const TouchEvent& event) {
 	
 	if (event.type == 3) {
 		if ((action = _unitView->touchedAction(event.point)) > -1) {
+			//NSLog(@"action: %i", action);
+			
 			_unit->doAction(action);
 		}
 		this->switchMode(1);

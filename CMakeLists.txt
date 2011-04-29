@@ -31,9 +31,6 @@ SET( HEADERS
 	Classes/geometry.h
 	Classes/HexMap.h
 	Classes/InputManager.h
-	Classes/IRobotView.h
-	Classes/RobotModel.h
-	Classes/RobotView.h
 	Classes/TextureCatalog.h
 	Classes/TextureMap.h
 	Classes/UnitModel.h
@@ -42,11 +39,11 @@ SET( HEADERS
 )
 
 SET(RESOURCES
+	Resources/actions.png
 	Resources/floortilemap.png
 	Resources/texmap.png
 	Resources/texmap_hex.png
 	Resources/icons.png
-	Resources/actions.png
 )
 
 
