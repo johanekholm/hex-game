@@ -22,7 +22,7 @@ protected:
 public:
 	GameImage(GLfloat aWidth, GLfloat aHeight, TextureMap* tex, int index);
 	//~GameImageCPP();
-	void draw();
+	//void draw();
 	void drawAt(const GPoint &pos);
 	void drawAtWithSubTexture(const GPoint &pos, int subTexture);
 	void drawAtRotatedWithSubTexture(const GPoint &pos, GLfloat angle, int subTexture);
