@@ -11,12 +11,13 @@
 #include "TextureCatalog.h"
 #include "ViewController.h"
 #include "ViewControllerManager.h"
-#include "UnitModel.h"
+#include "ModelManager.h"
 #include "HexMap.h"
 #include "InputManager.h"
 #include "toolkit.h"
 
 #include "UnitView.h"
+#include "UnitModel.h"
 
 CentralControl* CentralControl::_instance = 0;
 
@@ -26,6 +27,7 @@ void CentralControl::destroy() {
         delete _instance->_input;
         delete _instance->_hexMap;
         delete _instance->_viewControllerManager;
+        delete _instance->_modelManager;
 		delete _instance;
 		_instance=0;
 	}
@@ -33,18 +35,21 @@ void CentralControl::destroy() {
 
 CentralControl::CentralControl() {
 	UnitView* unitView;
-    
+    UnitModel* unit;
     _mode = 1;
 	
 	TextureCatalog* catalog = TextureCatalog::instance();
 		
 	_hexMap = new HexMap(catalog->get("hexTiles"), 4, 4, 80.0f, 80.0f);
-	_unit = new UnitModel(0, 0);
     _viewControllerManager = new ViewControllerManager();
+    _modelManager = new ModelManager();
 	_input = new InputManager();
+
+    unit = new UnitModel(0, 0);
+    _modelManager->add(unit);
     
-	unitView = new UnitView(_unit, 64.0f, 64.0f, 0);
-	_unit->addObserver(unitView);
+	unitView = new UnitView(unit, 64.0f, 64.0f, 0);
+	unit->addObserver(unitView);
     _viewControllerManager->add(unitView);
 	
 

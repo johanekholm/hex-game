@@ -19,6 +19,7 @@ SET( SOURCES
     Classes/Observable.cpp
 	Classes/TextureCatalog.cpp
 	Classes/TextureMap.cpp
+    Classes/UnitFactory.cpp
 	Classes/UnitModel.cpp
 	Classes/UnitView.cpp
 	Classes/ViewControllerManager.cpp
@@ -38,6 +39,7 @@ SET( HEADERS
     Classes/ModelManager.h
 	Classes/TextureCatalog.h
 	Classes/TextureMap.h
+    Classes/UnitFactory.h
 	Classes/UnitModel.h
 	Classes/UnitView.h
 	Classes/ViewControllerManager.h

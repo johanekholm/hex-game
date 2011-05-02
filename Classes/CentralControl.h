@@ -13,6 +13,7 @@ class UnitModel;
 class HexMap;
 class ViewController;
 class ViewControllerManager;
+class ModelManager;
 
 struct TouchEvent;
 struct GPoint;
@@ -22,7 +23,7 @@ class CentralControl {
 	int _mode;
 	ViewController* _selectedViewController;
 	InputManager* _input; 
-	UnitModel* _unit;
+    ModelManager* _modelManager;
     ViewControllerManager* _viewControllerManager;
 	HexMap* _hexMap;
 
