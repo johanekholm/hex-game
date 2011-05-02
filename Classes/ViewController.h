@@ -7,6 +7,9 @@
  *
  */
 
+#ifndef VIEWCONTROLLER_H
+#define VIEWCONTROLLER_H
+
 #include "toolkit.h"
 
 //struct GPoint;
@@ -28,3 +31,5 @@ public:
 	virtual void draw() = 0;
 	virtual void drawGUI() = 0;
 };
+
+#endif

@@ -16,6 +16,7 @@
 
 void Observable::addObserver(IObserver* observer) {
 	_observers.push_back(observer);
+    observer->update();
 }
 
 void Observable::updateObservers() {
