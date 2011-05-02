@@ -7,6 +7,9 @@
  *
  */
 
+#ifndef UNITMODEL_H
+#define UNITMODEL_H
+
 #include <map>
 #include <vector>
 #include "toolkit.h"
@@ -47,3 +50,5 @@ public:
 	void doAction(int action);
 	
 };
+
+#endif

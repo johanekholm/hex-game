@@ -15,7 +15,7 @@
 class IObserver;
 
 class Observable {
-	vector<Observer*> _observers;
+	std::vector<IObserver*> _observers;
 public:
 	//~Observable();
 	void addObserver(IObserver* observer);

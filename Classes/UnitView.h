@@ -9,7 +9,9 @@
 
 #include "GameImage.h"
 //#include "IUnitView.h"
-#include "IObservable.h"
+#include "IObserver.h"
+#include "ViewController.h"
+#include "UnitModel.h"
 
 #include <vector>
 

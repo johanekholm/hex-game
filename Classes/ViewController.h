@@ -13,13 +13,17 @@
 struct TouchEvent;
 
 class ViewController {
-	GPoint _pos;
+protected:	
+    GPoint _pos;
 	GLfloat _width, _height;
-	
+	bool _hasFocus;
+    
 	//virtual void reactToEvent(int eventType) = 0;
 	
 public:
+    ViewController();
 	bool isWithin(const GPoint& point);
+    void setFocus(bool hasFocus);
 	virtual bool handleEvent(const TouchEvent& event) = 0;
 	virtual void draw() = 0;
 	virtual void drawGUI() = 0;

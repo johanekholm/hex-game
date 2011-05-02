@@ -8,6 +8,7 @@
  */
 
 #include "ViewControllerManager.h"
+#include "ViewController.h"
 
 ViewControllerManager::ViewControllerManager() {
 
@@ -23,19 +24,19 @@ void ViewControllerManager::add(ViewController* view) {
 
 void ViewControllerManager::draw() {
 	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end(); ++it) {
-		it->draw();
+		(*it)->draw();
 	}
 }
 
 void ViewControllerManager::drawGUI() {
 	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end(); ++it) {
-		it->drawGUI();
+		(*it)->drawGUI();
 	}
 }
 
 ViewController* ViewControllerManager::getTouched(const GPoint& point) {
 	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end(); ++it) {
-		if (it->isWithin(point)) {
+		if ((*it)->isWithin(point)) {
 			return (*it);	
 		}
 	}

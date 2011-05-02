@@ -67,7 +67,7 @@ int UnitModel::getDirection() {
 }
 
 std::vector<int> UnitModel::getActions() {
-	vector<int> v;
+	std::vector<int> v;
 	
 	for(std::map<int, Action*>::iterator it = _actions.begin(); it != _actions.end(); ++it) {
         v.push_back(it->first);

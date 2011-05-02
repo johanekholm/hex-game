@@ -10,6 +10,8 @@
 #include "UnitView.h"
 #include "geometry.h"
 #include "TextureCatalog.h"
+#include "InputManager.h"
+
 #include <math.h>
 
 UnitView::~UnitView() {
@@ -75,6 +77,7 @@ bool UnitView::handleEvent(const TouchEvent& event) {
 	if (event.type == 3) {
 		_unitModel->doAction(this->touchedAction(event.point));	
 	}
+	return true;
 }
 
 int UnitView::touchedAction(GPoint point) {

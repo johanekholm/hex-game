@@ -20,6 +20,6 @@ void Observable::addObserver(IObserver* observer) {
 
 void Observable::updateObservers() {
 	for (std::vector<IObserver*>::iterator it = _observers.begin(); it != _observers.end(); ++it) {
-		it->update();
+		(*it)->update();
 	}
 }
