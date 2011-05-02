@@ -12,6 +12,7 @@
 #include "ViewController.h"
 #include "ViewControllerManager.h"
 #include "ModelManager.h"
+#include "UnitFactory.h"
 #include "HexMap.h"
 #include "InputManager.h"
 #include "toolkit.h"
@@ -28,14 +29,14 @@ void CentralControl::destroy() {
         delete _instance->_hexMap;
         delete _instance->_viewControllerManager;
         delete _instance->_modelManager;
+        delete _instance->_unitFactory;
+        
 		delete _instance;
 		_instance=0;
 	}
 }
 
 CentralControl::CentralControl() {
-	UnitView* unitView;
-    UnitModel* unit;
     _mode = 1;
 	
 	TextureCatalog* catalog = TextureCatalog::instance();
@@ -43,16 +44,12 @@ CentralControl::CentralControl() {
 	_hexMap = new HexMap(catalog->get("hexTiles"), 4, 4, 80.0f, 80.0f);
     _viewControllerManager = new ViewControllerManager();
     _modelManager = new ModelManager();
+    _unitFactory = new UnitFactory(_modelManager, _viewControllerManager);
 	_input = new InputManager();
-
-    unit = new UnitModel(0, 0);
-    _modelManager->add(unit);
     
-	unitView = new UnitView(unit, 64.0f, 64.0f, 0);
-	unit->addObserver(unitView);
-    _viewControllerManager->add(unitView);
-	
-
+    _unitFactory->produceAndRegisterUnit("soldier", 1, MPointMake(0, 0));
+    _unitFactory->produceAndRegisterUnit("soldier", 1, MPointMake(2, 1));
+    
 }
 
 void CentralControl::update() {
@@ -70,7 +67,7 @@ void CentralControl::update() {
 				
 			case 2:
 				this->handleEventFocus(event);				
-				break;
+break;
 				
 		}
 	}

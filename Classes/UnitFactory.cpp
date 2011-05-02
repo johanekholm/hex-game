@@ -23,7 +23,7 @@ void UnitFactory::produceAndRegisterUnit(const std::string& unitClass, int owner
     UnitModel* unit;
     UnitView* view;
     
-    unit = new UnitModel(0, 0);
+    unit = new UnitModel(pos.x, pos.y);
 	view = new UnitView(unit, 64.0f, 64.0f, 0);
 
     unit->addObserver(view);
@@ -32,13 +32,3 @@ void UnitFactory::produceAndRegisterUnit(const std::string& unitClass, int owner
 
 }
 
-/*void produceViewController(UnitModel* unit, int owner) {
-    ViewController vc;
-    
-    switch (owner) {
-        case 1:
-            vc = new UnitView(unit);
-            break;
-    }
-    return vc;
-}*/

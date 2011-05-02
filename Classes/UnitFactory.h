@@ -18,7 +18,6 @@ class UnitFactory {
     ModelManager* _modelManager;
     ViewControllerManager* _viewControllerManager;
     
-    //void produceViewController(UnitModel* unit, int owner);
     
 public:
     UnitFactory(ModelManager* modelManager, ViewControllerManager* viewControllerManager);
