@@ -105,6 +105,10 @@ void UnitModel::strike() {
 	
 }
 
+void UnitModel::tick() {
+	
+}
+
 /*void UnitModel::registerView(IUnitView* view) {
 	_view = view;
 	this->updateViews();

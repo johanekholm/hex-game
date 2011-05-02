@@ -35,6 +35,8 @@ public:
 	void performActionWithIndex(int index);
 	void registerAction(Action *aAction);
 	*/
+    
+    void tick();
 	bool spendAP(int cost);
 	void move(int distance);
 	void rotate(int rotation);

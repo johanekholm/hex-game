@@ -15,13 +15,14 @@ SET( SOURCES
 	Classes/geometry.cpp
 	Classes/HexMap.cpp
 	Classes/InputManager.cpp
+    Classes/ModelManager.cpp
+    Classes/Observable.cpp
 	Classes/TextureCatalog.cpp
 	Classes/TextureMap.cpp
 	Classes/UnitModel.cpp
 	Classes/UnitView.cpp
 	Classes/ViewControllerManager.cpp
 	Classes/ViewController.cpp
-	Classes/Observable.cpp
 	Toolkit/toolkit.cpp
 )
 
@@ -33,13 +34,14 @@ SET( HEADERS
 	Classes/geometry.h
 	Classes/HexMap.h
 	Classes/InputManager.h
+    Classes/IObserver.h
+    Classes/ModelManager.h
 	Classes/TextureCatalog.h
 	Classes/TextureMap.h
 	Classes/UnitModel.h
 	Classes/UnitView.h
 	Classes/ViewControllerManager.h
 	Classes/ViewController.h
-	Classes/IObserver.h
 	Classes/Observable.h
 	Toolkit/toolkit.h
 )
