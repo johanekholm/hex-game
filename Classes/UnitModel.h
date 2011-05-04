@@ -7,20 +7,24 @@
  *
  */
 
+#ifndef UNITMODEL_H
+#define UNITMODEL_H
+
 #include <map>
+#include <vector>
 #include "toolkit.h"
+#include "Observable.h"
 
 class Action;
-class IUnitView;
+//class IUnitView;
 
-
-class UnitModel {
+class UnitModel : public Observable {
 	MPoint _pos;
 	int _direction;
 	int _ap;
 	int _health;
 	std::map<int, Action*> _actions;
-	IUnitView* _view;
+//	IUnitView* _view;
 	
 public:
 	
@@ -31,14 +35,22 @@ public:
 	void performActionWithIndex(int index);
 	void registerAction(Action *aAction);
 	*/
+    
+    void tick();
 	bool spendAP(int cost);
 	void move(int distance);
 	void rotate(int rotation);
 	void strike();
+	
 	MPoint getPosition();
-	void registerView(IUnitView* view);
-	void updateViews();
+	int getDirection();
+	std::vector<int> getActions();
+	
+	//void registerView(IUnitView* view);
+	//void updateViews();
 	Action* addAction(int action);
 	void doAction(int action);
 	
 };
+
+#endif

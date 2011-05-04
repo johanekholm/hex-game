@@ -9,26 +9,47 @@
 
 #include "CentralControl.h"
 #include "TextureCatalog.h"
-#include "UnitModel.h"
-#include "UnitView.h"
+#include "ViewController.h"
+#include "ViewControllerManager.h"
+#include "ModelManager.h"
+#include "UnitFactory.h"
 #include "HexMap.h"
 #include "InputManager.h"
 #include "toolkit.h"
 
+#include "UnitView.h"
+#include "UnitModel.h"
+
 CentralControl* CentralControl::_instance = 0;
 
+void CentralControl::destroy() {
+	if (_instance != 0) {
+        
+        delete _instance->_input;
+        delete _instance->_hexMap;
+        delete _instance->_viewControllerManager;
+        delete _instance->_modelManager;
+        delete _instance->_unitFactory;
+        
+		delete _instance;
+		_instance=0;
+	}
+}
+
 CentralControl::CentralControl() {
-	_mode = 1;
+    _mode = 1;
 	
 	TextureCatalog* catalog = TextureCatalog::instance();
 		
 	_hexMap = new HexMap(catalog->get("hexTiles"), 4, 4, 80.0f, 80.0f);
-	
-	_unit = new UnitModel(0, 0);
-	_unitView = new UnitView(64.0f, 64.0f, catalog->get("units"), 0);
-	_unit->registerView(_unitView);
-	
+    _viewControllerManager = new ViewControllerManager();
+    _modelManager = new ModelManager();
+    _unitFactory = new UnitFactory(_modelManager, _viewControllerManager);
 	_input = new InputManager();
+    
+    _unitFactory->produceAndRegisterUnit("soldier", 1, MPointMake(0, 0));
+    _unitFactory->produceAndRegisterUnit("soldier", 1, MPointMake(2, 1));
+    
 }
 
 void CentralControl::update() {
@@ -46,7 +67,7 @@ void CentralControl::update() {
 				
 			case 2:
 				this->handleEventFocus(event);				
-				break;
+break;
 				
 		}
 	}
@@ -57,50 +78,37 @@ void CentralControl::draw() {
 	switch(_mode) {
 		case 1:
 			_hexMap->draw();
-			_unitView->draw();
+			_viewControllerManager->draw();
+            //_viewControllerManager->drawGUI();
 			break;
 		case 2:
 			_hexMap->draw();
-			_unitView->draw();
-			_unitView->drawActions();
+			_viewControllerManager->draw();
+            _viewControllerManager->drawGUI();
 			break;
 	}
 	
 }
 
 void CentralControl::handleEventNormal(const TouchEvent& event) {
-	/*SubViewController* selection = 0;
+    ViewController* selection = 0;
 	 
-	 if (event.type == 1) {
-	 selection = viewControlManager->getTouched(event.point);
-	 
-	 if (selection != 0) {
-	 _selectedViewController = selection;
-	 this->switchMode(2);
-	 }
-	 }*/
-	
 	if (event.type == 1) {
-		if (_unitView->wasTouched(event.point)) {
-			_selectedUnit = _unitView;
-			this->switchMode(2);
-			//NSLog(@"unit selected");
-		}
-	}
+        selection = _viewControllerManager->getTouched(event.point);
+	 
+        if (selection != 0) {
+            _selectedViewController = selection;
+            this->switchMode(2);
+        }
+    }
 }
 
 void CentralControl::handleEventFocus(const TouchEvent& event) {
-	int action = 0;
+    _selectedViewController->handleEvent(event);
 	
 	if (event.type == 3) {
-		if ((action = _unitView->touchedAction(event.point)) > -1) {
-			//NSLog(@"action: %i", action);
-			
-			_unit->doAction(action);
-		}
 		this->switchMode(1);
-	}
-	
+	}	
 }
 
 void CentralControl::touchesBegan(const GPoint& touchPoint) {

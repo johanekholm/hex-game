@@ -17,8 +17,9 @@ class ViewControllerManager {
 public:
 	ViewControllerManager();
 	~ViewControllerManager();
+	void add(ViewController*);
     void draw();
-    ViewController* getTouched(const GPoint& point);
-	
+    void drawGUI();
+    ViewController* getTouched(const GPoint& point);	
 };
 

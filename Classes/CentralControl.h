@@ -8,29 +8,42 @@
  */
 
 class InputManager;
-class UnitView;
-class UnitModel;
 class HexMap;
+class ViewController;
+class ViewControllerManager;
+class ModelManager;
+class UnitFactory;
+
+//class UnitView;
+//class UnitModel;
+
 struct TouchEvent;
 struct GPoint;
 
 class CentralControl {
-	int _mode;
-	UnitView* _selectedUnit;
 	static CentralControl* _instance;
+	int _mode;
+	ViewController* _selectedViewController;
 	InputManager* _input; 
-	UnitModel* _unit;
-	UnitView* _unitView;
+    ModelManager* _modelManager;
+    ViewControllerManager* _viewControllerManager;
+    UnitFactory* _unitFactory;
 	HexMap* _hexMap;
-	
+
+    //~CentralControl();
+    CentralControl();
+
 public:
-	CentralControl();
 	static CentralControl* instance() {
 		if (_instance == 0) {
 			_instance = new CentralControl();
 		} 
 		return _instance;
 	}
+    
+    static void destroy();
+    
+    
 	
 	void update();
 	void draw();
