@@ -79,7 +79,7 @@ void CentralControl::draw() {
 		case 1:
 			_hexMap->draw();
 			_viewControllerManager->draw();
-            //_viewControllerManager->drawGUI();
+            _viewControllerManager->drawGUI();
 			break;
 		case 2:
 			_hexMap->draw();
@@ -98,6 +98,7 @@ void CentralControl::handleEventNormal(const TouchEvent& event) {
 	 
         if (selection != 0) {
             _selectedViewController = selection;
+            _selectedViewController->setFocus(true);
             this->switchMode(2);
         }
     }
@@ -107,6 +108,8 @@ void CentralControl::handleEventFocus(const TouchEvent& event) {
     _selectedViewController->handleEvent(event);
 	
 	if (event.type == 3) {
+        _selectedViewController->setFocus(false);
+        _selectedViewController = 0;
 		this->switchMode(1);
 	}	
 }

@@ -21,10 +21,12 @@ UnitView::~UnitView() {
 	_unitModel = 0;
 }
 
-UnitView::UnitView(UnitModel* model, GLfloat aWidth, GLfloat aHeight, int index) {
+UnitView::UnitView(UnitModel* model, GLfloat width, GLfloat height, int index) {
 	_unitModel = model;
 	_facing = 0.0f;
-	_unitImage = new GameImage(aWidth, aHeight, TextureCatalog::instance()->get("units"), index);
+    _width = width;
+    _height = height;
+	_unitImage = new GameImage(width, height, TextureCatalog::instance()->get("units"), index);
 	_actionImage = new GameImage(32.0f, 32.0f, TextureCatalog::instance()->get("actions"), 0);
 	_directionImage = new GameImage(16.0f, 16.0f, TextureCatalog::instance()->get("icons"), 0);
 	_actions.push_back(0);
@@ -69,7 +71,9 @@ void UnitView::draw() {
 
 void UnitView::drawGUI() {
 	_directionImage->drawAtRotatedWithSubTexture(_pos, (GLfloat)_facing * 60.0f + 180.0f, 0);
-	this->drawActions();
+	if (this->_hasFocus) {
+        this->drawActions();
+    }
 }
 
 

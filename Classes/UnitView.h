@@ -20,7 +20,6 @@
 #define ACTION_RADIUS 64.0f
 
 class UnitView : public ViewController, public IObserver {
-	GPoint _pos;
 	GLfloat _facing;
 	UnitModel* _unitModel;
 	std::vector<int> _actions;
@@ -35,7 +34,7 @@ class UnitView : public ViewController, public IObserver {
 
 public:
 	~UnitView();
-	UnitView(UnitModel* model, GLfloat aWidth, GLfloat aHeight, int index);
+	UnitView(UnitModel* model, GLfloat width, GLfloat height, int index);
 	void draw();
 	void drawGUI();
 	bool handleEvent(const TouchEvent& event);
