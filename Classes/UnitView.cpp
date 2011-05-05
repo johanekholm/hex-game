@@ -100,8 +100,9 @@ int UnitView::touchedAction(GPoint point) {
 }
 
 void UnitView::update() {
-	this->updatePosition(_unitModel->getPosition(), _unitModel->getDirection());
-	this->updateActions(_unitModel->getActions());	
+    _state = _unitModel->getState();
+	this->updatePosition(_state.pos, _state.direction);
+	this->updateActions(_state.actions);	
 }
 
 

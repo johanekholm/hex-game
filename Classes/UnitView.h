@@ -22,6 +22,7 @@
 class UnitView : public ViewController, public IObserver {
 	GLfloat _facing;
 	UnitModel* _unitModel;
+    UnitState _state;
 	std::vector<int> _actions;
 	GameImage* _unitImage;
 	GameImage* _actionImage;

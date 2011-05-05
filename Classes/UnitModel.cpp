@@ -104,6 +104,20 @@ int UnitModel::getStat(int stat) {
     return 0;
 }
 
+UnitState UnitModel::getState() {
+    UnitState state;
+    
+    state.pos = _pos;
+    state.direction = _direction;
+    state.ap = _ap;
+    state.hp = _hp;
+    state.maxAp = _maxAp;
+    state.maxHp = _maxHp;
+    state.actions = this->getActions();
+    
+    return state;
+}
+
 void UnitModel::move(int distance) {
 
 	MPoint v = getHexVector(_direction, _pos);
@@ -159,6 +173,9 @@ void UnitModel::inflictDamage(int damage) {
 }
 
 void UnitModel::tick() {
+    if (this->_ap < this->getStat(STAT_MAXAP)) {
+        this->_ap += 1;
+    }
 	
 }
 

@@ -25,6 +25,16 @@
 
 class Action;
 
+struct UnitState {
+    MPoint pos;
+    int direction;
+    int ap;
+    int hp;
+    int maxAp;
+    int maxHp;
+    std::vector<int> actions;
+};
+
 class UnitModel : public Observable {
 	MPoint _pos;
 	int _direction;
@@ -51,6 +61,7 @@ public:
     void defend(UnitModel* attacker, int power, int skill, int attack_type);
     void inflictDamage(int damage);
     int getStat(int stat);
+    UnitState getState();
 	
 	MPoint getPosition();
 	int getDirection();
