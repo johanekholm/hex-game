@@ -16,7 +16,6 @@
 #include "Observable.h"
 
 class Action;
-//class IUnitView;
 
 class UnitModel : public Observable {
 	MPoint _pos;
@@ -24,17 +23,11 @@ class UnitModel : public Observable {
 	int _ap;
 	int _health;
 	std::map<int, Action*> _actions;
-//	IUnitView* _view;
 	
 public:
 	
 	~UnitModel();
 	UnitModel(int x, int y);
-	
-	/*Action* getActionWithIndex(int index);
-	void performActionWithIndex(int index);
-	void registerAction(Action *aAction);
-	*/
     
     void tick();
 	bool spendAP(int cost);
@@ -46,8 +39,6 @@ public:
 	int getDirection();
 	std::vector<int> getActions();
 	
-	//void registerView(IUnitView* view);
-	//void updateViews();
 	Action* addAction(int action);
 	void doAction(int action);
 	

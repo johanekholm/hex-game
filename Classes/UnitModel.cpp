@@ -8,7 +8,6 @@
  */
 
 #include "UnitModel.h"
-//#include "IUnitView.h"
 #include "Action.h"
 #include "geometry.h"
 
@@ -102,7 +101,28 @@ void UnitModel::rotate(int rotation) {
 }
 
 void UnitModel::strike() {
-	
+    UnitModel* target;
+    
+    target = ModelManager::instance()->getUnitAtPos(point);
+    target->defend(this->numAttacks, this->power, this->skill, ATTACK_SLICE);
+}
+
+void UnitModel::defend(UnitModel* attacker, int numAttacks, int power, int skill, int attackType) {
+/*    int skillDiff, effectivePower, damage, roll;
+    
+    damage = 0;
+    skillDiff = this->defense - power;
+    effectivePower = power - this->protection;
+    
+    for (int i=0; i<numAttacks; i++) {
+        roll = rand(8);
+        if (roll + skillDiff >= 5 || roll == 8) {
+            damage++;
+        }    
+    }
+    
+    attacker->reportHits(damage);
+    this->inflictDamage(damage);*/
 }
 
 void UnitModel::tick() {
