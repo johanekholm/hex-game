@@ -9,6 +9,7 @@
 
 #include "UnitModel.h"
 #include "Action.h"
+#include "ModelManager.h"
 #include "geometry.h"
 
 UnitModel::~UnitModel() {
@@ -75,11 +76,40 @@ std::vector<int> UnitModel::getActions() {
 	return v;
 }
 
+int UnitModel::getStat(int stat) {
+    switch (stat) {
+        case STAT_POWER:
+            return _basePower;
+            break;
+
+        case STAT_SKILL:
+            return _baseSkill;
+            break;
+
+        case STAT_DEFENSE:
+            return _baseDefense;
+            break;
+
+        case STAT_MAXHP:
+            return _maxHp;
+            break;
+
+        case STAT_MAXAP:
+            return _maxAp;
+            break;
+
+        default:
+            break;
+    }
+    return 0;
+}
 
 void UnitModel::move(int distance) {
 
 	MPoint v = getHexVector(_direction, _pos);
-	_pos += v;
+    if (ModelManager::instance()->getUnitAtPos(_pos + v) == 0) {
+        _pos += v;        
+    }
 	
 	//NSLog(@"moved - x: %i, y: %i", v.x, v.y);
 	
@@ -103,39 +133,33 @@ void UnitModel::rotate(int rotation) {
 void UnitModel::strike() {
     UnitModel* target;
     
-    target = ModelManager::instance()->getUnitAtPos(point);
-    target->defend(this->numAttacks, this->power, this->skill, ATTACK_SLICE);
+    target = ModelManager::instance()->getUnitAtPos(_pos + getHexVector(_direction, _pos));
+    target->defend(this, this->getStat(STAT_POWER), this->getStat(STAT_SKILL), ATTACK_TYPE_SLICE);
 }
 
-void UnitModel::defend(UnitModel* attacker, int numAttacks, int power, int skill, int attackType) {
-/*    int skillDiff, effectivePower, damage, roll;
+void UnitModel::defend(UnitModel* attacker, int power, int skill, int attackType) {
+    int skillDiff, damage, roll;
     
     damage = 0;
-    skillDiff = this->defense - power;
-    effectivePower = power - this->protection;
+    skillDiff = this->getStat(STAT_DEFENSE) - skill;
     
-    for (int i=0; i<numAttacks; i++) {
-        roll = rand(8);
+    for (int i=0; i < power; i++) {
+        roll = rand() % 8 + 1;
         if (roll + skillDiff >= 5 || roll == 8) {
             damage++;
         }    
     }
     
-    attacker->reportHits(damage);
-    this->inflictDamage(damage);*/
+    //attacker->reportHits(damage);
+    this->inflictDamage(damage);
+}
+
+void UnitModel::inflictDamage(int damage) {
+	this->_hp -= damage;
 }
 
 void UnitModel::tick() {
 	
 }
 
-/*void UnitModel::registerView(IUnitView* view) {
-	_view = view;
-	this->updateViews();
-}*/
-
-
-/*void UnitModel::updateViews() {
-	_view->updatePosition(_pos, _direction);
-}*/
 

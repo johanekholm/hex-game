@@ -10,12 +10,19 @@
 #include "ModelManager.h"
 #include "UnitModel.h"
 
-ModelManager::ModelManager() {
 
+ModelManager* ModelManager::_instance = 0;
+
+void ModelManager::destroy() {
+	if (_instance != 0) {
+		_instance->_units.clear();
+		delete _instance;
+		_instance=0;
+	}
 }
 
-ModelManager::~ModelManager() {
-	_units.clear();	
+ModelManager::ModelManager() {
+    
 }
 
 void ModelManager::add(UnitModel* unit) {
@@ -26,5 +33,14 @@ void ModelManager::tick() {
 	for (std::vector<UnitModel*>::iterator it = _units.begin(); it != _units.end(); ++it) {
 		(*it)->tick();
 	}
+}
+
+UnitModel* ModelManager::getUnitAtPos(const MPoint& pos) {
+	for (std::vector<UnitModel*>::iterator it = _units.begin(); it != _units.end(); ++it) {
+		if ((*it)->getPosition() == pos) {
+            return *it;
+        }
+	}
+    return 0;
 }
 

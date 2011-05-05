@@ -10,6 +10,14 @@
 #ifndef UNITMODEL_H
 #define UNITMODEL_H
 
+#define ATTACK_TYPE_SLICE 1
+
+#define STAT_POWER 1
+#define STAT_SKILL 2
+#define STAT_DEFENSE 3
+#define STAT_MAXHP 4
+#define STAT_MAXAP 5
+
 #include <map>
 #include <vector>
 #include "toolkit.h"
@@ -21,7 +29,13 @@ class UnitModel : public Observable {
 	MPoint _pos;
 	int _direction;
 	int _ap;
-	int _health;
+	int _hp;
+    int _basePower;
+    int _baseSkill;
+    int _baseDefense;
+    int _maxAp;
+    int _maxHp;
+
 	std::map<int, Action*> _actions;
 	
 public:
@@ -34,6 +48,9 @@ public:
 	void move(int distance);
 	void rotate(int rotation);
 	void strike();
+    void defend(UnitModel* attacker, int power, int skill, int attack_type);
+    void inflictDamage(int damage);
+    int getStat(int stat);
 	
 	MPoint getPosition();
 	int getDirection();

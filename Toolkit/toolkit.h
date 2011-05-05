@@ -101,6 +101,10 @@ struct MPoint {
 		this->x += other.x;
 		this->y += other.y;
 	}
+
+	bool operator==(const MPoint& other) { 
+		return (this->x == other.x && this->y == other.y);
+	}
 	
 };
 

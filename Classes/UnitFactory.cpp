@@ -14,8 +14,8 @@
 #include "UnitModel.h"
 #include "UnitView.h"
 
-UnitFactory::UnitFactory(ModelManager* modelManager, ViewControllerManager* viewControllerManager) {
-    _modelManager = modelManager; 
+UnitFactory::UnitFactory(ViewControllerManager* viewControllerManager) {
+    //_modelManager = modelManager; 
     _viewControllerManager = viewControllerManager;
 }
 
@@ -27,7 +27,7 @@ void UnitFactory::produceAndRegisterUnit(const std::string& unitClass, int owner
 	view = new UnitView(unit, 64.0f, 64.0f, 0);
 
     unit->addObserver(view);
-    _modelManager->add(unit);
+    ModelManager::instance()->add(unit);
     _viewControllerManager->add(view);
 
 }

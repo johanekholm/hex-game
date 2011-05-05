@@ -28,7 +28,8 @@ void CentralControl::destroy() {
         delete _instance->_input;
         delete _instance->_hexMap;
         delete _instance->_viewControllerManager;
-        delete _instance->_modelManager;
+        //delete _instance->_modelManager;
+        ModelManager::destroy();
         delete _instance->_unitFactory;
         
 		delete _instance;
@@ -43,8 +44,8 @@ CentralControl::CentralControl() {
 		
 	_hexMap = new HexMap(catalog->get("hexTiles"), 4, 4, 80.0f, 80.0f);
     _viewControllerManager = new ViewControllerManager();
-    _modelManager = new ModelManager();
-    _unitFactory = new UnitFactory(_modelManager, _viewControllerManager);
+    //_modelManager = new ModelManager();
+    _unitFactory = new UnitFactory(_viewControllerManager);
 	_input = new InputManager();
     
     _unitFactory->produceAndRegisterUnit("soldier", 1, MPointMake(0, 0));
