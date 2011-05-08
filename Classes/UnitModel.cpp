@@ -20,8 +20,13 @@ UnitModel::UnitModel(int x, int y) {
 	_pos.x = x;
 	_pos.y = y;
 	_direction = GEOM_DIR_E;
-	addAction(0);
+    _maxHp = 5;
+    _hp = _maxHp;
+    _basePower = 3;
+    _baseSkill = 2;
+    _baseDefense = 1;
 	addAction(1);
+	addAction(0);
 	addAction(2);
 	addAction(3);
 }
@@ -169,7 +174,8 @@ void UnitModel::defend(UnitModel* attacker, int power, int skill, int attackType
 }
 
 void UnitModel::inflictDamage(int damage) {
-	this->_hp -= damage;
+	_hp -= damage;
+    this->updateObservers();
 }
 
 void UnitModel::tick() {

@@ -32,6 +32,7 @@ class UnitView : public ViewController, public IObserver {
 	GPoint getActionPosition(int index);
 	void updateActions(std::vector<int> actions);
 	void updatePosition(const MPoint& pos, int direction);
+    void drawHpBar();
 
 public:
 	~UnitView();

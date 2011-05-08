@@ -11,6 +11,8 @@
 #include "geometry.h"
 #include "TextureCatalog.h"
 #include "InputManager.h"
+#include "toolkit.h"
+
 
 #include <math.h>
 
@@ -71,10 +73,46 @@ void UnitView::draw() {
 
 void UnitView::drawGUI() {
 	_directionImage->drawAtRotatedWithSubTexture(_pos, (GLfloat)_facing * 60.0f + 180.0f, 0);
+    this->drawHpBar();
 	if (this->_hasFocus) {
         this->drawActions();
     }
 }
+
+void UnitView::drawHpBar() {
+    GLfloat width, height, yOffset, ratio, length;
+    
+    ratio = (GLfloat)_state.hp / (GLfloat)_state.maxHp;
+    width = 32.0f;
+    length = ratio * width;
+    height = 8.0f;
+    yOffset = 32.0f;
+    
+    GLfloat	vertices[] = {	0.0f, -height/2.0f, 0.0f,
+		length, -height/2.0f, 0.0f,
+		0.0f, height/2.0f, 0.0f,
+		0.0f, height/2.0f, 0.0f,
+		length, -height/2.0f, 0.0f,		
+		length, height/2.0f, 0.0f };
+	
+    glDisable(GL_TEXTURE_2D);
+    
+    if (ratio >= 0.75f) {
+        glColor4f(0.0f, 1.0f, 0.0f, 1.0f);        
+    } else if (ratio >= 0.25f) {
+        glColor4f(1.0f, 1.0f, 0.0f, 1.0f);                
+    } else {
+        glColor4f(1.0f, 0.0f, 0.0f, 1.0f);                        
+    }
+	glLoadIdentity();
+	glTranslatef(_pos.x - width/2.0f, _pos.y + yOffset, 0.0f);
+		
+	glVertexPointer(3, GL_FLOAT, 0, vertices);
+	glDrawArrays(GL_TRIANGLES, 0, 6);	
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    glEnable(GL_TEXTURE_2D);
+}
+
 
 
 bool UnitView::handleEvent(const TouchEvent& event) {

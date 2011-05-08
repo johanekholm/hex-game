@@ -49,7 +49,7 @@ CentralControl::CentralControl() {
 	_input = new InputManager();
     
     _unitFactory->produceAndRegisterUnit("soldier", 1, MPointMake(0, 0));
-    _unitFactory->produceAndRegisterUnit("soldier", 1, MPointMake(2, 1));
+    _unitFactory->produceAndRegisterUnit("soldier", 1, MPointMake(0, 1));
     
 }
 
