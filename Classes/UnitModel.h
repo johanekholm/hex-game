@@ -54,7 +54,7 @@ public:
 	UnitModel(int x, int y);
     
     void tick();
-	bool spendAP(int cost);
+	bool spendAp(int cost);
 	void move(int distance);
 	void rotate(int rotation);
 	void strike();

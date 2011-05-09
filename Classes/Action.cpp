@@ -21,16 +21,24 @@ Action::Action(int anId, UnitModel* unit) {
 void Action::doIt() {
 	switch (_id) {
 		case 0:
-			_unit->move(1);			
+            if (_unit->spendAp(2)) {
+                _unit->move(1);			
+            }
 			break;
 		case 1:
-			_unit->rotate(1);			
+            if (_unit->spendAp(1)) {
+                _unit->rotate(1);
+            }
 			break;
 		case 2:
-			_unit->rotate(-1);			
+            if (_unit->spendAp(1)) {
+                _unit->rotate(-1);			
+            }
 			break;
 		case 3:
-			_unit->strike();			
+            if (_unit->spendAp(3)) {
+                _unit->strike();
+            }
 			break;
 			
 		default:

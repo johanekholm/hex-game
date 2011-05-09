@@ -39,7 +39,8 @@ void CentralControl::destroy() {
 
 CentralControl::CentralControl() {
     _mode = 1;
-	
+	_timer = 0;
+    
 	TextureCatalog* catalog = TextureCatalog::instance();
 		
 	_hexMap = new HexMap(catalog->get("hexTiles"), 4, 4, 80.0f, 80.0f);
@@ -56,6 +57,10 @@ CentralControl::CentralControl() {
 void CentralControl::update() {
 	TouchEvent event;
 	
+    if (++_timer >= 100) {
+        _timer = 0;
+        ModelManager::instance()->tick();
+    }
 	if (_input->hasEvent()) {
 		
 		event = _input->popEvent();
@@ -68,7 +73,7 @@ void CentralControl::update() {
 				
 			case 2:
 				this->handleEventFocus(event);				
-break;
+                break;
 				
 		}
 	}

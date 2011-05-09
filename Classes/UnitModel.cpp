@@ -21,7 +21,9 @@ UnitModel::UnitModel(int x, int y) {
 	_pos.y = y;
 	_direction = GEOM_DIR_E;
     _maxHp = 5;
+    _maxAp = 10;
     _hp = _maxHp;
+    _ap = 0;
     _basePower = 3;
     _baseSkill = 2;
     _baseDefense = 1;
@@ -54,9 +56,10 @@ void UnitModel::doAction(int action) {
 	
 }
 
-bool UnitModel::spendAP(int cost) {
+bool UnitModel::spendAp(int cost) {
 	if (_ap >= cost) {
 		_ap -= cost;
+        this->updateObservers();
 		return true;
 	} else {
 		return false;
@@ -184,6 +187,7 @@ void UnitModel::inflictDamage(int damage) {
 void UnitModel::tick() {
     if (this->_ap < this->getStat(STAT_MAXAP)) {
         this->_ap += 1;
+        this->updateObservers();
     }
 	
 }
