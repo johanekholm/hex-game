@@ -175,6 +175,9 @@ void UnitModel::defend(UnitModel* attacker, int power, int skill, int attackType
 
 void UnitModel::inflictDamage(int damage) {
 	_hp -= damage;
+    if (_hp <= 0) {
+        ModelManager::instance()->remove(this);
+    }
     this->updateObservers();
 }
 

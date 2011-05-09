@@ -12,12 +12,24 @@ class ViewController;
 struct GPoint;
 
 class ViewControllerManager {
+    static ViewControllerManager* _instance;
 	std::vector<ViewController*> _views;
-	
+
+    ViewControllerManager();
+
 public:
-	ViewControllerManager();
-	~ViewControllerManager();
-	void add(ViewController*);
+    static ViewControllerManager* instance() {
+		if (_instance == 0) {
+			_instance = new ViewControllerManager();
+		}		
+		return _instance;
+	}
+    
+    static void destroy();
+
+	//~ViewControllerManager();
+	void add(ViewController* view);
+    void remove(ViewController* view);
     void draw();
     void drawGUI();
     ViewController* getTouched(const GPoint& point);	

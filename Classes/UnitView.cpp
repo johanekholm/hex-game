@@ -11,6 +11,7 @@
 #include "geometry.h"
 #include "TextureCatalog.h"
 #include "InputManager.h"
+#include "ViewControllerManager.h"
 #include "toolkit.h"
 
 
@@ -142,6 +143,11 @@ void UnitView::update() {
 	this->updatePosition(_state.pos, _state.direction);
 	this->updateActions(_state.actions);	
 }
+
+void UnitView::destroyed() {
+    ViewControllerManager::instance()->remove(this);	
+}
+
 
 
 

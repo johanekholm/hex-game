@@ -29,6 +29,10 @@ void ModelManager::add(UnitModel* unit) {
 	_units.push_back(unit);
 }
 
+void ModelManager::remove(UnitModel* unit) {
+    // to-do: implement remove unit from vector and delete 
+}
+
 void ModelManager::tick() {
 	for (std::vector<UnitModel*>::iterator it = _units.begin(); it != _units.end(); ++it) {
 		(*it)->tick();

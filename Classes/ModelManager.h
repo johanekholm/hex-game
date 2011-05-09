@@ -29,6 +29,7 @@ public:
     static void destroy();
 
 	void add(UnitModel*);
+    void remove(UnitModel* unit);
     void tick();
     UnitModel* getUnitAtPos(const MPoint& pos);
 };

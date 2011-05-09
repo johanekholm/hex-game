@@ -43,7 +43,7 @@ CentralControl::CentralControl() {
 	TextureCatalog* catalog = TextureCatalog::instance();
 		
 	_hexMap = new HexMap(catalog->get("hexTiles"), 4, 4, 80.0f, 80.0f);
-    _viewControllerManager = new ViewControllerManager();
+    _viewControllerManager = ViewControllerManager::instance();
     //_modelManager = new ModelManager();
     _unitFactory = new UnitFactory(_viewControllerManager);
 	_input = new InputManager();

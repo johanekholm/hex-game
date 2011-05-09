@@ -42,6 +42,7 @@ public:
 	bool handleEvent(const TouchEvent& event);
 	int touchedAction(GPoint point);
 	void update();
+    void destroyed();
 };
 
 /*class UnitView : public GameImage, public IUnitView {
