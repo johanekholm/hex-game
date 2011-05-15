@@ -57,7 +57,7 @@ class UnitModel : public Observable {
 public:
 	
 	~UnitModel();
-	UnitModel(int x, int y, int owner);
+	UnitModel(int x, int y, int direction, int owner);
     
     void tick();
 	bool spendAp(int cost);
@@ -73,6 +73,7 @@ public:
     bool isFacing(const MPoint& pos);
 	
 	MPoint getPosition();
+    int getOwner();
 	int getDirection();
 	std::vector<int> getActions();
 	

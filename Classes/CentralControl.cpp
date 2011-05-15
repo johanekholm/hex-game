@@ -16,9 +16,12 @@
 #include "HexMap.h"
 #include "InputManager.h"
 #include "toolkit.h"
+#include "geometry.h"
 
 #include "UnitView.h"
 #include "UnitModel.h"
+
+#include <iostream>
 
 CentralControl* CentralControl::_instance = 0;
 
@@ -39,7 +42,7 @@ void CentralControl::destroy() {
 
 CentralControl::CentralControl() {
     _mode = 1;
-	_timer = 0;
+	_timer = 200;
     
 	TextureCatalog* catalog = TextureCatalog::instance();
 		
@@ -49,15 +52,16 @@ CentralControl::CentralControl() {
     _unitFactory = new UnitFactory(_viewControllerManager);
 	_input = new InputManager();
     
-    _unitFactory->produceAndRegisterUnit("soldier", 1, MPointMake(0, 0));
-    _unitFactory->produceAndRegisterUnit("soldier", 1, MPointMake(0, 1));
+    _unitFactory->produceAndRegisterUnit("soldier", 1, MPointMake(0, 0), GEOM_DIR_E);
+    _unitFactory->produceAndRegisterUnit("soldier", 2, MPointMake(1, 0), GEOM_DIR_W);
     
+    std::cout << "Finished launching" << std::endl;
 }
 
 void CentralControl::update() {
 	TouchEvent event;
 	
-    if (++_timer >= 100) {
+    if (++_timer >= 300) {
         _timer = 0;
         ModelManager::instance()->tick();
     }

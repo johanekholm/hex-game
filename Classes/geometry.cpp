@@ -11,6 +11,7 @@
 #include <algorithm>
 #include <stdlib.h>
 #include <map>
+#include <iostream>
 
 MPoint getHexVector(int direction, const MPoint& pos) {
 	MPoint v;
@@ -78,6 +79,9 @@ MPoint arrayToHex(const MPoint& arrayPos) {
     
     hexPos.x = arrayPos.x - Floor2(arrayPos.y);
     hexPos.y = arrayPos.x + Ceil2(arrayPos.y);
+    
+    //std::cout << "Array (x,y): " << arrayPos.x << ", " << arrayPos.y << " -> Hex (x,y): "  << hexPos.x << ", " << hexPos.y << std::endl;
+    
     return hexPos;
 }
 
@@ -103,6 +107,8 @@ int hexDistance(const MPoint& start, const MPoint& dest) {
         dist = abs(dx) + abs(dy);
     }
 
+    std::cout << "Distance is: " << dist << std::endl;
+    
     return dist;
 }
 
@@ -115,6 +121,8 @@ int sightDirection(const MPoint& subject, const MPoint& object) {
     
     dx = hexSubject.x - hexObject.x;
     dy = hexSubject.y - hexObject.y;
+    
+    std::cout << "Direction - dx: " << dx << ", dy: " << dy << std::endl; 
     
     if (dx == 0) {
         if (dy > 0) {
@@ -135,6 +143,7 @@ int sightDirection(const MPoint& subject, const MPoint& object) {
             return GEOM_DIR_E;
         }
     }
+    
     return -1;
 }
 

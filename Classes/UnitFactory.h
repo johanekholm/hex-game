@@ -21,7 +21,7 @@ class UnitFactory {
     
 public:
     UnitFactory(ViewControllerManager* viewControllerManager);
-    void produceAndRegisterUnit(const std::string& unitClass, int owner, const MPoint& pos);
+    void produceAndRegisterUnit(const std::string& unitClass, int owner, const MPoint& pos, int direction);
 };
 
 

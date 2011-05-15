@@ -11,16 +11,17 @@
 #include "Action.h"
 #include "ModelManager.h"
 #include "geometry.h"
+#include <iostream>
 
 UnitModel::~UnitModel() {
 	//delete _actions;
 }
 
-UnitModel::UnitModel(int x, int y, int owner) {
+UnitModel::UnitModel(int x, int y, int direction, int owner) {
     _owner = owner;
 	_pos.x = x;
 	_pos.y = y;
-	_direction = GEOM_DIR_E;
+	_direction = direction;
     _maxHp = 3;
     _maxAp = 4;
     _hp = _maxHp;
@@ -28,6 +29,7 @@ UnitModel::UnitModel(int x, int y, int owner) {
     _basePower = 3;
     _baseSkill = 2;
     _baseDefense = 1;
+    _target = 0;
 	addAction(1);
 	addAction(0);
 	addAction(2);
@@ -69,6 +71,10 @@ bool UnitModel::spendAp(int cost) {
 
 MPoint UnitModel::getPosition() {
 	return MPointMake(_pos.x, _pos.y);
+}
+
+int UnitModel::getOwner() {
+	return _owner;
 }
 
 int UnitModel::getDirection() {
@@ -156,8 +162,11 @@ void UnitModel::rotate(int rotation) {
 void UnitModel::strike() {
     UnitModel* target;
     
+    std::cout << "Strike!" << std::endl;
     target = ModelManager::instance()->getUnitAtPos(_pos + getHexVector(_direction, _pos));
-    target->defend(this, this->getStat(STAT_POWER), this->getStat(STAT_SKILL), ATTACK_TYPE_SLICE);
+    if (target != 0) {
+        target->defend(this, this->getStat(STAT_POWER), this->getStat(STAT_SKILL), ATTACK_TYPE_SLICE);    
+    }
 }
 
 void UnitModel::defend(UnitModel* attacker, int power, int skill, int attackType) {
@@ -173,6 +182,7 @@ void UnitModel::defend(UnitModel* attacker, int power, int skill, int attackType
         }    
     }
     
+    std::cout << "Damage: " << damage << std::endl;
     //attacker->reportHits(damage);
     this->inflictDamage(damage);
 }
@@ -188,6 +198,7 @@ void UnitModel::inflictDamage(int damage) {
 void UnitModel::tick() {
     if (this->_ap < this->getStat(STAT_MAXAP)) {
         this->_ap += 1;
+        this->doAI();
         this->updateObservers();
     }
 	
@@ -206,12 +217,12 @@ void UnitModel::doAI() {
             if (hexDistance(_pos, targetPos) == 1) {
                 if (this->isFacing(targetPos)) {
                     this->doAction(3);
-                } else {
+                }/* else {
                     this->turnTowards(targetPos);
-                }
-            } else {
+                }*/
+            } /*else {
                 this->moveTowards(targetPos);
-            }
+            }*/
         }    
     }
 }

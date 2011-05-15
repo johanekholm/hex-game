@@ -19,11 +19,11 @@ UnitFactory::UnitFactory(ViewControllerManager* viewControllerManager) {
     _viewControllerManager = viewControllerManager;
 }
 
-void UnitFactory::produceAndRegisterUnit(const std::string& unitClass, int owner, const MPoint& pos) {
+void UnitFactory::produceAndRegisterUnit(const std::string& unitClass, int owner, const MPoint& pos, int direction) {
     UnitModel* unit;
     UnitView* view;
     
-    unit = new UnitModel(pos.x, pos.y, owner);
+    unit = new UnitModel(pos.x, pos.y, direction, owner);
 	view = new UnitView(unit, 64.0f, 64.0f, 0);
 
     unit->addObserver(view);

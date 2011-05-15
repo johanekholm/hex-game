@@ -10,6 +10,7 @@
 #include "ModelManager.h"
 #include "UnitModel.h"
 #include "geometry.h"
+#include <iostream>
 
 ModelManager* ModelManager::_instance = 0;
 
@@ -34,6 +35,7 @@ void ModelManager::remove(UnitModel* unit) {
 }
 
 void ModelManager::tick() {
+    std::cout << "--- Tick ---" << std::endl;
 	for (std::vector<UnitModel*>::iterator it = _units.begin(); it != _units.end(); ++it) {
 		(*it)->tick();
 	}
@@ -50,14 +52,15 @@ UnitModel* ModelManager::getUnitAtPos(const MPoint& pos) {
 
 UnitModel* ModelManager::getClosestTo(const MPoint& pos) {
     int distance = 0;
-    int minDistance = 0;
+    int minDistance = 99;
     UnitModel* closestUnit = 0;
     
 	for (std::vector<UnitModel*>::iterator it = _units.begin(); it != _units.end(); ++it) {
 		distance = hexDistance(pos, (*it)->getPosition());
-        if (distance < minDistance) {
+        if ((*it)->getOwner() == 1 && distance < minDistance) {
             minDistance = distance;
             closestUnit = (*it);
+            std::cout << "Unit found at distance: " << minDistance << std::endl;
         }
 	}
     return closestUnit;
