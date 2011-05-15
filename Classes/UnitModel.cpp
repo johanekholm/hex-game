@@ -203,7 +203,7 @@ void UnitModel::doAI() {
         } else {
             targetPos = _target->getPosition();
         
-            if (this->distanceTo(targetPos) == 1) {
+            if (hexDistance(_pos, targetPos) == 1) {
                 if (this->isFacing(targetPos)) {
                     this->doAction(3);
                 } else {
@@ -228,10 +228,10 @@ void UnitModel::moveTowards(const MPoint& pos) {
     
 }
 
-int UnitModel::distanceTo(const MPoint& pos) {
+/*int UnitModel::distanceTo(const MPoint& pos) {
     // to-do: implement hex distance function
     return 0;
-}
+}*/
 
 bool UnitModel::isFacing(const MPoint& targetPos) {
     

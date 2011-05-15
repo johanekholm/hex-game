@@ -69,7 +69,7 @@ public:
     int getStat(int stat);
     UnitState getState();
     void doAI();
-    int distanceTo(const MPoint& pos);
+    //int distanceTo(const MPoint& pos);
     bool isFacing(const MPoint& pos);
 	
 	MPoint getPosition();

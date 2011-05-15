@@ -9,7 +9,7 @@
 
 #include "ModelManager.h"
 #include "UnitModel.h"
-
+#include "geometry.h"
 
 ModelManager* ModelManager::_instance = 0;
 
@@ -48,3 +48,17 @@ UnitModel* ModelManager::getUnitAtPos(const MPoint& pos) {
     return 0;
 }
 
+UnitModel* ModelManager::getClosestTo(const MPoint& pos) {
+    int distance = 0;
+    int minDistance = 0;
+    UnitModel* closestUnit = 0;
+    
+	for (std::vector<UnitModel*>::iterator it = _units.begin(); it != _units.end(); ++it) {
+		distance = hexDistance(pos, (*it)->getPosition());
+        if (distance < minDistance) {
+            minDistance = distance;
+            closestUnit = (*it);
+        }
+	}
+    return closestUnit;
+}
