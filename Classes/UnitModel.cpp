@@ -217,7 +217,7 @@ void UnitModel::doAI() {
 }
 
 void UnitModel::chooseTarget() {
-    //_target = ModelManager::instance()->getClosestTo(_pos);
+    _target = ModelManager::instance()->getClosestTo(_pos);
 }
 
 void UnitModel::turnTowards(const MPoint& pos) {

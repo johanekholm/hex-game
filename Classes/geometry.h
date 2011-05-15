@@ -28,5 +28,6 @@
 
 MPoint getHexVector(int direction, const MPoint& pos);
 int hexDistance(const MPoint& start, const MPoint& dest);
+MPoint arrayToHex(const MPoint& arrayPos);
 
 #endif

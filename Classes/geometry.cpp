@@ -72,6 +72,16 @@ MPoint getHexVector(int direction, const MPoint& pos) {
 	return v;
 }
 
+MPoint arrayToHex(const MPoint& arrayPos) {
+    MPoint hexPos;
+    
+    hexPos.x = arrayPos.x - Floor2(arrayPos.y);
+    hexPos.y = arrayPos.x + Ceil2(arrayPos.y);
+    return hexPos;
+}
+
+
+
 int hexDistance(const MPoint& start, const MPoint& dest) {
     MPoint A, B;
     int dx, dy, dist;
@@ -93,4 +103,36 @@ int hexDistance(const MPoint& start, const MPoint& dest) {
     }
 
     return dist;
+}
+
+int sightDirection(const MPoint& subject, const MPoint& object) {
+    MPoint hexSubject, hexObject;
+    int dx, dy;
+    
+    hexSubject = arrayToHex(subject);
+    hexObject = arrayToHex(object);
+    
+    dx = hexSubject.x - hexObject.x;
+    dy = hexSubject.y - hexObject.y;
+    
+    if (dx == 0) {
+        if (dy > 0) {
+            return GEOM_DIR_NW;
+        } else {
+            return GEOM_DIR_SE;
+        }
+    } else if (dy == 0) {
+        if (dx > 0) {
+            return GEOM_DIR_SW;
+        } else {
+            return GEOM_DIR_NE;
+        }
+    } else if (dx == dy) {
+        if (dx > 0) {
+            return GEOM_DIR_W;
+        } else {
+            return GEOM_DIR_E;
+        }
+    }
+    return -1;
 }
