@@ -10,6 +10,7 @@
 #include "geometry.h"
 #include <algorithm>
 #include <stdlib.h>
+#include <map>
 
 MPoint getHexVector(int direction, const MPoint& pos) {
 	MPoint v;
@@ -135,4 +136,56 @@ int sightDirection(const MPoint& subject, const MPoint& object) {
         }
     }
     return -1;
+}
+
+int turnTowards(const int& currentDirection, const MPoint& subject, const MPoint& object) {
+    MPoint hexSubject, hexObject;
+    int dx, dy;
+    std::map<int, int> axis;
+    std::map<int, int> angles;
+    int angle;
+    int min = 100;
+    int minDir = 0; 
+    int tiedDir = 0;
+
+    hexSubject = arrayToHex(subject);
+    hexObject = arrayToHex(object);
+    
+    dx = hexSubject.x - hexObject.x;
+    dy = hexSubject.y - hexObject.y;
+
+    // calculate how far off each direction is to object direction
+    axis[(dx > 0) ? GEOM_DIR_NW : GEOM_DIR_SE] = abs(dx);
+    axis[(dy > 0) ? GEOM_DIR_SW : GEOM_DIR_NE] = abs(dy);
+    axis[(dx > 0) ? GEOM_DIR_W : GEOM_DIR_E] = abs(dx-dy);
+    
+    // select the direction that is least off, two if there is a tie
+    // also calculate angle distance for each direction
+    for (std::map<int, int>::iterator it = axis.begin(); it != axis.end(); ++it) {
+        angle = it->first - currentDirection;
+        if (angle < 1) {
+            angle += 6;
+        }
+        
+        angles[it->first] = angle;
+        
+		if (it->second < min) {
+            min = it->second;
+            minDir = it->first;
+            tiedDir = 0;
+        } else if (it->second == min) {
+            tiedDir = it->first;
+        }
+	}
+    
+    // return the best direction, or in case of tie the one that is nearest to subject's current direction
+    if (tiedDir == 0) {
+        return minDir;
+    } else {
+        if (angles[minDir] < angles[tiedDir]) {
+            return minDir;
+        } else {
+            return tiedDir;
+        }
+    }
 }

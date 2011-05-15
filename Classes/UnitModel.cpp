@@ -234,7 +234,7 @@ void UnitModel::moveTowards(const MPoint& pos) {
 }*/
 
 bool UnitModel::isFacing(const MPoint& targetPos) {
-    
-    return (getHexVector(_direction, _pos) == MPointMake(0, 0) - (_pos - targetPos));
+    return (sightDirection(_pos, targetPos) == _direction);
+    //return (getHexVector(_direction, _pos) == MPointMake(0, 0) - (_pos - targetPos));
 }
 
