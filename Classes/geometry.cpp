@@ -122,7 +122,7 @@ int sightDirection(const MPoint& subject, const MPoint& object) {
     dx = hexSubject.x - hexObject.x;
     dy = hexSubject.y - hexObject.y;
     
-    std::cout << "Direction - dx: " << dx << ", dy: " << dy << std::endl; 
+    //std::cout << "Direction - dx: " << dx << ", dy: " << dy << std::endl; 
     
     if (dx == 0) {
         if (dy > 0) {
@@ -147,7 +147,7 @@ int sightDirection(const MPoint& subject, const MPoint& object) {
     return -1;
 }
 
-int turnTowards(const int& currentDirection, const MPoint& subject, const MPoint& object) {
+int directionTowards(const int& currentDirection, const MPoint& subject, const MPoint& object) {
     MPoint hexSubject, hexObject;
     int dx, dy;
     std::map<int, int> axis;

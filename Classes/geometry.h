@@ -32,6 +32,6 @@ MPoint getHexVector(int direction, const MPoint& pos);
 int hexDistance(const MPoint& start, const MPoint& dest);
 MPoint arrayToHex(const MPoint& arrayPos);
 int sightDirection(const MPoint& subject, const MPoint& object);
-int turnTowards(const int& currentDirection, const MPoint& subject, const MPoint& object);
+int directionTowards(const int& currentDirection, const MPoint& subject, const MPoint& object);
 
 #endif

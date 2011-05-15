@@ -51,8 +51,8 @@ class UnitModel : public Observable {
 	std::map<int, Action*> _actions;
     
     void chooseTarget();
-    void turnTowards(const MPoint& pos);
-    void moveTowards(const MPoint& pos);
+    void turnTowards(const MPoint& targetPos);
+    void moveTowards(const MPoint& targetPos);
 	
 public:
 	

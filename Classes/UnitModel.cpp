@@ -217,9 +217,9 @@ void UnitModel::doAI() {
             if (hexDistance(_pos, targetPos) == 1) {
                 if (this->isFacing(targetPos)) {
                     this->doAction(3);
-                }/* else {
+                } else {
                     this->turnTowards(targetPos);
-                }*/
+                }
             } /*else {
                 this->moveTowards(targetPos);
             }*/
@@ -231,11 +231,29 @@ void UnitModel::chooseTarget() {
     _target = ModelManager::instance()->getClosestTo(_pos);
 }
 
-void UnitModel::turnTowards(const MPoint& pos) {
+void UnitModel::turnTowards(const MPoint& targetPos) {
+    int newDirection, delta;
     
+    newDirection = directionTowards(_direction, _pos, targetPos);
+    
+    std::cout << "Turn towards: " << newDirection << std::endl;
+    
+    if (newDirection != _direction) {
+        delta = newDirection - _direction;
+        
+        if (delta > 3) {
+            delta -= 6;
+        }
+        
+        if (delta > 0) {
+            this->doAction(1);
+        } else {
+            this->doAction(2);
+        }
+    }
 }
 
-void UnitModel::moveTowards(const MPoint& pos) {
+void UnitModel::moveTowards(const MPoint& targetPos) {
     
 }
 
