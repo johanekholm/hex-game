@@ -45,13 +45,19 @@ class UnitModel : public Observable {
     int _baseDefense;
     int _maxAp;
     int _maxHp;
+    int _owner;
+    UnitModel* _target;
 
 	std::map<int, Action*> _actions;
+    
+    void chooseTarget();
+    void turnTowards(const MPoint& pos);
+    void moveTowards(const MPoint& pos);
 	
 public:
 	
 	~UnitModel();
-	UnitModel(int x, int y);
+	UnitModel(int x, int y, int owner);
     
     void tick();
 	bool spendAp(int cost);
@@ -62,6 +68,9 @@ public:
     void inflictDamage(int damage);
     int getStat(int stat);
     UnitState getState();
+    void doAI();
+    int distanceTo(const MPoint& pos);
+    bool isFacing(const MPoint& pos);
 	
 	MPoint getPosition();
 	int getDirection();

@@ -87,7 +87,7 @@ void UnitView::drawHpBar() {
     ratio = (GLfloat)_state.hp / (GLfloat)_state.maxHp;
     width = 32.0f;
     length = ratio * width;
-    height = 6.0f;
+    height = 3.0f;
     yOffset = 32.0f;
     
     GLfloat	vertices[] = {	0.0f, -height/2.0f, 0.0f,

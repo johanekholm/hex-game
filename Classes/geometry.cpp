@@ -8,6 +8,8 @@
  */
 
 #include "geometry.h"
+#include <algorithm>
+#include <stdlib.h>
 
 MPoint getHexVector(int direction, const MPoint& pos) {
 	MPoint v;
@@ -68,4 +70,27 @@ MPoint getHexVector(int direction, const MPoint& pos) {
 	}
 
 	return v;
+}
+
+int hexDistance(const MPoint& start, const MPoint& dest) {
+    MPoint A, B;
+    int dx, dy, dist;
+    
+    // calculate hexspace coordinates of A and B
+    A.x = start.x - Floor2(start.y); 
+    A.y = start.x + Ceil2(start.y);
+    B.x = dest.x - Floor2(dest.y); 
+    B.y = dest.x + Ceil2(dest.y);
+    
+    // calculate distance using hexcoords as per previous algorithm
+    dx = B.x - A.x;
+    dy = B.y - A.y;
+    
+    if (sign(dx) == sign(dy)) {
+        dist = std::max(abs(dx),abs(dy));
+    } else {
+        dist = abs(dx) + abs(dy);
+    }
+
+    return dist;
 }

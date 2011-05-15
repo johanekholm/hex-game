@@ -84,6 +84,13 @@ struct MPoint {
 		result.y = this->y + other.y;
 		return result;
 	}
+
+	MPoint operator-(const MPoint& other) { 
+		MPoint result;
+		result.x = this->x - other.x;
+		result.y = this->y - other.y;
+		return result;
+	}
 	
 	GPoint operator*(GLfloat scalar) { 
 		GPoint result;

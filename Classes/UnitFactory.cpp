@@ -23,7 +23,7 @@ void UnitFactory::produceAndRegisterUnit(const std::string& unitClass, int owner
     UnitModel* unit;
     UnitView* view;
     
-    unit = new UnitModel(pos.x, pos.y);
+    unit = new UnitModel(pos.x, pos.y, owner);
 	view = new UnitView(unit, 64.0f, 64.0f, 0);
 
     unit->addObserver(view);

@@ -16,12 +16,13 @@ UnitModel::~UnitModel() {
 	//delete _actions;
 }
 
-UnitModel::UnitModel(int x, int y) {
+UnitModel::UnitModel(int x, int y, int owner) {
+    _owner = owner;
 	_pos.x = x;
 	_pos.y = y;
 	_direction = GEOM_DIR_E;
-    _maxHp = 5;
-    _maxAp = 10;
+    _maxHp = 3;
+    _maxAp = 4;
     _hp = _maxHp;
     _ap = 0;
     _basePower = 3;
@@ -192,4 +193,48 @@ void UnitModel::tick() {
 	
 }
 
+void UnitModel::doAI() {
+    MPoint targetPos;
+
+    if (_owner == 2) {
+
+        if (_target == 0) {
+            this->chooseTarget();
+        } else {
+            targetPos = _target->getPosition();
+        
+            if (this->distanceTo(targetPos) == 1) {
+                if (this->isFacing(targetPos)) {
+                    this->doAction(3);
+                } else {
+                    this->turnTowards(targetPos);
+                }
+            } else {
+                this->moveTowards(targetPos);
+            }
+        }    
+    }
+}
+
+void UnitModel::chooseTarget() {
+    //_target = ModelManager::instance()->getClosestTo(_pos);
+}
+
+void UnitModel::turnTowards(const MPoint& pos) {
+    
+}
+
+void UnitModel::moveTowards(const MPoint& pos) {
+    
+}
+
+int UnitModel::distanceTo(const MPoint& pos) {
+    // to-do: implement hex distance function
+    return 0;
+}
+
+bool UnitModel::isFacing(const MPoint& targetPos) {
+    
+    return (getHexVector(_direction, _pos) == MPointMake(0, 0) - (_pos - targetPos));
+}
 
