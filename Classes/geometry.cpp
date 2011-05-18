@@ -164,18 +164,16 @@ int directionTowards(const int& currentDirection, const MPoint& subject, const M
     dy = hexSubject.y - hexObject.y;
 
     // calculate how far off each direction is to object direction
-    axis[(dx > 0) ? GEOM_DIR_NW : GEOM_DIR_SE] = abs(dx);
-    axis[(dy > 0) ? GEOM_DIR_SW : GEOM_DIR_NE] = abs(dy);
+    axis[(dx > 0) ? GEOM_DIR_SW : GEOM_DIR_NE] = abs(dy);
+    axis[(dy > 0) ? GEOM_DIR_NW : GEOM_DIR_SE] = abs(dx);
     axis[(dx > 0) ? GEOM_DIR_W : GEOM_DIR_E] = abs(dx-dy);
     
     // select the direction that is least off, two if there is a tie
     // also calculate angle distance for each direction
     for (std::map<int, int>::iterator it = axis.begin(); it != axis.end(); ++it) {
-        angle = it->first - currentDirection;
-        if (angle < 1) {
-            angle += 6;
-        }
+        angle = abs(it->first - currentDirection);
         
+        std::cout << "dir: " << it->first << ", cost: " << it->second << ", angle: " << angle << std::endl;
         angles[it->first] = angle;
         
 		if (it->second < min) {

@@ -32,12 +32,27 @@ void ModelManager::add(UnitModel* unit) {
 
 void ModelManager::remove(UnitModel* unit) {
     // to-do: implement remove unit from vector and delete 
+    for (std::vector<UnitModel*>::iterator it = _units.begin(); it != _units.end(); ++it) {
+		if (*it == unit) {
+            delete (*it);
+            it = _units.erase(it);
+            return;
+        }
+	}
 }
 
 void ModelManager::tick() {
     std::cout << "--- Tick ---" << std::endl;
 	for (std::vector<UnitModel*>::iterator it = _units.begin(); it != _units.end(); ++it) {
 		(*it)->tick();
+	}
+    
+    for (std::vector<UnitModel*>::iterator it = _units.begin(); it != _units.end(); ++it) {
+		if ((*it)->isDead()) {
+            std::cout << "Destroyed" << std::endl;
+            delete (*it);
+            it = _units.erase(it);
+        }
 	}
 }
 

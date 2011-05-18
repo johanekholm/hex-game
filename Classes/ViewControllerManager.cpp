@@ -35,6 +35,13 @@ void ViewControllerManager::add(ViewController* view) {
 
 void ViewControllerManager::remove(ViewController* view) {
     // to-do: remove from vector and delete
+	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end(); ++it) {
+        if (*it == view) {
+            delete (*it);
+            it = _views.erase(it);
+            return;
+        }
+	}
 }
 
 void ViewControllerManager::draw() {

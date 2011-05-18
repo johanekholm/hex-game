@@ -66,6 +66,7 @@ public:
 	void strike();
     void defend(UnitModel* attacker, int power, int skill, int attack_type);
     void inflictDamage(int damage);
+    bool isDead();
     int getStat(int stat);
     UnitState getState();
     void doAI();

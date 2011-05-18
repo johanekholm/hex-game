@@ -14,6 +14,7 @@
 #include <iostream>
 
 UnitModel::~UnitModel() {
+    this->updateObserversDestroyed();
 	//delete _actions;
 }
 
@@ -24,7 +25,7 @@ UnitModel::UnitModel(int x, int y, int direction, int owner) {
 	_direction = direction;
     _maxHp = 3;
     _maxAp = 4;
-    _hp = _maxHp;
+    _hp = 1; //_maxHp;
     _ap = 0;
     _basePower = 3;
     _baseSkill = 2;
@@ -190,9 +191,15 @@ void UnitModel::defend(UnitModel* attacker, int power, int skill, int attackType
 void UnitModel::inflictDamage(int damage) {
 	_hp -= damage;
     if (_hp <= 0) {
-        ModelManager::instance()->remove(this);
+        _hp = 0;
+        //std::cout << "Destroyed" << std::endl;
+        //ModelManager::instance()->remove(this);
     }
     this->updateObservers();
+}
+
+bool UnitModel::isDead() {
+    return (_hp == 0);
 }
 
 void UnitModel::tick() {
@@ -214,15 +221,11 @@ void UnitModel::doAI() {
         } else {
             targetPos = _target->getPosition();
         
-            if (hexDistance(_pos, targetPos) == 1) {
-                if (this->isFacing(targetPos)) {
-                    this->doAction(3);
-                } else {
-                    this->turnTowards(targetPos);
-                }
-            } /*else {
+            if (this->isFacing(targetPos)) {
+                this->doAction(3);
+            } else {
                 this->moveTowards(targetPos);
-            }*/
+            }
         }    
     }
 }
@@ -254,16 +257,34 @@ void UnitModel::turnTowards(const MPoint& targetPos) {
 }
 
 void UnitModel::moveTowards(const MPoint& targetPos) {
+    int newDirection, delta;
+    
+    newDirection = directionTowards(_direction, _pos, targetPos);
+    
+    std::cout << "Turn towards: " << newDirection << ", old: " << _direction << std::endl;
+    
+    if (newDirection != _direction) {
+        delta = newDirection - _direction;
+        
+        if (delta > 3) {
+            delta -= 6;
+        }
+        
+        if (delta > 0) {
+            this->doAction(1);
+        } else {
+            this->doAction(2);
+        }
+    } else {
+        if (hexDistance(_pos, targetPos) > 1) {
+            this->doAction(0);
+        }
+    }
     
 }
 
-/*int UnitModel::distanceTo(const MPoint& pos) {
-    // to-do: implement hex distance function
-    return 0;
-}*/
 
 bool UnitModel::isFacing(const MPoint& targetPos) {
-    return (sightDirection(_pos, targetPos) == _direction);
-    //return (getHexVector(_direction, _pos) == MPointMake(0, 0) - (_pos - targetPos));
+    return (hexDistance(_pos, targetPos) == 1 && sightDirection(_pos, targetPos) == _direction);
 }
 
