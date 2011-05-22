@@ -102,11 +102,15 @@ int UnitModel::getDirection() {
 	return _direction;
 }
 
-std::vector<int> UnitModel::getActions() {
-	std::vector<int> v;
+std::vector<ActionState> UnitModel::getActions() {
+	std::vector<ActionState> v;
+    ActionState a;
 	
 	for(std::map<int, Action*>::iterator it = _actions.begin(); it != _actions.end(); ++it) {
-        v.push_back(it->first);
+        a.actionId = it->first;
+        a.cost = (it->second)->getCost();
+        a.active = (_ap >= a.cost);
+        v.push_back(a);
     }
     
 	return v;
@@ -236,8 +240,9 @@ void UnitModel::inflictDamage(int damage) {
 	_hp -= damage;
     if (_hp <= 0) {
         _hp = 0;
-        //std::cout << "Destroyed" << std::endl;
-        //ModelManager::instance()->remove(this);
+        std::cout << "Destroyed" << std::endl;
+        ModelManager::instance()->remove(this);
+        return;
     }
     this->updateObservers();
 }

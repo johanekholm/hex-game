@@ -25,6 +25,7 @@
 #include "Observable.h"
 
 class Action;
+struct ActionState;
 
 struct UnitState {
     MPoint pos;
@@ -33,7 +34,7 @@ struct UnitState {
     int hp;
     int maxAp;
     int maxHp;
-    std::vector<int> actions;
+    std::vector<ActionState> actions;
 };
 
 class UnitModel : public Observable {
@@ -79,7 +80,7 @@ public:
 	MPoint getPosition();
     int getOwner();
 	int getDirection();
-	std::vector<int> getActions();
+	std::vector<ActionState> getActions();
 	
 	Action* addAction(int action);
 	void doAction(int action);

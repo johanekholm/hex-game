@@ -13,7 +13,7 @@
 #include "InputManager.h"
 #include "ViewControllerManager.h"
 #include "toolkit.h"
-
+#include "Action.h"
 
 #include <math.h>
 
@@ -32,10 +32,10 @@ UnitView::UnitView(UnitModel* model, GLfloat width, GLfloat height, int index) {
 	_unitImage = new GameImage(width, height, TextureCatalog::instance()->get("units"), index);
 	_actionImage = new GameImage(32.0f, 32.0f, TextureCatalog::instance()->get("actions"), 0);
 	_directionImage = new GameImage(16.0f, 16.0f, TextureCatalog::instance()->get("icons"), 0);
-	_actions.push_back(0);
+	/*_actions.push_back(0);
 	_actions.push_back(1);
 	_actions.push_back(2);
-	_actions.push_back(3);
+	_actions.push_back(3);*/
 	
 }
 
@@ -43,10 +43,10 @@ void UnitView::drawActions() {
 	float i = 0;
 	GPoint actionPos;
 	
-	for (std::vector<int>::iterator it = _actions.begin(); it != _actions.end(); ++it) {
+	for (std::vector<ActionState>::iterator it = _state.actions.begin(); it != _state.actions.end(); ++it) {
 		actionPos = _pos + this->getActionPosition(i);
 		i++;
-		_actionImage->drawAtWithSubTexture(actionPos, *it);
+		_actionImage->drawAtWithSubTexture(actionPos, (*it).actionId);
 	}
 
 }
@@ -57,9 +57,9 @@ GPoint UnitView::getActionPosition(int index) {
 					  sin(ACTION_ANGLE_INITIAL + ACTION_ANGLE_INCREMENT*(float)index)) * ACTION_RADIUS;
 }
 
-void UnitView::updateActions(std::vector<int> actions) {
+/*void UnitView::updateActions(std::vector<ActionState> actions) {
 	_actions = actions;
-}
+}*/
 
 void UnitView::updatePosition(const MPoint& pos, int direction) {
 	_pos.x = 64.0f + (GLfloat)pos.x * 64.0f + (pos.y % 2) * 32.0f;
@@ -156,11 +156,11 @@ int UnitView::touchedAction(GPoint point) {
 	GPoint actionPos;
 	int i = 0;
 	
-	for (std::vector<int>::iterator it = _actions.begin(); it != _actions.end(); ++it) {
+	for (std::vector<ActionState>::iterator it = _state.actions.begin(); it != _state.actions.end(); ++it) {
 		actionPos = _pos + this->getActionPosition(i);
 		
 		if (PointWithin(point, actionPos, 32.0f)) {
-			return *it;
+			return (*it).actionId;
 		}
 		i++;
 	}
@@ -170,7 +170,7 @@ int UnitView::touchedAction(GPoint point) {
 void UnitView::update() {
     _state = _unitModel->getState();
 	this->updatePosition(_state.pos, _state.direction);
-	this->updateActions(_state.actions);	
+	//this->updateActions(_state.actions);	
 }
 
 void UnitView::destroyed() {

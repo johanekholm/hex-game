@@ -23,14 +23,14 @@ class UnitView : public ViewController, public IObserver {
 	GLfloat _facing;
 	UnitModel* _unitModel;
     UnitState _state;
-	std::vector<int> _actions;
+	//std::vector<int> _actions;
 	GameImage* _unitImage;
 	GameImage* _actionImage;
 	GameImage* _directionImage;
 
 	void drawActions();	
 	GPoint getActionPosition(int index);
-	void updateActions(std::vector<int> actions);
+	//void updateActions(std::vector<ActionState> actions);
 	void updatePosition(const MPoint& pos, int direction);
     void drawHpBar();
     void drawApBar();

@@ -7,9 +7,18 @@
  *
  */
 
+#ifndef ACTION_H
+#define ACTION_H
+
 #include <string>
 
 class UnitModel;
+
+struct ActionState {
+    int actionId;
+    bool active;
+    int cost;
+};
 
 class Action {
 	int _id;
@@ -18,4 +27,7 @@ class Action {
 public:
 	Action(int anId, UnitModel* unit);
 	void doIt();
+    int getCost();
 };
+
+#endif

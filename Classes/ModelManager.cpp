@@ -35,7 +35,8 @@ void ModelManager::remove(UnitModel* unit) {
     for (std::vector<UnitModel*>::iterator it = _units.begin(); it != _units.end(); ++it) {
 		if (*it == unit) {
             delete (*it);
-            it = _units.erase(it);
+            *it = 0;
+            //std::cout << "Iterator pointer: " << *it << std::endl;
             return;
         }
 	}
@@ -43,14 +44,12 @@ void ModelManager::remove(UnitModel* unit) {
 
 void ModelManager::tick() {
     std::cout << "--- Tick ---" << std::endl;
-	for (std::vector<UnitModel*>::iterator it = _units.begin(); it != _units.end(); ++it) {
-		(*it)->tick();
-	}
-    
-    for (std::vector<UnitModel*>::iterator it = _units.begin(); it != _units.end(); ++it) {
-		if ((*it)->isDead()) {
-            std::cout << "Destroyed" << std::endl;
-            delete (*it);
+	for (std::vector<UnitModel*>::iterator it = _units.begin(); it != _units.end();) {
+        //std::cout << "Iterator pointer: " << *it << std::endl;
+        if ((*it) != 0) {
+            (*it)->tick();
+            ++it;
+        } else {
             it = _units.erase(it);
         }
 	}
