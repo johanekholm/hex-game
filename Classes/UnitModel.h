@@ -11,6 +11,7 @@
 #define UNITMODEL_H
 
 #define ATTACK_TYPE_SLICE 1
+#define ATTACK_TYPE_PIERCE 2
 
 #define STAT_POWER 1
 #define STAT_SKILL 2
@@ -65,6 +66,7 @@ public:
 	void move(int distance);
 	void rotate(int rotation);
 	void strike();
+    void fire(int range);
     void defend(UnitModel* attacker, int power, int skill, int attack_type);
     void inflictDamage(int damage);
     bool isDead();

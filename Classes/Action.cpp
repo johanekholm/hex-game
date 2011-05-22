@@ -40,6 +40,11 @@ void Action::doIt() {
                 _unit->strike();
             }
 			break;
+		case 4:
+            if (_unit->spendAp(3)) {
+                _unit->fire(2);
+            }
+			break;
 			
 		default:
 			break;

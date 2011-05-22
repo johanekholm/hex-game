@@ -50,10 +50,11 @@ UnitModel::UnitModel(int x, int y, int direction, int owner, int maxHp, int maxA
     _baseSkill = skill;
     _baseDefense = defense;
     _target = 0;
-	addAction(1);
-	addAction(0);
-	addAction(2);
-	addAction(3);
+	this->addAction(1);
+	this->addAction(0);
+	this->addAction(2);
+	this->addAction(3);
+   	this->addAction(4);
 }
 
 
@@ -186,6 +187,30 @@ void UnitModel::strike() {
     target = ModelManager::instance()->getUnitAtPos(_pos + getHexVector(_direction, _pos));
     if (target != 0) {
         target->defend(this, this->getStat(STAT_POWER), this->getStat(STAT_SKILL), ATTACK_TYPE_SLICE);    
+    }
+}
+
+void UnitModel::fire(int range) {
+    UnitModel* target;
+    MPoint projectileVector;
+    
+    if (range < 1) {
+        return;
+    }
+    
+    std::cout << "Fire!" << std::endl;
+    projectileVector = getHexVector(_direction, _pos);
+    
+    for (int d = 1; d <= range; d++) {
+        std::cout << "p-vec: (" << projectileVector.x << ", " << projectileVector.y << ")" << std::endl;
+        
+        target = ModelManager::instance()->getUnitAtPos(_pos + projectileVector);
+
+        if (target != 0) {
+            target->defend(this, this->getStat(STAT_POWER), this->getStat(STAT_SKILL), ATTACK_TYPE_PIERCE);
+            return;
+        }
+        projectileVector += projectileVector;
     }
 }
 
