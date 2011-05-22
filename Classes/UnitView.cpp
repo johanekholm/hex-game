@@ -46,8 +46,14 @@ void UnitView::drawActions() {
 	for (std::vector<ActionState>::iterator it = _state.actions.begin(); it != _state.actions.end(); ++it) {
 		actionPos = _pos + this->getActionPosition(i);
 		i++;
+        if (!(*it).active) {
+            glColor4f(1.0f, 1.0f, 1.0f, 0.3f);
+        } else {
+            glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+        }
 		_actionImage->drawAtWithSubTexture(actionPos, (*it).actionId);
 	}
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
 }
 
