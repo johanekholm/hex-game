@@ -58,6 +58,7 @@ public:
 	
 	~UnitModel();
 	UnitModel(int x, int y, int direction, int owner);
+    UnitModel(int x, int y, int direction, int owner, int maxHp, int maxAp, int power, int skill, int defense);
     
     void tick();
 	bool spendAp(int cost);

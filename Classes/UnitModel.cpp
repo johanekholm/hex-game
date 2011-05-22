@@ -37,6 +37,25 @@ UnitModel::UnitModel(int x, int y, int direction, int owner) {
 	addAction(3);
 }
 
+UnitModel::UnitModel(int x, int y, int direction, int owner, int maxHp, int maxAp, int power, int skill, int defense) {
+    _owner = owner;
+	_pos.x = x;
+	_pos.y = y;
+	_direction = direction;
+    _maxHp = maxHp;
+    _maxAp = maxAp;
+    _hp = _maxHp;
+    _ap = 0;
+    _basePower = power;
+    _baseSkill = skill;
+    _baseDefense = defense;
+    _target = 0;
+	addAction(1);
+	addAction(0);
+	addAction(2);
+	addAction(3);
+}
+
 
 /*
 void UnitModel::registerAction(Action *aAction) {
