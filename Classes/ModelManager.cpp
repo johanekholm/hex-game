@@ -9,6 +9,7 @@
 
 #include "ModelManager.h"
 #include "UnitModel.h"
+#include "HexMapModel.h"
 #include "geometry.h"
 #include <iostream>
 
@@ -17,6 +18,7 @@ ModelManager* ModelManager::_instance = 0;
 void ModelManager::destroy() {
 	if (_instance != 0) {
 		_instance->_units.clear();
+        delete _instance->_map;
 		delete _instance;
 		_instance=0;
 	}
@@ -40,6 +42,14 @@ void ModelManager::remove(UnitModel* unit) {
             return;
         }
 	}
+}
+
+void ModelManager::setMap(HexMapModel* map) {
+    _map = map;
+}
+
+HexMapModel* ModelManager::getMap() {
+    return _map;
 }
 
 void ModelManager::tick() {
@@ -78,4 +88,8 @@ UnitModel* ModelManager::getClosestTo(const MPoint& pos) {
         }
 	}
     return closestUnit;
+}
+
+std::vector<UnitModel*> ModelManager::getAllUnits() {
+    return _units;
 }

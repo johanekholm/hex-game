@@ -10,6 +10,7 @@
 #include "UnitModel.h"
 #include "Action.h"
 #include "ModelManager.h"
+#include "HexMapModel.h"
 #include "geometry.h"
 #include <iostream>
 
@@ -31,9 +32,9 @@ UnitModel::UnitModel(int x, int y, int direction, int owner) {
     _baseSkill = 2;
     _baseDefense = 1;
     _target = 0;
-	addAction(1);
+	//addAction(1);
+	//addAction(2);
 	addAction(0);
-	addAction(2);
 	addAction(3);
 }
 
@@ -50,9 +51,9 @@ UnitModel::UnitModel(int x, int y, int direction, int owner, int maxHp, int maxA
     _baseSkill = skill;
     _baseDefense = defense;
     _target = 0;
-	this->addAction(1);
+	//this->addAction(1);
+	//this->addAction(2);
 	this->addAction(0);
-	this->addAction(2);
 	this->addAction(3);
    	this->addAction(4);
 }
@@ -103,17 +104,29 @@ int UnitModel::getDirection() {
 }
 
 std::vector<ActionState> UnitModel::getActions() {
-	std::vector<ActionState> v;
-    ActionState a;
-	
-	for(std::map<int, Action*>::iterator it = _actions.begin(); it != _actions.end(); ++it) {
-        a.actionId = it->first;
+	std::vector<ActionState> actionPoints, temp;
+    std::map<int, HexState> hexes;
+    std::vector<UnitModel*> units;
+    std::vector<MPoint> targets;
+    //ActionState a;
+
+    hexes = ModelManager::instance()->getMap()->getAllHexes();
+	units = ModelManager::instance()->getAllUnits();
+    
+	for (std::map<int, Action*>::iterator it = _actions.begin(); it != _actions.end(); ++it) {
+        
+        temp = (it->second)->getActionPoints(_ap, hexes, units);
+        actionPoints.insert(actionPoints.end(), temp.begin(), temp.end());
+        
+
+        /*a.actionId = it->first;
         a.cost = (it->second)->getCost();
         a.active = (_ap >= a.cost);
-        v.push_back(a);
+        
+        actionStates.push_back(a);*/
     }
     
-	return v;
+	return actionPoints;
 }
 
 int UnitModel::getStat(int stat) {
@@ -336,4 +349,5 @@ void UnitModel::moveTowards(const MPoint& targetPos) {
 bool UnitModel::isFacing(const MPoint& targetPos) {
     return (hexDistance(_pos, targetPos) == 1 && sightDirection(_pos, targetPos) == _direction);
 }
+
 

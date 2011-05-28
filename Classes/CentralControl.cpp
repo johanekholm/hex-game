@@ -14,6 +14,7 @@
 #include "ModelManager.h"
 #include "UnitFactory.h"
 #include "HexMap.h"
+#include "HexMapModel.h"
 #include "InputManager.h"
 #include "toolkit.h"
 #include "geometry.h"
@@ -45,15 +46,18 @@ CentralControl::CentralControl() {
 	_timer = 200;
     
 	TextureCatalog* catalog = TextureCatalog::instance();
-		
+	
+	
+    ModelManager::instance()->setMap(new HexMapModel(4, 4));
+    
 	_hexMap = new HexMap(catalog->get("hexTiles"), 4, 4, 80.0f, 80.0f);
     _viewControllerManager = ViewControllerManager::instance();
-    //_modelManager = new ModelManager();
     _unitFactory = new UnitFactory(_viewControllerManager);
 	_input = new InputManager();
     
     _unitFactory->produceAndRegisterUnit("swordsman", 1, MPointMake(0, 0), GEOM_DIR_E);
-    _unitFactory->produceAndRegisterUnit("soldier", 2, MPointMake(2, 0), GEOM_DIR_W);
+    //_unitFactory->produceAndRegisterUnit("soldier", 1, MPointMake(0, 1), GEOM_DIR_E);
+    //_unitFactory->produceAndRegisterUnit("soldier", 2, MPointMake(2, 0), GEOM_DIR_W);
     
     std::cout << "Finished launching" << std::endl;
 }

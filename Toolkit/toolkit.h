@@ -132,6 +132,7 @@ GPoint GPointMake(GLfloat x, GLfloat y);
 MPoint MPointMake(int x, int y);
 //bool PointWithin(GPoint point, GPoint pos, GPoint size);
 bool PointWithin(const GPoint& point, const GPoint& pos, GLfloat size);
+GPoint transformModelPositionToView(const MPoint& pos);
 	
 #ifdef __cplusplus
 }

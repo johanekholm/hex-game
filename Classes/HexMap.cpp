@@ -131,3 +131,14 @@ void HexMap::draw() {
 
 }
 
+std::vector<MPoint> HexMap::getAllHexes() {
+    std::vector<MPoint> v;
+    
+    for (int i = 0; i < _height; i++) {
+		for (int j = 0; j < _width; j++) {
+            v.push_back(MPointMake(j, i));
+        }
+    }
+    return v;
+}
+

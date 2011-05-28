@@ -21,6 +21,7 @@ UnitView::~UnitView() {
 	delete _unitImage;
 	delete _actionImage;
 	delete _directionImage;
+    _actionPoints.clear();
 	_unitModel = 0;
 }
 
@@ -40,18 +41,18 @@ UnitView::UnitView(UnitModel* model, GLfloat width, GLfloat height, int index) {
 }
 
 void UnitView::drawActions() {
-	float i = 0;
-	GPoint actionPos;
+	//float i = 0;
+	//GPoint actionPos;
 	
-	for (std::vector<ActionState>::iterator it = _state.actions.begin(); it != _state.actions.end(); ++it) {
-		actionPos = _pos + this->getActionPosition(i);
-		i++;
+	for (std::vector<ActionView>::iterator it = _actionPoints.begin(); it != _actionPoints.end(); ++it) {
+		//actionPos = transformModelPositionToView((*it).pos); //this->getActionPosition(i);
+		//i++;
         if (!(*it).active) {
             glColor4f(1.0f, 1.0f, 1.0f, 0.3f);
         } else {
             glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         }
-		_actionImage->drawAtWithSubTexture(actionPos, (*it).actionId);
+		_actionImage->drawAtWithSubTexture((*it).pos, (*it).actionId);
 	}
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -63,9 +64,18 @@ GPoint UnitView::getActionPosition(int index) {
 					  sin(ACTION_ANGLE_INITIAL + ACTION_ANGLE_INCREMENT*(float)index)) * ACTION_RADIUS;
 }
 
-/*void UnitView::updateActions(std::vector<ActionState> actions) {
-	_actions = actions;
-}*/
+void UnitView::updateActions() {
+	ActionView actionView;
+    
+    _actionPoints.clear();
+    
+    for (std::vector<ActionState>::iterator it = _state.actions.begin(); it != _state.actions.end(); ++it) {
+        actionView.pos = transformModelPositionToView((*it).pos);
+        actionView.actionId = (*it).actionId;
+        actionView.active = (*it).active;
+        _actionPoints.push_back(actionView);
+    }	
+}
 
 void UnitView::updatePosition(const MPoint& pos, int direction) {
 	_pos.x = 64.0f + (GLfloat)pos.x * 64.0f + (pos.y % 2) * 32.0f;
@@ -159,16 +169,16 @@ bool UnitView::handleEvent(const TouchEvent& event) {
 }
 
 int UnitView::touchedAction(GPoint point) {
-	GPoint actionPos;
-	int i = 0;
+	//GPoint actionPos;
+	//int i = 0;
 	
-	for (std::vector<ActionState>::iterator it = _state.actions.begin(); it != _state.actions.end(); ++it) {
-		actionPos = _pos + this->getActionPosition(i);
+	for (std::vector<ActionView>::iterator it = _actionPoints.begin(); it != _actionPoints.end(); ++it) {
+		//actionPos = _pos + this->getActionPosition(i);
 		
-		if (PointWithin(point, actionPos, 32.0f)) {
+		if (PointWithin(point, (*it).pos, 32.0f)) {
 			return (*it).actionId;
 		}
-		i++;
+		//i++;
 	}
 	return (-1);
 }
@@ -176,7 +186,7 @@ int UnitView::touchedAction(GPoint point) {
 void UnitView::update() {
     _state = _unitModel->getState();
 	this->updatePosition(_state.pos, _state.direction);
-	//this->updateActions(_state.actions);	
+	this->updateActions();	
 }
 
 void UnitView::destroyed() {

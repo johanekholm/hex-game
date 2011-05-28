@@ -19,18 +19,24 @@
 #define ACTION_ANGLE_INCREMENT PI/3.0f
 #define ACTION_RADIUS 64.0f
 
+struct ActionView {
+    GPoint pos;
+    int actionId;
+    bool active;
+};
+
 class UnitView : public ViewController, public IObserver {
 	GLfloat _facing;
 	UnitModel* _unitModel;
     UnitState _state;
-	//std::vector<int> _actions;
+	std::vector<ActionView> _actionPoints;
 	GameImage* _unitImage;
 	GameImage* _actionImage;
 	GameImage* _directionImage;
 
 	void drawActions();	
 	GPoint getActionPosition(int index);
-	//void updateActions(std::vector<ActionState> actions);
+	void updateActions();
 	void updatePosition(const MPoint& pos, int direction);
     void drawHpBar();
     void drawApBar();

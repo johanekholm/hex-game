@@ -33,3 +33,10 @@ bool PointWithin(const GPoint& point, const GPoint& pos, GLfloat size) {
 	return (point.x >= pos.x - size/2.0f && point.x <= pos.x + size/2.0f && point.y >= pos.y - size/2.0f && point.y <= pos.y + size/2.0f);
 }
 
+
+GPoint transformModelPositionToView(const MPoint& pos) {
+	GPoint viewPos;
+    viewPos.x = 64.0f + (GLfloat)pos.x * 64.0f + (pos.y % 2) * 32.0f;
+	viewPos.y = 64.0f + (GLfloat)pos.y * 50.0f;
+    return viewPos;
+}

@@ -43,6 +43,7 @@ public:
 	HexMap(TextureMap* tex, int aWidth, int aHeight, GLfloat aHexWidth, GLfloat aHexHeight);  //int aWidth, int aHeight, GLfloat aHexWidth, GLfloat aHexHeight, TextureMap* tex, vector<int>* tileData);
 	//~GameImageCPP();
 	void draw();
+    std::vector<MPoint> getAllHexes();
 	//void drawAt(const GPoint &pos);
 	//void setPosition(GPoint point);
 };
