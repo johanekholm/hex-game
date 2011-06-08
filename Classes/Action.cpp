@@ -49,11 +49,13 @@ Action::Action(int anId, UnitModel* unit) {
 
 }
 
-void Action::doIt() {
+void Action::doIt(const ActionState& statePoint) {
+    std::cout << "Action of id " << _id << std::endl;
+
     if (_unit->spendAp(this->getCost())) {
         switch (_id) {
             case ACTION_MOVE:
-                _unit->move(1);			
+                _unit->move(statePoint.pos);			
                 break;
             case ACTION_ROTATE_LEFT:
                 _unit->rotate(1);
@@ -62,10 +64,10 @@ void Action::doIt() {
                 _unit->rotate(-1);			
                 break;
             case ACTION_STRIKE:
-                _unit->strike();
+                _unit->strike(statePoint.pos);
                 break;
             case ACTION_FIRE:
-                _unit->fire(2);
+                _unit->fire(statePoint.pos);
                 break;
                 
             default:
@@ -83,7 +85,10 @@ bool Action::isAvailableAtHex(const MPoint& hex) {
     
 	switch (_id) {
 		case ACTION_MOVE:
-            return (distance == 1);
+            if (distance == 1) {
+                return (ModelManager::instance()->getUnitAtPos(hex) == 0);
+            }
+            return false;
             //return (distance == 1 && ModelManager::instance()->getUnitAtPos(hex) == 0);
 		case ACTION_ROTATE_LEFT:
             return false;
@@ -125,7 +130,7 @@ std::vector<ActionState> Action::getActionPoints(int ap, const std::map<int, Hex
             if (this->isAvailableAtHex((it->second).pos)) {
                 state.pos = (it->second).pos;
                 actionPoints.push_back(state);
-                std::cout << "Action (hex) " << _id << " at (" << state.pos.x << ", " << state.pos.y << ")" << std::endl;
+                //std::cout << "Action (hex) " << _id << " at (" << state.pos.x << ", " << state.pos.y << ")" << std::endl;
             }
         }
     } else if (_targetType == TARGET_UNIT) {
@@ -133,7 +138,7 @@ std::vector<ActionState> Action::getActionPoints(int ap, const std::map<int, Hex
             if (this->isAvailableToUnit(*it)) {
                 state.pos = (*it)->getPosition();
                 actionPoints.push_back(state);
-                std::cout << "Action (unit) " << _id << " at (" << state.pos.x << ", " << state.pos.y << ")" << std::endl;
+                //std::cout << "Action (unit) " << _id << " at (" << state.pos.x << ", " << state.pos.y << ")" << std::endl;
             }
         }
     }

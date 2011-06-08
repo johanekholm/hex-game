@@ -64,10 +64,10 @@ public:
     
     void tick();
 	bool spendAp(int cost);
-	void move(int distance);
+	void move(const MPoint& targetPos);
 	void rotate(int rotation);
-	void strike();
-    void fire(int range);
+	void strike(const MPoint& targetPos);
+    void fire(const MPoint& targetPos);
     void defend(UnitModel* attacker, int power, int skill, int attack_type);
     void inflictDamage(int damage);
     bool isDead();
@@ -83,7 +83,7 @@ public:
 	std::vector<ActionState> getActions();
 	
 	Action* addAction(int action);
-	void doAction(int action);
+	void doAction(const ActionState& statePoint);
 	
 };
 

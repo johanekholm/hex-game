@@ -107,7 +107,7 @@ int hexDistance(const MPoint& start, const MPoint& dest) {
         dist = abs(dx) + abs(dy);
     }
 
-    std::cout << "Distance is: " << dist << std::endl;
+    //std::cout << "Distance is: " << dist << std::endl;
     
     return dist;
 }

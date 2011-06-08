@@ -55,7 +55,7 @@ UnitModel::UnitModel(int x, int y, int direction, int owner, int maxHp, int maxA
 	//this->addAction(2);
 	this->addAction(0);
 	this->addAction(3);
-   	this->addAction(4);
+   	//this->addAction(4);
 }
 
 
@@ -73,9 +73,10 @@ Action* UnitModel::addAction(int action) {
 	return _actions[action];
 }
 
-void UnitModel::doAction(int action) {
-	if (_actions.find(action) != _actions.end()) {
-		_actions[action]->doIt();
+void UnitModel::doAction(const ActionState& statePoint) {
+    std::cout << "Do action " << statePoint.actionId << std::endl;
+	if (_actions.find(statePoint.actionId) != _actions.end()) {
+		_actions[statePoint.actionId]->doIt(statePoint);
 	}
 	
 	
@@ -171,11 +172,13 @@ UnitState UnitModel::getState() {
     return state;
 }
 
-void UnitModel::move(int distance) {
+void UnitModel::move(const MPoint& targetPos) {
 
-	MPoint v = getHexVector(_direction, _pos);
-    if (ModelManager::instance()->getUnitAtPos(_pos + v) == 0) {
-        _pos += v;        
+	//MPoint v = getHexVector(_direction, _pos);
+    //if (ModelManager::instance()->getUnitAtPos(_pos + v) == 0) {
+    if (ModelManager::instance()->getUnitAtPos(targetPos) == 0) {
+        //_pos += v;        
+        _pos = targetPos;        
     }
 	
 	//NSLog(@"moved - x: %i, y: %i", v.x, v.y);
@@ -197,18 +200,22 @@ void UnitModel::rotate(int rotation) {
 	//NSLog(@"direction: %i", _direction);
 }
 
-void UnitModel::strike() {
+void UnitModel::strike(const MPoint& targetPos) {
     UnitModel* target;
     
     std::cout << "Strike!" << std::endl;
-    target = ModelManager::instance()->getUnitAtPos(_pos + getHexVector(_direction, _pos));
+    //target = ModelManager::instance()->getUnitAtPos(_pos + getHexVector(_direction, _pos));
+    target = ModelManager::instance()->getUnitAtPos(targetPos);
     if (target != 0) {
         target->defend(this, this->getStat(STAT_POWER), this->getStat(STAT_SKILL), ATTACK_TYPE_SLICE);    
     }
 }
 
-void UnitModel::fire(int range) {
-    UnitModel* target;
+void UnitModel::fire(const MPoint& targetPos) {
+
+    std::cout << "Fire!" << std::endl;
+    
+    /*    UnitModel* target;
     MPoint projectileVector;
     
     if (range < 1) {
@@ -228,7 +235,7 @@ void UnitModel::fire(int range) {
             return;
         }
         projectileVector += projectileVector;
-    }
+    }*/
 }
 
 void UnitModel::defend(UnitModel* attacker, int power, int skill, int attackType) {
@@ -267,14 +274,14 @@ bool UnitModel::isDead() {
 void UnitModel::tick() {
     if (this->_ap < this->getStat(STAT_MAXAP)) {
         this->_ap += 1;
-        this->doAI();
+        //this->doAI();
         this->updateObservers();
     }
 	
 }
 
 void UnitModel::doAI() {
-    MPoint targetPos;
+/*    MPoint targetPos;
 
     if (_owner == 2) {
 
@@ -289,7 +296,7 @@ void UnitModel::doAI() {
                 this->moveTowards(targetPos);
             }
         }    
-    }
+    }*/
 }
 
 void UnitModel::chooseTarget() {
@@ -297,7 +304,7 @@ void UnitModel::chooseTarget() {
 }
 
 void UnitModel::turnTowards(const MPoint& targetPos) {
-    int newDirection, delta;
+/*    int newDirection, delta;
     
     newDirection = directionTowards(_direction, _pos, targetPos);
     
@@ -315,11 +322,11 @@ void UnitModel::turnTowards(const MPoint& targetPos) {
         } else {
             this->doAction(2);
         }
-    }
+    }*/
 }
 
 void UnitModel::moveTowards(const MPoint& targetPos) {
-    int newDirection, delta;
+/*    int newDirection, delta;
     
     newDirection = directionTowards(_direction, _pos, targetPos);
     
@@ -342,7 +349,7 @@ void UnitModel::moveTowards(const MPoint& targetPos) {
             this->doAction(0);
         }
     }
-    
+ */   
 }
 
 

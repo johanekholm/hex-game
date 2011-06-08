@@ -47,7 +47,7 @@ class Action {
 	
 public:
 	Action(int anId, UnitModel* unit);
-	void doIt();
+	void doIt(const ActionState& statePoint);
     int getCost();
     bool isAvailableAtHex(const MPoint& hex);
     bool isAvailableToUnit(UnitModel* targetUnit);

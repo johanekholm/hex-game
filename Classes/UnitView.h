@@ -12,6 +12,7 @@
 #include "IObserver.h"
 #include "ViewController.h"
 #include "UnitModel.h"
+#include "Action.h"
 
 #include <vector>
 
@@ -23,6 +24,7 @@ struct ActionView {
     GPoint pos;
     int actionId;
     bool active;
+    ActionState* statePoint;
 };
 
 class UnitView : public ViewController, public IObserver {
@@ -48,7 +50,7 @@ public:
 	void draw();
 	void drawGUI();
 	bool handleEvent(const TouchEvent& event);
-	int touchedAction(GPoint point);
+	ActionState* touchedAction(GPoint point);
 	void update();
     void destroyed();
 };

@@ -73,6 +73,7 @@ void UnitView::updateActions() {
         actionView.pos = transformModelPositionToView((*it).pos);
         actionView.actionId = (*it).actionId;
         actionView.active = (*it).active;
+        actionView.statePoint = &(*it);
         _actionPoints.push_back(actionView);
     }	
 }
@@ -89,7 +90,7 @@ void UnitView::draw() {
 }
 
 void UnitView::drawGUI() {
-	_directionImage->drawAtRotatedWithSubTexture(_pos, (GLfloat)_facing * 60.0f + 180.0f, 0);
+	//_directionImage->drawAtRotatedWithSubTexture(_pos, (GLfloat)_facing * 60.0f + 180.0f, 0);
     this->drawHpBar();
     this->drawApBar();
 	if (this->_hasFocus) {
@@ -162,13 +163,20 @@ void UnitView::drawApBar() {
 
 
 bool UnitView::handleEvent(const TouchEvent& event) {
+    ActionState* statePoint;
+    
 	if (event.type == 3) {
-		_unitModel->doAction(this->touchedAction(event.point));	
+        statePoint = this->touchedAction(event.point);
+        
+        if (statePoint != 0) {
+            _unitModel->doAction(*statePoint);
+        }
+			
 	}
 	return true;
 }
 
-int UnitView::touchedAction(GPoint point) {
+ActionState* UnitView::touchedAction(GPoint point) {
 	//GPoint actionPos;
 	//int i = 0;
 	
@@ -176,11 +184,11 @@ int UnitView::touchedAction(GPoint point) {
 		//actionPos = _pos + this->getActionPosition(i);
 		
 		if (PointWithin(point, (*it).pos, 32.0f)) {
-			return (*it).actionId;
+			return (*it).statePoint;
 		}
 		//i++;
 	}
-	return (-1);
+	return (0);
 }
 
 void UnitView::update() {
