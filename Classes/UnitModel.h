@@ -39,6 +39,7 @@ struct UnitState {
 
 class UnitModel : public Observable {
 	MPoint _pos;
+    int _id;
 	int _direction;
 	int _ap;
 	int _hp;
@@ -62,6 +63,7 @@ public:
 	UnitModel(int x, int y, int direction, int owner);
     UnitModel(int x, int y, int direction, int owner, int maxHp, int maxAp, int power, int skill, int defense);
     
+    void setId(int unitId);
     void tick();
 	bool spendAp(int cost);
 	void move(const MPoint& targetPos);

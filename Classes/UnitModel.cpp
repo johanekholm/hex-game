@@ -66,7 +66,9 @@ void UnitModel::registerAction(Action *aAction) {
 }
 
 */
-
+void UnitModel::setId(int unitId) {
+    _id = unitId;
+}
 
 Action* UnitModel::addAction(int action) {
 	_actions[action] = new Action(action, this);
@@ -261,7 +263,7 @@ void UnitModel::inflictDamage(int damage) {
     if (_hp <= 0) {
         _hp = 0;
         std::cout << "Destroyed" << std::endl;
-        ModelManager::instance()->remove(this);
+        ModelManager::instance()->remove(_id);
         return;
     }
     this->updateObservers();

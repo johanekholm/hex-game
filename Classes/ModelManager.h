@@ -8,6 +8,7 @@
  */
 
 #include <vector>
+#include <map>
 #include "toolkit.h"
 
 class UnitModel;
@@ -15,8 +16,9 @@ class HexMapModel;
 
 class ModelManager {
     static ModelManager* _instance;
-	std::vector<UnitModel*> _units;
+	std::map<int, UnitModel*> _units;
     HexMapModel* _map;
+    int _unitIdCounter;
     
     ModelManager();
 
@@ -32,10 +34,12 @@ public:
 
 	void add(UnitModel*);
     void remove(UnitModel* unit);
+    void remove(int unitId);
     void setMap(HexMapModel* map);
     HexMapModel* getMap();
     void tick();
     UnitModel* getUnitAtPos(const MPoint& pos);
+    UnitModel* getUnitById(int unitId);
     UnitModel* getClosestTo(const MPoint& pos);
     std::vector<UnitModel*> getAllUnits();
 };
