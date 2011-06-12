@@ -60,7 +60,7 @@ class UnitModel : public Observable {
 public:
 	
 	~UnitModel();
-    UnitModel(int x, int y, int direction, int owner, int maxHp, int maxAp, int power, int skill, int defense);
+    UnitModel(int x, int y, int direction, int owner, int maxHp, int maxAp, int power, int skill, int defense, std::vector<int> actionIds);
     
     void setId(int unitId);
     void tick();

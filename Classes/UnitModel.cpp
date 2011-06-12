@@ -18,7 +18,7 @@ UnitModel::~UnitModel() {
     this->updateObserversDestroyed();
 }
 
-UnitModel::UnitModel(int x, int y, int direction, int owner, int maxHp, int maxAp, int power, int skill, int defense) {
+UnitModel::UnitModel(int x, int y, int direction, int owner, int maxHp, int maxAp, int power, int skill, int defense, std::vector<int> actionIds) {
     _owner = owner;
 	_pos.x = x;
 	_pos.y = y;
@@ -32,8 +32,12 @@ UnitModel::UnitModel(int x, int y, int direction, int owner, int maxHp, int maxA
     _baseDefense = defense;
     _target = 0;
 
-	this->addAction(0);
-	this->addAction(3);
+    for (std::vector<int>::iterator it = actionIds.begin(); it != actionIds.end(); ++it) {
+        this->addAction(*it);
+    }
+	
+    //this->addAction(0);
+	//this->addAction(3);
    	//this->addAction(4);
 }
 
