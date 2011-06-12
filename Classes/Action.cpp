@@ -15,7 +15,6 @@
 #include "HexMapModel.h"
 #include <iostream>
 
-//using namespace std;
 
 Action::Action(int anId, UnitModel* unit) {
 	_id = anId;	
@@ -25,14 +24,6 @@ Action::Action(int anId, UnitModel* unit) {
 		case ACTION_MOVE:
             _cost = 2;
             _targetType = TARGET_HEX;
-            break;
-		case ACTION_ROTATE_LEFT:
-            _cost = 1;
-            _targetType = 0;
-            break;
-		case ACTION_ROTATE_RIGHT:
-            _cost = 1;
-            _targetType = 0;
             break;
 		case ACTION_STRIKE:
             _cost = 2;
@@ -56,12 +47,6 @@ void Action::doIt(const ActionState& statePoint) {
         switch (_id) {
             case ACTION_MOVE:
                 _unit->move(statePoint.pos);			
-                break;
-            case ACTION_ROTATE_LEFT:
-                _unit->rotate(1);
-                break;
-            case ACTION_ROTATE_RIGHT:
-                _unit->rotate(-1);			
                 break;
             case ACTION_STRIKE:
                 _unit->strike(statePoint.pos);
@@ -89,16 +74,6 @@ bool Action::isAvailableAtHex(const MPoint& hex) {
                 return (ModelManager::instance()->getUnitAtPos(hex) == 0);
             }
             return false;
-            //return (distance == 1 && ModelManager::instance()->getUnitAtPos(hex) == 0);
-		case ACTION_ROTATE_LEFT:
-            return false;
-		case ACTION_ROTATE_RIGHT:
-            return false;
-		/*case ACTION_STRIKE:
-            return (distance == 1 && ModelManager::instance()->getUnitAtPos(hex) != 0);
-		case ACTION_FIRE:
-            return (distance > 0 && distance <= 2 && ModelManager::instance()->getUnitAtPos(hex) != 0);
-		*/	
 		default:
 			return false;
 	}
