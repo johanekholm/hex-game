@@ -29,7 +29,6 @@ ModelManager::ModelManager() {
 }
 
 void ModelManager::add(UnitModel* unit) {
-	//_units.push_back(unit);
     if (unit == 0) {
         return;
     }
@@ -39,17 +38,6 @@ void ModelManager::add(UnitModel* unit) {
     unit->setId(_unitIdCounter);
 }
 
-void ModelManager::remove(UnitModel* unit) {
-    // to-do: implement remove unit from vector and delete 
-    /*for (std::vector<UnitModel*>::iterator it = _units.begin(); it != _units.end(); ++it) {
-		if (*it == unit) {
-            delete (*it);
-            *it = 0;
-            //std::cout << "Iterator pointer: " << *it << std::endl;
-            return;
-        }
-	}*/
-}
 
 void ModelManager::remove(int unitId) {
     delete _units[unitId];

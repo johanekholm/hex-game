@@ -60,7 +60,6 @@ class UnitModel : public Observable {
 public:
 	
 	~UnitModel();
-	UnitModel(int x, int y, int direction, int owner);
     UnitModel(int x, int y, int direction, int owner, int maxHp, int maxAp, int power, int skill, int defense);
     
     void setId(int unitId);
@@ -72,7 +71,6 @@ public:
     void fire(const MPoint& targetPos);
     void defend(UnitModel* attacker, int power, int skill, int attack_type);
     void inflictDamage(int damage);
-    bool isDead();
     int getStat(int stat);
     UnitState getState();
     void doAI();

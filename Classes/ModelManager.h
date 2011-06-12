@@ -33,7 +33,6 @@ public:
     static void destroy();
 
 	void add(UnitModel*);
-    void remove(UnitModel* unit);
     void remove(int unitId);
     void setMap(HexMapModel* map);
     HexMapModel* getMap();
