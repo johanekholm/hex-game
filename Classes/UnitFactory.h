@@ -20,8 +20,8 @@ class UnitFactory {
     
     
 public:
-    UnitFactory(ModelManager* modelManager, ViewControllerManager* viewControllerManager);
-    void produceAndRegisterUnit(const std::string& unitClass, int owner, const MPoint& pos);
+    UnitFactory(ViewControllerManager* viewControllerManager);
+    void produceAndRegisterUnit(const std::string& unitClass, int owner, const MPoint& pos, int direction);
 };
 
 

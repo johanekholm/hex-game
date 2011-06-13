@@ -16,6 +16,7 @@ class IObserver {
 public:
 	virtual ~IObserver() {}
 	virtual void update() = 0;
+    virtual void destroyed() = 0;
 };
 
 #endif

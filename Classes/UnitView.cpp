@@ -11,6 +11,9 @@
 #include "geometry.h"
 #include "TextureCatalog.h"
 #include "InputManager.h"
+#include "ViewControllerManager.h"
+#include "toolkit.h"
+#include "Action.h"
 
 #include <math.h>
 
@@ -18,31 +21,40 @@ UnitView::~UnitView() {
 	delete _unitImage;
 	delete _actionImage;
 	delete _directionImage;
+    _actionPoints.clear();
 	_unitModel = 0;
 }
 
-UnitView::UnitView(UnitModel* model, GLfloat aWidth, GLfloat aHeight, int index) {
+UnitView::UnitView(UnitModel* model, GLfloat width, GLfloat height, int index) {
 	_unitModel = model;
 	_facing = 0.0f;
-	_unitImage = new GameImage(aWidth, aHeight, TextureCatalog::instance()->get("units"), index);
+    _width = width;
+    _height = height;
+	_unitImage = new GameImage(width, height, TextureCatalog::instance()->get("units"), index);
 	_actionImage = new GameImage(32.0f, 32.0f, TextureCatalog::instance()->get("actions"), 0);
 	_directionImage = new GameImage(16.0f, 16.0f, TextureCatalog::instance()->get("icons"), 0);
-	_actions.push_back(0);
+	/*_actions.push_back(0);
 	_actions.push_back(1);
 	_actions.push_back(2);
-	_actions.push_back(3);
+	_actions.push_back(3);*/
 	
 }
 
 void UnitView::drawActions() {
-	float i = 0;
-	GPoint actionPos;
+	//float i = 0;
+	//GPoint actionPos;
 	
-	for (std::vector<int>::iterator it = _actions.begin(); it != _actions.end(); ++it) {
-		actionPos = _pos + this->getActionPosition(i);
-		i++;
-		_actionImage->drawAtWithSubTexture(actionPos, *it);
+	for (std::vector<ActionView>::iterator it = _actionPoints.begin(); it != _actionPoints.end(); ++it) {
+		//actionPos = transformModelPositionToView((*it).pos); //this->getActionPosition(i);
+		//i++;
+        if (!(*it).active) {
+            glColor4f(1.0f, 1.0f, 1.0f, 0.3f);
+        } else {
+            glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+        }
+		_actionImage->drawAtWithSubTexture((*it).pos, (*it).actionId);
 	}
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
 }
 
@@ -52,8 +64,18 @@ GPoint UnitView::getActionPosition(int index) {
 					  sin(ACTION_ANGLE_INITIAL + ACTION_ANGLE_INCREMENT*(float)index)) * ACTION_RADIUS;
 }
 
-void UnitView::updateActions(std::vector<int> actions) {
-	_actions = actions;
+void UnitView::updateActions() {
+	ActionView actionView;
+    
+    _actionPoints.clear();
+    
+    for (std::vector<ActionState>::iterator it = _state.actions.begin(); it != _state.actions.end(); ++it) {
+        actionView.pos = transformModelPositionToView((*it).pos);
+        actionView.actionId = (*it).actionId;
+        actionView.active = (*it).active;
+        actionView.statePoint = &(*it);
+        _actionPoints.push_back(actionView);
+    }	
 }
 
 void UnitView::updatePosition(const MPoint& pos, int direction) {
@@ -68,37 +90,117 @@ void UnitView::draw() {
 }
 
 void UnitView::drawGUI() {
-	_directionImage->drawAtRotatedWithSubTexture(_pos, (GLfloat)_facing * 60.0f + 180.0f, 0);
-	this->drawActions();
+	//_directionImage->drawAtRotatedWithSubTexture(_pos, (GLfloat)_facing * 60.0f + 180.0f, 0);
+    this->drawHpBar();
+    this->drawApBar();
+	if (this->_hasFocus) {
+        this->drawActions();
+    }
+}
+
+void UnitView::drawHpBar() {
+    GLfloat width, height, yOffset, ratio, length;
+    
+    ratio = (GLfloat)_state.hp / (GLfloat)_state.maxHp;
+    width = 32.0f;
+    length = ratio * width;
+    height = 3.0f;
+    yOffset = 32.0f;
+    
+    GLfloat	vertices[] = {	0.0f, -height/2.0f, 0.0f,
+		length, -height/2.0f, 0.0f,
+		0.0f, height/2.0f, 0.0f,
+		0.0f, height/2.0f, 0.0f,
+		length, -height/2.0f, 0.0f,		
+		length, height/2.0f, 0.0f };
+	
+    glDisable(GL_TEXTURE_2D);
+    
+    if (ratio >= 0.75f) {
+        glColor4f(0.0f, 1.0f, 0.0f, 1.0f);        
+    } else if (ratio >= 0.25f) {
+        glColor4f(1.0f, 1.0f, 0.0f, 1.0f);                
+    } else {
+        glColor4f(1.0f, 0.0f, 0.0f, 1.0f);                        
+    }
+	glLoadIdentity();
+	glTranslatef(_pos.x - width/2.0f, _pos.y + yOffset, 0.0f);
+		
+	glVertexPointer(3, GL_FLOAT, 0, vertices);
+	glDrawArrays(GL_TRIANGLES, 0, 6);	
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    glEnable(GL_TEXTURE_2D);
+}
+
+void UnitView::drawApBar() {
+    GLfloat width, height, yOffset, ratio, length;
+    
+    ratio = (GLfloat)_state.ap / (GLfloat)_state.maxAp;
+    width = 32.0f;
+    length = ratio * width;
+    height = 6.0f;
+    yOffset = 26.0f;
+    
+    GLfloat	vertices[] = {	0.0f, -height/2.0f, 0.0f,
+		length, -height/2.0f, 0.0f,
+		0.0f, height/2.0f, 0.0f,
+		0.0f, height/2.0f, 0.0f,
+		length, -height/2.0f, 0.0f,		
+		length, height/2.0f, 0.0f };
+	
+    glDisable(GL_TEXTURE_2D);
+    
+    glColor4f(0.0f, 0.0f, 1.0f, 1.0f);                        
+	glLoadIdentity();
+	glTranslatef(_pos.x - width/2.0f, _pos.y + yOffset, 0.0f);
+    
+	glVertexPointer(3, GL_FLOAT, 0, vertices);
+	glDrawArrays(GL_TRIANGLES, 0, 6);	
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    glEnable(GL_TEXTURE_2D);
 }
 
 
+
 bool UnitView::handleEvent(const TouchEvent& event) {
+    ActionState* statePoint;
+    
 	if (event.type == 3) {
-		_unitModel->doAction(this->touchedAction(event.point));	
+        statePoint = this->touchedAction(event.point);
+        
+        if (statePoint != 0) {
+            _unitModel->doAction(*statePoint);
+        }
+			
 	}
 	return true;
 }
 
-int UnitView::touchedAction(GPoint point) {
-	GPoint actionPos;
-	int i = 0;
+ActionState* UnitView::touchedAction(GPoint point) {
+	//GPoint actionPos;
+	//int i = 0;
 	
-	for (std::vector<int>::iterator it = _actions.begin(); it != _actions.end(); ++it) {
-		actionPos = _pos + this->getActionPosition(i);
+	for (std::vector<ActionView>::iterator it = _actionPoints.begin(); it != _actionPoints.end(); ++it) {
+		//actionPos = _pos + this->getActionPosition(i);
 		
-		if (PointWithin(point, actionPos, 32.0f)) {
-			return *it;
+		if (PointWithin(point, (*it).pos, 32.0f)) {
+			return (*it).statePoint;
 		}
-		i++;
+		//i++;
 	}
-	return (-1);
+	return (0);
 }
 
 void UnitView::update() {
-	this->updatePosition(_unitModel->getPosition(), _unitModel->getDirection());
-	this->updateActions(_unitModel->getActions());	
+    _state = _unitModel->getState();
+	this->updatePosition(_state.pos, _state.direction);
+	this->updateActions();	
 }
+
+void UnitView::destroyed() {
+    ViewControllerManager::instance()->remove(this);	
+}
+
 
 
 

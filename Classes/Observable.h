@@ -20,6 +20,7 @@ public:
 	//~Observable();
 	void addObserver(IObserver* observer);
 	void updateObservers();
+    void updateObserversDestroyed();
 
 };
 

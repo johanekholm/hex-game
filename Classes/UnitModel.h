@@ -10,46 +10,80 @@
 #ifndef UNITMODEL_H
 #define UNITMODEL_H
 
+#define ATTACK_TYPE_SLICE 1
+#define ATTACK_TYPE_PIERCE 2
+
+#define STAT_POWER 1
+#define STAT_SKILL 2
+#define STAT_DEFENSE 3
+#define STAT_MAXHP 4
+#define STAT_MAXAP 5
+
 #include <map>
 #include <vector>
 #include "toolkit.h"
 #include "Observable.h"
 
 class Action;
-//class IUnitView;
+struct ActionState;
+
+struct UnitState {
+    MPoint pos;
+    int direction;
+    int ap;
+    int hp;
+    int maxAp;
+    int maxHp;
+    std::vector<ActionState> actions;
+};
 
 class UnitModel : public Observable {
 	MPoint _pos;
 	int _direction;
 	int _ap;
-	int _health;
+	int _hp;
+    int _basePower;
+    int _baseSkill;
+    int _baseDefense;
+    int _maxAp;
+    int _maxHp;
+    int _owner;
+    UnitModel* _target;
+
 	std::map<int, Action*> _actions;
-//	IUnitView* _view;
+    
+    void chooseTarget();
+    void turnTowards(const MPoint& targetPos);
+    void moveTowards(const MPoint& targetPos);
 	
 public:
 	
 	~UnitModel();
-	UnitModel(int x, int y);
-	
-	/*Action* getActionWithIndex(int index);
-	void performActionWithIndex(int index);
-	void registerAction(Action *aAction);
-	*/
+	UnitModel(int x, int y, int direction, int owner);
+    UnitModel(int x, int y, int direction, int owner, int maxHp, int maxAp, int power, int skill, int defense);
     
     void tick();
-	bool spendAP(int cost);
-	void move(int distance);
+	bool spendAp(int cost);
+	void move(const MPoint& targetPos);
 	void rotate(int rotation);
-	void strike();
+	void strike(const MPoint& targetPos);
+    void fire(const MPoint& targetPos);
+    void defend(UnitModel* attacker, int power, int skill, int attack_type);
+    void inflictDamage(int damage);
+    bool isDead();
+    int getStat(int stat);
+    UnitState getState();
+    void doAI();
+    //int distanceTo(const MPoint& pos);
+    bool isFacing(const MPoint& pos);
 	
 	MPoint getPosition();
+    int getOwner();
 	int getDirection();
-	std::vector<int> getActions();
+	std::vector<ActionState> getActions();
 	
-	//void registerView(IUnitView* view);
-	//void updateViews();
 	Action* addAction(int action);
-	void doAction(int action);
+	void doAction(const ActionState& statePoint);
 	
 };
 

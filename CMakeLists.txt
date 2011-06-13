@@ -16,6 +16,7 @@ SET( SOURCES
 	Classes/GameImage.cpp
 	Classes/geometry.cpp
 	Classes/HexMap.cpp
+    Classes/HexMapModel.cpp
 	Classes/InputManager.cpp
     Classes/ModelManager.cpp
     Classes/Observable.cpp
@@ -35,6 +36,7 @@ SET( HEADERS
 	Classes/GameImage.h
 	Classes/geometry.h
 	Classes/HexMap.h
+    Classes/HexMapModel.h
 	Classes/InputManager.h
     Classes/IObserver.h
     Classes/ModelManager.h

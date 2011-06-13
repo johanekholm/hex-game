@@ -85,7 +85,21 @@ struct MPoint {
 		result.y = this->y + other.y;
 		return result;
 	}
+
+	MPoint operator-(const MPoint& other) { 
+		MPoint result;
+		result.x = this->x - other.x;
+		result.y = this->y - other.y;
+		return result;
+	}
 	
+	GPoint operator+(GLfloat scalar) { 
+		GPoint result;
+		result.x = this->x + scalar;
+		result.y = this->y + scalar;
+		return result;
+	}
+
 	GPoint operator*(GLfloat scalar) { 
 		GPoint result;
 		result.x = this->x * scalar;
@@ -102,6 +116,10 @@ struct MPoint {
 		this->x += other.x;
 		this->y += other.y;
 	}
+
+	bool operator==(const MPoint& other) { 
+		return (this->x == other.x && this->y == other.y);
+	}
 	
 };
 
@@ -115,6 +133,7 @@ GPoint GPointMake(GLfloat x, GLfloat y);
 MPoint MPointMake(int x, int y);
 //bool PointWithin(GPoint point, GPoint pos, GPoint size);
 bool PointWithin(const GPoint& point, const GPoint& pos, GLfloat size);
+GPoint transformModelPositionToView(const MPoint& pos);
 	
 #ifdef __cplusplus
 }

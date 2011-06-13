@@ -10,16 +10,38 @@
 #include "ViewControllerManager.h"
 #include "ViewController.h"
 
+ViewControllerManager* ViewControllerManager::_instance = 0;
+
+void ViewControllerManager::destroy() {
+	if (_instance != 0) {
+		_instance->_views.clear();
+		delete _instance;
+		_instance=0;
+	}
+}
+
 ViewControllerManager::ViewControllerManager() {
 
 }
 
-ViewControllerManager::~ViewControllerManager() {
+/*ViewControllerManager::~ViewControllerManager() {
 	_views.clear();	
-}
+}*/
+
 
 void ViewControllerManager::add(ViewController* view) {
 	_views.push_back(view);
+}
+
+void ViewControllerManager::remove(ViewController* view) {
+    // to-do: remove from vector and delete
+	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end(); ++it) {
+        if (*it == view) {
+            delete (*it);
+            it = _views.erase(it);
+            return;
+        }
+	}
 }
 
 void ViewControllerManager::draw() {
