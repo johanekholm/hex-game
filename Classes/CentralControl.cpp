@@ -58,6 +58,8 @@ CentralControl::CentralControl() {
     _unitFactory->produceAndRegisterUnit("swordsman", 1, MPointMake(0, 0), GEOM_DIR_E);
     //_unitFactory->produceAndRegisterUnit("soldier", 1, MPointMake(0, 1), GEOM_DIR_E);
     _unitFactory->produceAndRegisterUnit("soldier", 2, MPointMake(1, 0), GEOM_DIR_W);
+    _unitFactory->produceAndRegisterUnit("archer", 2, MPointMake(0, 1), GEOM_DIR_W);
+    _unitFactory->produceAndRegisterUnit("channeler", 2, MPointMake(1, 2), GEOM_DIR_W);
     
     std::cout << "Finished launching" << std::endl;
 }

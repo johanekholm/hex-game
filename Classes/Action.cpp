@@ -33,7 +33,14 @@ Action::Action(int anId, UnitModel* unit) {
             _cost = 2;
             _targetType = TARGET_UNIT;
             break;
-			
+        case ACTION_BURN:
+            _cost = 4;
+            _targetType = TARGET_UNIT;
+            break;
+        case ACTION_GALE:
+            _cost = 2;
+            _targetType = TARGET_UNIT;
+            break;
 		default:
 			_cost = 0;
 	}
@@ -53,6 +60,10 @@ void Action::doIt(const ActionState& statePoint) {
                 break;
             case ACTION_FIRE:
                 _unit->fire(statePoint.pos);
+                break;
+            case ACTION_BURN:
+                break;
+            case ACTION_GALE:
                 break;
                 
             default:
@@ -87,6 +98,11 @@ bool Action::isAvailableToUnit(UnitModel* targetUnit) {
             return (distance == 1);
         case ACTION_FIRE:
             return (distance > 0 && distance <= 2);
+        case ACTION_BURN:
+            return (distance > 1 && distance <= 3);
+        case ACTION_GALE:
+            return (distance == 1);
+
 		default:
 			return false;
 	}

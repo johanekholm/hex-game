@@ -35,6 +35,9 @@ void UnitFactory::produceAndRegisterUnit(const std::string& unitClass, int owner
     } else if (unitClass == "archer") {
         hp = 2; ap = 3; power = 2; skill = 3; defense = 1; image = 2;
         actions.push_back(ACTION_MOVE); actions.push_back(ACTION_FIRE);
+    } else if (unitClass == "channeler") {
+        hp = 2; ap = 3; power = 2; skill = 3; defense = 1; image = 3;
+        actions.push_back(ACTION_MOVE); actions.push_back(ACTION_BURN); actions.push_back(ACTION_GALE);
     } else {
         return;
     }
