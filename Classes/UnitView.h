@@ -53,6 +53,7 @@ public:
 	ActionState* touchedAction(GPoint point);
 	void update();
     void destroyed();
+    void setFocus(bool hasFocus);
 };
 
 /*class UnitView : public GameImage, public IUnitView {

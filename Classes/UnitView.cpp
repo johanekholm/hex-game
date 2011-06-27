@@ -201,6 +201,10 @@ void UnitView::destroyed() {
     ViewControllerManager::instance()->remove(this);	
 }
 
+void UnitView::setFocus(bool hasFocus) {
+    _hasFocus = hasFocus;
+    this->update();
+}
 
 
 

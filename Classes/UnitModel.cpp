@@ -175,8 +175,15 @@ void UnitModel::strike(const MPoint& targetPos) {
 }
 
 void UnitModel::fire(const MPoint& targetPos) {
+    UnitModel* target;
 
     std::cout << "Fire!" << std::endl;
+    
+    target = ModelManager::instance()->getUnitAtPos(targetPos);
+    
+    if (target != 0) {
+        target->defend(this, this->getStat(STAT_POWER), this->getStat(STAT_SKILL), ATTACK_TYPE_PIERCE);    
+    }
     
     /*    UnitModel* target;
     MPoint projectileVector;
