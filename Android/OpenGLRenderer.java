@@ -17,6 +17,7 @@ public class OpenGLRenderer implements Renderer {
 
 	@Override
 	public void onDrawFrame(GL10 gl) {
+		OpenGLRenderer.update();
 		OpenGLRenderer.draw();
 	}
 
@@ -31,9 +32,7 @@ public class OpenGLRenderer implements Renderer {
 		// Calculate the aspect ratio of the window
 		
 		GLU.gluOrtho2D(gl, 0.0f, (float) width, height, 0.0f);
-//		GLU.gluPerspective(gl, 45.0f,
-//                                   (float) width / (float) height,
-//                                   0.1f, 100.0f);
+
 		// Select the modelview matrix
 		gl.glMatrixMode(GL10.GL_MODELVIEW);// OpenGL docs.
 		// Reset the modelview matrix
@@ -83,30 +82,19 @@ public class OpenGLRenderer implements Renderer {
 	// Will load a texture out of a drawable resource file, and return an OpenGL texture ID:
 	private int loadTexture(GL10 gl, int resource) {
 
-	    // In which ID will we be storing this texture?
 	    int id = newTextureID(gl);
 
-	    // We need to flip the textures vertically:
-//	    Matrix flip = new Matrix();
-//	    flip.postScale(1f, -1f);
-
-	    // This will tell the BitmapFactory to not scale based on the device's pixel density:
-	    // (Thanks to Matthew Marshall for this bit)
+	    // TODO: Check if this is needed.
 	    BitmapFactory.Options opts = new BitmapFactory.Options();
 	    opts.inScaled = false;
 
 	    // Load up, and flip the texture:
 	    Bitmap bmp = BitmapFactory.decodeResource(HexGame.context.getResources(), resource, opts);
-//	    Bitmap bmp = Bitmap.createBitmap(temp, 0, 0, temp.getWidth(), temp.getHeight(), flip, true);
-//	    temp.recycle();
 
 	    gl.glBindTexture(GL10.GL_TEXTURE_2D, id);
 
-	    // Set all of our texture parameters:
 	    gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_LINEAR);
 	    gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
-//	    gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, GL10.GL_REPEAT);
-//	    gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, GL10.GL_REPEAT);
 
 	    // Generate, and load up all of the mipmaps:
         GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bmp, 0);
@@ -118,5 +106,6 @@ public class OpenGLRenderer implements Renderer {
 	
     public static native void init();
     public static native void draw();
+    public static native void update();
     public static native void addTexture(String name, int textureId, int tiles);
 }
