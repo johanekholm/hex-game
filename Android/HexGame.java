@@ -13,7 +13,7 @@ public class HexGame extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 		context = getApplicationContext();
-		GLSurfaceView view = new GLSurfaceView(this);
+		GameGLView view = new GameGLView(this);
    		view.setRenderer(new OpenGLRenderer());
    		setContentView(view);
     }

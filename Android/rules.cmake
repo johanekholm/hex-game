@@ -1,5 +1,6 @@
 LIST(APPEND SOURCES
 	Android/OpenGLRenderer.cpp
+	Android/GameGLView.cpp
 )
 
 LIST(APPEND HEADERS
@@ -15,6 +16,7 @@ LIST(APPEND LIBRARIES
 SET(JAVASOURCES
 	Android/HexGame.java
 	Android/OpenGLRenderer.java
+	Android/GameGLView.java
 )
 
 SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -pedantic")
