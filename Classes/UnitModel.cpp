@@ -12,6 +12,7 @@
 #include "ModelManager.h"
 #include "HexMapModel.h"
 #include "geometry.h"
+#include <cstdlib>
 #include <iostream>
 
 UnitModel::~UnitModel() {
