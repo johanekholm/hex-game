@@ -47,7 +47,7 @@ CentralControl::CentralControl() {
 	
     ModelManager::instance()->setMap(new HexMapModel(4, 4));
     
-	_hexMap = new HexMap(catalog->get("hexTiles"), 4, 4, 80.0f, 80.0f);
+	_hexMap = new HexMap(catalog->get("hextiles"), 4, 4, 80.0f, 80.0f);
     _viewControllerManager = ViewControllerManager::instance();
     _unitFactory = new UnitFactory(_viewControllerManager);
 	_input = new InputManager();
