@@ -15,7 +15,6 @@
 #include "HexMapModel.h"
 #include <iostream>
 
-//using namespace std;
 
 Action::Action(int anId, UnitModel* unit) {
 	_id = anId;	
@@ -26,14 +25,6 @@ Action::Action(int anId, UnitModel* unit) {
             _cost = 2;
             _targetType = TARGET_HEX;
             break;
-		case ACTION_ROTATE_LEFT:
-            _cost = 1;
-            _targetType = 0;
-            break;
-		case ACTION_ROTATE_RIGHT:
-            _cost = 1;
-            _targetType = 0;
-            break;
 		case ACTION_STRIKE:
             _cost = 2;
             _targetType = TARGET_UNIT;
@@ -42,7 +33,14 @@ Action::Action(int anId, UnitModel* unit) {
             _cost = 2;
             _targetType = TARGET_UNIT;
             break;
-			
+        case ACTION_BURN:
+            _cost = 4;
+            _targetType = TARGET_UNIT;
+            break;
+        case ACTION_GALE:
+            _cost = 2;
+            _targetType = TARGET_UNIT;
+            break;
 		default:
 			_cost = 0;
 	}
@@ -50,6 +48,8 @@ Action::Action(int anId, UnitModel* unit) {
 }
 
 void Action::doIt(const ActionState& statePoint) {
+    UnitModel* target;
+    MPoint v;
     std::cout << "Action of id " << _id << std::endl;
 
     if (_unit->spendAp(this->getCost())) {
@@ -57,17 +57,30 @@ void Action::doIt(const ActionState& statePoint) {
             case ACTION_MOVE:
                 _unit->move(statePoint.pos);			
                 break;
-            case ACTION_ROTATE_LEFT:
-                _unit->rotate(1);
-                break;
-            case ACTION_ROTATE_RIGHT:
-                _unit->rotate(-1);			
-                break;
             case ACTION_STRIKE:
                 _unit->strike(statePoint.pos);
                 break;
             case ACTION_FIRE:
                 _unit->fire(statePoint.pos);
+                break;
+            case ACTION_BURN:
+                std::cout << "Burn!" << std::endl;
+                
+                target = ModelManager::instance()->getUnitAtPos(statePoint.pos);
+                if (target != 0) {
+                    target->defend(_unit, _unit->getStat(3), _unit->getStat(STAT_SKILL), ATTACK_TYPE_FIRE);    
+                }
+                break;
+                
+            case ACTION_GALE:
+                std::cout << "Gale!" << std::endl;
+                
+                target = ModelManager::instance()->getUnitAtPos(statePoint.pos);
+                if (target != 0) {
+                    v = statePoint.pos + (statePoint.pos - _unit->getPosition());
+                    std::cout << "x: " << v.x << ", y: " << v.y << std::endl;
+                    target->move(statePoint.pos + (statePoint.pos - _unit->getPosition()));
+                }
                 break;
                 
             default:
@@ -89,16 +102,6 @@ bool Action::isAvailableAtHex(const MPoint& hex) {
                 return (ModelManager::instance()->getUnitAtPos(hex) == 0);
             }
             return false;
-            //return (distance == 1 && ModelManager::instance()->getUnitAtPos(hex) == 0);
-		case ACTION_ROTATE_LEFT:
-            return false;
-		case ACTION_ROTATE_RIGHT:
-            return false;
-		/*case ACTION_STRIKE:
-            return (distance == 1 && ModelManager::instance()->getUnitAtPos(hex) != 0);
-		case ACTION_FIRE:
-            return (distance > 0 && distance <= 2 && ModelManager::instance()->getUnitAtPos(hex) != 0);
-		*/	
 		default:
 			return false;
 	}
@@ -112,6 +115,11 @@ bool Action::isAvailableToUnit(UnitModel* targetUnit) {
             return (distance == 1);
         case ACTION_FIRE:
             return (distance > 0 && distance <= 2);
+        case ACTION_BURN:
+            return (distance > 1 && distance <= 3);
+        case ACTION_GALE:
+            return (distance == 1);
+
 		default:
 			return false;
 	}

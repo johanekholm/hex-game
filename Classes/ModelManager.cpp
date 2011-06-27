@@ -29,21 +29,24 @@ ModelManager::ModelManager() {
 }
 
 void ModelManager::add(UnitModel* unit) {
-	_units.push_back(unit);
+    if (unit == 0) {
+        return;
+    }
+    
+    _unitIdCounter++;
+    _units[_unitIdCounter] = unit;
+    unit->setId(_unitIdCounter);
 }
 
-void ModelManager::remove(UnitModel* unit) {
-    // to-do: implement remove unit from vector and delete 
-    for (std::vector<UnitModel*>::iterator it = _units.begin(); it != _units.end(); ++it) {
-		if (*it == unit) {
-            delete (*it);
-            *it = 0;
-            //std::cout << "Iterator pointer: " << *it << std::endl;
-            return;
-        }
-	}
-}
 
+void ModelManager::remove(int unitId) {
+    delete _units[unitId];
+    _units.erase(unitId);
+
+    // "soft" deletion does not disturb iterators, leave pointer in map but set it to 0
+    //_units[unitId] = 0;
+}
+    
 void ModelManager::setMap(HexMapModel* map) {
     _map = map;
 }
@@ -53,25 +56,47 @@ HexMapModel* ModelManager::getMap() {
 }
 
 void ModelManager::tick() {
+    std::map<int, UnitModel*>::iterator it, next;
+    
     std::cout << "--- Tick ---" << std::endl;
-	for (std::vector<UnitModel*>::iterator it = _units.begin(); it != _units.end();) {
+	for (it = _units.begin(); it != _units.end();) {
         //std::cout << "Iterator pointer: " << *it << std::endl;
-        if ((*it) != 0) {
-            (*it)->tick();
-            ++it;
+        
+        // unit can destroy itself thus corrupting the iterator, therefore another iterator the next item is needed
+        next = it;
+        next++;
+        
+        if (it->second != 0) {
+            it->second->tick();
+            it = next;
         } else {
-            it = _units.erase(it);
+            _units.erase(it);
+            it = next;
         }
 	}
 }
 
 UnitModel* ModelManager::getUnitAtPos(const MPoint& pos) {
-	for (std::vector<UnitModel*>::iterator it = _units.begin(); it != _units.end(); ++it) {
-		if ((*it)->getPosition() == pos) {
-            return *it;
+	for (std::map<int, UnitModel*>::iterator it = _units.begin(); it != _units.end(); ++it) {
+		if (it->second != 0) {
+            if (it->second->getPosition() == pos) {
+                return it->second;
+            }
         }
 	}
     return 0;
+}
+
+UnitModel* ModelManager::getUnitById(int unitId) {
+    std::map<int, UnitModel*>::iterator it;
+    
+    it = _units.find(unitId);
+    
+    if (it != _units.end()) {
+        return it->second;
+    } else {
+        return 0;
+    }
 }
 
 UnitModel* ModelManager::getClosestTo(const MPoint& pos) {
@@ -79,17 +104,27 @@ UnitModel* ModelManager::getClosestTo(const MPoint& pos) {
     int minDistance = 99;
     UnitModel* closestUnit = 0;
     
-	for (std::vector<UnitModel*>::iterator it = _units.begin(); it != _units.end(); ++it) {
-		distance = hexDistance(pos, (*it)->getPosition());
-        if ((*it)->getOwner() == 1 && distance < minDistance) {
-            minDistance = distance;
-            closestUnit = (*it);
-            std::cout << "Unit found at distance: " << minDistance << std::endl;
+	for (std::map<int, UnitModel*>::iterator it = _units.begin(); it != _units.end(); ++it) {
+		if (it->second != 0) {
+            distance = hexDistance(pos, it->second->getPosition());
+            if (it->second->getOwner() == 1 && distance < minDistance) {
+                minDistance = distance;
+                closestUnit = it->second;
+                std::cout << "Unit found at distance: " << minDistance << std::endl;
+            }            
         }
 	}
     return closestUnit;
 }
 
 std::vector<UnitModel*> ModelManager::getAllUnits() {
-    return _units;
+    std::vector<UnitModel*> unitVector;
+    
+    for (std::map<int, UnitModel*>::iterator it = _units.begin(); it != _units.end(); ++it) {
+		if (it->second != 0) {
+            unitVector.push_back(it->second);
+        }
+	}
+
+    return unitVector;
 }

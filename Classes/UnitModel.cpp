@@ -17,29 +17,9 @@
 
 UnitModel::~UnitModel() {
     this->updateObserversDestroyed();
-	//delete _actions;
 }
 
-UnitModel::UnitModel(int x, int y, int direction, int owner) {
-    _owner = owner;
-	_pos.x = x;
-	_pos.y = y;
-	_direction = direction;
-    _maxHp = 3;
-    _maxAp = 4;
-    _hp = 1; //_maxHp;
-    _ap = 0;
-    _basePower = 3;
-    _baseSkill = 2;
-    _baseDefense = 1;
-    _target = 0;
-	//addAction(1);
-	//addAction(2);
-	addAction(0);
-	addAction(3);
-}
-
-UnitModel::UnitModel(int x, int y, int direction, int owner, int maxHp, int maxAp, int power, int skill, int defense) {
+UnitModel::UnitModel(int x, int y, int direction, int owner, int maxHp, int maxAp, int power, int skill, int defense, std::vector<int> actionIds) {
     _owner = owner;
 	_pos.x = x;
 	_pos.y = y;
@@ -52,22 +32,20 @@ UnitModel::UnitModel(int x, int y, int direction, int owner, int maxHp, int maxA
     _baseSkill = skill;
     _baseDefense = defense;
     _target = 0;
-	//this->addAction(1);
-	//this->addAction(2);
-	this->addAction(0);
-	this->addAction(3);
+
+    for (std::vector<int>::iterator it = actionIds.begin(); it != actionIds.end(); ++it) {
+        this->addAction(*it);
+    }
+	
+    //this->addAction(0);
+	//this->addAction(3);
    	//this->addAction(4);
 }
 
 
-/*
-void UnitModel::registerAction(Action *aAction) {
-	actions->add(aAction->register(this));
-	
+void UnitModel::setId(int unitId) {
+    _id = unitId;
 }
-
-*/
-
 
 Action* UnitModel::addAction(int action) {
 	_actions[action] = new Action(action, this);
@@ -112,6 +90,7 @@ std::vector<ActionState> UnitModel::getActions() {
     std::vector<MPoint> targets;
     //ActionState a;
 
+
     hexes = ModelManager::instance()->getMap()->getAllHexes();
 	units = ModelManager::instance()->getAllUnits();
     
@@ -119,13 +98,6 @@ std::vector<ActionState> UnitModel::getActions() {
         
         temp = (it->second)->getActionPoints(_ap, hexes, units);
         actionPoints.insert(actionPoints.end(), temp.begin(), temp.end());
-        
-
-        /*a.actionId = it->first;
-        a.cost = (it->second)->getCost();
-        a.active = (_ap >= a.cost);
-        
-        actionStates.push_back(a);*/
     }
     
 	return actionPoints;
@@ -174,15 +146,9 @@ UnitState UnitModel::getState() {
 }
 
 void UnitModel::move(const MPoint& targetPos) {
-
-	//MPoint v = getHexVector(_direction, _pos);
-    //if (ModelManager::instance()->getUnitAtPos(_pos + v) == 0) {
     if (ModelManager::instance()->getUnitAtPos(targetPos) == 0) {
-        //_pos += v;        
         _pos = targetPos;        
     }
-	
-	//NSLog(@"moved - x: %i, y: %i", v.x, v.y);
 	
 	this->updateObservers();
 }
@@ -197,15 +163,13 @@ void UnitModel::rotate(int rotation) {
 	}
 	
 	this->updateObservers();
-	
-	//NSLog(@"direction: %i", _direction);
 }
 
 void UnitModel::strike(const MPoint& targetPos) {
     UnitModel* target;
     
     std::cout << "Strike!" << std::endl;
-    //target = ModelManager::instance()->getUnitAtPos(_pos + getHexVector(_direction, _pos));
+
     target = ModelManager::instance()->getUnitAtPos(targetPos);
     if (target != 0) {
         target->defend(this, this->getStat(STAT_POWER), this->getStat(STAT_SKILL), ATTACK_TYPE_SLICE);    
@@ -213,8 +177,15 @@ void UnitModel::strike(const MPoint& targetPos) {
 }
 
 void UnitModel::fire(const MPoint& targetPos) {
+    UnitModel* target;
 
     std::cout << "Fire!" << std::endl;
+    
+    target = ModelManager::instance()->getUnitAtPos(targetPos);
+    
+    if (target != 0) {
+        target->defend(this, this->getStat(STAT_POWER), this->getStat(STAT_SKILL), ATTACK_TYPE_PIERCE);    
+    }
     
     /*    UnitModel* target;
     MPoint projectileVector;
@@ -262,14 +233,10 @@ void UnitModel::inflictDamage(int damage) {
     if (_hp <= 0) {
         _hp = 0;
         std::cout << "Destroyed" << std::endl;
-        ModelManager::instance()->remove(this);
+        ModelManager::instance()->remove(_id);
         return;
     }
     this->updateObservers();
-}
-
-bool UnitModel::isDead() {
-    return (_hp == 0);
 }
 
 void UnitModel::tick() {

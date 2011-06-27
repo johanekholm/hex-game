@@ -79,14 +79,14 @@ struct MPoint {
 	int x;
 	int y;
 	
-	MPoint operator+(const MPoint& other) { 
+	MPoint operator+(const MPoint& other) const { 
 		MPoint result;
 		result.x = this->x + other.x;
 		result.y = this->y + other.y;
 		return result;
 	}
 
-	MPoint operator-(const MPoint& other) { 
+	MPoint operator-(const MPoint& other) const { 
 		MPoint result;
 		result.x = this->x - other.x;
 		result.y = this->y - other.y;

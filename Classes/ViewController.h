@@ -26,7 +26,7 @@ protected:
 public:
     ViewController();
 	bool isWithin(const GPoint& point);
-    void setFocus(bool hasFocus);
+    virtual void setFocus(bool hasFocus);
 	virtual bool handleEvent(const TouchEvent& event) = 0;
 	virtual void draw() = 0;
 	virtual void drawGUI() = 0;

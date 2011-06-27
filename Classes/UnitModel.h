@@ -12,6 +12,7 @@
 
 #define ATTACK_TYPE_SLICE 1
 #define ATTACK_TYPE_PIERCE 2
+#define ATTACK_TYPE_FIRE 3
 
 #define STAT_POWER 1
 #define STAT_SKILL 2
@@ -39,6 +40,7 @@ struct UnitState {
 
 class UnitModel : public Observable {
 	MPoint _pos;
+    int _id;
 	int _direction;
 	int _ap;
 	int _hp;
@@ -59,9 +61,9 @@ class UnitModel : public Observable {
 public:
 	
 	~UnitModel();
-	UnitModel(int x, int y, int direction, int owner);
-    UnitModel(int x, int y, int direction, int owner, int maxHp, int maxAp, int power, int skill, int defense);
+    UnitModel(int x, int y, int direction, int owner, int maxHp, int maxAp, int power, int skill, int defense, std::vector<int> actionIds);
     
+    void setId(int unitId);
     void tick();
 	bool spendAp(int cost);
 	void move(const MPoint& targetPos);
@@ -70,7 +72,6 @@ public:
     void fire(const MPoint& targetPos);
     void defend(UnitModel* attacker, int power, int skill, int attack_type);
     void inflictDamage(int damage);
-    bool isDead();
     int getStat(int stat);
     UnitState getState();
     void doAI();

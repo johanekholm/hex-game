@@ -17,10 +17,10 @@
 #include "toolkit.h"
 
 #define ACTION_MOVE 0
-#define ACTION_ROTATE_LEFT 1
-#define ACTION_ROTATE_RIGHT 2
-#define ACTION_STRIKE 3
-#define ACTION_FIRE 4
+#define ACTION_STRIKE 1
+#define ACTION_FIRE 2
+#define ACTION_GALE 3
+#define ACTION_BURN 4
 
 #define TARGET_HEX 1
 #define TARGET_UNIT 2
