@@ -16,6 +16,8 @@
 #include "Action.h"
 
 #include <math.h>
+#include <iostream>
+
 
 UnitView::~UnitView() {
 	delete _unitImage;
@@ -32,12 +34,7 @@ UnitView::UnitView(UnitModel* model, GLfloat width, GLfloat height, int index) {
     _height = height;
 	_unitImage = new GameImage(width, height, TextureCatalog::instance()->get("units"), index);
 	_actionImage = new GameImage(32.0f, 32.0f, TextureCatalog::instance()->get("actions"), 0);
-	_directionImage = new GameImage(16.0f, 16.0f, TextureCatalog::instance()->get("icons"), 0);
-	/*_actions.push_back(0);
-	_actions.push_back(1);
-	_actions.push_back(2);
-	_actions.push_back(3);*/
-	
+	_directionImage = new GameImage(16.0f, 16.0f, TextureCatalog::instance()->get("icons"), 0);	
 }
 
 void UnitView::drawActions() {

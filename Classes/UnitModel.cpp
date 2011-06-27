@@ -89,6 +89,7 @@ std::vector<ActionState> UnitModel::getActions() {
     std::vector<MPoint> targets;
     //ActionState a;
 
+
     hexes = ModelManager::instance()->getMap()->getAllHexes();
 	units = ModelManager::instance()->getAllUnits();
     
