@@ -12,6 +12,7 @@
 
 #define ATTACK_TYPE_SLICE 1
 #define ATTACK_TYPE_PIERCE 2
+#define ATTACK_TYPE_FIRE 3
 
 #define STAT_POWER 1
 #define STAT_SKILL 2

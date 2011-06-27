@@ -48,6 +48,8 @@ Action::Action(int anId, UnitModel* unit) {
 }
 
 void Action::doIt(const ActionState& statePoint) {
+    UnitModel* target;
+    MPoint v;
     std::cout << "Action of id " << _id << std::endl;
 
     if (_unit->spendAp(this->getCost())) {
@@ -62,8 +64,23 @@ void Action::doIt(const ActionState& statePoint) {
                 _unit->fire(statePoint.pos);
                 break;
             case ACTION_BURN:
+                std::cout << "Burn!" << std::endl;
+                
+                target = ModelManager::instance()->getUnitAtPos(statePoint.pos);
+                if (target != 0) {
+                    target->defend(_unit, _unit->getStat(3), _unit->getStat(STAT_SKILL), ATTACK_TYPE_FIRE);    
+                }
                 break;
+                
             case ACTION_GALE:
+                std::cout << "Gale!" << std::endl;
+                
+                target = ModelManager::instance()->getUnitAtPos(statePoint.pos);
+                if (target != 0) {
+                    v = statePoint.pos + (statePoint.pos - _unit->getPosition());
+                    std::cout << "x: " << v.x << ", y: " << v.y << std::endl;
+                    target->move(statePoint.pos + (statePoint.pos - _unit->getPosition()));
+                }
                 break;
                 
             default:
