@@ -20,6 +20,7 @@ SET( SOURCES
 	Classes/InputManager.cpp
     Classes/ModelManager.cpp
     Classes/Observable.cpp
+    Classes/StringImage.cpp
 	Classes/TextureCatalog.cpp
 	Classes/TextureMap.cpp
     Classes/UnitFactory.cpp
@@ -40,6 +41,7 @@ SET( HEADERS
 	Classes/InputManager.h
     Classes/IObserver.h
     Classes/ModelManager.h
+    Classes/StringImage.h
 	Classes/TextureCatalog.h
 	Classes/TextureMap.h
     Classes/UnitFactory.h
@@ -54,6 +56,7 @@ SET( HEADERS
 SET(RESOURCES
 	Resources/actions.png
 	Resources/floortilemap.png
+    Resources/font-1.png
 	Resources/texmap.png
 	Resources/texmap_hex.png
 	Resources/icons.png

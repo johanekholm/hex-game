@@ -33,7 +33,7 @@ public:
 	
 	void add(TextureMap* texMap, const std::string& name);
 	void addAndLoad(const std::string& name, GLuint texture, int numDivs);
-	TextureMap* get(const std::string name);
+	TextureMap* get(const std::string& name);
 	
 };
 

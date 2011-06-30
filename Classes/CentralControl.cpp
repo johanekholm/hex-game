@@ -8,31 +8,35 @@
  */
 
 #include "CentralControl.h"
-#include "TextureCatalog.h"
-#include "ViewController.h"
-#include "ViewControllerManager.h"
-#include "ModelManager.h"
-#include "UnitFactory.h"
+
 #include "HexMap.h"
 #include "HexMapModel.h"
 #include "InputManager.h"
+#include "ModelManager.h"
+#include "StringImage.h"
+#include "TextureCatalog.h"
+#include "UnitFactory.h"
+#include "UnitModel.h"
+#include "UnitView.h"
+#include "ViewController.h"
+#include "ViewControllerManager.h"
 #include "toolkit.h"
 #include "geometry.h"
 
-#include "UnitView.h"
-#include "UnitModel.h"
 
 CentralControl* CentralControl::_instance = 0;
 
 void CentralControl::destroy() {
 	if (_instance != 0) {
         
+        delete _instance->_stringImage;
         delete _instance->_input;
         delete _instance->_hexMap;
         delete _instance->_viewControllerManager;
         //delete _instance->_modelManager;
         ModelManager::destroy();
         delete _instance->_unitFactory;
+        
         
 		delete _instance;
 		_instance=0;
@@ -47,7 +51,7 @@ CentralControl::CentralControl() {
 	
     ModelManager::instance()->setMap(new HexMapModel(4, 4));
     
-	_hexMap = new HexMap(catalog->get("hextiles"), 4, 4, 80.0f, 80.0f);
+	_hexMap = new HexMap(catalog->get("hexTiles"), 4, 4, 80.0f, 80.0f);
     _viewControllerManager = ViewControllerManager::instance();
     _unitFactory = new UnitFactory(_viewControllerManager);
 	_input = new InputManager();
@@ -57,6 +61,9 @@ CentralControl::CentralControl() {
     _unitFactory->produceAndRegisterUnit("soldier", 2, MPointMake(1, 0), GEOM_DIR_W);
     _unitFactory->produceAndRegisterUnit("archer", 2, MPointMake(0, 1), GEOM_DIR_W);
     _unitFactory->produceAndRegisterUnit("channeler", 2, MPointMake(1, 2), GEOM_DIR_W);
+    
+    //_stringImage = new StringImage("!\"#$%&'()*+");
+    _stringImage = new StringImage(",-./0123456789");
 }
 
 void CentralControl::update() {
@@ -91,6 +98,7 @@ void CentralControl::draw() {
 			_hexMap->draw();
 			_viewControllerManager->draw();
             _viewControllerManager->drawGUI();
+            _stringImage->drawAt(GPointMake(20.0f, 80.0f));
 			break;
 		case 2:
 			_hexMap->draw();

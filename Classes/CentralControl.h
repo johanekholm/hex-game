@@ -12,6 +12,7 @@ class HexMap;
 class ViewController;
 class ViewControllerManager;
 class ModelManager;
+class StringImage;
 class UnitFactory;
 
 //class UnitView;
@@ -30,6 +31,7 @@ class CentralControl {
     ViewControllerManager* _viewControllerManager;
     UnitFactory* _unitFactory;
 	HexMap* _hexMap;
+    StringImage* _stringImage;
 
     //~CentralControl();
     CentralControl();

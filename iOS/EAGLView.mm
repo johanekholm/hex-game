@@ -115,6 +115,7 @@
 		catalog->addAndLoad("actions", [self loadTexture:@"actions.png"], 4);
 		catalog->addAndLoad("icons", [self loadTexture:@"icons.png"], 4);
 		catalog->addAndLoad("units", [self loadTexture:@"texmap.png"], 2);
+        catalog->addAndLoad("font", [self loadTexture:@"font-1.png"], 1);
 		
 		centralControl = CentralControl::instance();
     }

@@ -34,7 +34,7 @@ void TextureCatalog::addAndLoad(const std::string& name, GLuint texture, int num
 	_textureMaps[name] = newTex;
 }
 
-TextureMap* TextureCatalog::get(const std::string name) {
+TextureMap* TextureCatalog::get(const std::string& name) {
 	return _textureMaps[name];
 }
 
