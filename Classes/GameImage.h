@@ -6,6 +6,9 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#ifndef GAMEIMAGE_H
+#define GAMEIMAGE_H
+
 #include "toolkit.h"
 
 class TextureMap;
@@ -29,3 +32,4 @@ public:
 	void setPosition(GPoint point);
 };
 
+#endif

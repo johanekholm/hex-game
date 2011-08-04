@@ -1,10 +1,13 @@
 //
-//  GameImage.h
+//  StringImage.h
 //  igame
 //
 //  Created by Johan Ekholm on 2010-04-11.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
+
+#ifndef STRINGIMAGE_H
+#define STRINGIMAGE_H
 
 #include "toolkit.h"
 #include <string>
@@ -25,3 +28,4 @@ public:
 	void drawAtRotated(const GPoint &pos, GLfloat angle);
 };
 
+#endif

@@ -27,9 +27,16 @@ StringImage::StringImage(const std::string& string) {
     GLfloat texHeight = 0.07617f;
     GLfloat tx = 0.04f;
     GLfloat ty = 0.0f;
-    int charWidthsPixels[] = {10,10,14,22,18,30,24,6,12,12,16,24,10,12,8,14,   18,16,17,16,18,17,17,17,17,17   };
+    int charWidthsPixels[] = {10,10,14,22,18,30,24,6,12,12,16,24,10,12,8,14,   18,16,17,16,18,17,17,17,17,17, 12,12,18,26,18,   
+                                16,26,  20,20,20,20,20,18,20,20,12,14,  20,18,22,20,22,20, 24,20,18,20,20,20,26,
+                                20,19,18};
+    int charRow[] = { 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,
+                    1,1,1,1,1,1,1,1,1,1, 1,1,1,1,1,1,1,1,1,1, 1,1,1,1,1,
+                    2,2,2 };
     GLfloat charWidths[64];
     GLfloat charTexPos[64];
+    GLfloat charTexPosY[64];
+    int texRow;
     const char* cString;
     
     _string = string;
@@ -43,14 +50,21 @@ StringImage::StringImage(const std::string& string) {
     
     charTexPos[0] = 0.0f;
     
-    for (int i=0; i<26; i++) {
+    for (int i=0; i<59; i++) {
         charWidths[i] = charWidthsPixels[i]/512.0f;
-                   
+        
+        charTexPosY[i] = charRow[i] * texHeight;
+        
         if (i > 0) {
-            charTexPos[i] = charTexPos[i-1] + charWidths[i-1];            
+            if (charRow[i] > charRow[i-1]) {
+                charTexPos[i] = 0;
+            } else {
+                charTexPos[i] = charTexPos[i-1] + charWidths[i-1];            
+            }
         }
-        std::cout << "Pos: " << charTexPos[i] << " Width: " << charWidths[i] << std::endl;
+        texRow = (int)(charTexPos[i]+charWidths[i]);
 
+        std::cout << i << ": " << "Pos: " << charTexPos[i] << " Width: " << charWidths[i] << " Row: " << charRow[i] << std::endl;
     }
     
     for (int i=0; i < _size; i++) {
@@ -59,6 +73,7 @@ StringImage::StringImage(const std::string& string) {
         //std::cout << "Caret: " << caret << std::endl;
         //std::cout << "Tex pointer: " << _texCoords << std::endl;        
         tx = charTexPos[character];
+        ty = charTexPosY[character];
         texWidth = charWidths[character];
         
         _texCoords[i*12] = tx;

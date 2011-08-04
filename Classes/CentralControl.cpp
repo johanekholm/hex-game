@@ -12,6 +12,7 @@
 #include "HexMap.h"
 #include "HexMapModel.h"
 #include "InputManager.h"
+#include "MessageView.h"
 #include "ModelManager.h"
 #include "StringImage.h"
 #include "TextureCatalog.h"
@@ -63,7 +64,8 @@ CentralControl::CentralControl() {
     _unitFactory->produceAndRegisterUnit("channeler", 2, MPointMake(1, 2), GEOM_DIR_W);
     
     //_stringImage = new StringImage("!\"#$%&'()*+");
-    _stringImage = new StringImage(",-./0123456789");
+    _stringImage = new StringImage("HIJKLMNOPQRSTUVWXYZ");
+    _viewControllerManager->add(new MessageView(GPointMake(100.0f, 100.0f), "MESSAGE"));
 }
 
 void CentralControl::update() {

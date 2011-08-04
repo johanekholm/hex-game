@@ -30,6 +30,7 @@ public:
 	//~ViewControllerManager();
 	void add(ViewController* view);
     void remove(ViewController* view);
+    void deregister(ViewController* view);
     void draw();
     void drawGUI();
     ViewController* getTouched(const GPoint& point);	

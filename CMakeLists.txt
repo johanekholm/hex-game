@@ -18,6 +18,7 @@ SET( SOURCES
 	Classes/HexMap.cpp
     Classes/HexMapModel.cpp
 	Classes/InputManager.cpp
+    Classes/MessageView.cpp
     Classes/ModelManager.cpp
     Classes/Observable.cpp
     Classes/StringImage.cpp
@@ -40,6 +41,7 @@ SET( HEADERS
     Classes/HexMapModel.h
 	Classes/InputManager.h
     Classes/IObserver.h
+    Classes/MessageView.h
     Classes/ModelManager.h
     Classes/StringImage.h
 	Classes/TextureCatalog.h

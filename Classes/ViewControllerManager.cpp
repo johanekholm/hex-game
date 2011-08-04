@@ -44,6 +44,16 @@ void ViewControllerManager::remove(ViewController* view) {
 	}
 }
 
+void ViewControllerManager::deregister(ViewController* view) {
+	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end(); ++it) {
+        if (*it == view) {
+            it = _views.erase(it);
+            return;
+        }
+	}
+}
+
+
 void ViewControllerManager::draw() {
 	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end(); ++it) {
 		(*it)->draw();
