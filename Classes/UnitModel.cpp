@@ -10,6 +10,7 @@
 #include "UnitModel.h"
 #include "Action.h"
 #include "ModelManager.h"
+#include "MessageView.h"
 #include "HexMapModel.h"
 #include "geometry.h"
 #include <cstdlib>
@@ -229,6 +230,10 @@ void UnitModel::defend(UnitModel* attacker, int power, int skill, int attackType
 }
 
 void UnitModel::inflictDamage(int damage) {
+    std::stringstream ss;
+    ss << damage;
+    MessageView::add(_pos, ss.str());
+    
 	_hp -= damage;
     if (_hp <= 0) {
         _hp = 0;

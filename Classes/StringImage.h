@@ -18,6 +18,7 @@ class StringImage {
 	TextureMap *_texture;
     std::string _string;
     int _size;
+    GLfloat _width;
     GLfloat* _vertices;
     GLfloat* _texCoords;
 
@@ -25,6 +26,7 @@ public:
 	~StringImage();
 	StringImage(const std::string& string);
 	void drawAt(const GPoint &pos);
+    void drawCenteredAt(const GPoint &pos);
 	void drawAtRotated(const GPoint &pos, GLfloat angle);
 };
 

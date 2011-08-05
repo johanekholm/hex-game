@@ -129,6 +129,8 @@ StringImage::StringImage(const std::string& string) {
         
     }
     
+    _width = caret;
+    
     /*for (int j=0; j<36; j++) {
         std::cout << "v" << j << ": " << _vertices[j] << std::endl;
     }
@@ -145,6 +147,18 @@ void StringImage::drawAt(const GPoint &pos) {
 	glLoadIdentity();
 	glTranslatef(pos.x, pos.y, 0.0f);
 	
+	_texture->bind();
+	
+	glVertexPointer(3, GL_FLOAT, 0, _vertices);
+	glTexCoordPointer(2, GL_FLOAT, 0, _texCoords);
+	glDrawArrays(GL_TRIANGLES, 0, _size*6);	
+}
+
+
+void StringImage::drawCenteredAt(const GPoint &pos) {
+	glLoadIdentity();
+	glTranslatef(pos.x - _width/2.0f, pos.y, 0.0f);
+
 	_texture->bind();
 	
 	glVertexPointer(3, GL_FLOAT, 0, _vertices);

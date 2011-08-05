@@ -37,13 +37,12 @@ struct ActionState {
     int cost;
 };
 
-
-
 class Action {
 	int _id;
     int _cost;
     int _targetType;
 	UnitModel* _unit;
+    std::string _name;
 	
 public:
 	Action(int anId, UnitModel* unit);

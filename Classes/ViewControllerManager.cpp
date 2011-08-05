@@ -82,10 +82,10 @@ void ViewControllerManager::update() {
             (*it)->update();
             ++it;
         } else {
-            std::cout << "Erasing it " << *it << " size is " << _views.size() << std::endl;
+            //std::cout << "Erasing it " << *it << " size is " << _views.size() << std::endl;
 
             it = _views.erase(it);
-            std::cout << "Size after is " << _views.size() << std::endl;
+            //std::cout << "Size after is " << _views.size() << std::endl;
         }
         
 	}

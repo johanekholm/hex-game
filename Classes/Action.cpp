@@ -10,10 +10,11 @@
 #include "Action.h"
 #include "UnitModel.h"
 #include "geometry.h"
-#include <string>
 #include "ModelManager.h"
 #include "HexMapModel.h"
+#include "MessageView.h"
 #include <iostream>
+#include <string>
 
 
 Action::Action(int anId, UnitModel* unit) {
@@ -24,25 +25,31 @@ Action::Action(int anId, UnitModel* unit) {
 		case ACTION_MOVE:
             _cost = 2;
             _targetType = TARGET_HEX;
+            _name = "MOVE";
             break;
 		case ACTION_STRIKE:
             _cost = 2;
             _targetType = TARGET_UNIT;
+            _name = "STRIKE";
             break;
 		case ACTION_FIRE:
             _cost = 2;
             _targetType = TARGET_UNIT;
+            _name = "FIRE";
             break;
         case ACTION_BURN:
             _cost = 4;
             _targetType = TARGET_UNIT;
+            _name = "BURN";
             break;
         case ACTION_GALE:
             _cost = 2;
             _targetType = TARGET_UNIT;
+            _name = "GALE";
             break;
 		default:
 			_cost = 0;
+            _name = "";
 	}
 
 }
@@ -53,11 +60,14 @@ void Action::doIt(const ActionState& statePoint) {
     std::cout << "Action of id " << _id << std::endl;
 
     if (_unit->spendAp(this->getCost())) {
+        MessageView::add(_unit->getPosition(), _name);
+        
         switch (_id) {
             case ACTION_MOVE:
                 _unit->move(statePoint.pos);			
                 break;
             case ACTION_STRIKE:
+                
                 _unit->strike(statePoint.pos);
                 break;
             case ACTION_FIRE:

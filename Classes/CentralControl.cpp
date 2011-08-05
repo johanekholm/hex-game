@@ -65,7 +65,9 @@ CentralControl::CentralControl() {
     
     //_stringImage = new StringImage("!\"#$%&'()*+");
     _stringImage = new StringImage("HIJKLMNOPQRSTUVWXYZ");
-    _viewControllerManager->add(new MessageView(GPointMake(100.0f, 100.0f), "MESSAGE"));
+    
+    //_viewControllerManager->add(new MessageView(GPointMake(100.0f, 100.0f), "MESSAGE"));
+    //MessageView::add(GPointMake(100.0f, 100.0f), "MSG");
 }
 
 void CentralControl::update() {
@@ -101,7 +103,7 @@ void CentralControl::draw() {
 			_hexMap->draw();
 			_viewControllerManager->draw();
             _viewControllerManager->drawGUI();
-            _stringImage->drawAt(GPointMake(20.0f, 80.0f));
+            //_stringImage->drawAt(GPointMake(20.0f, 80.0f));
 			break;
 		case 2:
 			_hexMap->draw();

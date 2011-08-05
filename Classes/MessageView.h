@@ -12,6 +12,7 @@
 
 #include "ViewController.h"
 #include <string>
+#include <sstream>
 
 class StringImage;
 
@@ -24,12 +25,15 @@ class MessageView : public ViewController {
 
 public:
 	~MessageView();
-	MessageView(GPoint pos, const std::string& string);
+	MessageView(const GPoint& pos, const std::string& string);
 	void draw();
 	void drawGUI();
 	bool handleEvent(const TouchEvent& event);
     void setFocus(bool hasFocus);
     void update();
+    
+    static void add(const GPoint& pos, const std::string& string);
+    static void add(const MPoint& mPos, const std::string& string);
 };
 
 #endif
