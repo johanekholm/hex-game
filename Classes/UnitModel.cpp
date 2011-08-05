@@ -231,8 +231,15 @@ void UnitModel::defend(UnitModel* attacker, int power, int skill, int attackType
 
 void UnitModel::inflictDamage(int damage) {
     std::stringstream ss;
-    ss << damage;
-    MessageView::add(_pos, ss.str());
+    
+
+    if (damage > 0) {
+        ss << damage;
+        MessageView::add(_pos, ss.str(), 1.0f, 0.0f, 0.0f, 1.0f);
+    } else if (damage == 0) {
+        MessageView::add(_pos, "MISS");
+    }
+    
     
 	_hp -= damage;
     if (_hp <= 0) {

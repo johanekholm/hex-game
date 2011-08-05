@@ -17,7 +17,13 @@ StringImage::~StringImage() {
 }
 
 
-StringImage::StringImage(const std::string& string) {
+StringImage::StringImage(const std::string& string, GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha) {
+    
+    _red = red;
+    _green = green;
+    _blue = blue;
+    _alpha = alpha;
+    
     int character;
     GLfloat caret = 0.0f;
     GLfloat scale = 0.5f;
@@ -158,12 +164,15 @@ void StringImage::drawAt(const GPoint &pos) {
 void StringImage::drawCenteredAt(const GPoint &pos) {
 	glLoadIdentity();
 	glTranslatef(pos.x - _width/2.0f, pos.y, 0.0f);
-
+    glColor4f(_red, _green, _blue, _alpha);
+    
 	_texture->bind();
 	
 	glVertexPointer(3, GL_FLOAT, 0, _vertices);
 	glTexCoordPointer(2, GL_FLOAT, 0, _texCoords);
 	glDrawArrays(GL_TRIANGLES, 0, _size*6);	
+    
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 void StringImage::drawAtRotated(const GPoint &pos, GLfloat angle) {

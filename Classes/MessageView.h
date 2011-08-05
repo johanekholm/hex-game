@@ -26,6 +26,7 @@ class MessageView : public ViewController {
 public:
 	~MessageView();
 	MessageView(const GPoint& pos, const std::string& string);
+    MessageView(const GPoint& pos, const std::string& string, GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha);
 	void draw();
 	void drawGUI();
 	bool handleEvent(const TouchEvent& event);
@@ -34,6 +35,7 @@ public:
     
     static void add(const GPoint& pos, const std::string& string);
     static void add(const MPoint& mPos, const std::string& string);
+    static void add(const MPoint& mPos, const std::string& string, GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha);
 };
 
 #endif

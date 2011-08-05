@@ -64,7 +64,7 @@ CentralControl::CentralControl() {
     _unitFactory->produceAndRegisterUnit("channeler", 2, MPointMake(1, 2), GEOM_DIR_W);
     
     //_stringImage = new StringImage("!\"#$%&'()*+");
-    _stringImage = new StringImage("HIJKLMNOPQRSTUVWXYZ");
+    _stringImage = new StringImage("HIJKLMNOPQRSTUVWXYZ", 1.0f, 1.0f, 1.0f, 1.0f);
     
     //_viewControllerManager->add(new MessageView(GPointMake(100.0f, 100.0f), "MESSAGE"));
     //MessageView::add(GPointMake(100.0f, 100.0f), "MSG");
