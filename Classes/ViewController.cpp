@@ -27,6 +27,10 @@ void ViewController::setFocus(bool hasFocus) {
     _hasFocus = hasFocus;
 }
 
+void ViewController::update() {
+    return;
+}
+
 /*bool ViewController::handleEvent(const TouchEvent& event) {
 	if (this->isWithin(event.point)) {
 		this->reactToEvent(event.type);

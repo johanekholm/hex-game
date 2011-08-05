@@ -91,6 +91,7 @@ void CentralControl::update() {
 				
 		}
 	}
+    _viewControllerManager->update();
 }
 
 void CentralControl::draw() {

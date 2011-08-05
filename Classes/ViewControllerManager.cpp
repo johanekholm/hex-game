@@ -9,6 +9,8 @@
 
 #include "ViewControllerManager.h"
 #include "ViewController.h"
+#include <iostream>
+
 
 ViewControllerManager* ViewControllerManager::_instance = 0;
 
@@ -44,10 +46,14 @@ void ViewControllerManager::remove(ViewController* view) {
 	}
 }
 
-void ViewControllerManager::deregister(ViewController* view) {
+void ViewControllerManager::removeSoft(ViewController* view) {
 	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end(); ++it) {
         if (*it == view) {
-            it = _views.erase(it);
+            std::cout << "Soft remove " << *it << std::endl;
+            delete (*it);
+            *it = 0;
+            std::cout << "*it= " << *it << std::endl;
+
             return;
         }
 	}
@@ -56,13 +62,32 @@ void ViewControllerManager::deregister(ViewController* view) {
 
 void ViewControllerManager::draw() {
 	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end(); ++it) {
-		(*it)->draw();
+		if (*it != 0) {
+            (*it)->draw();            
+        }
 	}
 }
 
 void ViewControllerManager::drawGUI() {
 	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end(); ++it) {
-		(*it)->drawGUI();
+		if (*it != 0) {
+            (*it)->drawGUI();
+        }
+	}
+}
+
+void ViewControllerManager::update() {
+	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end();) {
+		if ((*it) != 0) {
+            (*it)->update();
+            ++it;
+        } else {
+            std::cout << "Erasing it " << *it << " size is " << _views.size() << std::endl;
+
+            it = _views.erase(it);
+            std::cout << "Size after is " << _views.size() << std::endl;
+        }
+        
 	}
 }
 

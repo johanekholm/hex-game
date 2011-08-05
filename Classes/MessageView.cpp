@@ -33,7 +33,7 @@ MessageView::MessageView(GPoint pos, const std::string& string) {
 }
 
 void MessageView::destroy() {
-    ViewControllerManager::instance()->deregister(this);	
+    //ViewControllerManager::instance()->deregister(this);	
     //delete this;
 }
 
@@ -42,15 +42,6 @@ void MessageView::draw() {
 }
 
 void MessageView::drawGUI() {
-    //if (++_counter > 20) {
-    //    _counter = 0;
-        _posOffset.y -= 0.1f;
-        
-        if (_posOffset.y < -10.0f) {
-            this->destroy();
-        }
-    //}
-    
     _stringImage->drawAt(_pos + _posOffset);
 }
 
@@ -60,5 +51,13 @@ bool MessageView::handleEvent(const TouchEvent& event) {
 
 void MessageView::setFocus(bool hasFocus) {
     _hasFocus = hasFocus;
+}
+
+void MessageView::update() {
+    _posOffset.y -= 0.1f;
+    
+    if (_posOffset.y < -10.0f) {
+        ViewControllerManager::instance()->removeSoft(this);
+    }    
 }
 
