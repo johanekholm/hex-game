@@ -25,6 +25,11 @@
 #define TARGET_HEX 1
 #define TARGET_UNIT 2
 
+#define ACTION_TYPE_ATTACK      1
+#define ACTION_TYPE_MOVEMENT    2
+#define ACTION_TYPE_DEFENSE     3
+#define ACTION_TYPE_BOOST       4
+
 
 
 class UnitModel;
@@ -35,12 +40,14 @@ struct ActionState {
     int actionId;
     bool active;
     int cost;
+    int actionType;
 };
 
 class Action {
 	int _id;
     int _cost;
     int _targetType;
+    int _type;
 	UnitModel* _unit;
     std::string _name;
 	

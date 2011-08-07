@@ -25,26 +25,31 @@ Action::Action(int anId, UnitModel* unit) {
 		case ACTION_MOVE:
             _cost = 2;
             _targetType = TARGET_HEX;
+            _type = ACTION_TYPE_MOVEMENT;
             _name = "MOVE";
             break;
 		case ACTION_STRIKE:
             _cost = 2;
             _targetType = TARGET_UNIT;
+            _type = ACTION_TYPE_ATTACK;
             _name = "STRIKE";
             break;
 		case ACTION_FIRE:
             _cost = 2;
             _targetType = TARGET_UNIT;
+            _type = ACTION_TYPE_ATTACK;
             _name = "FIRE";
             break;
         case ACTION_BURN:
             _cost = 4;
             _targetType = TARGET_UNIT;
+            _type = ACTION_TYPE_ATTACK;
             _name = "BURN";
             break;
         case ACTION_GALE:
             _cost = 2;
             _targetType = TARGET_UNIT;
+            _type = ACTION_TYPE_DEFENSE;
             _name = "GALE";
             break;
 		default:
@@ -141,6 +146,7 @@ std::vector<ActionState> Action::getActionPoints(int ap, const std::map<int, Hex
     
     state.actionId = _id;
     state.cost = _cost;
+    state.actionType = _type;
     state.active = (ap >= _cost);
     
     if (_targetType == TARGET_HEX) {

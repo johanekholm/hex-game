@@ -85,6 +85,8 @@ public:
 	
 	Action* addAction(int action);
 	void doAction(const ActionState& statePoint);
+    int chooseMovementTarget(const std::vector<ActionState>& targets);
+    //int rateActionPoint(const ActionState& actionPoint);
 	
 };
 

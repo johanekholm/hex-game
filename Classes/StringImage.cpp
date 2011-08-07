@@ -70,12 +70,12 @@ StringImage::StringImage(const std::string& string, GLfloat red, GLfloat green, 
         }
         texRow = (int)(charTexPos[i]+charWidths[i]);
 
-        std::cout << i << ": " << "Pos: " << charTexPos[i] << " Width: " << charWidths[i] << " Row: " << charRow[i] << std::endl;
+        //std::cout << i << ": " << "Pos: " << charTexPos[i] << " Width: " << charWidths[i] << " Row: " << charRow[i] << std::endl;
     }
     
     for (int i=0; i < _size; i++) {
         character = cString[i] - 32;
-        std::cout << "Charachter: " << character << std::endl;
+        //std::cout << "Charachter: " << character << std::endl;
         //std::cout << "Caret: " << caret << std::endl;
         //std::cout << "Tex pointer: " << _texCoords << std::endl;        
         tx = charTexPos[character];

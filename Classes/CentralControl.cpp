@@ -24,6 +24,11 @@
 #include "toolkit.h"
 #include "geometry.h"
 
+#include <cstdlib>
+#include <iostream>
+#include <ctime>
+
+
 
 CentralControl* CentralControl::_instance = 0;
 
@@ -48,6 +53,8 @@ CentralControl::CentralControl() {
     _mode = 1;
 	_timer = 200;
     
+    srand (time(NULL));
+
 	TextureCatalog* catalog = TextureCatalog::instance();
 	
     ModelManager::instance()->setMap(new HexMapModel(4, 4));
@@ -59,9 +66,9 @@ CentralControl::CentralControl() {
     
     _unitFactory->produceAndRegisterUnit("swordsman", 1, MPointMake(0, 0), GEOM_DIR_E);
     //_unitFactory->produceAndRegisterUnit("soldier", 1, MPointMake(0, 1), GEOM_DIR_E);
-    _unitFactory->produceAndRegisterUnit("soldier", 2, MPointMake(1, 0), GEOM_DIR_W);
-    _unitFactory->produceAndRegisterUnit("archer", 2, MPointMake(0, 1), GEOM_DIR_W);
-    _unitFactory->produceAndRegisterUnit("channeler", 2, MPointMake(1, 2), GEOM_DIR_W);
+    _unitFactory->produceAndRegisterUnit("soldier", 2, MPointMake(3, 0), GEOM_DIR_W);
+    _unitFactory->produceAndRegisterUnit("archer", 2, MPointMake(3, 1), GEOM_DIR_W);
+    _unitFactory->produceAndRegisterUnit("channeler", 1, MPointMake(1, 2), GEOM_DIR_W);
     
     //_stringImage = new StringImage("!\"#$%&'()*+");
     _stringImage = new StringImage("HIJKLMNOPQRSTUVWXYZ", 1.0f, 1.0f, 1.0f, 1.0f);

@@ -40,6 +40,7 @@ public:
     UnitModel* getUnitAtPos(const MPoint& pos);
     UnitModel* getUnitById(int unitId);
     UnitModel* getClosestTo(const MPoint& pos);
+    int getDistanceToClosestEnemy(int owner, const MPoint& pos);
     std::vector<UnitModel*> getAllUnits();
 };
 

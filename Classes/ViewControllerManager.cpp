@@ -49,10 +49,10 @@ void ViewControllerManager::remove(ViewController* view) {
 void ViewControllerManager::removeSoft(ViewController* view) {
 	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end(); ++it) {
         if (*it == view) {
-            std::cout << "Soft remove " << *it << std::endl;
+            //std::cout << "Soft remove " << *it << std::endl;
             delete (*it);
             *it = 0;
-            std::cout << "*it= " << *it << std::endl;
+            //std::cout << "*it= " << *it << std::endl;
 
             return;
         }

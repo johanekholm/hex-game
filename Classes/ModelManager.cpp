@@ -117,6 +117,22 @@ UnitModel* ModelManager::getClosestTo(const MPoint& pos) {
     return closestUnit;
 }
 
+int ModelManager::getDistanceToClosestEnemy(int owner, const MPoint& pos) {
+    int distance = 0;
+    int minDistance = 99;
+    
+	for (std::map<int, UnitModel*>::iterator it = _units.begin(); it != _units.end(); ++it) {
+		if (it->second != 0 && it->second->getOwner() != owner) {
+            distance = hexDistance(pos, it->second->getPosition());
+            if (distance < minDistance) {
+                minDistance = distance;
+            }            
+        }
+	}
+    std::cout << "Closest enemy: " << minDistance << std::endl;
+    return minDistance;
+}
+
 std::vector<UnitModel*> ModelManager::getAllUnits() {
     std::vector<UnitModel*> unitVector;
     

@@ -254,14 +254,78 @@ void UnitModel::inflictDamage(int damage) {
 void UnitModel::tick() {
     if (this->_ap < this->getStat(STAT_MAXAP)) {
         this->_ap += 1;
-        //this->doAI();
+        this->doAI();
         this->updateObservers();
     }
 	
 }
 
 void UnitModel::doAI() {
-/*    MPoint targetPos;
+    //ActionState bestAction;
+    //int rating, bestRating;
+    bool hasOffensiveAction = false;
+    bool hasMovement = false;
+    std::vector<ActionState> actionPoints, offensives, movements;
+    
+    //bestRating = 0;
+    
+    if (_owner == 2) {
+
+        actionPoints = this->getActions();
+
+        for (std::vector<ActionState>::iterator it = actionPoints.begin(); it != actionPoints.end(); ++it) {
+            switch ((*it).actionType) {
+                case ACTION_TYPE_ATTACK:
+                    hasOffensiveAction = true;
+                    if ((*it).active) {
+                        offensives.push_back(*it);                        
+                    }
+                    break;
+
+                case ACTION_TYPE_MOVEMENT:
+                    
+                    hasMovement = true;
+                    movements.push_back(*it);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        
+        if (hasOffensiveAction) {
+            std::cout << "Has offensive actions: " << offensives.size() << std::endl;
+            std::cout << "Has movement actions: " << movements.size() << std::endl;
+
+            // do: choose offensive randomly
+            if (offensives.size() > 0) {
+                this->doAction(offensives.at(rand() % offensives.size()));
+            } else {
+                // unit has to wait until offensive action becomes active, do nothing this tick
+            }
+        } else {
+            // do: move closer to one unit, avoid getting in the middle of many
+            if (movements.size() > 0) {
+                this->doAction(movements.at(this->chooseMovementTarget(movements)));
+            }
+        }
+        
+        /*for (std::vector<ActionState>::iterator it = actionPoints.begin(); it != actionPoints.end(); ++it) {
+            rating = this->rateActionPoint(*it);
+            
+            if (rating > bestRating) {
+                bestRating = rating;
+                bestAction = *it;
+            }
+        }
+        
+        if (bestRating > 0) {
+            this->doAction(bestAction);
+        }*/
+    }
+    
+    
+    /*    MPoint targetPos;
 
     if (_owner == 2) {
 
@@ -282,6 +346,53 @@ void UnitModel::doAI() {
 void UnitModel::chooseTarget() {
     _target = ModelManager::instance()->getClosestTo(_pos);
 }
+
+int UnitModel::chooseMovementTarget(const std::vector<ActionState>& targets) {
+    int distance, minDistance;
+    int index = 0, bestAction = 0;
+    
+    for (std::vector<ActionState>::const_iterator it = targets.begin(); it != targets.end(); ++it) {
+        distance = ModelManager::instance()->getDistanceToClosestEnemy(2, (*it).pos);
+        
+        if (distance < minDistance) {
+            minDistance = distance;
+            bestAction = index;
+        }
+        index++;
+    }
+        
+    return bestAction;
+}
+
+/*void UnitModel::rateActionPoint(const ActionState& actionPoint) {
+    switch (actionPoint.actionId) {
+		case ACTION_MOVE:
+            return 3;
+            break;
+		case ACTION_STRIKE:
+            return 5;    
+            break;
+		case ACTION_FIRE:
+            _cost = 2;
+            _targetType = TARGET_UNIT;
+            _name = "FIRE";
+            break;
+        case ACTION_BURN:
+            _cost = 4;
+            _targetType = TARGET_UNIT;
+            _name = "BURN";
+            break;
+        case ACTION_GALE:
+            _cost = 2;
+            _targetType = TARGET_UNIT;
+            _name = "GALE";
+            break;
+		default:
+			_cost = 0;
+            _name = "";
+	}
+
+}*/
 
 void UnitModel::turnTowards(const MPoint& targetPos) {
 /*    int newDirection, delta;
