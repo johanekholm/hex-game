@@ -81,7 +81,7 @@ void EAGLView::initializeGL() {
 	catalog->addAndLoad("hexTiles", loadTexture("texmap_hex.png"), 2);
 	catalog->addAndLoad("actions", loadTexture("actions.png"), 4);
 	catalog->addAndLoad("icons", loadTexture("icons.png"), 4);
-    catalog->addAndLoad("font", loadTexture("font-1.png"), 1);
+    catalog->addAndLoad("font", loadTexture("font_1.png"), 1);
 
 	d->centralControl = CentralControl::instance();
 	d->timer.start();
