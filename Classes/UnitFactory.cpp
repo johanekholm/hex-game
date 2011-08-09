@@ -27,7 +27,7 @@ void UnitFactory::produceAndRegisterUnit(const std::string& unitClass, int owner
     std::vector<int> actions;
     
     if (unitClass == "swordsman") {
-        hp = 3; ap = 3; power = 3; skill = 2; defense = 3; image = 0;
+        hp = 4; ap = 3; power = 3; skill = 2; defense = 3; image = 0;
         actions.push_back(ACTION_MOVE); actions.push_back(ACTION_STRIKE);
     } else if (unitClass == "soldier") {
         hp = 2; ap = 3; power = 2; skill = 2; defense = 2; image = 1;

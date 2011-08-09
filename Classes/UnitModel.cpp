@@ -215,16 +215,20 @@ void UnitModel::defend(UnitModel* attacker, int power, int skill, int attackType
     int skillDiff, damage, roll;
     
     damage = 0;
-    skillDiff = this->getStat(STAT_DEFENSE) - skill;
+    skillDiff = skill - this->getStat(STAT_DEFENSE);
     
+    std::cout << "Roll: ";
     for (int i=0; i < power; i++) {
         roll = rand() % 8 + 1;
+        std::cout << roll << "+" << skillDiff;
         if (roll + skillDiff >= 5 || roll == 8) {
             damage++;
-        }    
+            std::cout  << "(!)";
+        }
+        std::cout << ", ";
     }
     
-    std::cout << "Damage: " << damage << std::endl;
+    std::cout << " -- Damage: " << damage << std::endl;
     //attacker->reportHits(damage);
     this->inflictDamage(damage);
 }
