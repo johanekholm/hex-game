@@ -31,7 +31,7 @@ public class OpenGLRenderer implements Renderer {
 		gl.glLoadIdentity();// OpenGL docs.
 		// Calculate the aspect ratio of the window
 		
-		GLU.gluOrtho2D(gl, 0.0f, (float) width, height, 0.0f);
+		GLU.gluOrtho2D(gl, 0.0f, 320.0f, 480.0f, 0.0f);
 
 		// Select the modelview matrix
 		gl.glMatrixMode(GL10.GL_MODELVIEW);// OpenGL docs.
