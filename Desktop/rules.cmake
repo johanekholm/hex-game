@@ -7,6 +7,7 @@ FIND_PACKAGE(OpenGL REQUIRED)
 LIST(APPEND SOURCES
 	Desktop/main.cpp
 	Desktop/EAGLView.cpp
+	Desktop/Sound.cpp
 )
 
 LIST(APPEND HEADERS
