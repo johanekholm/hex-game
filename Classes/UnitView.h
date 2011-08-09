@@ -28,7 +28,6 @@ struct ActionView {
 };
 
 class UnitView : public ViewController, public IObserver {
-	GLfloat _facing;
 	UnitModel* _unitModel;
     UnitState _state;
 	std::vector<ActionView> _actionPoints;
@@ -39,7 +38,7 @@ class UnitView : public ViewController, public IObserver {
 	void drawActions();	
 	GPoint getActionPosition(int index);
 	void updateActions();
-	void updatePosition(const MPoint& pos, int direction);
+	void updatePosition(const MPoint& pos);
     void drawHpBar();
     void drawApBar();
 

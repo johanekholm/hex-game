@@ -29,7 +29,6 @@ UnitView::~UnitView() {
 
 UnitView::UnitView(UnitModel* model, GLfloat width, GLfloat height, int index) {
 	_unitModel = model;
-	_facing = 0.0f;
     _width = width;
     _height = height;
 	_unitImage = new GameImage(width, height, TextureCatalog::instance()->get("units"), index);
@@ -75,10 +74,9 @@ void UnitView::updateActions() {
     }	
 }
 
-void UnitView::updatePosition(const MPoint& pos, int direction) {
+void UnitView::updatePosition(const MPoint& pos) {
 	_pos.x = 64.0f + (GLfloat)pos.x * 64.0f + (pos.y % 2) * 32.0f;
 	_pos.y = 64.0f + (GLfloat)pos.y * 50.0f;
-	_facing = (GLfloat)direction;
 }
 
 
@@ -87,7 +85,6 @@ void UnitView::draw() {
 }
 
 void UnitView::drawGUI() {
-	//_directionImage->drawAtRotatedWithSubTexture(_pos, (GLfloat)_facing * 60.0f + 180.0f, 0);
     this->drawHpBar();
     this->drawApBar();
 	if (this->_hasFocus) {
@@ -190,7 +187,7 @@ ActionState* UnitView::touchedAction(GPoint point) {
 
 void UnitView::update() {
     _state = _unitModel->getState();
-	this->updatePosition(_state.pos, _state.direction);
+	this->updatePosition(_state.pos);
 	this->updateActions();	
 }
 

@@ -20,7 +20,7 @@ UnitFactory::UnitFactory(ViewControllerManager* viewControllerManager) {
     _viewControllerManager = viewControllerManager;
 }
 
-void UnitFactory::produceAndRegisterUnit(const std::string& unitClass, int owner, const MPoint& pos, int direction) {
+void UnitFactory::produceAndRegisterUnit(const std::string& unitClass, int owner, const MPoint& pos) {
     UnitModel* unit;
     UnitView* view;
     int hp, ap, power, skill, defense, image;
@@ -42,7 +42,7 @@ void UnitFactory::produceAndRegisterUnit(const std::string& unitClass, int owner
         return;
     }
     
-    unit = new UnitModel(pos.x, pos.y, direction, owner, hp, ap, power, skill, defense, actions);
+    unit = new UnitModel(pos.x, pos.y, owner, hp, ap, power, skill, defense, actions);
     //unit = new UnitModel(pos.x, pos.y, direction, owner);
 	view = new UnitView(unit, 64.0f, 64.0f, image);
 

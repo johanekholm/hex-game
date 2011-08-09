@@ -64,11 +64,10 @@ CentralControl::CentralControl() {
     _unitFactory = new UnitFactory(_viewControllerManager);
 	_input = new InputManager();
     
-    _unitFactory->produceAndRegisterUnit("swordsman", 1, MPointMake(0, 0), GEOM_DIR_E);
-    //_unitFactory->produceAndRegisterUnit("soldier", 1, MPointMake(0, 1), GEOM_DIR_E);
-    _unitFactory->produceAndRegisterUnit("soldier", 2, MPointMake(3, 0), GEOM_DIR_W);
-    _unitFactory->produceAndRegisterUnit("archer", 2, MPointMake(3, 1), GEOM_DIR_W);
-    _unitFactory->produceAndRegisterUnit("channeler", 1, MPointMake(1, 2), GEOM_DIR_W);
+    _unitFactory->produceAndRegisterUnit("swordsman", 1, MPointMake(0, 0));
+    _unitFactory->produceAndRegisterUnit("soldier", 2, MPointMake(3, 0));
+    _unitFactory->produceAndRegisterUnit("archer", 2, MPointMake(3, 1));
+    _unitFactory->produceAndRegisterUnit("channeler", 1, MPointMake(1, 2));
     
     //_stringImage = new StringImage("!\"#$%&'()*+");
     _stringImage = new StringImage("HIJKLMNOPQRSTUVWXYZ", 1.0f, 1.0f, 1.0f, 1.0f);
