@@ -42,9 +42,6 @@ void ModelManager::add(UnitModel* unit) {
 void ModelManager::remove(int unitId) {
     delete _units[unitId];
     _units.erase(unitId);
-
-    // "soft" deletion does not disturb iterators, leave pointer in map but set it to 0
-    //_units[unitId] = 0;
 }
     
 void ModelManager::setMap(HexMapModel* map) {
@@ -62,16 +59,12 @@ void ModelManager::tick() {
 	for (it = _units.begin(); it != _units.end();) {
         //std::cout << "Iterator pointer: " << *it << std::endl;
         
-        // unit can destroy itself thus corrupting the iterator, therefore another iterator the next item is needed
-        next = it;
-        next++;
         
         if (it->second != 0) {
             it->second->tick();
-            it = next;
+            it++;
         } else {
             _units.erase(it);
-            it = next;
         }
 	}
 }
