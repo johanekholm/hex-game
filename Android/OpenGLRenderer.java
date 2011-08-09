@@ -70,7 +70,8 @@ public class OpenGLRenderer implements Renderer {
 		OpenGLRenderer.addTexture("hextiles", loadTexture(gl, R.raw.texmap_hex), 2);
 		OpenGLRenderer.addTexture("actions", loadTexture(gl, R.raw.actions), 4);
 		OpenGLRenderer.addTexture("icons", loadTexture(gl, R.raw.icons), 4);
-		OpenGLRenderer.addTexture("units", loadTexture(gl, R.raw.texmap), 2);		
+		OpenGLRenderer.addTexture("units", loadTexture(gl, R.raw.texmap), 2);
+		OpenGLRenderer.addTexture("font", loadTexture(gl, R.raw.font_1), 1);
 	}
 	
 	private static int newTextureID(GL10 gl) {
