@@ -19,6 +19,7 @@ SET( SOURCES
     Classes/MessageView.cpp
     Classes/ModelManager.cpp
     Classes/Observable.cpp
+	Classes/Sound.cpp
     Classes/StringImage.cpp
 	Classes/TextureCatalog.cpp
 	Classes/TextureMap.cpp
@@ -41,6 +42,7 @@ SET( HEADERS
     Classes/IObserver.h
     Classes/MessageView.h
     Classes/ModelManager.h
+    Classes/Sound.h
     Classes/StringImage.h
 	Classes/TextureCatalog.h
 	Classes/TextureMap.h
