@@ -3,7 +3,6 @@ package com.hexgame.game;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.opengl.GLSurfaceView;
 
 public class HexGame extends Activity {
     /** Called when the activity is first created. */
