@@ -13,6 +13,7 @@
 #include "HexMapModel.h"
 #include "InputManager.h"
 #include "MessageView.h"
+#include "Sound.h"
 #include "ModelManager.h"
 #include "StringImage.h"
 #include "TextureCatalog.h"
@@ -54,6 +55,10 @@ CentralControl::CentralControl() {
 	_timer = 200;
     
     srand (time(NULL));
+
+    Sound *sound = Sound::instance();
+    sound->add("strike", "slash1.wav");
+    sound->add("fire", "fireball1.wav");
 
 	TextureCatalog* catalog = TextureCatalog::instance();
 	
