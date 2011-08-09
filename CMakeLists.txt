@@ -58,7 +58,7 @@ SET( HEADERS
 SET(RESOURCES
 	Resources/actions.png
 	Resources/floortilemap.png
-    Resources/font-1.png
+    	Resources/font_1.png
 	Resources/texmap.png
 	Resources/texmap_hex.png
 	Resources/icons.png
