@@ -59,7 +59,7 @@ SET(RESOURCES
 	Resources/actions.png
     Resources/fireball1.wav
 	Resources/floortilemap.png
-    Resources/font-1.png
+    	Resources/font_1.png
     Resources/slash1.wav
 	Resources/texmap.png
 	Resources/texmap_hex.png
