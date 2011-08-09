@@ -31,7 +31,7 @@ public class OpenGLRenderer implements Renderer {
 		gl.glLoadIdentity();// OpenGL docs.
 		// Calculate the aspect ratio of the window
 		
-		GLU.gluOrtho2D(gl, 0.0f, (float) width, height, 0.0f);
+		GLU.gluOrtho2D(gl, 0.0f, 320.0f, 480.0f, 0.0f);
 
 		// Select the modelview matrix
 		gl.glMatrixMode(GL10.GL_MODELVIEW);// OpenGL docs.
@@ -67,10 +67,11 @@ public class OpenGLRenderer implements Renderer {
 		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_LINEAR);
 		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
 		
-		OpenGLRenderer.addTexture("hextiles", loadTexture(gl, R.raw.texmap_hex), 2);
+		OpenGLRenderer.addTexture("hexTiles", loadTexture(gl, R.raw.texmap_hex), 2);
 		OpenGLRenderer.addTexture("actions", loadTexture(gl, R.raw.actions), 4);
 		OpenGLRenderer.addTexture("icons", loadTexture(gl, R.raw.icons), 4);
-		OpenGLRenderer.addTexture("units", loadTexture(gl, R.raw.texmap), 2);		
+		OpenGLRenderer.addTexture("units", loadTexture(gl, R.raw.texmap), 2);
+		OpenGLRenderer.addTexture("font", loadTexture(gl, R.raw.font_1), 1);
 	}
 	
 	private static int newTextureID(GL10 gl) {
