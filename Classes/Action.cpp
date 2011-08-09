@@ -83,7 +83,7 @@ void Action::doIt(const ActionState& statePoint) {
                 
                 target = ModelManager::instance()->getUnitAtPos(statePoint.pos);
                 if (target != 0) {
-                    target->defend(_unit, _unit->getStat(3), _unit->getStat(STAT_SKILL), ATTACK_TYPE_FIRE);    
+                    target->defend(_unit, 4, 4, ATTACK_TYPE_FIRE);    
                 }
                 break;
                 
@@ -127,9 +127,9 @@ bool Action::isAvailableToUnit(UnitModel* targetUnit) {
     
 	switch (_id) {
         case ACTION_STRIKE:
-            return (distance == 1);
+            return (distance == 1 && _unit->getOwner() != targetUnit->getOwner());
         case ACTION_FIRE:
-            return (distance > 0 && distance <= 2);
+            return (distance > 0 && distance <= 2  && _unit->getOwner() != targetUnit->getOwner());
         case ACTION_BURN:
             return (distance > 1 && distance <= 3);
         case ACTION_GALE:

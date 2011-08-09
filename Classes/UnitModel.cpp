@@ -28,7 +28,7 @@ UnitModel::UnitModel(int x, int y, int direction, int owner, int maxHp, int maxA
     _maxHp = maxHp;
     _maxAp = maxAp;
     _hp = _maxHp;
-    _ap = 0;
+    _ap = 0; //_maxAp;
     _basePower = power;
     _baseSkill = skill;
     _baseDefense = defense;
