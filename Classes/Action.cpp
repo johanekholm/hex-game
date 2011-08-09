@@ -52,6 +52,13 @@ Action::Action(int anId, UnitModel* unit) {
             _type = ACTION_TYPE_DEFENSE;
             _name = "GALE";
             break;
+        case ACTION_HEAL:
+            _cost = 3;
+            _targetType = TARGET_UNIT;
+            _type = ACTION_TYPE_DEFENSE;
+            _name = "HEAL";
+            break;
+
 		default:
 			_cost = 0;
             _name = "";
@@ -98,6 +105,12 @@ void Action::doIt(const ActionState& statePoint) {
                 }
                 break;
                 
+            case ACTION_HEAL:
+                target = ModelManager::instance()->getUnitAtPos(statePoint.pos);
+                if (target != 0) {
+                    target->inflictDamage(-2);
+                }
+                
             default:
                 break;
         }
@@ -133,8 +146,9 @@ bool Action::isAvailableToUnit(UnitModel* targetUnit) {
         case ACTION_BURN:
             return (distance > 1 && distance <= 3);
         case ACTION_GALE:
-            return (distance == 1);
-
+            return (distance == 1 && _unit->getOwner() != targetUnit->getOwner());
+        case ACTION_HEAL:
+            return (distance == 1 && _unit->getOwner() == targetUnit->getOwner());
 		default:
 			return false;
 	}

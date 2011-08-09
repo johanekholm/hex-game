@@ -21,6 +21,7 @@
 #define ACTION_FIRE 2
 #define ACTION_GALE 3
 #define ACTION_BURN 4
+#define ACTION_HEAL 5
 
 #define TARGET_HEX 1
 #define TARGET_UNIT 2

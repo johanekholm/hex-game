@@ -242,15 +242,20 @@ void UnitModel::inflictDamage(int damage) {
         MessageView::add(_pos, ss.str(), 1.0f, 0.0f, 0.0f, 1.0f);
     } else if (damage == 0) {
         MessageView::add(_pos, "MISS");
+    } else if (damage < 0) {
+        ss << -damage;
+        MessageView::add(_pos, ss.str(), 0.0f, 1.0f, 0.0f, 1.0f);
     }
     
-    
 	_hp -= damage;
+    
     if (_hp <= 0) {
         _hp = 0;
         std::cout << "Destroyed" << std::endl;
         ModelManager::instance()->remove(_id);
         return;
+    } else if (_hp > _maxHp) {
+        _hp = _maxHp;
     }
     this->updateObservers();
 }
