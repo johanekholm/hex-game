@@ -1,9 +1,8 @@
 //
-//  GameImage.h
-//  igame
+//  RectangleImage.h
+//  hex-game
 //
-//  Created by Johan Ekholm on 2010-04-11.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
+//  Created by Johan Ekholm
 //
 
 #ifndef RECTANGLEIMAGE_H

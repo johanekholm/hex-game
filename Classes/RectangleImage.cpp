@@ -1,16 +1,11 @@
 //
-//  RectangleImage.h
+//  RectangleImage.cpp
 //  hex-game
 //
 //  Created by Johan Ekholm
 //
 
 #include "RectangleImage.h"
-
-/*RectangleImage::RectangleImage(GLfloat width, GLfloat height) {
-	_width = width;
-	_height = height;
-}*/
 
 RectangleImage::RectangleImage(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha) {
     _red = red;
