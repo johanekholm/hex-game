@@ -53,3 +53,9 @@ void RectangleImage::drawAtWithSize(const GPoint &pos, GLfloat width, GLfloat he
     glEnable(GL_TEXTURE_2D);
 }
 
+void setColor(const RGBA& color) {
+    _red = color.red;
+    _green = color.green;
+    _blue = color.blue;
+    _alpha = color.alpha;
+}

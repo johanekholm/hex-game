@@ -130,6 +130,14 @@ struct RGBA {
     GLfloat green;
     GLfloat blue;
     GLfloat alpha;
+    
+    void makeRed() {red=1.0f; green=0.0f; blue=0.0f; alpha=1.0f;}
+    void makeGreen() {red=0.0f; green=1.0f; blue=0.0f; alpha=1.0f;}
+    void makeBlue() {red=0.0f; green=0.0f; blue=1.0f; alpha=1.0f;}
+    void makeYellow() {red=1.0f; green=1.0f; blue=0.0f; alpha=1.0f;}
+    void makeWhite() {red=1.0f; green=1.0f; blue=1.0f; alpha=1.0f;}
+    void makeBlack() {red=0.0f; green=0.0f; blue=0.0f; alpha=1.0f;}
+    void makeGray(GLfloat i) {red=i; green=i; blue=i; alpha=1.0f;}
 };
 
 typedef struct RGBA RGBA;
