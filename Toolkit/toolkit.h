@@ -125,6 +125,15 @@ struct MPoint {
 
 typedef struct MPoint MPoint;
 
+struct RGBA {
+    GLfloat red;
+    GLfloat green;
+    GLfloat blue;
+    GLfloat alpha;
+};
+
+typedef struct RGBA RGBA;
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -134,6 +143,7 @@ MPoint MPointMake(int x, int y);
 //bool PointWithin(GPoint point, GPoint pos, GPoint size);
 bool PointWithin(const GPoint& point, const GPoint& pos, GLfloat size);
 GPoint transformModelPositionToView(const MPoint& pos);
+RGBA RGBAMake(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha);
 	
 #ifdef __cplusplus
 }
