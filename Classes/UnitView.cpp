@@ -14,6 +14,7 @@
 #include "ViewControllerManager.h"
 #include "toolkit.h"
 #include "Action.h"
+#include "RectangleImage.h"
 
 #include <math.h>
 #include <iostream>
@@ -94,36 +95,26 @@ void UnitView::drawGUI() {
 
 void UnitView::drawHpBar() {
     GLfloat width, height, yOffset, ratio, length;
+    RGBA color;
+    RectangleImage bar, slot(0.5f, 0.5f, 0.5f, 0.5f);
     
     ratio = (GLfloat)_state.hp / (GLfloat)_state.maxHp;
     width = 32.0f;
     length = ratio * width;
-    height = 3.0f;
+    height = 4.0f;
     yOffset = 32.0f;
-    
-    GLfloat	vertices[] = {	0.0f, -height/2.0f, 0.0f,
-		length, -height/2.0f, 0.0f,
-		0.0f, height/2.0f, 0.0f,
-		0.0f, height/2.0f, 0.0f,
-		length, -height/2.0f, 0.0f,		
-		length, height/2.0f, 0.0f };
-	
-    glDisable(GL_TEXTURE_2D);
-    
-    if (ratio >= 0.75f) {
-        glColor4f(0.0f, 1.0f, 0.0f, 1.0f);        
-    } else if (ratio >= 0.25f) {
-        glColor4f(1.0f, 1.0f, 0.0f, 1.0f);                
+
+    if (ratio > 0.75f) {
+        color.makeGreen(); 
+    } else if (ratio > 0.25f) {
+        color.makeYellow(); 
     } else {
-        glColor4f(1.0f, 0.0f, 0.0f, 1.0f);                        
+        color.makeRed(); 
     }
-	glLoadIdentity();
-	glTranslatef(_pos.x - width/2.0f, _pos.y + yOffset, 0.0f);
-		
-	glVertexPointer(3, GL_FLOAT, 0, vertices);
-	glDrawArrays(GL_TRIANGLES, 0, 6);	
-    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-    glEnable(GL_TEXTURE_2D);
+    
+    bar.setColor(color);
+    bar.drawAtWithSize(GPointMake(_pos.x - width/2.0f, _pos.y + yOffset), length, height);
+    slot.drawAtWithSize(GPointMake(_pos.x - width/2.0f + length, _pos.y + yOffset), width - length, height);
 }
 
 void UnitView::drawApBar() {

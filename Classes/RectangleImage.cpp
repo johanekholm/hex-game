@@ -7,6 +7,20 @@
 
 #include "RectangleImage.h"
 
+RectangleImage::RectangleImage() {
+    _red = 1.0f;
+    _green = 1.0f;
+    _blue = 1.0f;
+    _alpha = 1.0f;
+}
+
+RectangleImage::RectangleImage(const RGBA& color) {
+    _red = color.red;
+    _green = color.green;
+    _blue = color.blue;
+    _alpha = color.alpha;
+}
+
 RectangleImage::RectangleImage(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha) {
     _red = red;
     _green = green;
@@ -33,12 +47,12 @@ void RectangleImage::drawAt(const GPoint &pos) {
 }
 
 void RectangleImage::drawAtWithSize(const GPoint &pos, GLfloat width, GLfloat height) {
-	GLfloat	vertices[] = {	-_width/2.0f, -height/2.0f, 0.0f,
-		width/2.0f, -height/2.0f, 0.0f,
-		-width/2.0f, height/2.0f, 0.0f,
-		-width/2.0f, height/2.0f, 0.0f,
-		width/2.0f, -height/2.0f, 0.0f,		
-		width/2.0f, height/2.0f, 0.0f };
+	GLfloat	vertices[] = {	0.0f, 0.0f, 0.0f,
+		width, 0.0f, 0.0f,
+		0.0f, height, 0.0f,
+		0.0f, height, 0.0f,
+		width, 0.0f, 0.0f,		
+		width, height, 0.0f };
 
     glDisable(GL_TEXTURE_2D);
     glColor4f(_red, _green, _blue, _alpha);
@@ -53,7 +67,7 @@ void RectangleImage::drawAtWithSize(const GPoint &pos, GLfloat width, GLfloat he
     glEnable(GL_TEXTURE_2D);
 }
 
-void setColor(const RGBA& color) {
+void RectangleImage::setColor(const RGBA& color) {
     _red = color.red;
     _green = color.green;
     _blue = color.blue;

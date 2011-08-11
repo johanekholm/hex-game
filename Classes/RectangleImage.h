@@ -23,6 +23,8 @@ protected:
 
 
 public:
+    RectangleImage();
+    RectangleImage(const RGBA& color);
     RectangleImage(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha);
 	void drawAt(const GPoint &pos);
     void drawAtWithSize(const GPoint &pos, GLfloat width, GLfloat height);
