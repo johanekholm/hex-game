@@ -119,6 +119,7 @@ void UnitView::drawHpBar() {
 
 void UnitView::drawApBar() {
     GLfloat width, height, yOffset, ratio, length;
+    RectangleImage bar(0.0f, 0.0f, 1.0f, 1.0f), slot(0.5f, 0.5f, 0.5f, 0.5f);
     
     ratio = (GLfloat)_state.ap / (GLfloat)_state.maxAp;
     width = 32.0f;
@@ -126,23 +127,8 @@ void UnitView::drawApBar() {
     height = 6.0f;
     yOffset = 26.0f;
     
-    GLfloat	vertices[] = {	0.0f, -height/2.0f, 0.0f,
-		length, -height/2.0f, 0.0f,
-		0.0f, height/2.0f, 0.0f,
-		0.0f, height/2.0f, 0.0f,
-		length, -height/2.0f, 0.0f,		
-		length, height/2.0f, 0.0f };
-	
-    glDisable(GL_TEXTURE_2D);
-    
-    glColor4f(0.0f, 0.0f, 1.0f, 1.0f);                        
-	glLoadIdentity();
-	glTranslatef(_pos.x - width/2.0f, _pos.y + yOffset, 0.0f);
-    
-	glVertexPointer(3, GL_FLOAT, 0, vertices);
-	glDrawArrays(GL_TRIANGLES, 0, 6);	
-    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-    glEnable(GL_TEXTURE_2D);
+    bar.drawAtWithSize(GPointMake(_pos.x - width/2.0f, _pos.y + yOffset), length, height);
+    slot.drawAtWithSize(GPointMake(_pos.x - width/2.0f + length, _pos.y + yOffset), width - length, height);
 }
 
 

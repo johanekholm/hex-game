@@ -152,6 +152,7 @@ MPoint MPointMake(int x, int y);
 bool PointWithin(const GPoint& point, const GPoint& pos, GLfloat size);
 GPoint transformModelPositionToView(const MPoint& pos);
 RGBA RGBAMake(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha);
+RGBA RGBAMakeGray(GLfloat intensity);
 	
 #ifdef __cplusplus
 }

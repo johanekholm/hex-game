@@ -49,3 +49,12 @@ RGBA RGBAMake(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha) {
     color.alpha = alpha;
     return color;
 }
+
+RGBA RGBAMakeGray(GLfloat intensity) {
+    RGBA color;
+    color.red = intensity;
+    color.green = intensity;
+    color.blue = intensity;
+    color.alpha = 1.0f;
+    return color;    
+}
