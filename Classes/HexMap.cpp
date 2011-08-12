@@ -28,10 +28,6 @@ HexMap::HexMap(HexMapModel* model, TextureMap* tex, GLfloat scale, int aWidth, i
 	_vertices = new GLfloat[_numVertices * 3];
 	_texCoords = new GLfloat[_numVertices * 2];
 
-	
-	//NSLog(@"w: %i, h: %i, numV: %i", _width, _height, _numVertices);
-	
-	
 	GLfloat vertices[4*3*3] = { -HEX_HALF_WIDTH, -HEX_HALF_HEIGHT, 0, // top triangle
 		0, -HEX_HALF_HEIGHT - HEX_POINTINESS, 0,
 		HEX_HALF_WIDTH, -HEX_HALF_HEIGHT, 0,
@@ -45,11 +41,17 @@ HexMap::HexMap(HexMapModel* model, TextureMap* tex, GLfloat scale, int aWidth, i
 		HEX_HALF_WIDTH, HEX_HALF_HEIGHT, 0,
 		0, HEX_HALF_HEIGHT + HEX_POINTINESS, 0
 	};
+    
+    if (scale != 1.0f) {
+        for (int i = 0; i < 4*3*3; i++) {
+            vertices[i] = vertices[i] * scale;
+        }        
+    }
 	
 	for (int i = 0; i < _height; i++) {
 		for (int j = 0; j < _width; j++) {
-			tx = j * (HEX_WIDTH + 0.0f) + (i % 2) * HEX_WIDTH / 2;
-			ty = i * (HEX_HEIGHT + HEX_POINTINESS);
+			tx = (j * (HEX_WIDTH + 0.0f) + (i % 2) * HEX_WIDTH / 2) * scale;
+			ty = (i * (HEX_HEIGHT + HEX_POINTINESS)) * scale;
 			
 			_vertices[vIndex + 0] = vertices[0] + tx;
 			_vertices[vIndex + 3] = vertices[3] + tx;
@@ -100,20 +102,10 @@ HexMap::HexMap(HexMapModel* model, TextureMap* tex, GLfloat scale, int aWidth, i
 	
 	
 	_texture->getHexTexCoordsForSub(_texCoords, 1, HEX_TEX_Y1); //tileData->at(index));
-
-	//NSLog(@"sq1: %i, h: %i, numV: %i", _width, _height, _numVertices);
-	//NSLog(@"sq1 - x: %f, y: %f", _texCoords[6], _texCoords[7]);
-	//NSLog(@"sq2 - x: %f, y: %f", _texCoords[8], _texCoords[9]);
-	//NSLog(@"sq3 - x: %f, y: %f", _texCoords[10], _texCoords[11]);
-	//NSLog(@"sq4 - x: %f, y: %f", _texCoords[16], _texCoords[17]);
-
-
 }
 
 void HexMap::draw() {
 	
-//	glDisable(GL_TEXTURE_2D);
-
 	glLoadIdentity();
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	glTranslatef(64.0f, 64.0f, 0.0f);
@@ -123,8 +115,6 @@ void HexMap::draw() {
 	glVertexPointer(3, GL_FLOAT, 0, _vertices);
 	glTexCoordPointer(2, GL_FLOAT, 0, _texCoords);
 	glDrawArrays(GL_TRIANGLES, 0, _numVertices);
-//	glEnable(GL_TEXTURE_2D);	
-
 }
 
 std::vector<MPoint> HexMap::getAllHexes() {
