@@ -8,20 +8,19 @@
 
 #include "HexMap.h"
 #include "TextureMap.h"
+#include "HexMapModel.h"
 
 HexMap::~HexMap() {
 	delete [] _vertices;
 	delete [] _texCoords;
 }
 
-HexMap::HexMap(TextureMap* tex, int aWidth, int aHeight, GLfloat aHexWidth, GLfloat aHexHeight) {
+HexMap::HexMap(HexMapModel* model, TextureMap* tex, GLfloat scale, int aWidth, int aHeight) {
 	int index = 0, vIndex = 0, tIndex = 0;
 	GLfloat tx, ty;
 
 	_width = aWidth;
 	_height = aHeight;
-
-	_tileSize = GPointMake(aHexWidth, aHexHeight);
 
 	_texture = tex;
 
@@ -91,7 +90,7 @@ HexMap::HexMap(TextureMap* tex, int aWidth, int aHeight, GLfloat aHexWidth, GLfl
 			_vertices[vIndex + 32] = 0;
 			_vertices[vIndex + 35] = 0;
 
-			_texture->getHexTexCoordsForSub(&_texCoords[tIndex], 1, HEX_TEX_Y1);
+			_texture->getHexTexCoordsForSub(&_texCoords[tIndex], model->getHexValue(j, i), HEX_TEX_Y1);
 			
 			index++;
 			vIndex = index * 36;
