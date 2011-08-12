@@ -127,19 +127,27 @@ void CentralControl::handleEventNormal(const TouchEvent& event) {
         selection = _viewControllerManager->getTouched(event.point);
 	 
         if (selection != 0) {
-            _selectedViewController = selection;
-            _selectedViewController->setFocus(true);
+            _viewControllerManager->setFocus(selection);
+            //_selectedViewController = selection;
+            //_selectedViewController->setFocus(true);
             this->switchMode(2);
         }
     }
 }
 
 void CentralControl::handleEventFocus(const TouchEvent& event) {
-    _selectedViewController->handleEvent(event);
+    ViewController* focus;
+    
+    focus = _viewControllerManager->getFocus();
+    
+    if (focus != 0) {
+        focus->handleEvent(event);
+    }
 	
 	if (event.type == 3) {
-        _selectedViewController->setFocus(false);
-        _selectedViewController = 0;
+        _viewControllerManager->setFocus(0);
+        //_selectedViewController->setFocus(false);
+        //_selectedViewController = 0;
 		this->switchMode(1);
 	}	
 }
