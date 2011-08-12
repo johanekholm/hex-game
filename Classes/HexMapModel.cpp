@@ -37,7 +37,7 @@ int HexMapModel::getHexValue(const MPoint& hex) {
 }
 
 int HexMapModel::getHexValue(int x, int y) {
-    std::cout << "Hex (" << x << ", " << y << "): " << _hexes[y * _width + x].value << std::endl;
+    //std::cout << "Hex (" << x << ", " << y << "): " << _hexes[y * _width + x].value << std::endl;
     return _hexes[y * _width + x].value;
 }
 

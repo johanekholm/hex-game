@@ -89,7 +89,7 @@ void UnitModel::defend(UnitModel* attacker, int power, int skill, int attackType
 }
 
 void UnitModel::doAction(const ActionState& statePoint) {
-    std::cout << "Do action " << statePoint.actionId << std::endl;
+    //std::cout << "Do action " << statePoint.actionId << std::endl;
 	if (_actions.find(statePoint.actionId) != _actions.end()) {
 		_actions[statePoint.actionId]->doIt(statePoint);
 	}
@@ -123,8 +123,8 @@ void UnitModel::doAI() {
         }
         
         if (hasOffensiveAction) {
-            std::cout << "Has offensive actions: " << offensives.size() << std::endl;
-            std::cout << "Has movement actions: " << movements.size() << std::endl;
+            //std::cout << "Has offensive actions: " << offensives.size() << std::endl;
+            //std::cout << "Has movement actions: " << movements.size() << std::endl;
             
             // choose offensive action randomly
             if (offensives.size() > 0) {
