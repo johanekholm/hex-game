@@ -69,11 +69,8 @@ CentralControl::CentralControl() {
     _unitFactory->produceAndRegisterUnit("archer", 2, MPointMake(2, 1));
     _unitFactory->produceAndRegisterUnit("channeler", 1, MPointMake(0, 1));
     
-    //_stringImage = new StringImage("!\"#$%&'()*+");
     _stringImage = new StringImage("HIJKLMNOPQRSTUVWXYZ", 1.0f, 1.0f, 1.0f, 1.0f);
     
-    //_viewControllerManager->add(new MessageView(GPointMake(100.0f, 100.0f), "MESSAGE"));
-    //MessageView::add(GPointMake(100.0f, 100.0f), "MSG");
 }
 
 void CentralControl::update() {
@@ -128,8 +125,6 @@ void CentralControl::handleEventNormal(const TouchEvent& event) {
 	 
         if (selection != 0) {
             _viewControllerManager->setFocus(selection);
-            //_selectedViewController = selection;
-            //_selectedViewController->setFocus(true);
             this->switchMode(2);
         }
     }
@@ -146,8 +141,6 @@ void CentralControl::handleEventFocus(const TouchEvent& event) {
 	
 	if (event.type == 3) {
         _viewControllerManager->setFocus(0);
-        //_selectedViewController->setFocus(false);
-        //_selectedViewController = 0;
 		this->switchMode(1);
 	}	
 }
