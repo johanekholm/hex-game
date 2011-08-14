@@ -24,6 +24,8 @@ UnitView::~UnitView() {
 	delete _unitImage;
 	delete _actionImage;
 	delete _directionImage;
+    delete _hpBar;
+    delete _apBar;
     _actionPoints.clear();
 	_unitModel = 0;
 }
@@ -35,6 +37,8 @@ UnitView::UnitView(UnitModel* model, GLfloat width, GLfloat height, int index) {
 	_unitImage = new GameImage(width, height, TextureCatalog::instance()->get("units"), index);
 	_actionImage = new GameImage(32.0f, 32.0f, TextureCatalog::instance()->get("actions"), 0);
 	_directionImage = new GameImage(16.0f, 16.0f, TextureCatalog::instance()->get("icons"), 0);	
+    _hpBar = new RectangleImage(RGBAMake(0.0f, 1.0f, 0.0f, 1.0f), 32.0f, 4.0f, true);
+    _apBar = new RectangleImage(RGBAMake(0.0f, 0.0f, 1.0f, 1.0f), 32.0f, 6.0f, true);
 }
 
 void UnitView::drawActions() {
@@ -86,52 +90,13 @@ void UnitView::draw() {
 }
 
 void UnitView::drawGUI() {
-    this->drawHpBar();
-    this->drawApBar();
+    _hpBar->drawAt(GPointMake(_pos.x - 16.0f, _pos.y + 32.0f));
+    _apBar->drawAt(GPointMake(_pos.x- 16.0f, _pos.y + 26.0f));
+
 	if (this->_hasFocus) {
         this->drawActions();
     }
 }
-
-void UnitView::drawHpBar() {
-    GLfloat width, height, yOffset, ratio, length;
-    RGBA color;
-    RectangleImage bar, slot(0.5f, 0.5f, 0.5f, 1.0f);
-    
-    ratio = (GLfloat)_state.hp / (GLfloat)_state.maxHp;
-    width = 32.0f;
-    length = ratio * width;
-    height = 4.0f;
-    yOffset = 32.0f;
-
-    if (ratio > 0.75f) {
-        color.makeGreen(); 
-    } else if (ratio > 0.25f) {
-        color.makeYellow(); 
-    } else {
-        color.makeRed(); 
-    }
-    
-    bar.setColor(color);
-    bar.drawAtWithSize(GPointMake(_pos.x - width/2.0f, _pos.y + yOffset), length, height);
-    slot.drawAtWithSize(GPointMake(_pos.x - width/2.0f + length, _pos.y + yOffset), width - length, height);
-}
-
-void UnitView::drawApBar() {
-    GLfloat width, height, yOffset, ratio, length;
-    RectangleImage bar(0.0f, 0.0f, 1.0f, 1.0f), slot(0.5f, 0.5f, 0.5f, 1.0f);
-    
-    ratio = (GLfloat)_state.ap / (GLfloat)_state.maxAp;
-    width = 32.0f;
-    length = ratio * width;
-    height = 6.0f;
-    yOffset = 26.0f;
-    
-    bar.drawAtWithSize(GPointMake(_pos.x - width/2.0f, _pos.y + yOffset), length, height);
-    slot.drawAtWithSize(GPointMake(_pos.x - width/2.0f + length, _pos.y + yOffset), width - length, height);
-}
-
-
 
 bool UnitView::handleEvent(const TouchEvent& event) {
     ActionState* statePoint;
@@ -165,7 +130,32 @@ ActionState* UnitView::touchedAction(GPoint point) {
 void UnitView::update() {
     _state = _unitModel->getState();
 	this->updatePosition(_state.pos);
-	this->updateActions();	
+	this->updateActions();
+	this->updateBars();
+}
+
+void UnitView::updateBars() {
+    GLfloat ratioAp, ratioHp, lengthAp, lengthHp;
+    RGBA color;
+    
+    ratioHp = (GLfloat)_state.hp / (GLfloat)_state.maxHp;
+    lengthHp = ratioHp * 32.0f;
+
+    ratioAp = (GLfloat)_state.ap / (GLfloat)_state.maxAp;
+    lengthAp = ratioAp * 32.0f;
+
+    if (ratioHp > 0.75f) {
+        color.makeGreen(); 
+    } else if (ratioHp > 0.25f) {
+        color.makeYellow(); 
+    } else {
+        color.makeRed(); 
+    }
+    
+    _hpBar->setSize(lengthHp, 4.0f);
+    _hpBar->setColor(color);
+    
+    _apBar->setSize(lengthAp, 6.0f);
 }
 
 void UnitView::destroyed() {
