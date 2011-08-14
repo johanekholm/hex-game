@@ -57,8 +57,8 @@ CentralControl::CentralControl() {
     srand (time(NULL));
 
     Sound *sound = Sound::instance();
-    sound->add("strike", "slash1.wav");
-    sound->add("fire", "fireball1.wav");
+    sound->add("strike", "slash1");
+    sound->add("fire", "fireball1");
 
 	TextureCatalog* catalog = TextureCatalog::instance();
 	
