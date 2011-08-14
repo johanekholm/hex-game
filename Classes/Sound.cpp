@@ -39,6 +39,7 @@ void Sound::add(const std::string &name, const std::string &filename) {
     }
     list.push_back(filename);
     d->catalog[name] = list;
+    this->initFile(filename);
 }
 
 void Sound::play(const std::string &name) {

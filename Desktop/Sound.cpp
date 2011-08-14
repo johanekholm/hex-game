@@ -32,6 +32,9 @@ void Sound::destroyImpl() {
     delete pd;
 }
 
+void Sound::initFile(const std::string &filename) {
+}
+
 void Sound::playImpl(const std::string &filename) {
     QSound::play(pd->dir.filePath(QString(filename.c_str()) + ".wav"));
 }

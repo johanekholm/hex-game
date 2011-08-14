@@ -19,6 +19,7 @@ public:
 
 protected:
     void playImpl(const std::string &filename);
+    void initFile(const std::string &filename);
 
 private:
     Sound();
