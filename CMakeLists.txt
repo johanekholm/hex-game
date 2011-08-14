@@ -65,8 +65,8 @@ SET(RESOURCES
 )
 
 SET(SOUNDS
-    Resources/fireball1.wav
-    Resources/slash1.wav
+	Resources/fireball1.wav
+	Resources/slash1.wav
 )
 
 INCLUDE_DIRECTORIES( Toolkit )
@@ -91,19 +91,18 @@ IF (${TARGET_PLATFORM} MATCHES "Android")
 		${SOURCES}
 		${HEADERS}
 		${RESOURCES}
-        ${SOUNDS}
+		${SOUNDS}
 	)
 ELSE ()
 	ADD_EXECUTABLE(HexGame MACOSX_BUNDLE
 		${SOURCES}
 		${HEADERS}
 		${RESOURCES}
-        ${SOUNDS}
+		${SOUNDS}
 	)
 ENDIF ()	
 
 SET_SOURCE_FILES_PROPERTIES(${RESOURCES} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
-SET_SOURCE_FILES_PROPERTIES(${SOUNDS} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
 
 IF (COMMAND COMPILE)
 	COMPILE(HexGame)
