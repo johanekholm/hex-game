@@ -5,6 +5,7 @@ LIST(APPEND SOURCES
 	iOS/OGLGameAppDelegate.mm
 	iOS/main.m
 	iOS/Texture2D.m
+	iOS/Sound.mm
 	Toolkit/toolkit_ios.mm
 )
 
@@ -33,7 +34,7 @@ ENDFOREACH()
 
 
 LIST(APPEND LIBRARIES
-	"-framework Foundation -framework UIKit -framework CoreGraphics -framework OpenGLES -framework QuartzCore"
+	"-framework Foundation -framework UIKit -framework CoreGraphics -framework OpenGLES -framework QuartzCore -framework AVFoundation"
 )
 
 SET(SDK_VERSION "iphoneos4.1" CACHE STRING "The sdk version")
