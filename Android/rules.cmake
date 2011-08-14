@@ -1,6 +1,7 @@
 LIST(APPEND SOURCES
 	Android/OpenGLRenderer.cpp
 	Android/GameGLView.cpp
+	Android/Sound.cpp
 )
 
 LIST(APPEND HEADERS
