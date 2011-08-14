@@ -96,7 +96,7 @@ void UnitView::drawGUI() {
 void UnitView::drawHpBar() {
     GLfloat width, height, yOffset, ratio, length;
     RGBA color;
-    RectangleImage bar, slot(0.5f, 0.5f, 0.5f, 0.5f);
+    RectangleImage bar, slot(0.5f, 0.5f, 0.5f, 1.0f);
     
     ratio = (GLfloat)_state.hp / (GLfloat)_state.maxHp;
     width = 32.0f;
@@ -119,7 +119,7 @@ void UnitView::drawHpBar() {
 
 void UnitView::drawApBar() {
     GLfloat width, height, yOffset, ratio, length;
-    RectangleImage bar(0.0f, 0.0f, 1.0f, 1.0f), slot(0.5f, 0.5f, 0.5f, 0.5f);
+    RectangleImage bar(0.0f, 0.0f, 1.0f, 1.0f), slot(0.5f, 0.5f, 0.5f, 1.0f);
     
     ratio = (GLfloat)_state.ap / (GLfloat)_state.maxAp;
     width = 32.0f;
