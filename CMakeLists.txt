@@ -57,15 +57,17 @@ SET( HEADERS
 
 SET(RESOURCES
 	Resources/actions.png
-    Resources/fireball1.wav
 	Resources/floortilemap.png
-    	Resources/font_1.png
-    Resources/slash1.wav
+    Resources/font_1.png
 	Resources/texmap.png
 	Resources/texmap_hex.png
 	Resources/icons.png
 )
 
+SET(SOUNDS
+    Resources/fireball1.wav
+    Resources/slash1.wav
+)
 
 INCLUDE_DIRECTORIES( Toolkit )
 INCLUDE_DIRECTORIES( Classes )
@@ -89,16 +91,19 @@ IF (${TARGET_PLATFORM} MATCHES "Android")
 		${SOURCES}
 		${HEADERS}
 		${RESOURCES}
+        ${SOUNDS}
 	)
 ELSE ()
 	ADD_EXECUTABLE(HexGame MACOSX_BUNDLE
 		${SOURCES}
 		${HEADERS}
 		${RESOURCES}
+        ${SOUNDS}
 	)
 ENDIF ()	
 
 SET_SOURCE_FILES_PROPERTIES(${RESOURCES} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+SET_SOURCE_FILES_PROPERTIES(${SOUNDS} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
 
 IF (COMMAND COMPILE)
 	COMPILE(HexGame)
