@@ -8,14 +8,24 @@
  */
 
 #include "Sound.h"
-#include <iostream>
+#include <QCoreApplication>
+#include <QSound>
+#include <QDir>
 
 class Sound::PrivateImplData {
 public:
+    QDir dir;
 };
 
 void Sound::initImpl() {
     pd = new PrivateImplData;
+    pd->dir = QCoreApplication::applicationDirPath();
+#if defined(Q_OS_MAC)
+    if (pd->dir.dirName() == "MacOS") {
+        pd->dir.cdUp();
+        pd->dir.cd("Resources");
+    }
+#endif
 }
 
 void Sound::destroyImpl() {
@@ -23,5 +33,5 @@ void Sound::destroyImpl() {
 }
 
 void Sound::playImpl(const std::string &filename) {
-    std::cout << "Playing sound: " << filename << std::endl;
+    QSound::play(pd->dir.filePath(QString(filename.c_str())));
 }
