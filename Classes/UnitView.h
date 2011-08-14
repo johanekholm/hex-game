@@ -36,8 +36,8 @@ class UnitView : public ViewController, public IObserver {
 	GameImage* _unitImage;
 	GameImage* _actionImage;
 	GameImage* _directionImage;
-    RectangleImage* _hpBar;
-    RectangleImage* _apBar;
+    RectangleImage *_hpBar, *_hpBarSlot;
+    RectangleImage *_apBar, *_apBarSlot;
 
 
 	void drawActions();	

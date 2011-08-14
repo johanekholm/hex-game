@@ -5,7 +5,7 @@
 //  Created by Johan Ekholm
 //
 
-#include "RectangleImage.h"
+#include "ShapeImage.h"
 #include <cmath>
 #include <iostream>
 #include <cstring>

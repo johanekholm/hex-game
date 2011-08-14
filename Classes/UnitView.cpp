@@ -14,7 +14,7 @@
 #include "ViewControllerManager.h"
 #include "toolkit.h"
 #include "Action.h"
-#include "RectangleImage.h"
+#include "ShapeImage.h"
 
 #include <math.h>
 #include <iostream>
@@ -26,6 +26,8 @@ UnitView::~UnitView() {
 	delete _directionImage;
     delete _hpBar;
     delete _apBar;
+    delete _hpBarSlot;
+    delete _apBarSlot;
     _actionPoints.clear();
 	_unitModel = 0;
 }
@@ -39,6 +41,9 @@ UnitView::UnitView(UnitModel* model, GLfloat width, GLfloat height, int index) {
 	_directionImage = new GameImage(16.0f, 16.0f, TextureCatalog::instance()->get("icons"), 0);	
     _hpBar = new RectangleImage(RGBAMake(0.0f, 1.0f, 0.0f, 1.0f), 32.0f, 4.0f, true);
     _apBar = new RectangleImage(RGBAMake(0.0f, 0.0f, 1.0f, 1.0f), 32.0f, 6.0f, true);
+    _hpBarSlot = new RectangleImage(RGBAMake(0.5f, 0.5f, 0.5f, 1.0f), 32.0f, 4.0f, true);
+    _apBarSlot = new RectangleImage(RGBAMake(0.5f, 0.5f, 0.5f, 1.0f), 32.0f, 6.0f, true);
+
 }
 
 void UnitView::drawActions() {
@@ -90,6 +95,9 @@ void UnitView::draw() {
 }
 
 void UnitView::drawGUI() {
+    _hpBarSlot->drawAt(GPointMake(_pos.x - 16.0f, _pos.y + 32.0f));
+    _apBarSlot->drawAt(GPointMake(_pos.x- 16.0f, _pos.y + 26.0f));
+    
     _hpBar->drawAt(GPointMake(_pos.x - 16.0f, _pos.y + 32.0f));
     _apBar->drawAt(GPointMake(_pos.x- 16.0f, _pos.y + 26.0f));
 
