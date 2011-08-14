@@ -10,6 +10,7 @@
 #include "Sound.h"
 #include <iostream>
 #include <map>
+#include <list>
 
 typedef std::list<std::string> stringlist;
 typedef std::map<std::string, stringlist> soundmap;
