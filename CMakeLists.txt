@@ -9,6 +9,7 @@ ENDIF(COMMAND CMAKE_POLICY)
 SET(PRODUCT_NAME HexGame)
 
 SET( SOURCES
+	Classes/AbstractResourceLoader.cpp
 	Classes/Action.cpp
 	Classes/CentralControl.cpp
 	Classes/GameImage.cpp
@@ -31,6 +32,7 @@ SET( SOURCES
 )
 
 SET( HEADERS
+	Classes/AbstractResourceLoader.h
 	Classes/Action.h
 	Classes/CentralControl.h
 	Classes/GameImage.h
