@@ -11,7 +11,8 @@ LIST(APPEND LIBRARIES
 	android
 	EGL
 	GLESv1_CM
-	log	
+	log
+	OpenSLES
 )
 
 SET(JAVASOURCES
