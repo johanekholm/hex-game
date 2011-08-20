@@ -18,6 +18,12 @@ class UnitFactory;
 struct TouchEvent;
 struct GPoint;
 
+namespace ControlMode {
+    const int BATTLE = 1;
+    const int BATTLE_FOCUS = 2;
+    const int ADVENTURE = 3;
+};
+
 class CentralControl {
 	static CentralControl* _instance;
 	int _mode;

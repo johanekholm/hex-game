@@ -86,11 +86,11 @@ void CentralControl::update() {
 		
 		// dispatch event to current event handler
 		switch (this->_mode) {
-			case 1:
+			case ControlMode::BATTLE:
 				this->handleEventNormal(event);
 				break;
 				
-			case 2:
+			case ControlMode::BATTLE_FOCUS:
 				this->handleEventFocus(event);				
                 break;
 				
@@ -102,13 +102,13 @@ void CentralControl::update() {
 void CentralControl::draw() {
 	
 	switch(_mode) {
-		case 1:
+		case ControlMode::BATTLE:
 			_hexMap->draw();
 			_viewControllerManager->draw();
             _viewControllerManager->drawGUI();
             //_stringImage->drawAt(GPointMake(20.0f, 80.0f));
 			break;
-		case 2:
+		case ControlMode::BATTLE_FOCUS:
 			_hexMap->draw();
 			_viewControllerManager->draw();
             _viewControllerManager->drawGUI();
