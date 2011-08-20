@@ -44,6 +44,8 @@ class UnitView : public ViewController, public IObserver {
 
 	void drawActions();	
 	GPoint getActionPosition(int index);
+    ActionState* getTouchedActionState(GPoint point);
+    ActionView* getTouchedActionView(GPoint point);
 	void updateActions();
     void updateBars();
 	void updatePosition(const MPoint& pos);
@@ -51,31 +53,11 @@ class UnitView : public ViewController, public IObserver {
 public:
 	~UnitView();
 	UnitView(UnitModel* model, GLfloat width, GLfloat height, int index);
+    void destroyed();
 	void draw();
 	void drawGUI();
 	bool handleEvent(const TouchEvent& event);
-	ActionState* getTouchedActionState(GPoint point);
-    ActionView* getTouchedActionView(GPoint point);
-	void update();
-    void destroyed();
     void setFocus(bool hasFocus);
+	void update();
 };
 
-/*class UnitView : public GameImage, public IUnitView {
-	GPoint _pos;
-	GLfloat _facing;
-	std::vector<int> _actions;
-	GameImage* _actionImage;
-	GameImage* _directionImage;
-	
-	GPoint getActionPosition(int index);
-public:
-	~UnitView();
-	UnitView(GLfloat aWidth, GLfloat aHeight, TextureMap* tex, int index);
-	void draw();
-	void drawActions();
-	void updatePosition(const MPoint& pos, int direction);
-	void updateActions(std::vector<int> actions);
-	bool wasTouched(GPoint point);
-	int touchedAction(GPoint point);
-};*/

@@ -44,61 +44,32 @@ UnitView::UnitView(UnitModel* model, GLfloat width, GLfloat height, int index) {
     _apBar = new RectangleImage(RGBAMake(0.0f, 0.0f, 1.0f, 1.0f), 32.0f, 6.0f, true);
     _hpBarSlot = new RectangleImage(RGBAMake(0.5f, 0.5f, 0.5f, 1.0f), 32.0f, 4.0f, true);
     _apBarSlot = new RectangleImage(RGBAMake(0.5f, 0.5f, 0.5f, 1.0f), 32.0f, 6.0f, true);
-    _actionMarker = new EllipseImage(RGBAMake(0.0f, 1.0f, 0.0f, 1.0f), 16.0f, 16.0f, 16, false);
+    _actionMarker = new EllipseImage(RGBAMake(0.0f, 1.0f, 0.0f, 1.0f), 32.0f, 32.0f, 16, false);
     _selectedActionView = 0;
 }
 
+void UnitView::destroyed() {
+    ViewControllerManager::instance()->remove(this);	
+}
+
+void UnitView::draw() {
+	_unitImage->drawAt(_pos);
+}
+
 void UnitView::drawActions() {
-	//float i = 0;
-	//GPoint actionPos;
-	
 	for (std::vector<ActionView>::iterator it = _actionPoints.begin(); it != _actionPoints.end(); ++it) {
-		//actionPos = transformModelPositionToView((*it).pos); //this->getActionPosition(i);
-		//i++;
         if (!(*it).active) {
             glColor4f(1.0f, 1.0f, 1.0f, 0.3f);
         } else {
             glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         }
 		_actionImage->drawAtWithSubTexture((*it).pos, (*it).actionId);
-
+        
         if (_selectedActionView != 0) {
             _actionMarker->drawCenteredAt((*_selectedActionView).pos);
-        }
-        
+        }        
 	}
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-
-}
-
-
-GPoint UnitView::getActionPosition(int index) {
-	return GPointMake(cos(ACTION_ANGLE_INITIAL + ACTION_ANGLE_INCREMENT*(float)index), 
-					  sin(ACTION_ANGLE_INITIAL + ACTION_ANGLE_INCREMENT*(float)index)) * ACTION_RADIUS;
-}
-
-void UnitView::updateActions() {
-	ActionView actionView;
-    
-    _actionPoints.clear();
-    
-    for (std::vector<ActionState>::iterator it = _state.actions.begin(); it != _state.actions.end(); ++it) {
-        actionView.pos = transformModelPositionToView((*it).pos);
-        actionView.actionId = (*it).actionId;
-        actionView.active = (*it).active;
-        actionView.statePoint = &(*it);
-        _actionPoints.push_back(actionView);
-    }	
-}
-
-void UnitView::updatePosition(const MPoint& pos) {
-	_pos.x = 64.0f + (GLfloat)pos.x * 64.0f + (pos.y % 2) * 32.0f;
-	_pos.y = 64.0f + (GLfloat)pos.y * 50.0f;
-}
-
-
-void UnitView::draw() {
-	_unitImage->drawAt(_pos);
 }
 
 void UnitView::drawGUI() {
@@ -111,6 +82,30 @@ void UnitView::drawGUI() {
 	if (this->_hasFocus) {
         this->drawActions();
     }
+}
+
+GPoint UnitView::getActionPosition(int index) {
+	return GPointMake(cos(ACTION_ANGLE_INITIAL + ACTION_ANGLE_INCREMENT*(float)index), 
+					  sin(ACTION_ANGLE_INITIAL + ACTION_ANGLE_INCREMENT*(float)index)) * ACTION_RADIUS;
+}
+
+ActionState* UnitView::getTouchedActionState(GPoint point) {
+	for (std::vector<ActionView>::iterator it = _actionPoints.begin(); it != _actionPoints.end(); ++it) {
+		if (PointWithin(point, (*it).pos, 32.0f)) {
+			return (*it).statePoint;
+		}
+	}
+	return (0);
+}
+
+ActionView* UnitView::getTouchedActionView(GPoint point) {
+	
+	for (std::vector<ActionView>::iterator it = _actionPoints.begin(); it != _actionPoints.end(); ++it) {		
+		if (PointWithin(point, (*it).pos, 32.0f)) {
+			return &(*it);
+		}
+	}
+	return (0);
 }
 
 bool UnitView::handleEvent(const TouchEvent& event) {
@@ -130,29 +125,9 @@ bool UnitView::handleEvent(const TouchEvent& event) {
 	return true;
 }
 
-ActionState* UnitView::getTouchedActionState(GPoint point) {
-	//GPoint actionPos;
-	//int i = 0;
-	
-	for (std::vector<ActionView>::iterator it = _actionPoints.begin(); it != _actionPoints.end(); ++it) {
-		//actionPos = _pos + this->getActionPosition(i);
-		
-		if (PointWithin(point, (*it).pos, 32.0f)) {
-			return (*it).statePoint;
-		}
-		//i++;
-	}
-	return (0);
-}
-
-ActionView* UnitView::getTouchedActionView(GPoint point) {
-	
-	for (std::vector<ActionView>::iterator it = _actionPoints.begin(); it != _actionPoints.end(); ++it) {		
-		if (PointWithin(point, (*it).pos, 32.0f)) {
-			return &(*it);
-		}
-	}
-	return (0);
+void UnitView::setFocus(bool hasFocus) {
+    _hasFocus = hasFocus;
+    this->update();
 }
 
 void UnitView::update() {
@@ -160,6 +135,20 @@ void UnitView::update() {
 	this->updatePosition(_state.pos);
 	this->updateActions();
 	this->updateBars();
+}
+
+void UnitView::updateActions() {
+	ActionView actionView;
+    
+    _actionPoints.clear();
+    
+    for (std::vector<ActionState>::iterator it = _state.actions.begin(); it != _state.actions.end(); ++it) {
+        actionView.pos = transformModelPositionToView((*it).pos);
+        actionView.actionId = (*it).actionId;
+        actionView.active = (*it).active;
+        actionView.statePoint = &(*it);
+        _actionPoints.push_back(actionView);
+    }	
 }
 
 void UnitView::updateBars() {
@@ -186,22 +175,8 @@ void UnitView::updateBars() {
     _apBar->setSize(lengthAp, 6.0f);
 }
 
-void UnitView::destroyed() {
-    ViewControllerManager::instance()->remove(this);	
+void UnitView::updatePosition(const MPoint& pos) {
+	_pos.x = 64.0f + (GLfloat)pos.x * 64.0f + (pos.y % 2) * 32.0f;
+	_pos.y = 64.0f + (GLfloat)pos.y * 50.0f;
 }
-
-void UnitView::setFocus(bool hasFocus) {
-    _hasFocus = hasFocus;
-    this->update();
-}
-
-
-
-/*bool UnitView::wasTouched(GPoint point) {
-	if (point.x >= _pos.x - width/2 && point.x <= _pos.x + width/2 && point.y >= _pos.y - height/2 && point.y <= _pos.y + height/2) {
-		return true;
-	} else {
-		return false;
-	}
-}*/
 
