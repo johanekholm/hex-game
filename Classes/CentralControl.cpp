@@ -59,22 +59,18 @@ CentralControl::CentralControl() {
 	
     ModelManager::instance()->setMap(new HexMapModel(4, 4));
     
-	_hexMap = new HexMap(catalog->get("hexTiles"), 4, 4, 80.0f, 80.0f);
+	_hexMap = new HexMap(ModelManager::instance()->getMap(), catalog->get("hexTiles"), 1.0f, 4, 4);
     _viewControllerManager = ViewControllerManager::instance();
     _unitFactory = new UnitFactory(_viewControllerManager);
 	_input = new InputManager();
     
-    _unitFactory->produceAndRegisterUnit("swordsman", 1, MPointMake(0, 0), GEOM_DIR_E);
-    //_unitFactory->produceAndRegisterUnit("soldier", 1, MPointMake(0, 1), GEOM_DIR_E);
-    _unitFactory->produceAndRegisterUnit("soldier", 2, MPointMake(3, 0), GEOM_DIR_W);
-    _unitFactory->produceAndRegisterUnit("archer", 2, MPointMake(3, 1), GEOM_DIR_W);
-    _unitFactory->produceAndRegisterUnit("channeler", 1, MPointMake(1, 2), GEOM_DIR_W);
+    _unitFactory->produceAndRegisterUnit("swordsman", 1, MPointMake(0, 0));
+    _unitFactory->produceAndRegisterUnit("soldier", 2, MPointMake(2, 0));
+    _unitFactory->produceAndRegisterUnit("archer", 2, MPointMake(2, 1));
+    _unitFactory->produceAndRegisterUnit("channeler", 1, MPointMake(0, 1));
     
-    //_stringImage = new StringImage("!\"#$%&'()*+");
     _stringImage = new StringImage("HIJKLMNOPQRSTUVWXYZ", 1.0f, 1.0f, 1.0f, 1.0f);
     
-    //_viewControllerManager->add(new MessageView(GPointMake(100.0f, 100.0f), "MESSAGE"));
-    //MessageView::add(GPointMake(100.0f, 100.0f), "MSG");
 }
 
 void CentralControl::update() {
@@ -128,19 +124,23 @@ void CentralControl::handleEventNormal(const TouchEvent& event) {
         selection = _viewControllerManager->getTouched(event.point);
 	 
         if (selection != 0) {
-            _selectedViewController = selection;
-            _selectedViewController->setFocus(true);
+            _viewControllerManager->setFocus(selection);
             this->switchMode(2);
         }
     }
 }
 
 void CentralControl::handleEventFocus(const TouchEvent& event) {
-    _selectedViewController->handleEvent(event);
+    ViewController* focus;
+    
+    focus = _viewControllerManager->getFocus();
+    
+    if (focus != 0) {
+        focus->handleEvent(event);
+    }
 	
 	if (event.type == 3) {
-        _selectedViewController->setFocus(false);
-        _selectedViewController = 0;
+        _viewControllerManager->setFocus(0);
 		this->switchMode(1);
 	}	
 }

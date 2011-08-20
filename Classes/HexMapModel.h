@@ -29,6 +29,7 @@ public:
 	HexMapModel(int width, int height);
     std::map<int, HexState> getAllHexes();
     int getHexValue(const MPoint& hex);
+    int getHexValue(int x, int y);
 };
 
 

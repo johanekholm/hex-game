@@ -14,6 +14,7 @@
 #include "ViewControllerManager.h"
 #include "toolkit.h"
 #include "Action.h"
+#include "ShapeImage.h"
 
 #include <math.h>
 #include <iostream>
@@ -23,18 +24,26 @@ UnitView::~UnitView() {
 	delete _unitImage;
 	delete _actionImage;
 	delete _directionImage;
+    delete _hpBar;
+    delete _apBar;
+    delete _hpBarSlot;
+    delete _apBarSlot;
     _actionPoints.clear();
 	_unitModel = 0;
 }
 
 UnitView::UnitView(UnitModel* model, GLfloat width, GLfloat height, int index) {
 	_unitModel = model;
-	_facing = 0.0f;
     _width = width;
     _height = height;
 	_unitImage = new GameImage(width, height, TextureCatalog::instance()->get("units"), index);
 	_actionImage = new GameImage(32.0f, 32.0f, TextureCatalog::instance()->get("actions"), 0);
 	_directionImage = new GameImage(16.0f, 16.0f, TextureCatalog::instance()->get("icons"), 0);	
+    _hpBar = new RectangleImage(RGBAMake(0.0f, 1.0f, 0.0f, 1.0f), 32.0f, 4.0f, true);
+    _apBar = new RectangleImage(RGBAMake(0.0f, 0.0f, 1.0f, 1.0f), 32.0f, 6.0f, true);
+    _hpBarSlot = new RectangleImage(RGBAMake(0.5f, 0.5f, 0.5f, 1.0f), 32.0f, 4.0f, true);
+    _apBarSlot = new RectangleImage(RGBAMake(0.5f, 0.5f, 0.5f, 1.0f), 32.0f, 6.0f, true);
+
 }
 
 void UnitView::drawActions() {
@@ -75,10 +84,9 @@ void UnitView::updateActions() {
     }	
 }
 
-void UnitView::updatePosition(const MPoint& pos, int direction) {
+void UnitView::updatePosition(const MPoint& pos) {
 	_pos.x = 64.0f + (GLfloat)pos.x * 64.0f + (pos.y % 2) * 32.0f;
 	_pos.y = 64.0f + (GLfloat)pos.y * 50.0f;
-	_facing = (GLfloat)direction;
 }
 
 
@@ -87,77 +95,16 @@ void UnitView::draw() {
 }
 
 void UnitView::drawGUI() {
-	//_directionImage->drawAtRotatedWithSubTexture(_pos, (GLfloat)_facing * 60.0f + 180.0f, 0);
-    this->drawHpBar();
-    this->drawApBar();
+    _hpBarSlot->drawAt(GPointMake(_pos.x - 16.0f, _pos.y + 32.0f));
+    _apBarSlot->drawAt(GPointMake(_pos.x- 16.0f, _pos.y + 26.0f));
+    
+    _hpBar->drawAt(GPointMake(_pos.x - 16.0f, _pos.y + 32.0f));
+    _apBar->drawAt(GPointMake(_pos.x- 16.0f, _pos.y + 26.0f));
+
 	if (this->_hasFocus) {
         this->drawActions();
     }
 }
-
-void UnitView::drawHpBar() {
-    GLfloat width, height, yOffset, ratio, length;
-    
-    ratio = (GLfloat)_state.hp / (GLfloat)_state.maxHp;
-    width = 32.0f;
-    length = ratio * width;
-    height = 3.0f;
-    yOffset = 32.0f;
-    
-    GLfloat	vertices[] = {	0.0f, -height/2.0f, 0.0f,
-		length, -height/2.0f, 0.0f,
-		0.0f, height/2.0f, 0.0f,
-		0.0f, height/2.0f, 0.0f,
-		length, -height/2.0f, 0.0f,		
-		length, height/2.0f, 0.0f };
-	
-    glDisable(GL_TEXTURE_2D);
-    
-    if (ratio >= 0.75f) {
-        glColor4f(0.0f, 1.0f, 0.0f, 1.0f);        
-    } else if (ratio >= 0.25f) {
-        glColor4f(1.0f, 1.0f, 0.0f, 1.0f);                
-    } else {
-        glColor4f(1.0f, 0.0f, 0.0f, 1.0f);                        
-    }
-	glLoadIdentity();
-	glTranslatef(_pos.x - width/2.0f, _pos.y + yOffset, 0.0f);
-		
-	glVertexPointer(3, GL_FLOAT, 0, vertices);
-	glDrawArrays(GL_TRIANGLES, 0, 6);	
-    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-    glEnable(GL_TEXTURE_2D);
-}
-
-void UnitView::drawApBar() {
-    GLfloat width, height, yOffset, ratio, length;
-    
-    ratio = (GLfloat)_state.ap / (GLfloat)_state.maxAp;
-    width = 32.0f;
-    length = ratio * width;
-    height = 6.0f;
-    yOffset = 26.0f;
-    
-    GLfloat	vertices[] = {	0.0f, -height/2.0f, 0.0f,
-		length, -height/2.0f, 0.0f,
-		0.0f, height/2.0f, 0.0f,
-		0.0f, height/2.0f, 0.0f,
-		length, -height/2.0f, 0.0f,		
-		length, height/2.0f, 0.0f };
-	
-    glDisable(GL_TEXTURE_2D);
-    
-    glColor4f(0.0f, 0.0f, 1.0f, 1.0f);                        
-	glLoadIdentity();
-	glTranslatef(_pos.x - width/2.0f, _pos.y + yOffset, 0.0f);
-    
-	glVertexPointer(3, GL_FLOAT, 0, vertices);
-	glDrawArrays(GL_TRIANGLES, 0, 6);	
-    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-    glEnable(GL_TEXTURE_2D);
-}
-
-
 
 bool UnitView::handleEvent(const TouchEvent& event) {
     ActionState* statePoint;
@@ -190,8 +137,33 @@ ActionState* UnitView::touchedAction(GPoint point) {
 
 void UnitView::update() {
     _state = _unitModel->getState();
-	this->updatePosition(_state.pos, _state.direction);
-	this->updateActions();	
+	this->updatePosition(_state.pos);
+	this->updateActions();
+	this->updateBars();
+}
+
+void UnitView::updateBars() {
+    GLfloat ratioAp, ratioHp, lengthAp, lengthHp;
+    RGBA color;
+    
+    ratioHp = (GLfloat)_state.hp / (GLfloat)_state.maxHp;
+    lengthHp = ratioHp * 32.0f;
+
+    ratioAp = (GLfloat)_state.ap / (GLfloat)_state.maxAp;
+    lengthAp = ratioAp * 32.0f;
+
+    if (ratioHp > 0.75f) {
+        color.makeGreen(); 
+    } else if (ratioHp > 0.25f) {
+        color.makeYellow(); 
+    } else {
+        color.makeRed(); 
+    }
+    
+    _hpBar->setSize(lengthHp, 4.0f);
+    _hpBar->setColor(color);
+    
+    _apBar->setSize(lengthAp, 6.0f);
 }
 
 void UnitView::destroyed() {

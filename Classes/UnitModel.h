@@ -30,7 +30,6 @@ struct ActionState;
 
 struct UnitState {
     MPoint pos;
-    int direction;
     int ap;
     int hp;
     int maxAp;
@@ -41,7 +40,6 @@ struct UnitState {
 class UnitModel : public Observable {
 	MPoint _pos;
     int _id;
-	int _direction;
 	int _ap;
 	int _hp;
     int _basePower;
@@ -55,39 +53,30 @@ class UnitModel : public Observable {
 	std::map<int, Action*> _actions;
     
     void chooseTarget();
-    void turnTowards(const MPoint& targetPos);
-    void moveTowards(const MPoint& targetPos);
 	
 public:
 	
 	~UnitModel();
-    UnitModel(int x, int y, int direction, int owner, int maxHp, int maxAp, int power, int skill, int defense, std::vector<int> actionIds);
+    UnitModel(int x, int y, int owner, int maxHp, int maxAp, int power, int skill, int defense, std::vector<int> actionIds);
     
-    void setId(int unitId);
-    void tick();
-	bool spendAp(int cost);
-	void move(const MPoint& targetPos);
-	void rotate(int rotation);
-	void strike(const MPoint& targetPos);
-    void fire(const MPoint& targetPos);
-    void defend(UnitModel* attacker, int power, int skill, int attack_type);
-    void inflictDamage(int damage);
-    int getStat(int stat);
-    UnitState getState();
-    void doAI();
-    //int distanceTo(const MPoint& pos);
-    bool isFacing(const MPoint& pos);
-	
-	MPoint getPosition();
-    int getOwner();
-	int getDirection();
-	std::vector<ActionState> getActions();
-	
 	Action* addAction(int action);
-	void doAction(const ActionState& statePoint);
     int chooseMovementTarget(const std::vector<ActionState>& targets);
-    //int rateActionPoint(const ActionState& actionPoint);
-	
+    void defend(UnitModel* attacker, int power, int skill, int attack_type);
+	void doAction(const ActionState& statePoint);
+    void doAI();
+	std::vector<ActionState> getActions();
+    int getOwner();
+	MPoint getPosition();
+    int getStat(int stat);
+    bool isFacing(const MPoint& pos);
+    UnitState getState();
+    void inflictDamage(int damage);
+    void fire(const MPoint& targetPos);
+	void move(const MPoint& targetPos);
+    void setId(int unitId);
+	bool spendAp(int cost);
+	void strike(const MPoint& targetPos);
+    void tick();
 };
 
 #endif

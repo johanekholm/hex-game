@@ -15,9 +15,6 @@ class ModelManager;
 class StringImage;
 class UnitFactory;
 
-//class UnitView;
-//class UnitModel;
-
 struct TouchEvent;
 struct GPoint;
 
@@ -25,7 +22,6 @@ class CentralControl {
 	static CentralControl* _instance;
 	int _mode;
     int _timer;
-	ViewController* _selectedViewController;
 	InputManager* _input; 
     ModelManager* _modelManager;
     ViewControllerManager* _viewControllerManager;

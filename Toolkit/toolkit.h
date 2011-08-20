@@ -125,6 +125,23 @@ struct MPoint {
 
 typedef struct MPoint MPoint;
 
+struct RGBA {
+    GLfloat red;
+    GLfloat green;
+    GLfloat blue;
+    GLfloat alpha;
+    
+    void makeRed() {red=1.0f; green=0.0f; blue=0.0f; alpha=1.0f;}
+    void makeGreen() {red=0.0f; green=1.0f; blue=0.0f; alpha=1.0f;}
+    void makeBlue() {red=0.0f; green=0.0f; blue=1.0f; alpha=1.0f;}
+    void makeYellow() {red=1.0f; green=1.0f; blue=0.0f; alpha=1.0f;}
+    void makeWhite() {red=1.0f; green=1.0f; blue=1.0f; alpha=1.0f;}
+    void makeBlack() {red=0.0f; green=0.0f; blue=0.0f; alpha=1.0f;}
+    void makeGray(GLfloat i) {red=i; green=i; blue=i; alpha=1.0f;}
+};
+
+typedef struct RGBA RGBA;
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -134,6 +151,8 @@ MPoint MPointMake(int x, int y);
 //bool PointWithin(GPoint point, GPoint pos, GPoint size);
 bool PointWithin(const GPoint& point, const GPoint& pos, GLfloat size);
 GPoint transformModelPositionToView(const MPoint& pos);
+RGBA RGBAMake(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha);
+RGBA RGBAMakeGray(GLfloat intensity);
 	
 #ifdef __cplusplus
 }
