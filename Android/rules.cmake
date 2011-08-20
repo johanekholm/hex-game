@@ -1,16 +1,18 @@
 LIST(APPEND SOURCES
 	Android/OpenGLRenderer.cpp
 	Android/GameGLView.cpp
+	Android/ResourceLoader.cpp
 )
 
 LIST(APPEND HEADERS
+	Android/ResourceLoader.h
 )
 
 LIST(APPEND LIBRARIES
 	android
 	EGL
 	GLESv1_CM
-	log	
+	log
 )
 
 SET(JAVASOURCES
@@ -28,7 +30,7 @@ FOREACH(image ${RESOURCES})
 			DEPENDS ${image}
 			COMMENT "Copying ${image}"
 	)
-	LIST(APPEND SOURCES ${CMAKE_BINARY_DIR}/apk/assets/${imageName}}
+	LIST(APPEND SOURCES ${CMAKE_BINARY_DIR}/apk/assets/${imageName})
 ENDFOREACH()
 
 FOREACH(javaSource ${JAVASOURCES})
