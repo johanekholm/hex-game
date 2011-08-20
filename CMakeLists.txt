@@ -21,6 +21,7 @@ SET( SOURCES
     Classes/ModelManager.cpp
     Classes/Observable.cpp
     Classes/ShapeImage.cpp
+	Classes/Sound.cpp
     Classes/StringImage.cpp
 	Classes/TextureCatalog.cpp
 	Classes/TextureMap.cpp
@@ -45,6 +46,7 @@ SET( HEADERS
     Classes/MessageView.h
     Classes/ModelManager.h
     Classes/ShapeImage.h
+    Classes/Sound.h
     Classes/StringImage.h
 	Classes/TextureCatalog.h
 	Classes/TextureMap.h
@@ -59,15 +61,17 @@ SET( HEADERS
 
 SET(RESOURCES
 	Resources/actions.png
-    Resources/fireball1.wav
 	Resources/floortilemap.png
-    	Resources/font_1.png
-    Resources/slash1.wav
+    Resources/font_1.png
 	Resources/texmap.png
 	Resources/texmap_hex.png
 	Resources/icons.png
 )
 
+SET(SOUNDS
+	Resources/fireball1.wav
+	Resources/slash1.wav
+)
 
 INCLUDE_DIRECTORIES( Toolkit )
 INCLUDE_DIRECTORIES( Classes )
@@ -91,12 +95,14 @@ IF (${TARGET_PLATFORM} MATCHES "Android")
 		${SOURCES}
 		${HEADERS}
 		${RESOURCES}
+		${SOUNDS}
 	)
 ELSE ()
 	ADD_EXECUTABLE(HexGame MACOSX_BUNDLE
 		${SOURCES}
 		${HEADERS}
 		${RESOURCES}
+		${SOUNDS}
 	)
 ENDIF ()	
 

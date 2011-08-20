@@ -1,5 +1,8 @@
 #include <string>
 #include <jni.h>
+#include <android/asset_manager.h>
+#include <android/asset_manager_jni.h>
+#include "AssetLoader.h"
 #include "CentralControl.h"
 #include "TextureCatalog.h"
 #include "ResourceLoader.h"
@@ -14,7 +17,8 @@ extern "C" {
     JNIEXPORT void JNICALL Java_com_hexgame_game_OpenGLRenderer_init(JNIEnv * env, jobject obj);
     JNIEXPORT void JNICALL Java_com_hexgame_game_OpenGLRenderer_draw(JNIEnv * env, jobject obj);
     JNIEXPORT void JNICALL Java_com_hexgame_game_OpenGLRenderer_update(JNIEnv * env, jobject obj);
-	JNIEXPORT void JNICALL Java_com_hexgame_game_OpenGLRenderer_loadResources( JNIEnv* env, jobject callingObj);
+	JNIEXPORT void JNICALL Java_com_hexgame_game_OpenGLRenderer_addTexture(JNIEnv * env, jobject obj, jstring textureName, jint textureId, jint tiles);
+	JNIEXPORT void JNICALL Java_com_hexgame_game_OpenGLRenderer_realizeAssetLoader(JNIEnv * env, jobject obj, jobject assetManager);
 };
 
 JNIEXPORT void JNICALL Java_com_hexgame_game_OpenGLRenderer_init(JNIEnv * env, jobject obj)
@@ -37,4 +41,9 @@ JNIEXPORT void JNICALL Java_com_hexgame_game_OpenGLRenderer_loadResources( JNIEn
 	resourceLoader.setEnv(env);
 	resourceLoader.setCallingObject(callingObject);
 	resourceLoader.load();
+}
+
+JNIEXPORT void JNICALL Java_com_hexgame_game_OpenGLRenderer_realizeAssetLoader(JNIEnv * env, jobject obj, jobject assetManager) {
+	AssetLoader *loader = AssetLoader::instance();
+	loader->realize(env, assetManager);
 }
