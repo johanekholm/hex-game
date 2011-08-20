@@ -18,7 +18,7 @@ ModelManager* ModelManager::_instance = 0;
 void ModelManager::destroy() {
 	if (_instance != 0) {
 		_instance->_units.clear();
-        delete _instance->_map;
+        delete _instance->_battleMap;
 		delete _instance;
 		_instance=0;
 	}
@@ -44,12 +44,12 @@ void ModelManager::remove(int unitId) {
     _units.erase(unitId);
 }
     
-void ModelManager::setMap(HexMapModel* map) {
-    _map = map;
+void ModelManager::setBattleMap(HexMapModel* map) {
+    _battleMap = map;
 }
 
-HexMapModel* ModelManager::getMap() {
-    return _map;
+HexMapModel* ModelManager::getBattleMap() {
+    return _battleMap;
 }
 
 void ModelManager::tick() {

@@ -17,7 +17,7 @@ class HexMapModel;
 class ModelManager {
     static ModelManager* _instance;
 	std::map<int, UnitModel*> _units;
-    HexMapModel* _map;
+    HexMapModel* _battleMap;
     int _unitIdCounter;
     
     ModelManager();
@@ -34,8 +34,8 @@ public:
 
 	void add(UnitModel*);
     void remove(int unitId);
-    void setMap(HexMapModel* map);
-    HexMapModel* getMap();
+    void setBattleMap(HexMapModel* map);
+    HexMapModel* getBattleMap();
     void tick();
     UnitModel* getUnitAtPos(const MPoint& pos);
     UnitModel* getUnitById(int unitId);

@@ -159,7 +159,7 @@ std::vector<ActionState> UnitModel::getActions() {
     //ActionState a;
     
     
-    hexes = ModelManager::instance()->getMap()->getAllHexes();
+    hexes = ModelManager::instance()->getBattleMap()->getAllHexes();
 	units = ModelManager::instance()->getAllUnits();
     
 	for (std::map<int, Action*>::iterator it = _actions.begin(); it != _actions.end(); ++it) {

@@ -57,9 +57,9 @@ CentralControl::CentralControl() {
 
 	TextureCatalog* catalog = TextureCatalog::instance();
 	
-    ModelManager::instance()->setMap(new HexMapModel(4, 4));
+    ModelManager::instance()->setBattleMap(new HexMapModel(4, 4));
     
-	_hexMap = new HexMap(ModelManager::instance()->getMap(), catalog->get("hexTiles"), 1.0f);
+	_hexMap = new HexMap(ModelManager::instance()->getBattleMap(), catalog->get("hexTiles"), 1.0f);
     _viewControllerManager = ViewControllerManager::instance();
     _unitFactory = new UnitFactory(_viewControllerManager);
 	_input = new InputManager();
