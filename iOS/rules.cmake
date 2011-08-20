@@ -3,6 +3,7 @@ LIST(APPEND SOURCES
 	iOS/main.m
 	iOS/EAGLView.mm
 	iOS/OGLGameAppDelegate.mm
+	iOS/ResourceLoader.mm
 	iOS/main.m
 	iOS/Texture2D.m
 	Toolkit/toolkit_ios.mm
@@ -11,6 +12,7 @@ LIST(APPEND SOURCES
 LIST(APPEND HEADERS
 	iOS/EAGLView.h
 	iOS/OGLGameAppDelegate.h
+	iOS/ResourceLoader.h
 	iOs/Texture2D.h
 	Toolkit/toolkit_ios.h
 )

@@ -1,16 +1,18 @@
 LIST(APPEND SOURCES
 	Android/OpenGLRenderer.cpp
 	Android/GameGLView.cpp
+	Android/ResourceLoader.cpp
 )
 
 LIST(APPEND HEADERS
+	Android/ResourceLoader.h
 )
 
 LIST(APPEND LIBRARIES
 	android
 	EGL
 	GLESv1_CM
-	log	
+	log
 )
 
 SET(JAVASOURCES
@@ -23,12 +25,12 @@ SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -pedantic")
 
 FOREACH(image ${RESOURCES})
 	GET_FILENAME_COMPONENT(imageName ${image} NAME)
-	ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_BINARY_DIR}/apk/res/raw/${imageName}
-			COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/${image} ${CMAKE_BINARY_DIR}/apk/res/raw/${imageName}
+	ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_BINARY_DIR}/apk/assets/${imageName}
+			COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/${image} ${CMAKE_BINARY_DIR}/apk/assets/${imageName}
 			DEPENDS ${image}
 			COMMENT "Copying ${image}"
 	)
-	LIST(APPEND SOURCES ${CMAKE_BINARY_DIR}/apk/res/raw/${imageName})
+	LIST(APPEND SOURCES ${CMAKE_BINARY_DIR}/apk/assets/${imageName})
 ENDFOREACH()
 
 FOREACH(javaSource ${JAVASOURCES})

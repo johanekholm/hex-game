@@ -7,9 +7,11 @@ FIND_PACKAGE(OpenGL REQUIRED)
 LIST(APPEND SOURCES
 	Desktop/main.cpp
 	Desktop/EAGLView.cpp
+	Desktop/ResourceLoader.cpp
 )
 
 LIST(APPEND HEADERS
+	Desktop/ResourceLoader.h
 )
 
 SET( MOC_HEADERS
