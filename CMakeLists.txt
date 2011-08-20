@@ -20,6 +20,7 @@ SET( SOURCES
     Classes/MessageView.cpp
     Classes/ModelManager.cpp
     Classes/Observable.cpp
+    Classes/SceneLoader.cpp
     Classes/ShapeImage.cpp
     Classes/StringImage.cpp
 	Classes/TextureCatalog.cpp
@@ -44,6 +45,7 @@ SET( HEADERS
     Classes/MapObject.h
     Classes/MessageView.h
     Classes/ModelManager.h
+    Classes/SceneLoader.h
     Classes/ShapeImage.h
     Classes/StringImage.h
 	Classes/TextureCatalog.h
