@@ -17,7 +17,7 @@ extern "C" {
     JNIEXPORT void JNICALL Java_com_hexgame_game_OpenGLRenderer_init(JNIEnv * env, jobject obj);
     JNIEXPORT void JNICALL Java_com_hexgame_game_OpenGLRenderer_draw(JNIEnv * env, jobject obj);
     JNIEXPORT void JNICALL Java_com_hexgame_game_OpenGLRenderer_update(JNIEnv * env, jobject obj);
-	JNIEXPORT void JNICALL Java_com_hexgame_game_OpenGLRenderer_addTexture(JNIEnv * env, jobject obj, jstring textureName, jint textureId, jint tiles);
+	JNIEXPORT void JNICALL Java_com_hexgame_game_OpenGLRenderer_loadResources(JNIEnv * env, jobject callingObject);
 	JNIEXPORT void JNICALL Java_com_hexgame_game_OpenGLRenderer_realizeAssetLoader(JNIEnv * env, jobject obj, jobject assetManager);
 };
 
