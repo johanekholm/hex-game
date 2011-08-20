@@ -62,5 +62,6 @@ public:
 		
 public:
 	void switchMode(int mode);
+    ViewControllerManager* getViewControllerManager();
 };
 

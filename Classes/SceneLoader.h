@@ -7,16 +7,20 @@
  *
  */
 
+#ifndef SCENELOADER_H
+#define SCENELOADER_H
+
 #include <map>
 #include <string>
 #include "toolkit.h"
 
-class TextureMap;
+class ViewControllerManager;
 
 class SceneLoader {
 	static SceneLoader* _instance;
-	
-	SceneLoader() { }
+    ViewControllerManager* _viewControllerManager;
+    
+	SceneLoader();
 
 public:
 	static SceneLoader* instance() {
@@ -31,5 +35,7 @@ public:
 	
     void loadBattleScene(int party1, int party2);
     void loadAdventureScene();
+    void switchToAdventureScene();
 };
 
+#endif

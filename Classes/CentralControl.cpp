@@ -116,6 +116,10 @@ void CentralControl::draw() {
 	
 }
 
+ViewControllerManager* CentralControl::getViewControllerManager() {
+    return _viewControllerManager;
+}
+
 void CentralControl::handleEventNormal(const TouchEvent& event) {
     ViewController* selection = 0;
 	 
