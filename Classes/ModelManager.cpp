@@ -10,6 +10,7 @@
 #include "ModelManager.h"
 #include "UnitModel.h"
 #include "HexMapModel.h"
+#include "MapObject.h"
 #include "geometry.h"
 #include <iostream>
 
@@ -17,7 +18,16 @@ ModelManager* ModelManager::_instance = 0;
 
 void ModelManager::destroy() {
 	if (_instance != 0) {
+       	for (std::map<int, MapObject*>::iterator it = _instance->_mapObjects.begin(); it != _instance->_mapObjects.end(); ++it) {
+            delete it->second;
+        }
+		_instance->_mapObjects.clear();
+
+       	for (std::map<int, UnitModel*>::iterator it = _instance->_units.begin(); it != _instance->_units.end(); ++it) {
+            delete it->second;
+        }
 		_instance->_units.clear();
+        
         delete _instance->_battleMap;
         delete _instance->_adventureMap;
 		delete _instance;
@@ -29,7 +39,18 @@ ModelManager::ModelManager() {
     
 }
 
-void ModelManager::add(UnitModel* unit) {
+void ModelManager::addMapObject(MapObject* object) {
+    if (object == 0) {
+        return;
+    }
+    
+    _objectIdCounter++;
+    _mapObjects[_objectIdCounter] = object;
+    object->setId(_objectIdCounter);
+    
+}
+
+void ModelManager::addUnit(UnitModel* unit) {
     if (unit == 0) {
         return;
     }
@@ -116,7 +137,12 @@ UnitModel* ModelManager::getUnitById(int unitId) {
     }
 }
 
-void ModelManager::remove(int unitId) {
+void ModelManager::removeMapObject(int objectId) {
+    delete _mapObjects[objectId];
+    _mapObjects.erase(objectId);
+}
+
+void ModelManager::removeUnit(int unitId) {
     delete _units[unitId];
     _units.erase(unitId);
 }

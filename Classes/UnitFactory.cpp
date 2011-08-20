@@ -43,11 +43,10 @@ void UnitFactory::produceAndRegisterUnit(const std::string& unitClass, int owner
     }
     
     unit = new UnitModel(pos.x, pos.y, owner, hp, ap, power, skill, defense, actions);
-    //unit = new UnitModel(pos.x, pos.y, direction, owner);
 	view = new UnitView(unit, 64.0f, 64.0f, image);
 
     unit->addObserver(view);
-    ModelManager::instance()->add(unit);
+    ModelManager::instance()->addUnit(unit);
     _viewControllerManager->add(view);
 
 }

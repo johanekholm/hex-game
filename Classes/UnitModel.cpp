@@ -235,7 +235,7 @@ void UnitModel::inflictDamage(int damage) {
     if (_hp <= 0) {
         _hp = 0;
         std::cout << "Destroyed" << std::endl;
-        ModelManager::instance()->remove(_id);
+        ModelManager::instance()->removeUnit(_id);
         return;
     } else if (_hp > _maxHp) {
         _hp = _maxHp;
