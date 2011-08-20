@@ -69,14 +69,12 @@ CentralControl::CentralControl() {
     _unitFactory->produceAndRegisterUnit("archer", 2, MPointMake(2, 1));
     _unitFactory->produceAndRegisterUnit("channeler", 1, MPointMake(0, 1));
     
-    _stringImage = new StringImage("HIJKLMNOPQRSTUVWXYZ", 1.0f, 1.0f, 1.0f, 1.0f);
-    
 }
 
 void CentralControl::update() {
 	TouchEvent event;
 	
-    if (++_timer >= 300) {
+    if (++_timer >= 200) {
         _timer = 0;
         ModelManager::instance()->tick();
     }
@@ -106,7 +104,6 @@ void CentralControl::draw() {
 			_hexMap->draw();
 			_viewControllerManager->draw();
             _viewControllerManager->drawGUI();
-            //_stringImage->drawAt(GPointMake(20.0f, 80.0f));
 			break;
 		case ControlMode::BATTLE_FOCUS:
 			_hexMap->draw();
