@@ -14,7 +14,6 @@ extern "C" {
     JNIEXPORT void JNICALL Java_com_hexgame_game_OpenGLRenderer_init(JNIEnv * env, jobject obj);
     JNIEXPORT void JNICALL Java_com_hexgame_game_OpenGLRenderer_draw(JNIEnv * env, jobject obj);
     JNIEXPORT void JNICALL Java_com_hexgame_game_OpenGLRenderer_update(JNIEnv * env, jobject obj);
-	JNIEXPORT void JNICALL Java_com_hexgame_game_OpenGLRenderer_addTexture(JNIEnv * env, jobject obj, jstring textureName, jint textureId, jint tiles);
 	JNIEXPORT void JNICALL Java_com_hexgame_game_OpenGLRenderer_loadResources( JNIEnv* env, jobject callingObj);
 };
 
@@ -31,15 +30,6 @@ JNIEXPORT void JNICALL Java_com_hexgame_game_OpenGLRenderer_update(JNIEnv * env,
 JNIEXPORT void JNICALL Java_com_hexgame_game_OpenGLRenderer_draw(JNIEnv * env, jobject obj)
 {
 	CentralControl::instance()->draw();
-}
-
-JNIEXPORT void JNICALL Java_com_hexgame_game_OpenGLRenderer_addTexture(JNIEnv * env, jobject obj, jstring textureName, jint textureId, jint tiles) {
-	TextureCatalog* textureCatalog = TextureCatalog::instance();
-	
-	const char * tempStr = env->GetStringUTFChars(textureName, 0);
-	std::string tName(tempStr);
-	env->ReleaseStringUTFChars(textureName, tempStr);
-	textureCatalog->addAndLoad(tName, textureId, tiles);
 }
 
 JNIEXPORT void JNICALL Java_com_hexgame_game_OpenGLRenderer_loadResources( JNIEnv* env, jobject callingObject) {

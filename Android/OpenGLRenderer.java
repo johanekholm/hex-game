@@ -120,5 +120,4 @@ public class OpenGLRenderer implements Renderer {
     public static native void init();
     public static native void draw();
     public static native void update();
-    public static native void addTexture(String name, int textureId, int tiles);
 }
