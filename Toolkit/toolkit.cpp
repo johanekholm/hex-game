@@ -40,3 +40,21 @@ GPoint transformModelPositionToView(const MPoint& pos) {
 	viewPos.y = 64.0f + (GLfloat)pos.y * 50.0f;
     return viewPos;
 }
+
+RGBA RGBAMake(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha) {
+    RGBA color;
+    color.red = red;
+    color.green = green;
+    color.blue = blue;
+    color.alpha = alpha;
+    return color;
+}
+
+RGBA RGBAMakeGray(GLfloat intensity) {
+    RGBA color;
+    color.red = intensity;
+    color.green = intensity;
+    color.blue = intensity;
+    color.alpha = 1.0f;
+    return color;    
+}

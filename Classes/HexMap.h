@@ -29,10 +29,10 @@
 using namespace std;
 
 class TextureMap;
+class HexMapModel;
 
 class HexMap {
 	int _width, _height;
-	GPoint _tileSize;
 	TextureMap *_texture;
 	GLfloat *_vertices;
 	GLfloat *_texCoords;
@@ -40,8 +40,7 @@ class HexMap {
 	
 public:
 	~HexMap();
-	HexMap(TextureMap* tex, int aWidth, int aHeight, GLfloat aHexWidth, GLfloat aHexHeight);  //int aWidth, int aHeight, GLfloat aHexWidth, GLfloat aHexHeight, TextureMap* tex, vector<int>* tileData);
-	//~GameImageCPP();
+	HexMap(HexMapModel* model, TextureMap* tex, GLfloat scale, int aWidth, int aHeight);
 	void draw();
     std::vector<MPoint> getAllHexes();
 	//void drawAt(const GPoint &pos);

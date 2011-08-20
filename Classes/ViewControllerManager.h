@@ -14,6 +14,7 @@ struct GPoint;
 class ViewControllerManager {
     static ViewControllerManager* _instance;
 	std::vector<ViewController*> _views;
+    ViewController* _focus;
 
     ViewControllerManager();
 
@@ -29,11 +30,13 @@ public:
 
 	//~ViewControllerManager();
 	void add(ViewController* view);
-    void remove(ViewController* view);
-    void removeSoft(ViewController* view);
     void draw();
     void drawGUI();
+    ViewController* getFocus();
     ViewController* getTouched(const GPoint& point);	
+    void remove(ViewController* view);
+    void removeSoft(ViewController* view);
+    void setFocus(ViewController* view);
     void update();
 };
 

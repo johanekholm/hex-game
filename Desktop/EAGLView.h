@@ -41,8 +41,6 @@ protected:
 	virtual void mouseMoveEvent ( QMouseEvent * event );
 	virtual void mousePressEvent ( QMouseEvent * event );
 	virtual void mouseReleaseEvent ( QMouseEvent * event );
-	
-	GLuint loadTexture(const std::string &filename);
 
 protected slots:
 	void mainGameLoop();

@@ -48,7 +48,7 @@ StringImage::StringImage(const std::string& string, GLfloat red, GLfloat green, 
     _string = string;
     _size = _string.length();
     cString = _string.c_str();
-    std::cout << "Length: " << _size << std::endl;
+    //std::cout << "Length: " << _size << std::endl;
     _texture = TextureCatalog::instance()->get("font");
     
     _texCoords = new GLfloat [_size*12];    

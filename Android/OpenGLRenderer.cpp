@@ -2,6 +2,7 @@
 #include <jni.h>
 #include "CentralControl.h"
 #include "TextureCatalog.h"
+#include "ResourceLoader.h"
 
 #include <android/log.h>
 
@@ -14,6 +15,7 @@ extern "C" {
     JNIEXPORT void JNICALL Java_com_hexgame_game_OpenGLRenderer_draw(JNIEnv * env, jobject obj);
     JNIEXPORT void JNICALL Java_com_hexgame_game_OpenGLRenderer_update(JNIEnv * env, jobject obj);
 	JNIEXPORT void JNICALL Java_com_hexgame_game_OpenGLRenderer_addTexture(JNIEnv * env, jobject obj, jstring textureName, jint textureId, jint tiles);
+	JNIEXPORT void JNICALL Java_com_hexgame_game_OpenGLRenderer_loadResources( JNIEnv* env, jobject callingObj);
 };
 
 JNIEXPORT void JNICALL Java_com_hexgame_game_OpenGLRenderer_init(JNIEnv * env, jobject obj)
@@ -38,4 +40,11 @@ JNIEXPORT void JNICALL Java_com_hexgame_game_OpenGLRenderer_addTexture(JNIEnv * 
 	std::string tName(tempStr);
 	env->ReleaseStringUTFChars(textureName, tempStr);
 	textureCatalog->addAndLoad(tName, textureId, tiles);
+}
+
+JNIEXPORT void JNICALL Java_com_hexgame_game_OpenGLRenderer_loadResources( JNIEnv* env, jobject callingObject) {
+	ResourceLoader resourceLoader;
+	resourceLoader.setEnv(env);
+	resourceLoader.setCallingObject(callingObject);
+	resourceLoader.load();
 }

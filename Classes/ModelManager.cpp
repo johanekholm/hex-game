@@ -103,7 +103,7 @@ UnitModel* ModelManager::getClosestTo(const MPoint& pos) {
             if (it->second->getOwner() == 1 && distance < minDistance) {
                 minDistance = distance;
                 closestUnit = it->second;
-                std::cout << "Unit found at distance: " << minDistance << std::endl;
+                //std::cout << "Unit found at distance: " << minDistance << std::endl;
             }            
         }
 	}
@@ -122,7 +122,7 @@ int ModelManager::getDistanceToClosestEnemy(int owner, const MPoint& pos) {
             }            
         }
 	}
-    std::cout << "Closest enemy: " << minDistance << std::endl;
+    //std::cout << "Closest enemy: " << minDistance << std::endl;
     return minDistance;
 }
 

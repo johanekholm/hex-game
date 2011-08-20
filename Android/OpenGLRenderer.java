@@ -20,6 +20,8 @@ public class OpenGLRenderer implements Renderer {
         System.loadLibrary("HexGame");
     }
 
+    static GL10 gl10;
+
 	@Override
 	public void onDrawFrame(GL10 gl) {
 		OpenGLRenderer.update();
@@ -72,23 +74,21 @@ public class OpenGLRenderer implements Renderer {
 		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_LINEAR);
 		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
 		
-		OpenGLRenderer.addTexture("hexTiles", loadTexture(gl, "texmap_hex.png"), 2);
-		OpenGLRenderer.addTexture("actions", loadTexture(gl, "actions.png"), 4);
-		OpenGLRenderer.addTexture("icons", loadTexture(gl, "icons.png"), 4);
-		OpenGLRenderer.addTexture("units", loadTexture(gl, "texmap.png"), 2);
-		OpenGLRenderer.addTexture("font", loadTexture(gl, "font_1.png"), 1);
+		OpenGLRenderer.gl10 = gl;
+		loadResources();
+		OpenGLRenderer.gl10 = null;
 	}
 	
-	private static int newTextureID(GL10 gl) {
+	public static int newTextureID(GL10 gl) {
 	    int[] temp = new int[1];
 	    gl.glGenTextures(1, temp, 0);
 	    return temp[0];        
 	}
 
 	// Will load a texture out of an asset file, and return an OpenGL texture ID:
-	private int loadTexture(GL10 gl, String textureName) {
-
-	    int id = newTextureID(gl);
+	public static int loadTexture(String textureName) {
+		GL10 gl = OpenGLRenderer.gl10;
+	    int id = OpenGLRenderer.newTextureID(gl);
 
 		AssetManager assetManager = HexGame.context.getResources().getAssets();
 
@@ -98,7 +98,7 @@ public class OpenGLRenderer implements Renderer {
 			textureInputStream = assetManager.open(textureName);
 		} catch (IOException e) {
 			Log.e("HexGame", e.getMessage());
-			return id;
+			return 0;
 		}
 
 		Bitmap bmp = BitmapFactory.decodeStream(textureInputStream);
@@ -112,10 +112,11 @@ public class OpenGLRenderer implements Renderer {
         GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bmp, 0);
 
 	    bmp.recycle();
-
 	    return id;
 	}
+
 	
+	public native void loadResources();
     public static native void init();
     public static native void draw();
     public static native void update();

@@ -23,7 +23,7 @@ void ViewControllerManager::destroy() {
 }
 
 ViewControllerManager::ViewControllerManager() {
-
+    _focus = 0;
 }
 
 /*ViewControllerManager::~ViewControllerManager() {
@@ -34,31 +34,6 @@ ViewControllerManager::ViewControllerManager() {
 void ViewControllerManager::add(ViewController* view) {
 	_views.push_back(view);
 }
-
-void ViewControllerManager::remove(ViewController* view) {
-    // to-do: remove from vector and delete
-	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end(); ++it) {
-        if (*it == view) {
-            delete (*it);
-            it = _views.erase(it);
-            return;
-        }
-	}
-}
-
-void ViewControllerManager::removeSoft(ViewController* view) {
-	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end(); ++it) {
-        if (*it == view) {
-            //std::cout << "Soft remove " << *it << std::endl;
-            delete (*it);
-            *it = 0;
-            //std::cout << "*it= " << *it << std::endl;
-
-            return;
-        }
-	}
-}
-
 
 void ViewControllerManager::draw() {
 	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end(); ++it) {
@@ -76,6 +51,65 @@ void ViewControllerManager::drawGUI() {
 	}
 }
 
+ViewController* ViewControllerManager::getFocus() {
+    return _focus;
+}
+
+ViewController* ViewControllerManager::getTouched(const GPoint& point) {
+	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end(); ++it) {
+		if ((*it)->isWithin(point)) {
+			return (*it);	
+		}
+	}
+	
+	return 0;
+}
+
+void ViewControllerManager::remove(ViewController* view) {
+    if (view == _focus) {
+        _focus = 0;
+    }
+	
+    for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end(); ++it) {
+        if (*it == view) {
+            delete (*it);
+            it = _views.erase(it);
+            return;
+        }
+	}
+}
+
+void ViewControllerManager::removeSoft(ViewController* view) {
+    if (view == _focus) {
+        _focus = 0;
+    }
+
+	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end(); ++it) {
+        if (*it == view) {
+            //std::cout << "Soft remove " << *it << std::endl;
+            delete (*it);
+            *it = 0;
+            //std::cout << "*it= " << *it << std::endl;
+            
+            return;
+        }
+	}
+}
+
+void ViewControllerManager::setFocus(ViewController* view) {
+    // notify of focus lost
+    if (_focus != 0) {
+        _focus->setFocus(false);
+    }
+
+    _focus = view;
+
+    // notify of focus won
+    if (view != 0) {
+        view->setFocus(true);
+    }
+}
+
 void ViewControllerManager::update() {
 	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end();) {
 		if ((*it) != 0) {
@@ -91,12 +125,3 @@ void ViewControllerManager::update() {
 	}
 }
 
-ViewController* ViewControllerManager::getTouched(const GPoint& point) {
-	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end(); ++it) {
-		if ((*it)->isWithin(point)) {
-			return (*it);	
-		}
-	}
-	
-	return 0;
-}
