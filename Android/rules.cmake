@@ -1,16 +1,18 @@
 LIST(APPEND SOURCES
 	Android/OpenGLRenderer.cpp
 	Android/GameGLView.cpp
+	Android/ResourceLoader.cpp
 )
 
 LIST(APPEND HEADERS
+	Android/ResourceLoader.h
 )
 
 LIST(APPEND LIBRARIES
 	android
 	EGL
 	GLESv1_CM
-	log	
+	log
 )
 
 SET(JAVASOURCES
