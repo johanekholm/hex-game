@@ -28,6 +28,7 @@ UnitView::~UnitView() {
     delete _apBar;
     delete _hpBarSlot;
     delete _apBarSlot;
+    delete _actionMarker;
     _actionPoints.clear();
 	_unitModel = 0;
 }
@@ -43,7 +44,8 @@ UnitView::UnitView(UnitModel* model, GLfloat width, GLfloat height, int index) {
     _apBar = new RectangleImage(RGBAMake(0.0f, 0.0f, 1.0f, 1.0f), 32.0f, 6.0f, true);
     _hpBarSlot = new RectangleImage(RGBAMake(0.5f, 0.5f, 0.5f, 1.0f), 32.0f, 4.0f, true);
     _apBarSlot = new RectangleImage(RGBAMake(0.5f, 0.5f, 0.5f, 1.0f), 32.0f, 6.0f, true);
-
+    _actionMarker = new EllipseImage(RGBAMake(0.0f, 1.0f, 0.0f, 1.0f), 16.0f, 16.0f, 16, false);
+    _selectedActionView = 0;
 }
 
 void UnitView::drawActions() {
@@ -59,6 +61,11 @@ void UnitView::drawActions() {
             glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         }
 		_actionImage->drawAtWithSubTexture((*it).pos, (*it).actionId);
+
+        if (_selectedActionView != 0) {
+            _actionMarker->drawCenteredAt((*_selectedActionView).pos);
+        }
+        
 	}
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -110,17 +117,20 @@ bool UnitView::handleEvent(const TouchEvent& event) {
     ActionState* statePoint;
     
 	if (event.type == 3) {
-        statePoint = this->touchedAction(event.point);
+        statePoint = this->getTouchedActionState(event.point);
         
         if (statePoint != 0) {
             _unitModel->doAction(*statePoint);
         }
-			
+	}
+    
+    if (event.type == 2) {
+        _selectedActionView = this->getTouchedActionView(event.point);
 	}
 	return true;
 }
 
-ActionState* UnitView::touchedAction(GPoint point) {
+ActionState* UnitView::getTouchedActionState(GPoint point) {
 	//GPoint actionPos;
 	//int i = 0;
 	
@@ -131,6 +141,16 @@ ActionState* UnitView::touchedAction(GPoint point) {
 			return (*it).statePoint;
 		}
 		//i++;
+	}
+	return (0);
+}
+
+ActionView* UnitView::getTouchedActionView(GPoint point) {
+	
+	for (std::vector<ActionView>::iterator it = _actionPoints.begin(); it != _actionPoints.end(); ++it) {		
+		if (PointWithin(point, (*it).pos, 32.0f)) {
+			return &(*it);
+		}
 	}
 	return (0);
 }

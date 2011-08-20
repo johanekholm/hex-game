@@ -20,7 +20,7 @@
 #define ACTION_ANGLE_INCREMENT PI/3.0f
 #define ACTION_RADIUS 64.0f
 
-class RectangleImage;
+class ShapeImage;
 
 struct ActionView {
     GPoint pos;
@@ -36,8 +36,10 @@ class UnitView : public ViewController, public IObserver {
 	GameImage* _unitImage;
 	GameImage* _actionImage;
 	GameImage* _directionImage;
-    RectangleImage *_hpBar, *_hpBarSlot;
-    RectangleImage *_apBar, *_apBarSlot;
+    ShapeImage *_hpBar, *_hpBarSlot;
+    ShapeImage *_apBar, *_apBarSlot;
+    ShapeImage *_actionMarker;
+    ActionView* _selectedActionView;
 
 
 	void drawActions();	
@@ -52,7 +54,8 @@ public:
 	void draw();
 	void drawGUI();
 	bool handleEvent(const TouchEvent& event);
-	ActionState* touchedAction(GPoint point);
+	ActionState* getTouchedActionState(GPoint point);
+    ActionView* getTouchedActionView(GPoint point);
 	void update();
     void destroyed();
     void setFocus(bool hasFocus);
