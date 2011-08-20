@@ -101,11 +101,8 @@ void CentralControl::draw() {
 	
 	switch(_mode) {
 		case ControlMode::BATTLE:
-			_hexMap->draw();
-			_viewControllerManager->draw();
-            _viewControllerManager->drawGUI();
-			break;
 		case ControlMode::BATTLE_FOCUS:
+        case ControlMode::ADVENTURE:
 			_hexMap->draw();
 			_viewControllerManager->draw();
             _viewControllerManager->drawGUI();
