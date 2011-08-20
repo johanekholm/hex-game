@@ -13,7 +13,6 @@
 
 #import "EAGLView.h"
 #import "InputManager.h"
-#import "Texture2D.h"
 
 #include "UnitModel.h"
 #include "UnitView.h"
@@ -21,6 +20,7 @@
 #include "CentralControl.h"
 #include "toolkit.h"
 #include "toolkit_ios.h"
+#include "ResourceLoader.h"
 #include "TextureCatalog.h"
 
 #define USE_DEPTH_BUFFER 0
@@ -35,7 +35,6 @@
 - (void) destroyFramebuffer;
 - (void) updateScene:(float)delta;
 - (void) renderScene;
-- (GLuint) loadTexture:(NSString *)fileName;
 
 @end
 
@@ -109,14 +108,11 @@
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		
-		TextureCatalog* catalog = TextureCatalog::instance();
-		
-		catalog->addAndLoad("hexTiles", [self loadTexture:@"texmap_hex.png"], 2);
-		catalog->addAndLoad("actions", [self loadTexture:@"actions.png"], 4);
-		catalog->addAndLoad("icons", [self loadTexture:@"icons.png"], 4);
-		catalog->addAndLoad("units", [self loadTexture:@"texmap.png"], 2);
-        catalog->addAndLoad("font", [self loadTexture:@"font_1.png"], 1);
-		
+        ResourceLoader resourceLoader;
+        resourceLoader.load();
+
+        TextureCatalog::instance();
+
 		centralControl = CentralControl::instance();
     }
     return self;
@@ -208,13 +204,6 @@
         glDeleteRenderbuffersOES(1, &depthRenderbuffer);
         depthRenderbuffer = 0;
     }
-}
-
-- (GLuint)loadTexture:(NSString *)fileName {
-	Texture2D *tex = [[Texture2D alloc] initWithImage: [UIImage imageNamed:fileName]];
-	GLuint texRef = [tex name];
-	[tex dealloc];
-	return texRef;
 }
 
 

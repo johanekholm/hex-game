@@ -7,14 +7,19 @@ FIND_PACKAGE(OpenGL REQUIRED)
 LIST(APPEND SOURCES
 	Desktop/main.cpp
 	Desktop/EAGLView.cpp
+	Desktop/ResourceLoader.cpp
+	Desktop/Sound.cpp
 )
 
 LIST(APPEND HEADERS
+	Desktop/ResourceLoader.h
 )
 
 SET( MOC_HEADERS
 	Desktop/EAGLView.h
 )
+
+SET_SOURCE_FILES_PROPERTIES(${SOUNDS} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
 
 QT4_WRAP_CPP(  MOC_SOURCES  ${MOC_HEADERS} )
 QT4_AUTOMOC (  ${SOURCES} )

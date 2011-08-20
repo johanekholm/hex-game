@@ -1,5 +1,6 @@
 #include "EAGLView.h"
 #include "TextureCatalog.h"
+#include "ResourceLoader.h"
 #include "CentralControl.h"
 #include <QMouseEvent>
 #include <QTimer>
@@ -75,12 +76,10 @@ void EAGLView::initializeGL() {
 	
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	
-	TextureCatalog* catalog = TextureCatalog::instance();
-	
-	catalog->addAndLoad("units", loadTexture("texmap.png"), 2);
-	catalog->addAndLoad("hexTiles", loadTexture("texmap_hex.png"), 2);
-	catalog->addAndLoad("actions", loadTexture("actions.png"), 4);
-	catalog->addAndLoad("icons", loadTexture("icons.png"), 4);
+    TextureCatalog::instance();
+
+    ResourceLoader resourceLoader(this);
+    resourceLoader.load();
 
 	d->centralControl = CentralControl::instance();
 	d->timer.start();
@@ -96,9 +95,4 @@ void EAGLView::mousePressEvent ( QMouseEvent * event ) {
 
 void EAGLView::mouseReleaseEvent ( QMouseEvent * event ) {
 	d->centralControl->touchesEnded(GPointMake(event->x(), event->y()));
-}
-
-GLuint EAGLView::loadTexture(const std::string &filename) {
-	QString path = QString(":/Resources/") + filename.c_str();
-	return bindTexture(QPixmap(path), GL_TEXTURE_2D, GL_RGBA, QGLContext::NoBindOption);	
 }

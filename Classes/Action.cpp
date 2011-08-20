@@ -13,6 +13,7 @@
 #include "ModelManager.h"
 #include "HexMapModel.h"
 #include "MessageView.h"
+#include "Sound.h"
 #include <iostream>
 #include <string>
 
@@ -73,6 +74,7 @@ void Action::doIt(const ActionState& statePoint) {
 
     if (_unit->spendAp(this->getCost())) {
         MessageView::add(_unit->getPosition(), _name);
+        Sound *sound = Sound::instance();
         
         switch (_id) {
             case ACTION_MOVE:
@@ -81,9 +83,12 @@ void Action::doIt(const ActionState& statePoint) {
             case ACTION_STRIKE:
                 
                 _unit->strike(statePoint.pos);
+                sound->play("strike");
+
                 break;
             case ACTION_FIRE:
                 _unit->fire(statePoint.pos);
+                sound->play("fire");
                 break;
             case ACTION_BURN:
                 //std::cout << "Burn!" << std::endl;

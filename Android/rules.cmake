@@ -1,16 +1,22 @@
 LIST(APPEND SOURCES
-	Android/OpenGLRenderer.cpp
+	Android/AssetLoader.cpp
 	Android/GameGLView.cpp
+	Android/OpenGLRenderer.cpp
+	Android/ResourceLoader.cpp
+	Android/Sound.cpp
 )
 
 LIST(APPEND HEADERS
+	Android/AssetLoader.h
+	Android/ResourceLoader.h
 )
 
 LIST(APPEND LIBRARIES
 	android
 	EGL
 	GLESv1_CM
-	log	
+	log
+	OpenSLES
 )
 
 SET(JAVASOURCES
@@ -29,6 +35,16 @@ FOREACH(image ${RESOURCES})
 			COMMENT "Copying ${image}"
 	)
 	LIST(APPEND SOURCES ${CMAKE_BINARY_DIR}/apk/res/raw/${imageName})
+ENDFOREACH()
+
+FOREACH(sound ${SOUNDS})
+	GET_FILENAME_COMPONENT(soundName ${sound} NAME)
+	ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_BINARY_DIR}/apk/res/raw/${soundName}
+			COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/${sound} ${CMAKE_BINARY_DIR}/apk/res/raw/${soundName}
+			DEPENDS ${sound}
+			COMMENT "Copying ${sound}"
+	)
+	LIST(APPEND SOURCES ${CMAKE_BINARY_DIR}/apk/res/raw/${soundName})
 ENDFOREACH()
 
 FOREACH(javaSource ${JAVASOURCES})

@@ -3,17 +3,21 @@ package com.hexgame.game;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLU;
 import android.opengl.GLSurfaceView.Renderer;
 import android.opengl.GLUtils;
+import android.util.Log;
 
 public class OpenGLRenderer implements Renderer {
 
     static {
         System.loadLibrary("HexGame");
     }
+
+    static GL10 gl10;
 
 	@Override
 	public void onDrawFrame(GL10 gl) {
@@ -67,30 +71,41 @@ public class OpenGLRenderer implements Renderer {
 		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_LINEAR);
 		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
 		
+		OpenGLRenderer.gl10 = gl;
+		loadResources();
+		OpenGLRenderer.gl10 = null;
 		OpenGLRenderer.addTexture("hexTiles", loadTexture(gl, R.raw.texmap_hex), 2);
 		OpenGLRenderer.addTexture("actions", loadTexture(gl, R.raw.actions), 4);
 		OpenGLRenderer.addTexture("icons", loadTexture(gl, R.raw.icons), 4);
 		OpenGLRenderer.addTexture("units", loadTexture(gl, R.raw.texmap), 2);
 		OpenGLRenderer.addTexture("font", loadTexture(gl, R.raw.font_1), 1);
+
+		OpenGLRenderer.realizeAssetLoader(HexGame.assetManager);
 	}
 	
-	private static int newTextureID(GL10 gl) {
+	public static int newTextureID(GL10 gl) {
 	    int[] temp = new int[1];
 	    gl.glGenTextures(1, temp, 0);
 	    return temp[0];        
 	}
 
-	// Will load a texture out of a drawable resource file, and return an OpenGL texture ID:
-	private int loadTexture(GL10 gl, int resource) {
+	// Will load a texture out of an asset file, and return an OpenGL texture ID:
+	public static int loadTexture(String textureName) {
+		GL10 gl = OpenGLRenderer.gl10;
+	    int id = OpenGLRenderer.newTextureID(gl);
 
-	    int id = newTextureID(gl);
+		AssetManager assetManager = HexGame.context.getResources().getAssets();
 
-	    // TODO: Check if this is needed.
-	    BitmapFactory.Options opts = new BitmapFactory.Options();
-	    opts.inScaled = false;
+		InputStream textureInputStream = null;
 
-	    // Load up, and flip the texture:
-	    Bitmap bmp = BitmapFactory.decodeResource(HexGame.context.getResources(), resource, opts);
+		try {
+			textureInputStream = assetManager.open(textureName);
+		} catch (IOException e) {
+			Log.e("HexGame", e.getMessage());
+			return 0;
+		}
+
+		Bitmap bmp = BitmapFactory.decodeStream(textureInputStream);
 
 	    gl.glBindTexture(GL10.GL_TEXTURE_2D, id);
 
@@ -101,12 +116,14 @@ public class OpenGLRenderer implements Renderer {
         GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bmp, 0);
 
 	    bmp.recycle();
-
 	    return id;
 	}
+
 	
+	public native void loadResources();
     public static native void init();
     public static native void draw();
     public static native void update();
     public static native void addTexture(String name, int textureId, int tiles);
+    public static native void realizeAssetLoader(AssetManager assetManager);
 }
