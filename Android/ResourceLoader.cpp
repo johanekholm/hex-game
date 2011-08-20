@@ -18,6 +18,7 @@ class ResourceLoader::PrivateData {
 public:
 	JNIEnv *env;
 	jobject callingObject;
+	jobject gl;
 };
 
 ResourceLoader::ResourceLoader()
@@ -32,8 +33,8 @@ ResourceLoader::~ResourceLoader() {
 GLuint ResourceLoader::loadTexture(const std::string &filename) {
     jstring javaFilename = d->env->NewStringUTF(filename.c_str());
     jclass javaOpenGLRenderer = d->env->GetObjectClass(d->callingObject);
-    jmethodID javaLoadTexture = d->env->GetStaticMethodID(javaOpenGLRenderer, "loadTexture", "(Ljava/lang/String;)I");
-    jint result = d->env->CallStaticIntMethod(javaOpenGLRenderer, javaLoadTexture, javaFilename);
+    jmethodID javaLoadTexture = d->env->GetMethodID(javaOpenGLRenderer, "loadTexture", "(Ljavax/microedition/khronos/opengles/GL10;Ljava/lang/String;)I");
+    jint result = d->env->CallIntMethod(d->callingObject, javaLoadTexture, d->gl, javaFilename);
 
 	return (GLuint)result;
 }
@@ -43,4 +44,7 @@ void ResourceLoader::setEnv(JNIEnv* env) {
 }
 void ResourceLoader::setCallingObject(jobject callingObject) {
 	d->callingObject = callingObject;
+}
+void ResourceLoader::setGL(jobject gl) {
+	d->gl = gl;
 }
