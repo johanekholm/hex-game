@@ -3,6 +3,7 @@ package com.hexgame.game;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLU;
@@ -72,6 +73,8 @@ public class OpenGLRenderer implements Renderer {
 		OpenGLRenderer.addTexture("icons", loadTexture(gl, R.raw.icons), 4);
 		OpenGLRenderer.addTexture("units", loadTexture(gl, R.raw.texmap), 2);
 		OpenGLRenderer.addTexture("font", loadTexture(gl, R.raw.font_1), 1);
+
+		OpenGLRenderer.realizeAssetLoader(HexGame.assetManager);
 	}
 	
 	private static int newTextureID(GL10 gl) {
@@ -109,4 +112,5 @@ public class OpenGLRenderer implements Renderer {
     public static native void draw();
     public static native void update();
     public static native void addTexture(String name, int textureId, int tiles);
+    public static native void realizeAssetLoader(AssetManager assetManager);
 }
