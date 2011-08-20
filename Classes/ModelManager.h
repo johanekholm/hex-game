@@ -17,7 +17,7 @@ class HexMapModel;
 class ModelManager {
     static ModelManager* _instance;
 	std::map<int, UnitModel*> _units;
-    HexMapModel* _battleMap;
+    HexMapModel *_battleMap, *_adventureMap;
     int _unitIdCounter;
     
     ModelManager();
@@ -33,14 +33,16 @@ public:
     static void destroy();
 
 	void add(UnitModel*);
-    void remove(int unitId);
-    void setBattleMap(HexMapModel* map);
+    HexMapModel* getAdventureMap();    
+    std::vector<UnitModel*> getAllUnits();
     HexMapModel* getBattleMap();
-    void tick();
-    UnitModel* getUnitAtPos(const MPoint& pos);
-    UnitModel* getUnitById(int unitId);
     UnitModel* getClosestTo(const MPoint& pos);
     int getDistanceToClosestEnemy(int owner, const MPoint& pos);
-    std::vector<UnitModel*> getAllUnits();
+    UnitModel* getUnitAtPos(const MPoint& pos);
+    UnitModel* getUnitById(int unitId);
+    void remove(int unitId);
+    void setAdventureMap(HexMapModel* map);
+    void setBattleMap(HexMapModel* map);
+    void tick();
 };
 
