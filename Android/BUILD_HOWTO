@@ -1,0 +1,80 @@
+# Howto compile HexGame on Android using CMake
+
+## Dependenceis
+
+In order to successfully build HexGame on Android you will need the
+following:
+
+* Android SDK rev 10 or later (url)
+
+* Android NDK r5c or later (url)
+
+* android-cmake (url)
+
+
+## Preparations
+
+Before building, you need to set up your environment so that CMake can
+find the necessary tools, include files and libraries in the Android NDK
+and android-cmake.
+
+### Step 1 - Creating an Android NDK Toolchain
+
+For this step, please read the guide on setting up your own Android NDK
+toolchain found in ${NDK}/docs/STANDALONE-TOOLCHAIN.html
+
+HexGame requires ABI-level 9 or later.
+
+### Step 2 - Setting up your environment
+
+In order to build with android-cmake you need to explain where your NDK
+and your standalone toolchain can be found. It is recommended that you
+add the following lines to your ~/.profile so that you don't have to
+worry about them further on. Modify the paths below to point at the
+respective installations on your system
+
+export ANDROID_DEV_ROOT=/path/to/base/directory
+export ANDROID_SDK=${ANDROID_DEV_ROOT}/android-sdk-mac_86
+export ANDROID_NDK_TOOLCHAIN_ROOT=${ANDROID_DEV_ROOT}/android-toolchain-9
+export ANDTOOLCHAIN=${ANDROID_DEV_ROOT}/android-cmake/toolchain/android.toolchain.cmake
+export SYSROOT=${ANDROID_NDK_TOOLCHAIN_ROOT}/sysroot
+
+export PATH=$ANDROID_NDK_TOOLCHAIN_ROOT/bin:$ANDROID_SDK/tools:$ANDROID_SDK/platform-tools:$PATH
+
+alias androidcmake='cmake -DCMAKE_TOOLCHAIN_FILE=${ANDTOOLCHAIN} '
+
+
+## Building HexGame
+
+1.  Create an out-of-source build directory and change to this
+directory, e.g.: mkdir build-android cd build-android
+
+2.  Run the alias androidcmake with the required cmake flags:
+
+androidcmake ../ -DTARGET_PLATFORM=Android -DLIBRARY_OUTPUT_PATH_ROOT=./apk
+
+NOTE! If building this on Mac OS X, you will need to tell CMake where to
+find install_name_tool by adding the following flag to the line above:
+
+* On Mac OS X 10.5 - 10.6 (Leopard and Snow Leopard):
+-DCMAKE_INSTALL_NAME_TOOL=/usr/bin/install_name_tool
+
+* On Mac OS X 10.7 (Lion):
+-DCMAKE_INSTALL_NAME_TOOL=/Developer/usr/bin/install_name_tool
+
+3.  The build above will fail because CMake is unable to compile and
+copy a sample file. This is Ok, it will be resolved by re-running CMake:
+
+cmake .
+
+4.  Now CMake successfully configured our project, time to build:
+
+make
+
+5.  Congratulations, by now you should have successfully built HexGame
+and created an .apk-file that you can install on your device by running:
+
+cd apk
+ant install
+
+6. Run the game on your device by selecting HexGame in the App List.
