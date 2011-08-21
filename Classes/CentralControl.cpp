@@ -1,5 +1,5 @@
 /*
- *  CentralControl.mm
+ *  CentralControl.cpp
  *  hex-game
  *
  *  Created by Johan Ekholm on 2011-04-16.
@@ -110,10 +110,6 @@ void CentralControl::draw() {
 			break;
 	}
 	
-}
-
-ViewControllerManager* CentralControl::getViewControllerManager() {
-    return _viewControllerManager;
 }
 
 void CentralControl::handleEventNormal(const TouchEvent& event) {

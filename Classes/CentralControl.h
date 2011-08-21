@@ -46,8 +46,6 @@ public:
     
     static void destroy();
     
-    
-	
 	void update();
 	void draw();
 	void handleEventNormal(const TouchEvent& event);
@@ -60,6 +58,6 @@ public:
 		
 public:
 	void switchMode(int mode);
-    ViewControllerManager* getViewControllerManager();
+    
 };
 
