@@ -14,11 +14,9 @@
 #include <string>
 #include "toolkit.h"
 
-class ViewControllerManager;
 
 class SceneLoader {
 	static SceneLoader* _instance;
-    ViewControllerManager* _viewControllerManager;
     
 	SceneLoader();
 
@@ -33,7 +31,7 @@ public:
 	
 	static void destroy();
 	
-    void loadBattleScene(int party1, int party2);
+    void loadBattleScene();
     void loadAdventureScene();
     void switchToAdventureScene();
 };

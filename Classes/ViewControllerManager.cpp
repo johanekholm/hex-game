@@ -9,6 +9,7 @@
 
 #include "ViewControllerManager.h"
 #include "ViewController.h"
+#include "HexMap.h"
 #include <iostream>
 
 
@@ -16,6 +17,13 @@ ViewControllerManager* ViewControllerManager::_instance = 0;
 
 void ViewControllerManager::destroy() {
 	if (_instance != 0) {
+        delete _instance->_mapView;
+        delete _instance->_pushedMapView;
+        
+        for (std::vector<ViewController*>::iterator it = _instance->_views.begin(); it != _instance->_views.end(); ++it) {
+            delete *it;
+        }
+        
 		_instance->_views.clear();
 		delete _instance;
 		_instance=0;
@@ -24,6 +32,8 @@ void ViewControllerManager::destroy() {
 
 ViewControllerManager::ViewControllerManager() {
     _focus = 0;
+    _mapView = 0;
+    _pushedMapView = 0;
 }
 
 /*ViewControllerManager::~ViewControllerManager() {
@@ -51,6 +61,12 @@ void ViewControllerManager::drawGUI() {
 	}
 }
 
+void ViewControllerManager::drawMap() {
+    if (_mapView != 0) {
+        _mapView->draw();
+    }
+}
+
 ViewController* ViewControllerManager::getFocus() {
     return _focus;
 }
@@ -63,6 +79,20 @@ ViewController* ViewControllerManager::getTouched(const GPoint& point) {
 	}
 	
 	return 0;
+}
+
+void ViewControllerManager::popMapView() {
+    delete _mapView;
+    _mapView = _pushedMapView;
+    _pushedMapView = 0;
+}
+
+void ViewControllerManager::pushMapView(HexMap* mapView) {
+    if (_pushedMapView != 0) {
+        delete _pushedMapView;
+    }
+    _pushedMapView = _mapView;
+    _mapView = mapView;
 }
 
 void ViewControllerManager::remove(ViewController* view) {
@@ -108,6 +138,10 @@ void ViewControllerManager::setFocus(ViewController* view) {
     if (view != 0) {
         view->setFocus(true);
     }
+}
+
+void ViewControllerManager::setMapView(HexMap* mapView) {
+    _mapView = mapView;
 }
 
 void ViewControllerManager::update() {

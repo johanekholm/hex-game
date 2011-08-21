@@ -10,6 +10,10 @@
 #include "ModelManager.h"
 #include "CentralControl.h"
 #include "HexMapModel.h"
+#include "ViewControllerManager.h"
+#include "TextureCatalog.h"
+#include "HexMap.h"
+#include "HexMapModel.h"
 
 SceneLoader* SceneLoader::_instance = 0;
 
@@ -21,19 +25,27 @@ void SceneLoader::destroy() {
 }
 
 SceneLoader::SceneLoader() {
-    _viewControllerManager = CentralControl::instance()->getViewControllerManager();
+    
 }
 
-void SceneLoader::loadBattleScene(int party1, int party2) {
-    ModelManager::instance()->setBattleMap(new HexMapModel(4, 4));
-    _viewControllerManager->buildHexMapBattle();
+void SceneLoader::loadBattleScene() {
+    HexMapModel* mapModel;
+    
+    mapModel = new HexMapModel(4, 4);
+
+    ModelManager::instance()->setBattleMap(mapModel);
+    ViewControllerManager::instance()->pushMapView(new HexMap(mapModel, TextureCatalog::instance()->get("hexTiles"), 1.0f));
 }
 
 void SceneLoader::loadAdventureScene() {
-    ModelManager::instance()->setAdventureMap(new HexMapModel(8, 6));
-    _viewControllerManager->buildHexMapAdventure();    
+    HexMapModel* mapModel;
+    
+    mapModel = new HexMapModel(8, 6);
+    
+    ModelManager::instance()->setAdventureMap(mapModel);
+    ViewControllerManager::instance()->setMapView(new HexMap(mapModel, TextureCatalog::instance()->get("hexTiles"), 1.0f));
 }
 
 void SceneLoader::switchToAdventureScene() {
-    _viewControllerManager->buildHexMapAdventure();    
+    ViewControllerManager::instance()->popMapView();    
 }

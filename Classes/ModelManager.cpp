@@ -148,10 +148,12 @@ void ModelManager::removeUnit(int unitId) {
 }
 
 void ModelManager::setAdventureMap(HexMapModel* map) {
+    delete _adventureMap;
     _adventureMap = map;
 }
 
 void ModelManager::setBattleMap(HexMapModel* map) {
+    delete _battleMap;
     _battleMap = map;
 }
 

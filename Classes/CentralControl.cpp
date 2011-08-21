@@ -22,6 +22,7 @@
 #include "UnitView.h"
 #include "ViewController.h"
 #include "ViewControllerManager.h"
+#include "SceneLoader.h"
 #include "toolkit.h"
 #include "geometry.h"
 
@@ -38,9 +39,7 @@ void CentralControl::destroy() {
         
         delete _instance->_stringImage;
         delete _instance->_input;
-        delete _instance->_hexMap;
         delete _instance->_viewControllerManager;
-        //delete _instance->_modelManager;
         ModelManager::destroy();
         delete _instance->_unitFactory;
         
@@ -60,11 +59,8 @@ CentralControl::CentralControl() {
     sound->add("strike", "slash1");
     sound->add("fire", "fireball1");
 
-	TextureCatalog* catalog = TextureCatalog::instance();
-	
-    ModelManager::instance()->setBattleMap(new HexMapModel(4, 4));
+    SceneLoader::instance()->loadBattleScene();
     
-	_hexMap = new HexMap(ModelManager::instance()->getBattleMap(), catalog->get("hexTiles"), 1.0f);
     _viewControllerManager = ViewControllerManager::instance();
     _unitFactory = new UnitFactory(_viewControllerManager);
 	_input = new InputManager();
@@ -108,7 +104,7 @@ void CentralControl::draw() {
 		case ControlMode::BATTLE:
 		case ControlMode::BATTLE_FOCUS:
         case ControlMode::ADVENTURE:
-			_hexMap->draw();
+            _viewControllerManager->drawMap();
 			_viewControllerManager->draw();
             _viewControllerManager->drawGUI();
 			break;

@@ -32,10 +32,8 @@ class CentralControl {
     ModelManager* _modelManager;
     ViewControllerManager* _viewControllerManager;
     UnitFactory* _unitFactory;
-	HexMap* _hexMap;
     StringImage* _stringImage;
 
-    //~CentralControl();
     CentralControl();
 
 public:
