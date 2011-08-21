@@ -161,6 +161,13 @@ UnitModel* ModelManager::getUnitById(int unitId) {
     }
 }
 
+void ModelManager::removeAllUnits() {
+    for (std::map<int, UnitModel*>::iterator it = _units.begin(); it != _units.end(); ++it) {
+		delete it->second;
+        _units.erase(it);
+	}
+}
+
 void ModelManager::removeMapObject(int objectId) {
     delete _mapObjects[objectId];
     _mapObjects.erase(objectId);

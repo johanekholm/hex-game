@@ -44,6 +44,7 @@ public:
     int getOwnerWithNoUnits();
     UnitModel* getUnitAtPos(const MPoint& pos);
     UnitModel* getUnitById(int unitId);
+    void removeAllUnits();
     void removeMapObject(int objectId);
     void removeUnit(int unitId);
     void setAdventureMap(HexMapModel* map);

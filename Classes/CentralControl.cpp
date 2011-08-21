@@ -67,8 +67,8 @@ CentralControl::CentralControl() {
 	_input = new InputManager();
     
     _unitFactory->produceAndRegisterUnit("swordsman", 1, MPointMake(0, 0));
-    _unitFactory->produceAndRegisterUnit("soldier", 2, MPointMake(2, 0));
-    _unitFactory->produceAndRegisterUnit("archer", 2, MPointMake(2, 1));
+    _unitFactory->produceAndRegisterUnit("soldier", 2, MPointMake(1, 0));
+    //_unitFactory->produceAndRegisterUnit("archer", 2, MPointMake(2, 1));
     _unitFactory->produceAndRegisterUnit("channeler", 1, MPointMake(0, 1));
     
 }
@@ -84,8 +84,9 @@ void CentralControl::update() {
             
             loser = ModelManager::instance()->getOwnerWithNoUnits();
             if (loser != 0) {
-                MessageView::add(GPointMake(160.0f, 240.0f), "VICTORY!");
                 this->switchMode(ControlMode::ADVENTURE);
+                SceneLoader::instance()->switchToAdventureScene();
+                MessageView::add(GPointMake(160.0f, 240.0f), "VICTORY!");
             }
         }        
     }

@@ -37,6 +37,7 @@ public:
     ViewController* getFocus();
     ViewController* getTouched(const GPoint& point);	
     void popMapView();
+    void purge();
     void pushMapView(HexMap* mapView);
     void remove(ViewController* view);
     void removeSoft(ViewController* view);

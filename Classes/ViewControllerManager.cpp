@@ -87,6 +87,14 @@ void ViewControllerManager::popMapView() {
     _pushedMapView = 0;
 }
 
+void ViewControllerManager::purge() {
+    for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end(); ++it) {
+        delete *it;
+    }
+    
+    _views.clear();
+}
+
 void ViewControllerManager::pushMapView(HexMap* mapView) {
     if (_pushedMapView != 0) {
         delete _pushedMapView;

@@ -43,9 +43,10 @@ void SceneLoader::loadAdventureScene() {
     mapModel = new HexMapModel(8, 6);
     
     ModelManager::instance()->setAdventureMap(mapModel);
-    ViewControllerManager::instance()->setMapView(new HexMap(mapModel, TextureCatalog::instance()->get("hexTiles"), 1.0f));
+    ViewControllerManager::instance()->setMapView(new HexMap(mapModel, TextureCatalog::instance()->get("hexTiles"), 1.5f));
 }
 
 void SceneLoader::switchToAdventureScene() {
+    ModelManager::instance()->removeAllUnits();
     ViewControllerManager::instance()->popMapView();    
 }
