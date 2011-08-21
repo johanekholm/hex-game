@@ -12,6 +12,8 @@
 
 
 HexMapModel::~HexMapModel() {
+    _hexes.clear();
+
 }
 
 HexMapModel::HexMapModel(int width, int height) {

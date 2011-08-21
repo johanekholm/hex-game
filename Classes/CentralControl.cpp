@@ -59,6 +59,7 @@ CentralControl::CentralControl() {
     sound->add("strike", "slash1");
     sound->add("fire", "fireball1");
 
+    SceneLoader::instance()->loadAdventureScene();
     SceneLoader::instance()->loadBattleScene();
     
     _viewControllerManager = ViewControllerManager::instance();
@@ -74,11 +75,21 @@ CentralControl::CentralControl() {
 
 void CentralControl::update() {
 	TouchEvent event;
+    int loser = 0;
 	
-    if (++_timer >= 200) {
-        _timer = 0;
-        ModelManager::instance()->tick();
+    if (_mode == ControlMode::BATTLE || _mode == ControlMode::BATTLE_FOCUS) {
+        if (++_timer >= 200) {
+            _timer = 0;
+            ModelManager::instance()->tick();
+            
+            loser = ModelManager::instance()->getOwnerWithNoUnits();
+            if (loser != 0) {
+                MessageView::add(GPointMake(160.0f, 240.0f), "VICTORY!");
+                this->switchMode(ControlMode::ADVENTURE);
+            }
+        }        
     }
+    
 	if (_input->hasEvent()) {
 		
 		event = _input->popEvent();

@@ -36,7 +36,8 @@ void ModelManager::destroy() {
 }
 
 ModelManager::ModelManager() {
-    
+    _adventureMap = 0;
+    _battleMap = 0;
 }
 
 void ModelManager::addMapObject(MapObject* object) {
@@ -112,6 +113,29 @@ int ModelManager::getDistanceToClosestEnemy(int owner, const MPoint& pos) {
 	}
     //std::cout << "Closest enemy: " << minDistance << std::endl;
     return minDistance;
+}
+
+int ModelManager::getOwnerWithNoUnits() {
+    bool owner1 = false;
+    bool owner2 = false;
+    
+    for (std::map<int, UnitModel*>::const_iterator it = _units.begin(); it != _units.end(); ++it) {
+		if (it->second != 0) {
+            if (it->second->getOwner() == 1) {
+                owner1 = true;
+            } else if (it->second->getOwner() == 2) {
+                owner2 = true;
+            }
+        }
+	}
+    
+    if (!owner1) {
+        return 1;
+    } else if (!owner2) {
+        return 2;
+    } else {
+        return 0;
+    }
 }
 
 UnitModel* ModelManager::getUnitAtPos(const MPoint& pos) {
