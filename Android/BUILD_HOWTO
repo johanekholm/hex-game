@@ -5,11 +5,11 @@
 In order to successfully build HexGame on Android you will need the
 following:
 
-* Android SDK rev 10 or later (url)
+* Android SDK rev 11 or later [http://developer.android.com/sdk/index.html]
 
-* Android NDK r5c or later (url)
+* Android NDK r5c or later [http://developer.android.com/sdk/ndk/index.html]
 
-* android-cmake (url)
+* android-cmake [http://code.google.com/p/android-cmake/]
 
 
 ## Preparations
