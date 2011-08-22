@@ -14,10 +14,34 @@
 #include "UnitModel.h"
 #include "UnitView.h"
 #include "Action.h"
+#include "MapObject.h"
+#include "MapObjectView.h"
 
 UnitFactory::UnitFactory(ViewControllerManager* viewControllerManager) {
     //_modelManager = modelManager; 
     _viewControllerManager = viewControllerManager;
+}
+
+void UnitFactory::produceAndRegisterMapObject(const std::string& objectType, int owner, const MPoint& pos) {
+    MapObject* object;
+    MapObjectView* view;
+    int image;
+    
+    if (objectType == "village") {
+        object = new MapObject(pos, owner);
+        image = 0;
+    } else if (objectType == "farm") {
+        //object = new BuildingModel();
+        image = 1;
+    } else {
+        return;
+    }
+    
+    view = new MapObjectView(object, 64.0f, 64.0f, image);
+    object->addObserver(view);
+    
+    ModelManager::instance()->addMapObject(object);
+    ViewControllerManager::instance()->add(view);
 }
 
 void UnitFactory::produceAndRegisterUnit(const std::string& unitClass, int owner, const MPoint& pos) {

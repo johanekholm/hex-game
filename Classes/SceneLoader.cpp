@@ -14,6 +14,7 @@
 #include "TextureCatalog.h"
 #include "HexMap.h"
 #include "HexMapModel.h"
+#include "UnitFactory.h"
 
 SceneLoader* SceneLoader::_instance = 0;
 
@@ -48,5 +49,8 @@ void SceneLoader::loadAdventureScene() {
 
 void SceneLoader::switchToAdventureScene() {
     ModelManager::instance()->removeAllUnits();
-    ViewControllerManager::instance()->popMapView();    
+    ViewControllerManager::instance()->popMapView();
+    
+    UnitFactory::produceAndRegisterMapObject("village", 1, MPointMake(1, 1));
+    UnitFactory::produceAndRegisterMapObject("village", 1, MPointMake(0, 0));
 }

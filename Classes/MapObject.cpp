@@ -17,6 +17,21 @@ MapObject::MapObject(MPoint pos, int allegiance) {
     _allegiance = allegiance;
 }
 
+void MapObject::availableActions(std::vector<ActionState>& actions) {
+    
+    return;
+}
+
+MapObjectState MapObject::getState() {
+    MapObjectState state;
+    std::vector<ActionState> actions;
+    
+    state.pos = _pos;
+    this->availableActions(state.actions);
+    
+    return state;
+}
+
 void MapObject::setId(int objectId) {
     _id = objectId;
 }

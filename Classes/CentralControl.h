@@ -48,6 +48,7 @@ public:
     
 	void update();
 	void draw();
+    void handleEventAdventureNormal(const TouchEvent& event);
 	void handleEventNormal(const TouchEvent& event);
 	void handleEventFocus(const TouchEvent& event);
 

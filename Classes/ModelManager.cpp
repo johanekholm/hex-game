@@ -48,7 +48,6 @@ void ModelManager::addMapObject(MapObject* object) {
     _objectIdCounter++;
     _mapObjects[_objectIdCounter] = object;
     object->setId(_objectIdCounter);
-    
 }
 
 void ModelManager::addUnit(UnitModel* unit) {

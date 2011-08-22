@@ -18,6 +18,7 @@ SET( SOURCES
     Classes/HexMapModel.cpp
 	Classes/InputManager.cpp
     Classes/MapObject.cpp
+    Classes/MapObjectView.cpp
     Classes/MessageView.cpp
     Classes/ModelManager.cpp
     Classes/Observable.cpp
@@ -46,6 +47,7 @@ SET( HEADERS
 	Classes/InputManager.h
     Classes/IObserver.h
     Classes/MapObject.h
+    Classes/MapObjectView.h
     Classes/MessageView.h
     Classes/ModelManager.h
     Classes/SceneLoader.h

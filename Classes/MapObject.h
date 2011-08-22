@@ -8,9 +8,19 @@
 #ifndef MAPOBJECT_H
 #define MAPOBJECT_H
 
+#include "Observable.h"
+#include "Action.h"
 #include "toolkit.h"
+#include <vector>
 
-class MapObject {
+//struct ActionState;
+
+struct MapObjectState {
+    MPoint pos;
+    std::vector<ActionState> actions;
+};
+
+class MapObject : public Observable {
     
 protected:
     MPoint _pos;
@@ -20,12 +30,13 @@ protected:
 public:
     virtual ~MapObject();
     MapObject(MPoint pos, int allegiance);
-    
+    void availableActions(std::vector<ActionState>& actions);
+    MapObjectState getState();    
     void setId(int id);
 };
 
 /*
-class Party : public MapObject {
+class PartyModel : public MapObject, public Observable {
 protected:
     
 public:
@@ -33,7 +44,7 @@ public:
 };
 
 
-class Building : public MapObject {
+class BuildingModel : public MapObject, public Observable {
 protected:
     
 public:

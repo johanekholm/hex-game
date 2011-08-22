@@ -66,11 +66,13 @@ CentralControl::CentralControl() {
     _unitFactory = new UnitFactory(_viewControllerManager);
 	_input = new InputManager();
     
-    _unitFactory->produceAndRegisterUnit("swordsman", 1, MPointMake(0, 0));
-    _unitFactory->produceAndRegisterUnit("soldier", 2, MPointMake(1, 0));
+    //_unitFactory->produceAndRegisterUnit("swordsman", 1, MPointMake(0, 0));
+    //_unitFactory->produceAndRegisterUnit("soldier", 2, MPointMake(1, 0));
     //_unitFactory->produceAndRegisterUnit("archer", 2, MPointMake(2, 1));
-    _unitFactory->produceAndRegisterUnit("channeler", 1, MPointMake(0, 1));
+    //_unitFactory->produceAndRegisterUnit("channeler", 1, MPointMake(0, 1));
     
+    SceneLoader::instance()->switchToAdventureScene();
+    this->switchMode(ControlMode::ADVENTURE);
 }
 
 void CentralControl::update() {
@@ -97,6 +99,10 @@ void CentralControl::update() {
 		
 		// dispatch event to current event handler
 		switch (this->_mode) {
+			case ControlMode::ADVENTURE:
+				this->handleEventAdventureNormal(event);
+				break;
+
 			case ControlMode::BATTLE:
 				this->handleEventNormal(event);
 				break;
@@ -122,6 +128,34 @@ void CentralControl::draw() {
 			break;
 	}
 	
+}
+
+void CentralControl::handleEventAdventureNormal(const TouchEvent& event) {
+    ViewController* selection = 0;
+    ViewController* focus;
+    bool caughtEvent = false;
+    
+    focus = _viewControllerManager->getFocus();
+    
+    if (focus != 0) {
+        caughtEvent = focus->handleEvent(event);
+    } 
+    
+    if (!caughtEvent) {
+        switch (event.type) {
+            case 1:
+                selection = _viewControllerManager->getTouched(event.point);
+                std::cout << selection << std::endl;
+                _viewControllerManager->setFocus(selection);
+                break;
+
+            case 3:                
+                break;
+                
+            default:
+                break;
+        }
+    }
 }
 
 void CentralControl::handleEventNormal(const TouchEvent& event) {
