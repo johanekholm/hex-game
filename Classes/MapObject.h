@@ -35,15 +35,18 @@ public:
     void setId(int id);
 };
 
-/*
-class PartyModel : public MapObject, public Observable {
+
+class PartyModel : public MapObject {
+    
 protected:
+    std::vector<UnitModel*> _members;
     
 public:
-
+    ~PartyModel();
+    PartyModel(MPoint pos, int allegiance, const std::vector<UnitModel*>& members);
 };
 
-
+/*
 class BuildingModel : public MapObject, public Observable {
 protected:
     

@@ -25,14 +25,17 @@ UnitFactory::UnitFactory(ViewControllerManager* viewControllerManager) {
 void UnitFactory::produceAndRegisterMapObject(const std::string& objectType, int owner, const MPoint& pos) {
     MapObject* object;
     MapObjectView* view;
+    std::vector<UnitModel*> units;
     int image;
     
     if (objectType == "village") {
-        object = new MapObject(pos, owner);
         image = 0;
-    } else if (objectType == "farm") {
-        //object = new BuildingModel();
+        object = new MapObject(pos, owner);
+    } else if (objectType == "party") {
         image = 1;
+        units.push_back(produceUnit("soldier", owner, MPointMake(0,0)));
+        units.push_back(produceUnit("soldier", owner, MPointMake(1,0)));
+        object = new PartyModel(pos, owner, units);
     } else {
         return;
     }
@@ -44,9 +47,8 @@ void UnitFactory::produceAndRegisterMapObject(const std::string& objectType, int
     ViewControllerManager::instance()->add(view);
 }
 
-void UnitFactory::produceAndRegisterUnit(const std::string& unitClass, int owner, const MPoint& pos) {
+UnitModel* UnitFactory::produceUnit(const std::string& unitClass, int owner, const MPoint& pos) {
     UnitModel* unit;
-    UnitView* view;
     int hp, ap, power, skill, defense, image;
     std::vector<int> actions;
     
@@ -63,15 +65,24 @@ void UnitFactory::produceAndRegisterUnit(const std::string& unitClass, int owner
         hp = 4; ap = 5; power = 2; skill = 3; defense = 1; image = 3;
         actions.push_back(ACTION_MOVE); actions.push_back(ACTION_BURN); actions.push_back(ACTION_GALE); actions.push_back(ACTION_HEAL);
     } else {
-        return;
+        return 0;
     }
     
-    unit = new UnitModel(pos.x, pos.y, owner, hp, ap, power, skill, defense, actions);
-	view = new UnitView(unit, 64.0f, 64.0f, image);
+    unit = new UnitModel(pos.x, pos.y, owner, hp, ap, power, skill, defense, actions, image);
+    
+    return unit;
+}
+
+
+void UnitFactory::produceAndRegisterUnit(const std::string& unitClass, int owner, const MPoint& pos) {
+    UnitModel* unit;
+    UnitView* view;
+    
+	view = new UnitView(unit, 64.0f, 64.0f, unit->getVisualType());
 
     unit->addObserver(view);
     ModelManager::instance()->addUnit(unit);
-    _viewControllerManager->add(view);
+    ViewControllerManager::instance()->add(view);
 
 }
 

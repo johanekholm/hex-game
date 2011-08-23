@@ -48,6 +48,7 @@ class UnitModel : public Observable {
     int _maxAp;
     int _maxHp;
     int _owner;
+    int _visualType;
     UnitModel* _target;
 
 	std::map<int, Action*> _actions;
@@ -57,7 +58,7 @@ class UnitModel : public Observable {
 public:
 	
 	~UnitModel();
-    UnitModel(int x, int y, int owner, int maxHp, int maxAp, int power, int skill, int defense, std::vector<int> actionIds);
+    UnitModel(int x, int y, int owner, int maxHp, int maxAp, int power, int skill, int defense, std::vector<int> actionIds, int visualType);
     
 	Action* addAction(int action);
     int chooseMovementTarget(const std::vector<ActionState>& targets);
@@ -70,6 +71,7 @@ public:
     int getStat(int stat);
     bool isFacing(const MPoint& pos);
     UnitState getState();
+    int getVisualType();
     void inflictDamage(int damage);
     void fire(const MPoint& targetPos);
 	void move(const MPoint& targetPos);

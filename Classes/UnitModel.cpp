@@ -20,7 +20,7 @@ UnitModel::~UnitModel() {
     this->updateObserversDestroyed();
 }
 
-UnitModel::UnitModel(int x, int y, int owner, int maxHp, int maxAp, int power, int skill, int defense, std::vector<int> actionIds) {
+UnitModel::UnitModel(int x, int y, int owner, int maxHp, int maxAp, int power, int skill, int defense, std::vector<int> actionIds, int visualType) {
     _owner = owner;
 	_pos.x = x;
 	_pos.y = y;
@@ -32,6 +32,7 @@ UnitModel::UnitModel(int x, int y, int owner, int maxHp, int maxAp, int power, i
     _baseSkill = skill;
     _baseDefense = defense;
     _target = 0;
+    _visualType = visualType;
 
     for (std::vector<int>::iterator it = actionIds.begin(); it != actionIds.end(); ++it) {
         this->addAction(*it);
@@ -214,6 +215,10 @@ UnitState UnitModel::getState() {
     state.actions = this->getActions();
     
     return state;
+}
+
+int UnitModel::getVisualType() {
+    return _visualType;
 }
 
 void UnitModel::inflictDamage(int damage) {

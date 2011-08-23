@@ -36,3 +36,13 @@ void MapObject::setId(int objectId) {
     _id = objectId;
 }
 
+
+
+
+PartyModel::~PartyModel() {
+    
+}
+
+PartyModel::PartyModel(MPoint pos, int allegiance, const std::vector<UnitModel*>& members) : MapObject(pos, allegiance) {
+    _members = members;
+}
