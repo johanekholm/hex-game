@@ -23,8 +23,15 @@
 #define ACTION_BURN 4
 #define ACTION_HEAL 5
 
+#define ADV_ACTION_MOVE -1
+#define ADV_ACTION_BATTLE -2
+
 #define TARGET_HEX 1
 #define TARGET_UNIT 2
+#define TARGET_PARTY 3
+#define TARGET_SELF 4
+
+
 
 #define ACTION_TYPE_ATTACK      1
 #define ACTION_TYPE_MOVEMENT    2
@@ -35,6 +42,8 @@
 
 class UnitModel;
 struct HexState;
+
+class PartyModel;
 
 struct ActionState {
     MPoint pos;
@@ -59,6 +68,35 @@ public:
     bool isAvailableAtHex(const MPoint& hex);
     bool isAvailableToUnit(UnitModel* targetUnit);
     std::vector<ActionState> getActionPoints(int ap, const std::map<int, HexState>& hexes, const std::vector<UnitModel*>& units);
+};
+
+class AdventureAction {
+protected:
+	int _id;
+    int _cost;
+    int _targetType;
+    int _type;
+	PartyModel* _party;
+    std::string _name;
+
+    virtual bool isAvailableAtHex(const MPoint& hex);
+    virtual bool isAvailableToParty(PartyModel* targetParty);
+
+public:
+    static AdventureAction* build(int anId, PartyModel* party);
+    AdventureAction(int anId, PartyModel* party);
+	virtual void doIt(const ActionState& statePoint) = 0;
+    int getCost();
+    std::vector<ActionState> getActionPoints(int ap, const std::map<int, HexState>& hexes, const std::vector<PartyModel*>& parties);
+};
+
+class AdvActionMove : public AdventureAction {
+protected:
+    virtual bool isAvailableAtHex(const MPoint& hex);
+    
+public:
+    AdvActionMove(int anId, PartyModel* party);
+	virtual void doIt(const ActionState& statePoint);
 };
 
 #endif

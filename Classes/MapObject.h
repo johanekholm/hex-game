@@ -30,7 +30,7 @@ protected:
 public:
     virtual ~MapObject();
     MapObject(MPoint pos, int allegiance);
-    void availableActions(std::vector<ActionState>& actions);
+    virtual void availableActions(std::vector<ActionState>& actions);
     MapObjectState getState();    
     void setId(int id);
 };
@@ -40,10 +40,17 @@ class PartyModel : public MapObject {
     
 protected:
     std::vector<UnitModel*> _members;
+    std::map<int, AdventureAction*> _actions;
+
     
 public:
     ~PartyModel();
     PartyModel(MPoint pos, int allegiance, const std::vector<UnitModel*>& members);
+    void availableActions(std::vector<ActionState>& actions);
+    AdventureAction* addAction(int action);
+	void doAction(const ActionState& statePoint);
+    MPoint getPosition();
+
 };
 
 /*

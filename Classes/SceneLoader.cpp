@@ -51,6 +51,6 @@ void SceneLoader::switchToAdventureScene() {
     ModelManager::instance()->removeAllUnits();
     ViewControllerManager::instance()->popMapView();
     
-    UnitFactory::produceAndRegisterMapObject("village", 1, MPointMake(1, 1));
+    UnitFactory::produceAndRegisterMapObject("party", 1, MPointMake(1, 1));
     UnitFactory::produceAndRegisterMapObject("village", 1, MPointMake(0, 0));
 }

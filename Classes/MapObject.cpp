@@ -46,3 +46,26 @@ PartyModel::~PartyModel() {
 PartyModel::PartyModel(MPoint pos, int allegiance, const std::vector<UnitModel*>& members) : MapObject(pos, allegiance) {
     _members = members;
 }
+
+void PartyModel::availableActions(std::vector<ActionState>& actions) {
+    //actions = Action::getAdventureActions(this);
+    return;
+}
+
+AdventureAction* PartyModel::addAction(int action) {
+	_actions[action] = AdventureAction::build(action, this);
+	return _actions[action];
+    
+}
+
+void PartyModel::doAction(const ActionState& statePoint) {
+	if (_actions.find(statePoint.actionId) != _actions.end()) {
+		_actions[statePoint.actionId]->doIt(statePoint);
+	}    
+}
+
+MPoint PartyModel::getPosition() {
+	return MPointMake(_pos.x, _pos.y);
+}
+
+

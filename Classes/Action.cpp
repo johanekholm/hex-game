@@ -13,6 +13,7 @@
 #include "ModelManager.h"
 #include "HexMapModel.h"
 #include "MessageView.h"
+#include "MapObject.h"
 #include "Sound.h"
 #include <iostream>
 #include <string>
@@ -187,3 +188,82 @@ std::vector<ActionState> Action::getActionPoints(int ap, const std::map<int, Hex
     }
     return actionPoints;
 }
+
+
+/*---------------------------------------------------------------*/
+
+AdventureAction* AdventureAction::build(int actionId, PartyModel* party) {
+    switch (actionId) {
+        case ADV_ACTION_MOVE:
+            return new AdvActionMove(actionId, party);
+        case ADV_ACTION_BATTLE:
+            return 0; //new AdvActionBattle(actionId, party);
+		default:
+			return 0;
+	}
+}
+
+AdventureAction::AdventureAction(int anId, PartyModel* party) {
+	_id = anId;	
+	_party = party;
+}
+
+int AdventureAction::getCost() {
+    return _cost;
+}
+
+std::vector<ActionState> AdventureAction::getActionPoints(int ap, const std::map<int, HexState>& hexes, const std::vector<PartyModel*>& parties) {
+    ActionState state;
+    std::vector<ActionState> actionPoints;
+    
+    state.actionId = _id;
+    state.cost = _cost;
+    state.actionType = _type;
+    state.active = true;
+    
+    if (_targetType == TARGET_HEX) {
+        for (std::map<int, HexState>::const_iterator it = hexes.begin(); it != hexes.end(); ++it) {
+            if (this->isAvailableAtHex((it->second).pos)) {
+                state.pos = (it->second).pos;
+                actionPoints.push_back(state);
+                //std::cout << "Action (hex) " << _id << " at (" << state.pos.x << ", " << state.pos.y << ")" << std::endl;
+            }
+        }
+    } else if (_targetType == TARGET_PARTY) {
+        for (std::vector<PartyModel*>::const_iterator it = parties.begin(); it != parties.end(); ++it) {
+            if (this->isAvailableToParty(*it)) {
+                state.pos = (*it)->getPosition();
+                actionPoints.push_back(state);
+                //std::cout << "Action (unit) " << _id << " at (" << state.pos.x << ", " << state.pos.y << ")" << std::endl;
+            }
+        }
+    }
+    return actionPoints;
+}
+
+bool AdventureAction::isAvailableAtHex(const MPoint& hex) {
+    return false;
+}
+
+bool AdventureAction::isAvailableToParty(PartyModel* targetParty) {
+    return false;
+}
+
+/*---------------------------------------------------------------*/
+
+AdvActionMove::AdvActionMove(int anId, PartyModel* party) : AdventureAction(anId, party) {
+    _cost = 0;
+    _targetType = TARGET_HEX;
+    _type = ACTION_TYPE_MOVEMENT;
+    _name = "MOVE";
+}
+
+bool AdvActionMove::isAvailableAtHex(const MPoint& hex) {
+    int distance = hexDistance(_party->getPosition(), hex);
+    return (distance == 1);
+}
+
+void AdvActionMove::doIt(const ActionState& statePoint) {
+    
+}
+
