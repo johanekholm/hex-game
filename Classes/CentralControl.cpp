@@ -28,7 +28,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <ctime>
-
+#include <python.h>
 
 
 CentralControl* CentralControl::_instance = 0;
@@ -76,6 +76,12 @@ CentralControl::CentralControl() {
     
     _stringImage = new StringImage("HIJKLMNOPQRSTUVWXYZ", 1.0f, 1.0f, 1.0f, 1.0f);
     
+    //Python
+    Py_SetProgramName((char*)"HexGame");
+
+    Py_Initialize();
+
+    PyRun_SimpleString("print 'Hello from CentralControl in python'\n");
 }
 
 void CentralControl::update() {
