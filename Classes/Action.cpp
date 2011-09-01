@@ -203,9 +203,13 @@ AdventureAction* AdventureAction::build(int actionId, PartyModel* party) {
 	}
 }
 
-AdventureAction::AdventureAction(int anId, PartyModel* party) {
+AdventureAction::AdventureAction(const std::string& name, int anId, PartyModel* party, int cost, int targetType, int actionType) {
 	_id = anId;	
 	_party = party;
+    _cost = cost;
+    _targetType = targetType;
+    _type = actionType;
+    _name = name;
 }
 
 int AdventureAction::getCost() {
@@ -251,12 +255,7 @@ bool AdventureAction::isAvailableToParty(PartyModel* targetParty) {
 
 /*---------------------------------------------------------------*/
 
-AdvActionMove::AdvActionMove(int anId, PartyModel* party) : AdventureAction(anId, party) {
-    _cost = 0;
-    _targetType = TARGET_HEX;
-    _type = ACTION_TYPE_MOVEMENT;
-    _name = "MOVE";
-}
+AdvActionMove::AdvActionMove(int anId, PartyModel* party) : AdventureAction("MOVE", anId, party, 0, TARGET_HEX, ACTION_TYPE_MOVEMENT) { }
 
 bool AdvActionMove::isAvailableAtHex(const MPoint& hex) {
     int distance = hexDistance(_party->getPosition(), hex);

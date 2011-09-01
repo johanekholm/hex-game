@@ -84,7 +84,7 @@ protected:
 
 public:
     static AdventureAction* build(int anId, PartyModel* party);
-    AdventureAction(int anId, PartyModel* party);
+    AdventureAction(const std::string& name, int anId, PartyModel* party, int cost, int targetType, int actionType);
 	virtual void doIt(const ActionState& statePoint) = 0;
     int getCost();
     std::vector<ActionState> getActionPoints(int ap, const std::map<int, HexState>& hexes, const std::vector<PartyModel*>& parties);
