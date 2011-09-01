@@ -1,5 +1,5 @@
 /*
- *  Sound.h
+ *  AssetLoader.h
  *  hex-game
  *
  *  Created by Magnus Ahlberg on 2011-09-09.
