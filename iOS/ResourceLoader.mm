@@ -24,3 +24,7 @@ GLuint ResourceLoader::loadTexture(const std::string &filename) {
 	[tex dealloc];
 	return texRef;
 }
+
+std::string ResourceLoader::loadLuaScript(const std::string &filename) {
+    //TODO: Implement
+}

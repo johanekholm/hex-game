@@ -29,3 +29,7 @@ GLuint ResourceLoader::loadTexture(const std::string &filename) {
     QString path = QString(":/Resources/") + filename.c_str();
 	return d->view->bindTexture(QPixmap(path), GL_TEXTURE_2D, GL_RGBA, QGLContext::NoBindOption);	
 }
+
+std::string ResourceLoader::loadLuaScript(const std::string &filename) {
+    //TODO: Implement
+}

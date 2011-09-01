@@ -15,6 +15,7 @@ class ResourceLoader: public AbstractResourceLoader {
 public:
     ResourceLoader(EAGLView *view);
     virtual ~ResourceLoader();
+    static std::string loadLuaScript(const std::string &scriptName);
 protected:
     virtual GLuint loadTexture(const std::string &filename);
 

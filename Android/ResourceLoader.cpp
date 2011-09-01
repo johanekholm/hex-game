@@ -8,11 +8,11 @@
  */
 
 #include "ResourceLoader.h"
+#include "AssetLoader.h"
+#include "toolkit.h"
 
-#include <android/log.h>
-
-#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, "HexGame", __VA_ARGS__))
-#define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "HexGame", __VA_ARGS__))
+#include <android/asset_manager.h>
+#include <assert.h>
 
 class ResourceLoader::PrivateData {
 public:
@@ -47,4 +47,28 @@ void ResourceLoader::setCallingObject(jobject callingObject) {
 }
 void ResourceLoader::setGL(jobject gl) {
 	d->gl = gl;
+}
+
+std::string ResourceLoader::loadLuaScript(const std::string &scriptname) {
+	const std::string &filename = scriptname + ".lua";
+	AssetLoader *loader = AssetLoader::instance();
+    AAsset *asset = loader->open(filename);
+
+    // the asset might not be found
+    if (NULL == asset) {
+		DEBUGLOG("Asset not found: %s", filename.c_str());
+		return NULL;
+    }
+
+	size_t length = AAsset_getLength(asset);
+	const char *buffer = (char *)AAsset_getBuffer(asset);
+
+	std::string script(buffer, length);
+
+	if (buffer = NULL) {
+		DEBUGLOG("Buffer is empty");
+	}
+
+	AAsset_close(asset);
+	return script;
 }
