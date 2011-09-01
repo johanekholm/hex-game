@@ -152,6 +152,20 @@ void ViewControllerManager::setMapView(HexMap* mapView) {
     _mapView = mapView;
 }
 
+GPoint ViewControllerManager::transformModelPositionToView(const MPoint& pos) {
+	GPoint viewPos;
+    GLfloat scale = 1.0f;
+    
+    if (_mapView != 0) {
+        scale = _mapView->getScale();
+    }
+    
+    viewPos.x = 64.0f + ((GLfloat)pos.x * 64.0f + (pos.y % 2) * 32.0f) * scale;
+	viewPos.y = 64.0f + ((GLfloat)pos.y * 50.0f) * scale;
+    return viewPos;
+}
+
+
 void ViewControllerManager::update() {
 	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end();) {
 		if ((*it) != 0) {

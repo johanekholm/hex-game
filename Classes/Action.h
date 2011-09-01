@@ -23,8 +23,8 @@
 #define ACTION_BURN 4
 #define ACTION_HEAL 5
 
-#define ADV_ACTION_MOVE -1
-#define ADV_ACTION_BATTLE -2
+#define ADV_ACTION_MOVE 0
+#define ADV_ACTION_BATTLE 1
 
 #define TARGET_HEX 1
 #define TARGET_UNIT 2

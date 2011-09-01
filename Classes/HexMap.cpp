@@ -21,7 +21,7 @@ HexMap::HexMap(HexMapModel* model, TextureMap* tex, GLfloat scale) {
 
 	_width = model->getWidth();
 	_height = model->getHeight();
-
+    _scale = scale;
 	_texture = tex;
 
 	_numVertices = _width * _height * 3*4;
@@ -126,5 +126,9 @@ std::vector<MPoint> HexMap::getAllHexes() {
         }
     }
     return v;
+}
+
+GLfloat HexMap::getScale() {
+    return _scale;
 }
 

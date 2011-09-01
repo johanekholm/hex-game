@@ -37,12 +37,14 @@ class HexMap {
 	GLfloat *_vertices;
 	GLfloat *_texCoords;
 	int _numVertices;
+    GLfloat _scale;
 	
 public:
 	~HexMap();
 	HexMap(HexMapModel* model, TextureMap* tex, GLfloat scale);
 	void draw();
     std::vector<MPoint> getAllHexes();
+    GLfloat getScale();
 	//void drawAt(const GPoint &pos);
 	//void setPosition(GPoint point);
 };

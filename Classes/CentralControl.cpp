@@ -71,9 +71,9 @@ CentralControl::CentralControl() {
     //_unitFactory->produceAndRegisterUnit("archer", 2, MPointMake(2, 1));
     //_unitFactory->produceAndRegisterUnit("channeler", 1, MPointMake(0, 1));
     
-    // SceneLoader::instance()->switchToAdventureScene();
-    // this->switchMode(ControlMode::ADVENTURE);
-    this->switchMode(ControlMode::BATTLE);
+    SceneLoader::instance()->switchToAdventureScene();
+    this->switchMode(ControlMode::ADVENTURE);
+    //this->switchMode(ControlMode::BATTLE);
 }
 
 void CentralControl::update() {
@@ -145,12 +145,12 @@ void CentralControl::handleEventAdventureNormal(const TouchEvent& event) {
     if (!caughtEvent) {
         switch (event.type) {
             case 1:
-                selection = _viewControllerManager->getTouched(event.point);
-                std::cout << selection << std::endl;
-                _viewControllerManager->setFocus(selection);
                 break;
 
             case 3:                
+                selection = _viewControllerManager->getTouched(event.point);
+                std::cout << selection << std::endl;
+                _viewControllerManager->setFocus(selection);
                 break;
                 
             default:

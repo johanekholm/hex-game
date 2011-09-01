@@ -26,6 +26,7 @@ void UnitFactory::produceAndRegisterMapObject(const std::string& objectType, int
     MapObject* object;
     MapObjectView* view;
     std::vector<UnitModel*> units;
+    std::vector<int> actions;
     int image;
     
     if (objectType == "village") {
@@ -33,9 +34,10 @@ void UnitFactory::produceAndRegisterMapObject(const std::string& objectType, int
         object = new MapObject(pos, owner);
     } else if (objectType == "party") {
         image = 1;
+        actions.push_back(ADV_ACTION_MOVE);
         units.push_back(produceUnit("soldier", owner, MPointMake(0,0)));
         units.push_back(produceUnit("soldier", owner, MPointMake(1,0)));
-        object = new PartyModel(pos, owner, units);
+        object = new PartyModel(pos, owner, actions, units);
     } else {
         return;
     }

@@ -252,6 +252,6 @@ bool AdvActionMove::isAvailableAtHex(const MPoint& hex) {
 }
 
 void AdvActionMove::doIt(const ActionState& statePoint) {
-    
+    _party->move(statePoint.pos);
 }
 

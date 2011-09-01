@@ -11,6 +11,7 @@
 class ViewController;
 class HexMap;
 struct GPoint;
+struct MPoint;
 
 class ViewControllerManager {
     static ViewControllerManager* _instance;
@@ -43,6 +44,7 @@ public:
     void removeSoft(ViewController* view);
     void setFocus(ViewController* view);
     void setMapView(HexMap* mapView);
+    GPoint transformModelPositionToView(const MPoint& pos);
     void update();
 };
 

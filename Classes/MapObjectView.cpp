@@ -67,7 +67,7 @@ void MapObjectView::drawActions() {
 void MapObjectView::drawGUI() {
 	if (this->_hasFocus) {
         _actionMarker->drawCenteredAt(_pos);
-        //this->drawActions();
+        this->drawActions();
     }
 }
 
@@ -97,17 +97,20 @@ ActionView* MapObjectView::getTouchedActionView(GPoint point) {
 
 bool MapObjectView::handleEvent(const TouchEvent& event) {
     ActionState* statePoint;
-    
+        
 	if (event.type == 3) {
         statePoint = this->getTouchedActionState(event.point);
         
         if (statePoint != 0) {
-            //_objectModel->doAction(*statePoint);
+            _objectModel->doAction(*statePoint);
+            _selectedActionView = 0;
+            return true;
         }
 	}
     
     if (event.type == 1) {
         _selectedActionView = this->getTouchedActionView(event.point);
+        return true;
 	}
 	return false;
 }
@@ -120,7 +123,7 @@ void MapObjectView::setFocus(bool hasFocus) {
 void MapObjectView::update() {
     _state = _objectModel->getState();
 	this->updatePosition(_state.pos);
-	//this->updateActions();
+	this->updateActions();
 }
 
 void MapObjectView::updateActions() {
@@ -129,7 +132,7 @@ void MapObjectView::updateActions() {
     _actionPoints.clear();
     
     for (std::vector<ActionState>::iterator it = _state.actions.begin(); it != _state.actions.end(); ++it) {
-        actionView.pos = transformModelPositionToView((*it).pos);
+        actionView.pos = ViewControllerManager::instance()->transformModelPositionToView((*it).pos);
         actionView.actionId = (*it).actionId;
         actionView.active = (*it).active;
         actionView.statePoint = &(*it);
