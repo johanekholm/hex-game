@@ -9,14 +9,11 @@
 
 #include "AssetLoader.h"
 
+#include "toolkit.h"
+
 #include <sys/types.h>
 #include <android/asset_manager.h>
 #include <android/asset_manager_jni.h>
-
-#include <android/log.h>
-
-#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, "HexGame", __VA_ARGS__))
-#define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "HexGame", __VA_ARGS__))
 
 class AssetLoader::PrivateData {
 public:
@@ -37,7 +34,7 @@ AssetLoader::~AssetLoader() {
 
 AAsset *AssetLoader::open(const std::string &filename) {
 	if (!d->manager) {
-		LOGI("Manager not found, aborting!");
+		DEBUGLOG("Manager not found, aborting!");
 		return 0;
 	}
 	return AAssetManager_open(d->manager, filename.c_str(), AASSET_MODE_UNKNOWN);
@@ -53,6 +50,6 @@ AssetLoader* AssetLoader::instance() {
 void AssetLoader::realize(JNIEnv *env, jobject assetManager) {
     d->manager = AAssetManager_fromJava(env, assetManager);
     if (!d->manager) {
- 	   LOGI("Failed to Realize AssetLoader");
+ 	   DEBUGLOG("Failed to Realize AssetLoader");
  	}
 }   
