@@ -41,8 +41,8 @@ UnitModel::UnitModel(int x, int y, int owner, int maxHp, int maxAp, int power, i
 }
 
 
-Action* UnitModel::addAction(int action) {
-	_actions[action] = new Action(action, this);
+BattleAction* UnitModel::addAction(int action) {
+	_actions[action] = BattleAction::build(action, this); //new Action(action, this);
 	return _actions[action];
 }
 
@@ -163,7 +163,7 @@ std::vector<ActionState> UnitModel::getActions() {
     hexes = ModelManager::instance()->getBattleMap()->getAllHexes();
 	units = ModelManager::instance()->getAllUnits();
     
-	for (std::map<int, Action*>::iterator it = _actions.begin(); it != _actions.end(); ++it) {
+	for (std::map<int, BattleAction*>::iterator it = _actions.begin(); it != _actions.end(); ++it) {
         
         temp = (it->second)->getActionPoints(_ap, hexes, units);
         actionPoints.insert(actionPoints.end(), temp.begin(), temp.end());
