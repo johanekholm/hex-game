@@ -36,6 +36,11 @@ void SceneLoader::loadBattleScene() {
 
     ModelManager::instance()->setBattleMap(mapModel);
     ViewControllerManager::instance()->pushMapView(new HexMap(mapModel, TextureCatalog::instance()->get("hexTiles"), 1.0f));
+    
+    UnitFactory::produceAndRegisterUnit("swordsman", 1, MPointMake(1, 0));
+    UnitFactory::produceAndRegisterUnit("archer", 1, MPointMake(0, 0));
+    UnitFactory::produceAndRegisterUnit("soldier", 2, MPointMake(1, 1));
+    UnitFactory::produceAndRegisterUnit("channeler", 2, MPointMake(2, 1));
 }
 
 void SceneLoader::loadAdventureScene() {

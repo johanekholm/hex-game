@@ -53,24 +53,6 @@ struct ActionState {
     int actionType;
 };
 
-class Action {
-	int _id;
-    int _cost;
-    int _targetType;
-    int _type;
-	UnitModel* _unit;
-    std::string _name;
-	
-public:
-	Action(int anId, UnitModel* unit);
-	void doIt(const ActionState& statePoint);
-    int getCost();
-    bool isAvailableAtHex(const MPoint& hex);
-    bool isAvailableToUnit(UnitModel* targetUnit);
-    std::vector<ActionState> getActionPoints(int ap, const std::map<int, HexState>& hexes, const std::vector<UnitModel*>& units);
-};
-
-
 class BattleAction {
 protected:
 	int _id;
@@ -79,6 +61,7 @@ protected:
     int _type;
 	UnitModel* _unit;
     std::string _name;
+    std::string _sound;
 
     virtual bool isAvailableAtHex(const MPoint& hex);
     virtual bool isAvailableToUnit(UnitModel* targetUnit);
@@ -86,20 +69,63 @@ protected:
 
 public:
     static BattleAction* build(int actionId, UnitModel* unit);
-    BattleAction(const std::string& name, int anId, UnitModel* unit, int cost, int targetType, int actionType);
+    BattleAction(int anId, UnitModel* unit, const std::string& name, int cost, int targetType, int actionType, const std::string& sound);
     void doIt(const ActionState& statePoint);
     int getCost();
     std::vector<ActionState> getActionPoints(int ap, const std::map<int, HexState>& hexes, const std::vector<UnitModel*>& units);
 };
 
+/*---------------------------------------------------------------*/
+
 class BActionMove : public BattleAction {
 protected:
     virtual bool isAvailableAtHex(const MPoint& hex);
     virtual void doAction(const ActionState& statePoint);
-    
 public:
     BActionMove(int anId, UnitModel* unit);
 };
+
+/*---------------------------------------------------------------*/
+
+class BActionStrike : public BattleAction {
+protected:
+    virtual bool isAvailableToUnit(UnitModel* targetUnit);
+    virtual void doAction(const ActionState& statePoint);
+public:
+    BActionStrike(int anId, UnitModel* unit);
+};
+
+/*---------------------------------------------------------------*/
+
+class BActionFire : public BattleAction {
+protected:
+    virtual bool isAvailableToUnit(UnitModel* targetUnit);
+    virtual void doAction(const ActionState& statePoint);
+public:
+    BActionFire(int anId, UnitModel* unit);
+};
+
+/*---------------------------------------------------------------*/
+
+class BActionHeal : public BattleAction {
+protected:
+    virtual bool isAvailableToUnit(UnitModel* targetUnit);
+    virtual void doAction(const ActionState& statePoint);
+public:
+    BActionHeal(int anId, UnitModel* unit);
+};
+
+/*---------------------------------------------------------------*/
+
+class BActionBurn : public BattleAction {
+protected:
+    virtual bool isAvailableToUnit(UnitModel* targetUnit);
+    virtual void doAction(const ActionState& statePoint);
+public:
+    BActionBurn(int anId, UnitModel* unit);
+};
+
+/*---------------------------------------------------------------*/
 
 class AdventureAction {
 protected:
@@ -121,6 +147,8 @@ public:
     std::vector<ActionState> getActionPoints(int ap, const std::map<int, HexState>& hexes, const std::vector<PartyModel*>& parties);
 };
 
+/*---------------------------------------------------------------*/
+
 class AdvActionMove : public AdventureAction {
 protected:
     virtual bool isAvailableAtHex(const MPoint& hex);
@@ -129,5 +157,7 @@ public:
     AdvActionMove(int anId, PartyModel* party);
 	virtual void doIt(const ActionState& statePoint);
 };
+
+/*---------------------------------------------------------------*/
 
 #endif

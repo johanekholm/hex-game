@@ -63,7 +63,7 @@ UnitModel* UnitFactory::produceUnit(const std::string& unitClass, int owner, con
         actions.push_back(ACTION_MOVE); actions.push_back(ACTION_FIRE);
     } else if (unitClass == "channeler") {
         hp = 4; ap = 5; power = 2; skill = 3; defense = 1; image = 3;
-        actions.push_back(ACTION_MOVE); actions.push_back(ACTION_BURN); actions.push_back(ACTION_GALE); actions.push_back(ACTION_HEAL);
+        actions.push_back(ACTION_MOVE); actions.push_back(ACTION_BURN); actions.push_back(ACTION_HEAL);
     } else {
         return 0;
     }
@@ -78,6 +78,7 @@ void UnitFactory::produceAndRegisterUnit(const std::string& unitClass, int owner
     UnitModel* unit;
     UnitView* view;
     
+    unit = produceUnit(unitClass, owner, pos);
 	view = new UnitView(unit, 64.0f, 64.0f, unit->getVisualType());
 
     unit->addObserver(view);

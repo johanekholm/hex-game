@@ -71,8 +71,9 @@ CentralControl::CentralControl() {
     //_unitFactory->produceAndRegisterUnit("archer", 2, MPointMake(2, 1));
     //_unitFactory->produceAndRegisterUnit("channeler", 1, MPointMake(0, 1));
     
-    SceneLoader::instance()->switchToAdventureScene();
-    this->switchMode(ControlMode::ADVENTURE);
+    // SceneLoader::instance()->switchToAdventureScene();
+    // this->switchMode(ControlMode::ADVENTURE);
+    this->switchMode(ControlMode::BATTLE);
 }
 
 void CentralControl::update() {
