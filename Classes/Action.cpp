@@ -192,6 +192,106 @@ std::vector<ActionState> Action::getActionPoints(int ap, const std::map<int, Hex
 
 /*---------------------------------------------------------------*/
 
+BattleAction* BattleAction::build(int actionId, UnitModel* unit) {    
+    switch (actionId) {
+		case ACTION_MOVE:
+            return new BActionMove(actionId, unit);
+		case ACTION_STRIKE:
+            return 0;
+		case ACTION_FIRE:
+            return 0;
+        case ACTION_BURN:
+            return 0;
+        case ACTION_GALE:
+            return 0;
+        case ACTION_HEAL:
+            return 0;
+            
+		default:
+            return 0;
+    }
+    
+}
+
+BattleAction::BattleAction(const std::string& name, int anId, UnitModel* unit, int cost, int targetType, int actionType) {
+	_id = anId;	
+	_unit = unit;
+    _cost = cost;
+    _targetType = targetType;
+    _type = actionType;
+    _name = name;
+}
+
+void BattleAction::doIt(const ActionState& statePoint) {
+    
+    if (_unit->spendAp(this->getCost())) {
+        MessageView::add(_unit->getPosition(), _name);
+        Sound *sound = Sound::instance();
+        sound->play("strike");
+        
+        this->doAction(statePoint);
+    }
+}
+
+int BattleAction::getCost() {
+    return _cost;
+}
+
+bool BattleAction::isAvailableAtHex(const MPoint& hex) {
+	return false;
+}
+
+bool BattleAction::isAvailableToUnit(UnitModel* targetUnit) {
+	return false;
+}
+
+std::vector<ActionState> BattleAction::getActionPoints(int ap, const std::map<int, HexState>& hexes, const std::vector<UnitModel*>& units) {
+    ActionState state;
+    std::vector<ActionState> actionPoints;
+    
+    state.actionId = _id;
+    state.cost = _cost;
+    state.actionType = _type;
+    state.active = (ap >= _cost);
+    
+    if (_targetType == TARGET_HEX) {
+        for (std::map<int, HexState>::const_iterator it = hexes.begin(); it != hexes.end(); ++it) {
+            if (this->isAvailableAtHex((it->second).pos)) {
+                state.pos = (it->second).pos;
+                actionPoints.push_back(state);
+                //std::cout << "Action (hex) " << _id << " at (" << state.pos.x << ", " << state.pos.y << ")" << std::endl;
+            }
+        }
+    } else if (_targetType == TARGET_UNIT) {
+        for (std::vector<UnitModel*>::const_iterator it = units.begin(); it != units.end(); ++it) {
+            if (this->isAvailableToUnit(*it)) {
+                state.pos = (*it)->getPosition();
+                actionPoints.push_back(state);
+                //std::cout << "Action (unit) " << _id << " at (" << state.pos.x << ", " << state.pos.y << ")" << std::endl;
+            }
+        }
+    }
+    return actionPoints;
+}
+
+/*---------------------------------------------------------------*/
+
+BActionMove::BActionMove(int anId, UnitModel* unit) : BattleAction("MOVE", anId, unit, 0, TARGET_HEX, ACTION_TYPE_MOVEMENT) {}
+
+bool BActionMove::isAvailableAtHex(const MPoint& hex) {
+    if (hexDistance(_unit->getPosition(), hex) == 1) {
+        return (ModelManager::instance()->getUnitAtPos(hex) == 0);
+    }
+    return false;
+}
+
+void BActionMove::doAction(const ActionState& statePoint) {
+    _unit->move(statePoint.pos);			
+}
+
+
+/*---------------------------------------------------------------*/
+
 AdventureAction* AdventureAction::build(int actionId, PartyModel* party) {
     switch (actionId) {
         case ADV_ACTION_MOVE:

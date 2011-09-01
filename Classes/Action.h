@@ -70,6 +70,37 @@ public:
     std::vector<ActionState> getActionPoints(int ap, const std::map<int, HexState>& hexes, const std::vector<UnitModel*>& units);
 };
 
+
+class BattleAction {
+protected:
+	int _id;
+    int _cost;
+    int _targetType;
+    int _type;
+	UnitModel* _unit;
+    std::string _name;
+
+    virtual bool isAvailableAtHex(const MPoint& hex);
+    virtual bool isAvailableToUnit(UnitModel* targetUnit);
+    virtual void doAction(const ActionState& statePoint) = 0;
+
+public:
+    static BattleAction* build(int actionId, UnitModel* unit);
+    BattleAction(const std::string& name, int anId, UnitModel* unit, int cost, int targetType, int actionType);
+    void doIt(const ActionState& statePoint);
+    int getCost();
+    std::vector<ActionState> getActionPoints(int ap, const std::map<int, HexState>& hexes, const std::vector<UnitModel*>& units);
+};
+
+class BActionMove : public BattleAction {
+protected:
+    virtual bool isAvailableAtHex(const MPoint& hex);
+    virtual void doAction(const ActionState& statePoint);
+    
+public:
+    BActionMove(int anId, UnitModel* unit);
+};
+
 class AdventureAction {
 protected:
 	int _id;
