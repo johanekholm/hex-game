@@ -34,7 +34,7 @@ void UnitFactory::produceAndRegisterMapObject(const std::string& objectType, int
         object = new MapObject(pos, owner);
     } else if (objectType == "party") {
         image = 1;
-        actions.push_back(ADV_ACTION_MOVE);
+        actions.push_back(ADV_ACTION_MOVE); actions.push_back(ADV_ACTION_FIGHT);
         units.push_back(produceUnit("soldier", owner, MPointMake(0,0)));
         units.push_back(produceUnit("soldier", owner, MPointMake(1,0)));
         object = new PartyModel(pos, owner, actions, units);

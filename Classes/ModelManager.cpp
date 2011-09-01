@@ -114,6 +114,17 @@ int ModelManager::getDistanceToClosestEnemy(int owner, const MPoint& pos) {
     return minDistance;
 }
 
+MapObject* ModelManager::getMapObjectAtPos(const MPoint& pos) {
+	for (std::map<int, MapObject*>::iterator it = _mapObjects.begin(); it != _mapObjects.end(); ++it) {
+		if (it->second != 0) {
+            if (it->second->getPosition() == pos) {
+                return it->second;
+            }
+        }
+	}
+    return 0;
+}
+
 int ModelManager::getOwnerWithNoUnits() {
     bool owner1 = false;
     bool owner2 = false;
@@ -158,6 +169,13 @@ UnitModel* ModelManager::getUnitById(int unitId) {
     } else {
         return 0;
     }
+}
+
+void ModelManager::removeAllMapObjects() {
+    for (std::map<int, MapObject*>::iterator it = _mapObjects.begin(); it != _mapObjects.end(); ++it) {
+		delete it->second;
+        _mapObjects.erase(it);
+	}
 }
 
 void ModelManager::removeAllUnits() {

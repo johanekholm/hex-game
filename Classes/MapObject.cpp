@@ -12,7 +12,7 @@
 #include <iostream>
 
 MapObject::~MapObject() {
-
+    this->updateObserversDestroyed();
 }
 
 MapObject::MapObject(MPoint pos, int allegiance) {
@@ -29,6 +29,9 @@ void MapObject::doAction(const ActionState& statePoint) {
 
 }
 
+MPoint MapObject::getPosition() {
+	return MPointMake(_pos.x, _pos.y);
+}
 
 MapObjectState MapObject::getState() {
     MapObjectState state;
@@ -93,9 +96,6 @@ std::vector<ActionState> PartyModel::getActions() {
 	return actionPoints;
 }
 
-MPoint PartyModel::getPosition() {
-	return MPointMake(_pos.x, _pos.y);
-}
 
 MapObjectState PartyModel::getState() {
     MapObjectState state;

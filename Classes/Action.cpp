@@ -8,12 +8,14 @@
  */
 
 #include "Action.h"
+#include "CentralControl.h"
 #include "UnitModel.h"
 #include "geometry.h"
 #include "ModelManager.h"
 #include "HexMapModel.h"
 #include "MessageView.h"
 #include "MapObject.h"
+#include "SceneLoader.h"
 #include "Sound.h"
 #include <iostream>
 #include <string>
@@ -185,8 +187,8 @@ AdventureAction* AdventureAction::build(int actionId, PartyModel* party) {
     switch (actionId) {
         case ADV_ACTION_MOVE:
             return new AdvActionMove(actionId, party);
-        case ADV_ACTION_BATTLE:
-            return 0; //new AdvActionBattle(actionId, party);
+        case ADV_ACTION_FIGHT:
+            return new AActionFight(actionId, party);
 		default:
 			return 0;
 	}
@@ -248,10 +250,31 @@ AdvActionMove::AdvActionMove(int anId, PartyModel* party) : AdventureAction("MOV
 
 bool AdvActionMove::isAvailableAtHex(const MPoint& hex) {
     int distance = hexDistance(_party->getPosition(), hex);
-    return (distance == 1);
+    return (distance == 1 && ModelManager::instance()->getMapObjectAtPos(hex) == 0);
 }
 
 void AdvActionMove::doIt(const ActionState& statePoint) {
     _party->move(statePoint.pos);
 }
 
+/*---------------------------------------------------------------*/
+
+AActionFight::AActionFight(int anId, PartyModel* party) : AdventureAction("FIGHT", anId, party, 0, TARGET_HEX, ACTION_TYPE_ATTACK) { }
+
+bool AActionFight::isAvailableAtHex(const MPoint& hex) {
+    int distance = hexDistance(_party->getPosition(), hex);
+    return (distance == 1 && ModelManager::instance()->getMapObjectAtPos(hex) != 0);
+}
+
+void AActionFight::doIt(const ActionState& statePoint) {
+    //PartyModel* target = (PartyModel*)UnitModel::instance()->getMapObjectAtPos(statePoint.pos);
+    
+    //if (target != 0) {
+        _party->move(statePoint.pos);
+        SceneLoader::instance()->loadBattleScene();
+        CentralControl::instance()->switchMode(ControlMode::BATTLE);
+
+    //}
+}
+
+/*---------------------------------------------------------------*/

@@ -41,9 +41,11 @@ public:
     HexMapModel* getBattleMap();
     UnitModel* getClosestTo(const MPoint& pos);
     int getDistanceToClosestEnemy(int owner, const MPoint& pos);
+    MapObject* getMapObjectAtPos(const MPoint& pos);
     int getOwnerWithNoUnits();
     UnitModel* getUnitAtPos(const MPoint& pos);
     UnitModel* getUnitById(int unitId);
+    void removeAllMapObjects();
     void removeAllUnits();
     void removeMapObject(int objectId);
     void removeUnit(int unitId);

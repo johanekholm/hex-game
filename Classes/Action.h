@@ -24,7 +24,7 @@
 #define ACTION_HEAL 5
 
 #define ADV_ACTION_MOVE 0
-#define ADV_ACTION_BATTLE 1
+#define ADV_ACTION_FIGHT 1
 
 #define TARGET_HEX 1
 #define TARGET_UNIT 2
@@ -155,6 +155,17 @@ protected:
     
 public:
     AdvActionMove(int anId, PartyModel* party);
+	virtual void doIt(const ActionState& statePoint);
+};
+
+/*---------------------------------------------------------------*/
+
+class AActionFight : public AdventureAction {
+protected:
+    virtual bool isAvailableAtHex(const MPoint& hex);
+    
+public:
+    AActionFight(int anId, PartyModel* party);
 	virtual void doIt(const ActionState& statePoint);
 };
 

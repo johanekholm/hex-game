@@ -31,6 +31,7 @@ public:
     virtual ~MapObject();
     MapObject(MPoint pos, int allegiance);
     virtual void availableActions(std::vector<ActionState>& actions);
+    MPoint getPosition();
 	virtual void doAction(const ActionState& statePoint);
     virtual MapObjectState getState();    
     void setId(int id);
@@ -51,7 +52,7 @@ public:
     AdventureAction* addAction(int action);
 	void doAction(const ActionState& statePoint);
     std::vector<ActionState> getActions();
-    MPoint getPosition();
+    //MPoint getPosition();
     virtual MapObjectState getState();    
     void move(const MPoint& targetPos);
 };
