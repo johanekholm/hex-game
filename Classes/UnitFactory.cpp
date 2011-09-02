@@ -31,13 +31,13 @@ void UnitFactory::produceAndRegisterMapObject(const std::string& objectType, int
     
     if (objectType == "village") {
         image = 0;
-        object = new MapObject(pos, owner);
+        object = new MapObject(MapObjectCategory::BUILDING, pos, owner, actions);
     } else if (objectType == "party") {
         image = 1;
         actions.push_back(ADV_ACTION_MOVE); actions.push_back(ADV_ACTION_FIGHT);
         units.push_back(produceUnit("soldier", owner, MPointMake(0,0)));
         units.push_back(produceUnit("soldier", owner, MPointMake(1,0)));
-        object = new PartyModel(pos, owner, actions, units);
+        object = new PartyModel(MapObjectCategory::PARTY, pos, owner, actions, units);
     } else {
         return;
     }

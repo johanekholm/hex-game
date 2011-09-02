@@ -183,20 +183,20 @@ void BActionBurn::doAction(const ActionState& statePoint) {
 
 /*---------------------------------------------------------------*/
 
-AdventureAction* AdventureAction::build(int actionId, PartyModel* party) {
+AdventureAction* AdventureAction::build(int actionId, MapObject* object) {
     switch (actionId) {
         case ADV_ACTION_MOVE:
-            return new AdvActionMove(actionId, party);
+            return new AdvActionMove(actionId, object);
         case ADV_ACTION_FIGHT:
-            return new AActionFight(actionId, party);
+            return new AActionFight(actionId, object);
 		default:
 			return 0;
 	}
 }
 
-AdventureAction::AdventureAction(const std::string& name, int anId, PartyModel* party, int cost, int targetType, int actionType) {
+AdventureAction::AdventureAction(const std::string& name, int anId, MapObject* object, int cost, int targetType, int actionType) {
 	_id = anId;	
-	_party = party;
+	_object = object;
     _cost = cost;
     _targetType = targetType;
     _type = actionType;
@@ -207,7 +207,7 @@ int AdventureAction::getCost() {
     return _cost;
 }
 
-std::vector<ActionState> AdventureAction::getActionPoints(int ap, const std::map<int, HexState>& hexes, const std::vector<PartyModel*>& parties) {
+std::vector<ActionState> AdventureAction::getActionPoints(int ap, const std::map<int, HexState>& hexes, const std::vector<MapObject*>& parties) {
     ActionState state;
     std::vector<ActionState> actionPoints;
     
@@ -225,8 +225,8 @@ std::vector<ActionState> AdventureAction::getActionPoints(int ap, const std::map
             }
         }
     } else if (_targetType == TARGET_PARTY) {
-        for (std::vector<PartyModel*>::const_iterator it = parties.begin(); it != parties.end(); ++it) {
-            if (this->isAvailableToParty(*it)) {
+        for (std::vector<MapObject*>::const_iterator it = parties.begin(); it != parties.end(); ++it) {
+            if (this->isAvailableToObject(*it)) {
                 state.pos = (*it)->getPosition();
                 actionPoints.push_back(state);
                 //std::cout << "Action (unit) " << _id << " at (" << state.pos.x << ", " << state.pos.y << ")" << std::endl;
@@ -240,29 +240,29 @@ bool AdventureAction::isAvailableAtHex(const MPoint& hex) {
     return false;
 }
 
-bool AdventureAction::isAvailableToParty(PartyModel* targetParty) {
+bool AdventureAction::isAvailableToObject(MapObject* targetObject) {
     return false;
 }
 
 /*---------------------------------------------------------------*/
 
-AdvActionMove::AdvActionMove(int anId, PartyModel* party) : AdventureAction("MOVE", anId, party, 0, TARGET_HEX, ACTION_TYPE_MOVEMENT) { }
+AdvActionMove::AdvActionMove(int anId, MapObject* object) : AdventureAction("MOVE", anId, object, 0, TARGET_HEX, ACTION_TYPE_MOVEMENT) { }
 
 bool AdvActionMove::isAvailableAtHex(const MPoint& hex) {
-    int distance = hexDistance(_party->getPosition(), hex);
+    int distance = hexDistance(_object->getPosition(), hex);
     return (distance == 1 && ModelManager::instance()->getMapObjectAtPos(hex) == 0);
 }
 
 void AdvActionMove::doIt(const ActionState& statePoint) {
-    _party->move(statePoint.pos);
+    _object->move(statePoint.pos);
 }
 
 /*---------------------------------------------------------------*/
 
-AActionFight::AActionFight(int anId, PartyModel* party) : AdventureAction("FIGHT", anId, party, 0, TARGET_HEX, ACTION_TYPE_ATTACK) { }
+AActionFight::AActionFight(int anId, MapObject* object) : AdventureAction("FIGHT", anId, object, 0, TARGET_HEX, ACTION_TYPE_ATTACK) { }
 
 bool AActionFight::isAvailableAtHex(const MPoint& hex) {
-    int distance = hexDistance(_party->getPosition(), hex);
+    int distance = hexDistance(_object->getPosition(), hex);
     return (distance == 1 && ModelManager::instance()->getMapObjectAtPos(hex) != 0);
 }
 
@@ -270,7 +270,7 @@ void AActionFight::doIt(const ActionState& statePoint) {
     //PartyModel* target = (PartyModel*)UnitModel::instance()->getMapObjectAtPos(statePoint.pos);
     
     //if (target != 0) {
-        _party->move(statePoint.pos);
+        _object->move(statePoint.pos);
         SceneLoader::instance()->loadBattleScene();
         CentralControl::instance()->switchMode(ControlMode::BATTLE);
 

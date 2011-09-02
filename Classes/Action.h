@@ -44,6 +44,7 @@ class UnitModel;
 struct HexState;
 
 class PartyModel;
+class MapObject;
 
 struct ActionState {
     MPoint pos;
@@ -133,18 +134,18 @@ protected:
     int _cost;
     int _targetType;
     int _type;
-	PartyModel* _party;
+	MapObject* _object;
     std::string _name;
 
     virtual bool isAvailableAtHex(const MPoint& hex);
-    virtual bool isAvailableToParty(PartyModel* targetParty);
+    virtual bool isAvailableToObject(MapObject* targetObject);
 
 public:
-    static AdventureAction* build(int anId, PartyModel* party);
-    AdventureAction(const std::string& name, int anId, PartyModel* party, int cost, int targetType, int actionType);
+    static AdventureAction* build(int anId, MapObject* object);
+    AdventureAction(const std::string& name, int anId, MapObject* object, int cost, int targetType, int actionType);
 	virtual void doIt(const ActionState& statePoint) = 0;
     int getCost();
-    std::vector<ActionState> getActionPoints(int ap, const std::map<int, HexState>& hexes, const std::vector<PartyModel*>& parties);
+    std::vector<ActionState> getActionPoints(int ap, const std::map<int, HexState>& hexes, const std::vector<MapObject*>& parties);
 };
 
 /*---------------------------------------------------------------*/
@@ -154,7 +155,7 @@ protected:
     virtual bool isAvailableAtHex(const MPoint& hex);
     
 public:
-    AdvActionMove(int anId, PartyModel* party);
+    AdvActionMove(int anId, MapObject* object);
 	virtual void doIt(const ActionState& statePoint);
 };
 
@@ -165,7 +166,7 @@ protected:
     virtual bool isAvailableAtHex(const MPoint& hex);
     
 public:
-    AActionFight(int anId, PartyModel* party);
+    AActionFight(int anId, MapObject* object);
 	virtual void doIt(const ActionState& statePoint);
 };
 
