@@ -1,3 +1,5 @@
+SET(PYTHON_FOR_IOS_DIR "" CACHE DIR "The _install dir for python for iOS")
+INCLUDE_DIRECTORIES( ${PYTHON_FOR_IOS_DIR}/include/python2.6 )
 
 LIST(APPEND SOURCES
 	iOS/main.m
@@ -37,6 +39,7 @@ ENDFOREACH()
 
 LIST(APPEND LIBRARIES
 	"-framework Foundation -framework UIKit -framework CoreGraphics -framework OpenGLES -framework QuartzCore -framework AVFoundation"
+	${PYTHON_FOR_IOS_DIR}/lib/libpython2.6.a
 )
 
 SET(SDK_VERSION "iphoneos4.1" CACHE STRING "The sdk version")
