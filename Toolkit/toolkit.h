@@ -7,20 +7,25 @@
  *
  */
 
+#ifndef TOOLKIT_H
+#define TOOLKIT_H
+
 #if defined(PLATFORM_IOS)
 	#import <Foundation/Foundation.h>
 	#import <OpenGLES/ES1/gl.h>
+    inline void DEBUGLOG(...) { } // TODO: Implement
 #elif defined(PLATFORM_DESKTOP)
 	#include <QGLContext>
+    inline void DEBUGLOG(...) { } // TODO: Implement
 #elif defined(PLATFORM_ANDROID)
 	#include <GLES/gl.h>
+	#include <android/log.h>
+	#define DEBUGLOG(...) ((void)__android_log_print(ANDROID_LOG_INFO, "HexGame", __VA_ARGS__))
 #elif defined(PLATFORM_MAEMO)
 	#include "SDL.h"
 	#include <SDL_gles.h>
+    inline void DEBUGLOG(...) { } // TODO: Implement
 #endif
-
-#ifndef TOOLKIT_H
-#define TOOLKIT_H
 
 struct GPointInTime {
 	GLfloat x;

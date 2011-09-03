@@ -13,6 +13,7 @@ class ResourceLoader: public AbstractResourceLoader {
 public:
     ResourceLoader();
     virtual ~ResourceLoader();
+    static std::string loadLuaScript(const std::string &scriptName);
 protected:
     virtual GLuint loadTexture(const std::string &filename);
 };

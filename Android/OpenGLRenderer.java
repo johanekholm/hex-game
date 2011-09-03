@@ -21,8 +21,6 @@ public class OpenGLRenderer implements Renderer {
         System.loadLibrary("HexGame");
     }
 
-    static GL10 gl10;
-
 	@Override
 	public void onDrawFrame(GL10 gl) {
 		OpenGLRenderer.update();
@@ -38,7 +36,7 @@ public class OpenGLRenderer implements Renderer {
 		// Reset the projection matrix
 		gl.glLoadIdentity();// OpenGL docs.
 		// Calculate the aspect ratio of the window
-		
+
 		GLU.gluOrtho2D(gl, 0.0f, 320.0f, 480.0f, 0.0f);
 
 		// Select the modelview matrix
@@ -75,23 +73,20 @@ public class OpenGLRenderer implements Renderer {
 		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_LINEAR);
 		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
 		
-		OpenGLRenderer.gl10 = gl;
-		loadResources();
-		OpenGLRenderer.gl10 = null;
+		loadResources(gl);
 
 		OpenGLRenderer.realizeAssetLoader(HexGame.assetManager);
 	}
 	
-	public static int newTextureID(GL10 gl) {
+	private int newTextureID(GL10 gl) {
 	    int[] temp = new int[1];
 	    gl.glGenTextures(1, temp, 0);
 	    return temp[0];        
 	}
 
 	// Will load a texture out of an asset file, and return an OpenGL texture ID:
-	public static int loadTexture(String textureName) {
-		GL10 gl = OpenGLRenderer.gl10;
-	    int id = OpenGLRenderer.newTextureID(gl);
+	public int loadTexture(GL10 gl, String textureName) {
+	    int id = newTextureID(gl);
 
 		AssetManager assetManager = HexGame.context.getResources().getAssets();
 
@@ -118,8 +113,7 @@ public class OpenGLRenderer implements Renderer {
 	    return id;
 	}
 
-	
-	public native void loadResources();
+	public native void loadResources(GL10 gl);
     public static native void init();
     public static native void draw();
     public static native void update();

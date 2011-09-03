@@ -15,8 +15,9 @@ public:
     ResourceLoader();
     virtual ~ResourceLoader();
     void setEnv(JNIEnv* env);
-    void setGL10(jobject gl10);
+    void setGL(jobject gl);
     void setCallingObject(jobject callingObject);
+    static std::string loadLuaScript(const std::string &scriptName);
 protected:
     virtual GLuint loadTexture(const std::string &filename);
 private:
