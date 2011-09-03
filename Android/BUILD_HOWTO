@@ -11,6 +11,8 @@ following:
 
 * android-cmake [http://code.google.com/p/android-cmake/]
 
+* python-for-android [http://code.google.com/p/python-for-android/]
+
 
 ## Preparations
 
@@ -43,6 +45,11 @@ export PATH=$ANDROID_NDK_TOOLCHAIN_ROOT/bin:$ANDROID_SDK/tools:$ANDROID_SDK/plat
 
 alias androidcmake='cmake -DCMAKE_TOOLCHAIN_FILE=${ANDTOOLCHAIN} '
 
+### Step 3 - Unpack python-for-android
+
+HexGame needs python. The python-for-android project has precompiled libraries
+for Android making it simple. Download python-lib_r16.zip or later and unpack
+the files somewhere. We need the path later.
 
 ## Building HexGame
 
@@ -51,7 +58,9 @@ directory, e.g.: mkdir build-android cd build-android
 
 2.  Run the alias androidcmake with the required cmake flags:
 
-androidcmake ../ -DTARGET_PLATFORM=Android -DLIBRARY_OUTPUT_PATH_ROOT=./apk
+androidcmake ../ -DTARGET_PLATFORM=Android -DLIBRARY_OUTPUT_PATH_ROOT=./apk -DPYTHON_FOR_ANDROID_DIR=<path-to-python-for-android>
+
+Change <path-to-python-for-android> for the actual path to python for android.
 
 NOTE! If building this on Mac OS X, you will need to tell CMake where to
 find install_name_tool by adding the following flag to the line above:
