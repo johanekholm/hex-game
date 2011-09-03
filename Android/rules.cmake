@@ -1,3 +1,6 @@
+SET(PYTHON_FOR_ANDROID_DIR "" CACHE DIR "The dir with python for Android")
+INCLUDE_DIRECTORIES( ${PYTHON_FOR_ANDROID_DIR}/include/python2.6 )
+
 LIST(APPEND SOURCES
 	Android/AssetLoader.cpp
 	Android/GameGLView.cpp
@@ -17,6 +20,7 @@ LIST(APPEND LIBRARIES
 	GLESv1_CM
 	log
 	OpenSLES
+	${PYTHON_FOR_ANDROID_DIR}/lib/libpython2.6.so
 )
 
 SET(JAVASOURCES
