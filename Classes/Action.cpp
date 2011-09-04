@@ -278,3 +278,15 @@ void AActionFight::doIt(const ActionState& statePoint) {
 }
 
 /*---------------------------------------------------------------*/
+
+AActionShop::AActionShop(int anId, MapObject* object) : AdventureAction("SHOP", anId, object, 0, TARGET_SELF, 0) { }
+
+bool AActionShop::isAvailableAtHex(const MPoint& hex) {
+    return (_object->getPosition() == hex && ModelManager::instance()->getMapObjectAtPos(hex) != 0);
+}
+
+void AActionShop::doIt(const ActionState& statePoint) {
+    CentralControl::instance()->switchMode(ControlMode::MENU);
+}
+
+/*---------------------------------------------------------------*/

@@ -172,4 +172,13 @@ public:
 
 /*---------------------------------------------------------------*/
 
+class AActionShop : public AdventureAction {
+protected:
+    virtual bool isAvailableAtHex(const MPoint& hex);
+    
+public:
+    AActionShop(int anId, MapObject* object);
+	virtual void doIt(const ActionState& statePoint);
+};
+
 #endif

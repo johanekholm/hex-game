@@ -22,6 +22,7 @@ namespace ControlMode {
     const int BATTLE = 1;
     const int BATTLE_FOCUS = 2;
     const int ADVENTURE = 3;
+    const int MENU = 4;
 };
 
 class CentralControl {
