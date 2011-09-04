@@ -9,6 +9,10 @@
 #include "HexMapModel.h"
 #include <cstdlib>
 #include <iostream>
+#include <string>
+#include <sstream>
+#include <algorithm>
+#include <iterator>
 
 
 HexMapModel::~HexMapModel() {
@@ -17,15 +21,31 @@ HexMapModel::~HexMapModel() {
 }
 
 HexMapModel::HexMapModel(int width, int height) {
+    using namespace std;
     HexState state;
 	_width = width;
 	_height = height;
+    string data = "0 1 0 2 0 1 0 2\n1 2 1 2 1 2 1 2\n0 1 0 2 0 1 0 2\n1 2 1 2 1 2 1 2\n0 1 0 2 0 1 0 2\n1 2 1 2 1 2 1 2\n";
+    istringstream dataStream(data);
+    vector<string> tokens;
+    vector<string>::const_iterator it;
+    
+    copy(istream_iterator<string>(dataStream), istream_iterator<string>(), back_inserter<vector<string> >(tokens));
+    //copy(istream_iterator<string>(dataStream), istream_iterator<string>(), ostream_iterator<string>(cout, ","));
+    
+    for (it = tokens.begin(); it != tokens.end(); ++it) {
+        cout << *it << ",";
+    }
+    cout << endl;
+
+    it = tokens.begin();
     
     for (int i = 0; i < _height; i++) {
 		for (int j = 0; j < _width; j++) {
             state.pos = MPointMake(j, i);
-            state.value = rand() % 2;
+            state.value = rand() % 2; // TO-DO: implement conversion from strings in vector to int
             _hexes[i * _width + j] = state;
+            ++it;
         }
     }
 }
