@@ -16,27 +16,6 @@
 
 #include "toolkit.h"
 
-/*#define ACTION_MOVE 0
-#define ACTION_STRIKE 1
-#define ACTION_FIRE 2
-#define ACTION_GALE 3
-#define ACTION_BURN 4
-#define ACTION_HEAL 5
-
-#define ADV_ACTION_MOVE 0
-#define ADV_ACTION_FIGHT 1
-
-#define TARGET_HEX 1
-#define TARGET_UNIT 2
-#define TARGET_PARTY 3
-#define TARGET_SELF 4
-
-#define ACTION_TYPE_ATTACK      1
-#define ACTION_TYPE_MOVEMENT    2
-#define ACTION_TYPE_DEFENSE     3
-#define ACTION_TYPE_BOOST       4
-*/
-
 namespace ActionNS {
     const int BACTION_MOVE =    0;
     const int BACTION_STRIKE =  1;
