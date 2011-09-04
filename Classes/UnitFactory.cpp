@@ -34,7 +34,7 @@ void UnitFactory::produceAndRegisterMapObject(const std::string& objectType, int
         object = new MapObject(MapObjectCategory::BUILDING, pos, owner, actions);
     } else if (objectType == "party") {
         image = 1;
-        actions.push_back(ADV_ACTION_MOVE); actions.push_back(ADV_ACTION_FIGHT);
+        actions.push_back(ActionNS::AACTION_MOVE); actions.push_back(ActionNS::AACTION_FIGHT);
         units.push_back(produceUnit("soldier", owner, MPointMake(0,0)));
         units.push_back(produceUnit("soldier", owner, MPointMake(1,0)));
         object = new PartyModel(MapObjectCategory::PARTY, pos, owner, actions, units);
@@ -56,16 +56,16 @@ UnitModel* UnitFactory::produceUnit(const std::string& unitClass, int owner, con
     
     if (unitClass == "swordsman") {
         hp = 5; ap = 3; power = 3; skill = 2; defense = 3; image = 0;
-        actions.push_back(ACTION_MOVE); actions.push_back(ACTION_STRIKE);
+        actions.push_back(ActionNS::BACTION_MOVE); actions.push_back(ActionNS::BACTION_STRIKE);
     } else if (unitClass == "soldier") {
         hp = 4; ap = 3; power = 2; skill = 2; defense = 2; image = 1;
-        actions.push_back(ACTION_MOVE); actions.push_back(ACTION_STRIKE);
+        actions.push_back(ActionNS::BACTION_MOVE); actions.push_back(ActionNS::BACTION_STRIKE);
     } else if (unitClass == "archer") {
         hp = 4; ap = 3; power = 2; skill = 3; defense = 1; image = 2;
-        actions.push_back(ACTION_MOVE); actions.push_back(ACTION_FIRE);
+        actions.push_back(ActionNS::BACTION_MOVE); actions.push_back(ActionNS::BACTION_FIRE);
     } else if (unitClass == "channeler") {
         hp = 4; ap = 5; power = 2; skill = 3; defense = 1; image = 3;
-        actions.push_back(ACTION_MOVE); actions.push_back(ACTION_BURN); actions.push_back(ACTION_HEAL);
+        actions.push_back(ActionNS::BACTION_MOVE); actions.push_back(ActionNS::BACTION_BURN); actions.push_back(ActionNS::BACTION_HEAL);
     } else {
         return 0;
     }

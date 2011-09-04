@@ -20,20 +20,22 @@
 #include <iostream>
 #include <string>
 
+using namespace ActionNS;
 
-BattleAction* BattleAction::build(int actionId, UnitModel* unit) {    
+
+BattleAction* BattleAction::build(int actionId, UnitModel* unit) {
     switch (actionId) {
-		case ACTION_MOVE:
+		case BACTION_MOVE:
             return new BActionMove(actionId, unit);
-		case ACTION_STRIKE:
+		case BACTION_STRIKE:
             return new BActionStrike(actionId, unit);
-		case ACTION_FIRE:
+		case BACTION_FIRE:
             return new BActionFire(actionId, unit);
-        case ACTION_BURN:
+        case BACTION_BURN:
             return new BActionBurn(actionId, unit);
-        case ACTION_GALE:
+        case BACTION_GALE:
             return 0;
-        case ACTION_HEAL:
+        case BACTION_HEAL:
             return new BActionHeal(actionId, unit);
             
 		default:
@@ -76,6 +78,7 @@ bool BattleAction::isAvailableToUnit(UnitModel* targetUnit) {
 }
 
 std::vector<ActionState> BattleAction::getActionPoints(int ap, const std::map<int, HexState>& hexes, const std::vector<UnitModel*>& units) {
+    
     ActionState state;
     std::vector<ActionState> actionPoints;
     
@@ -106,7 +109,8 @@ std::vector<ActionState> BattleAction::getActionPoints(int ap, const std::map<in
 
 /*---------------------------------------------------------------*/
 
-BActionMove::BActionMove(int anId, UnitModel* unit) : BattleAction(anId, unit, "MOVE", 1, TARGET_HEX, ACTION_TYPE_MOVEMENT, "") {}
+
+BActionMove::BActionMove(int anId, UnitModel* unit) : BattleAction(anId, unit, "MOVE", 1, TARGET_HEX, TYPE_MOVEMENT, "") {}
 
 bool BActionMove::isAvailableAtHex(const MPoint& hex) {
     if (hexDistance(_unit->getPosition(), hex) == 1) {
@@ -121,7 +125,7 @@ void BActionMove::doAction(const ActionState& statePoint) {
 
 /*---------------------------------------------------------------*/
 
-BActionStrike::BActionStrike(int anId, UnitModel* unit) : BattleAction(anId, unit, "STRIKE", 2, TARGET_UNIT, ACTION_TYPE_ATTACK, "strike") {}
+BActionStrike::BActionStrike(int anId, UnitModel* unit) : BattleAction(anId, unit, "STRIKE", 2, TARGET_UNIT, TYPE_ATTACK, "strike") {}
 
 bool BActionStrike::isAvailableToUnit(UnitModel* targetUnit) {
     int distance = hexDistance(_unit->getPosition(), targetUnit->getPosition());
@@ -135,7 +139,7 @@ void BActionStrike::doAction(const ActionState& statePoint) {
 
 /*---------------------------------------------------------------*/
 
-BActionFire::BActionFire(int anId, UnitModel* unit) : BattleAction(anId, unit, "FIRE", 2, TARGET_UNIT, ACTION_TYPE_ATTACK, "") {}
+BActionFire::BActionFire(int anId, UnitModel* unit) : BattleAction(anId, unit, "FIRE", 2, TARGET_UNIT, TYPE_ATTACK, "") {}
 
 bool BActionFire::isAvailableToUnit(UnitModel* targetUnit) {
     int distance = hexDistance(_unit->getPosition(), targetUnit->getPosition());
@@ -149,7 +153,7 @@ void BActionFire::doAction(const ActionState& statePoint) {
 
 /*---------------------------------------------------------------*/
 
-BActionHeal::BActionHeal(int anId, UnitModel* unit) : BattleAction(anId, unit, "HEAL", 2, TARGET_UNIT, ACTION_TYPE_DEFENSE, "heal") {}
+BActionHeal::BActionHeal(int anId, UnitModel* unit) : BattleAction(anId, unit, "HEAL", 2, TARGET_UNIT, TYPE_DEFENSE, "heal") {}
 
 bool BActionHeal::isAvailableToUnit(UnitModel* targetUnit) {
     int distance = hexDistance(_unit->getPosition(), targetUnit->getPosition());
@@ -166,7 +170,7 @@ void BActionHeal::doAction(const ActionState& statePoint) {
 
 /*---------------------------------------------------------------*/
 
-BActionBurn::BActionBurn(int anId, UnitModel* unit) : BattleAction(anId, unit, "BURN", 4, TARGET_UNIT, ACTION_TYPE_ATTACK, "fire") {}
+BActionBurn::BActionBurn(int anId, UnitModel* unit) : BattleAction(anId, unit, "BURN", 4, TARGET_UNIT, TYPE_ATTACK, "fire") {}
 
 bool BActionBurn::isAvailableToUnit(UnitModel* targetUnit) {
     int distance = hexDistance(_unit->getPosition(), targetUnit->getPosition());
@@ -185,9 +189,9 @@ void BActionBurn::doAction(const ActionState& statePoint) {
 
 AdventureAction* AdventureAction::build(int actionId, MapObject* object) {
     switch (actionId) {
-        case ADV_ACTION_MOVE:
+        case AACTION_MOVE:
             return new AdvActionMove(actionId, object);
-        case ADV_ACTION_FIGHT:
+        case AACTION_FIGHT:
             return new AActionFight(actionId, object);
 		default:
 			return 0;
@@ -246,7 +250,7 @@ bool AdventureAction::isAvailableToObject(MapObject* targetObject) {
 
 /*---------------------------------------------------------------*/
 
-AdvActionMove::AdvActionMove(int anId, MapObject* object) : AdventureAction("MOVE", anId, object, 0, TARGET_HEX, ACTION_TYPE_MOVEMENT) { }
+AdvActionMove::AdvActionMove(int anId, MapObject* object) : AdventureAction("MOVE", anId, object, 0, TARGET_HEX, TYPE_MOVEMENT) { }
 
 bool AdvActionMove::isAvailableAtHex(const MPoint& hex) {
     int distance = hexDistance(_object->getPosition(), hex);
@@ -259,7 +263,7 @@ void AdvActionMove::doIt(const ActionState& statePoint) {
 
 /*---------------------------------------------------------------*/
 
-AActionFight::AActionFight(int anId, MapObject* object) : AdventureAction("FIGHT", anId, object, 0, TARGET_HEX, ACTION_TYPE_ATTACK) { }
+AActionFight::AActionFight(int anId, MapObject* object) : AdventureAction("FIGHT", anId, object, 0, TARGET_HEX, TYPE_ATTACK) { }
 
 bool AActionFight::isAvailableAtHex(const MPoint& hex) {
     int distance = hexDistance(_object->getPosition(), hex);
