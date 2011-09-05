@@ -25,25 +25,27 @@ HexMapModel::HexMapModel(int width, int height) {
     HexState state;
 	_width = width;
 	_height = height;
-    string data = "0 1 0 2 0 1 0 2\n1 2 1 2 1 2 1 2\n0 1 0 2 0 1 0 2\n1 2 1 2 1 2 1 2\n0 1 0 2 0 1 0 2\n1 2 1 2 1 2 1 2\n";
+    string data = "0 0 0 0 0 0 0 0\n1 1 1 1 1 1 1 1\n2 2 2 2 2 2 2 2\n1 2 1 2 1 2 1 2\n0 1 0 2 0 1 0 2\n1 2 1 2 1 2 1 2\n";
     istringstream dataStream(data);
     vector<string> tokens;
     vector<string>::const_iterator it;
+    int number = 0;
     
     copy(istream_iterator<string>(dataStream), istream_iterator<string>(), back_inserter<vector<string> >(tokens));
     //copy(istream_iterator<string>(dataStream), istream_iterator<string>(), ostream_iterator<string>(cout, ","));
     
-    for (it = tokens.begin(); it != tokens.end(); ++it) {
-        cout << *it << ",";
-    }
-    cout << endl;
-
     it = tokens.begin();
     
     for (int i = 0; i < _height; i++) {
 		for (int j = 0; j < _width; j++) {
             state.pos = MPointMake(j, i);
-            state.value = rand() % 2; // TO-DO: implement conversion from strings in vector to int
+
+            if (it != tokens.end()) {
+                (stringstream(*it) >> number) ? state.value = number : state.value = 0;
+            } else {
+                state.value = 0;
+            }
+            //cout << state.value << " (" << j << "," << i << ")" << endl;
             _hexes[i * _width + j] = state;
             ++it;
         }

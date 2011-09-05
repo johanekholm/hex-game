@@ -99,9 +99,6 @@ HexMap::HexMap(HexMapModel* model, TextureMap* tex, GLfloat scale) {
 			tIndex = index * 24;
 		}
 	}
-	
-	
-	_texture->getHexTexCoordsForSub(_texCoords, 1, HEX_TEX_Y1); //tileData->at(index));
 }
 
 void HexMap::draw() {
