@@ -15,13 +15,13 @@ HexMap::~HexMap() {
 	delete [] _texCoords;
 }
 
-HexMap::HexMap(HexMapModel* model, TextureMap* tex, GLfloat scale, int aWidth, int aHeight) {
+HexMap::HexMap(HexMapModel* model, TextureMap* tex, GLfloat scale) {
 	int index = 0, vIndex = 0, tIndex = 0;
 	GLfloat tx, ty;
 
-	_width = aWidth;
-	_height = aHeight;
-
+	_width = model->getWidth();
+	_height = model->getHeight();
+    _scale = scale;
 	_texture = tex;
 
 	_numVertices = _width * _height * 3*4;
@@ -126,5 +126,9 @@ std::vector<MPoint> HexMap::getAllHexes() {
         }
     }
     return v;
+}
+
+GLfloat HexMap::getScale() {
+    return _scale;
 }
 

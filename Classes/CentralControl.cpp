@@ -1,5 +1,5 @@
 /*
- *  CentralControl.mm
+ *  CentralControl.cpp
  *  hex-game
  *
  *  Created by Johan Ekholm on 2011-04-16.
@@ -22,6 +22,7 @@
 #include "UnitView.h"
 #include "ViewController.h"
 #include "ViewControllerManager.h"
+#include "SceneLoader.h"
 #include "toolkit.h"
 #include "geometry.h"
 
@@ -38,9 +39,7 @@ void CentralControl::destroy() {
         
         delete _instance->_stringImage;
         delete _instance->_input;
-        delete _instance->_hexMap;
         delete _instance->_viewControllerManager;
-        //delete _instance->_modelManager;
         ModelManager::destroy();
         delete _instance->_unitFactory;
         
@@ -56,46 +55,62 @@ CentralControl::CentralControl() {
     
     srand (time(NULL));
 
+    std::cout << "Setup sound..." << std::endl;
+    
     Sound *sound = Sound::instance();
     sound->add("strike", "slash1");
     sound->add("fire", "fireball1");
 
-	TextureCatalog* catalog = TextureCatalog::instance();
-	
-    ModelManager::instance()->setMap(new HexMapModel(4, 4));
+    SceneLoader::instance()->loadAdventureScene();
+    SceneLoader::instance()->loadBattleScene();
     
-	_hexMap = new HexMap(ModelManager::instance()->getMap(), catalog->get("hexTiles"), 1.0f, 4, 4);
     _viewControllerManager = ViewControllerManager::instance();
     _unitFactory = new UnitFactory(_viewControllerManager);
 	_input = new InputManager();
     
-    _unitFactory->produceAndRegisterUnit("swordsman", 1, MPointMake(0, 0));
-    _unitFactory->produceAndRegisterUnit("soldier", 2, MPointMake(2, 0));
-    _unitFactory->produceAndRegisterUnit("archer", 2, MPointMake(2, 1));
-    _unitFactory->produceAndRegisterUnit("channeler", 1, MPointMake(0, 1));
+    //_unitFactory->produceAndRegisterUnit("swordsman", 1, MPointMake(0, 0));
+    //_unitFactory->produceAndRegisterUnit("soldier", 2, MPointMake(1, 0));
+    //_unitFactory->produceAndRegisterUnit("archer", 2, MPointMake(2, 1));
+    //_unitFactory->produceAndRegisterUnit("channeler", 1, MPointMake(0, 1));
     
-    _stringImage = new StringImage("HIJKLMNOPQRSTUVWXYZ", 1.0f, 1.0f, 1.0f, 1.0f);
-    
+    SceneLoader::instance()->switchToAdventureScene();
+    this->switchMode(ControlMode::ADVENTURE);
+    //this->switchMode(ControlMode::BATTLE);
 }
 
 void CentralControl::update() {
 	TouchEvent event;
+    int loser = 0;
 	
-    if (++_timer >= 300) {
-        _timer = 0;
-        ModelManager::instance()->tick();
+    if (_mode == ControlMode::BATTLE || _mode == ControlMode::BATTLE_FOCUS) {
+        if (++_timer >= 200) {
+            _timer = 0;
+            ModelManager::instance()->tick();
+            
+            loser = ModelManager::instance()->getOwnerWithNoUnits();
+            if (loser != 0) {
+                this->switchMode(ControlMode::ADVENTURE);
+                SceneLoader::instance()->switchToAdventureScene();
+                MessageView::add(GPointMake(160.0f, 240.0f), "VICTORY!");
+            }
+        }        
     }
+    
 	if (_input->hasEvent()) {
 		
 		event = _input->popEvent();
 		
 		// dispatch event to current event handler
 		switch (this->_mode) {
-			case 1:
+			case ControlMode::ADVENTURE:
+				this->handleEventAdventureNormal(event);
+				break;
+
+			case ControlMode::BATTLE:
 				this->handleEventNormal(event);
 				break;
 				
-			case 2:
+			case ControlMode::BATTLE_FOCUS:
 				this->handleEventFocus(event);				
                 break;
 				
@@ -107,19 +122,43 @@ void CentralControl::update() {
 void CentralControl::draw() {
 	
 	switch(_mode) {
-		case 1:
-			_hexMap->draw();
-			_viewControllerManager->draw();
-            _viewControllerManager->drawGUI();
-            //_stringImage->drawAt(GPointMake(20.0f, 80.0f));
-			break;
-		case 2:
-			_hexMap->draw();
+		case ControlMode::BATTLE:
+		case ControlMode::BATTLE_FOCUS:
+        case ControlMode::ADVENTURE:
+            _viewControllerManager->drawMap();
 			_viewControllerManager->draw();
             _viewControllerManager->drawGUI();
 			break;
 	}
 	
+}
+
+void CentralControl::handleEventAdventureNormal(const TouchEvent& event) {
+    ViewController* selection = 0;
+    ViewController* focus;
+    bool caughtEvent = false;
+    
+    focus = _viewControllerManager->getFocus();
+    
+    if (focus != 0) {
+        caughtEvent = focus->handleEvent(event);
+    } 
+    
+    if (!caughtEvent) {
+        switch (event.type) {
+            case 1:
+                break;
+
+            case 3:                
+                selection = _viewControllerManager->getTouched(event.point);
+                std::cout << selection << std::endl;
+                _viewControllerManager->setFocus(selection);
+                break;
+                
+            default:
+                break;
+        }
+    }
 }
 
 void CentralControl::handleEventNormal(const TouchEvent& event) {

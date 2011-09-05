@@ -18,6 +18,12 @@ class UnitFactory;
 struct TouchEvent;
 struct GPoint;
 
+namespace ControlMode {
+    const int BATTLE = 1;
+    const int BATTLE_FOCUS = 2;
+    const int ADVENTURE = 3;
+};
+
 class CentralControl {
 	static CentralControl* _instance;
 	int _mode;
@@ -26,10 +32,8 @@ class CentralControl {
     ModelManager* _modelManager;
     ViewControllerManager* _viewControllerManager;
     UnitFactory* _unitFactory;
-	HexMap* _hexMap;
     StringImage* _stringImage;
 
-    //~CentralControl();
     CentralControl();
 
 public:
@@ -42,10 +46,9 @@ public:
     
     static void destroy();
     
-    
-	
 	void update();
 	void draw();
+    void handleEventAdventureNormal(const TouchEvent& event);
 	void handleEventNormal(const TouchEvent& event);
 	void handleEventFocus(const TouchEvent& event);
 
@@ -56,5 +59,6 @@ public:
 		
 public:
 	void switchMode(int mode);
+    
 };
 

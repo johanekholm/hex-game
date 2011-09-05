@@ -12,6 +12,8 @@
 
 
 HexMapModel::~HexMapModel() {
+    _hexes.clear();
+
 }
 
 HexMapModel::HexMapModel(int width, int height) {
@@ -32,6 +34,10 @@ std::map<int, HexState> HexMapModel::getAllHexes() {
     return _hexes;
 }
 
+int HexMapModel::getHeight() {
+    return _height;
+}
+
 int HexMapModel::getHexValue(const MPoint& hex) {
     return _hexes[hex.y * _width + hex.x].value;
 }
@@ -41,3 +47,6 @@ int HexMapModel::getHexValue(int x, int y) {
     return _hexes[y * _width + x].value;
 }
 
+int HexMapModel::getWidth() {
+    return _width;
+}

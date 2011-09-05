@@ -17,9 +17,12 @@ SET( SOURCES
 	Classes/HexMap.cpp
     Classes/HexMapModel.cpp
 	Classes/InputManager.cpp
+    Classes/MapObject.cpp
+    Classes/MapObjectView.cpp
     Classes/MessageView.cpp
     Classes/ModelManager.cpp
     Classes/Observable.cpp
+    Classes/SceneLoader.cpp
     Classes/ShapeImage.cpp
 	Classes/Sound.cpp
     Classes/StringImage.cpp
@@ -43,8 +46,11 @@ SET( HEADERS
     Classes/HexMapModel.h
 	Classes/InputManager.h
     Classes/IObserver.h
+    Classes/MapObject.h
+    Classes/MapObjectView.h
     Classes/MessageView.h
     Classes/ModelManager.h
+    Classes/SceneLoader.h
     Classes/ShapeImage.h
     Classes/Sound.h
     Classes/StringImage.h

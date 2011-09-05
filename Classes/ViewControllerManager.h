@@ -9,11 +9,14 @@
 
 #include <vector>
 class ViewController;
+class HexMap;
 struct GPoint;
+struct MPoint;
 
 class ViewControllerManager {
     static ViewControllerManager* _instance;
 	std::vector<ViewController*> _views;
+    HexMap *_mapView, *_pushedMapView;
     ViewController* _focus;
 
     ViewControllerManager();
@@ -28,15 +31,20 @@ public:
     
     static void destroy();
 
-	//~ViewControllerManager();
 	void add(ViewController* view);
     void draw();
     void drawGUI();
+    void drawMap();
     ViewController* getFocus();
     ViewController* getTouched(const GPoint& point);	
+    void popMapView();
+    void purge();
+    void pushMapView(HexMap* mapView);
     void remove(ViewController* view);
     void removeSoft(ViewController* view);
     void setFocus(ViewController* view);
+    void setMapView(HexMap* mapView);
+    GPoint transformModelPositionToView(const MPoint& pos);
     void update();
 };
 
