@@ -31,8 +31,8 @@ public:
 	
 	static void destroy();
 	
-    void loadBattleScene();
     void loadAdventureScene();
+    void loadBattleScene();
     void switchToAdventureScene();
 };
 

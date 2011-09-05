@@ -19,6 +19,7 @@ SET( SOURCES
 	Classes/InputManager.cpp
     Classes/MapObject.cpp
     Classes/MapObjectView.cpp
+    Classes/MenuView.cpp
     Classes/MessageView.cpp
     Classes/ModelManager.cpp
     Classes/Observable.cpp
@@ -48,6 +49,7 @@ SET( HEADERS
     Classes/IObserver.h
     Classes/MapObject.h
     Classes/MapObjectView.h
+    Classes/MenuView.h
     Classes/MessageView.h
     Classes/ModelManager.h
     Classes/SceneLoader.h
