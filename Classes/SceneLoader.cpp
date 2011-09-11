@@ -70,3 +70,14 @@ void SceneLoader::switchToMainMenu() {
     ViewControllerManager::instance()->add(menu);
     ViewControllerManager::instance()->setFocus(menu);
 }
+
+void SceneLoader::switchToMenu(MenuViewController* menu) {
+    ViewControllerManager::instance()->add(menu);
+    ViewControllerManager::instance()->setFocus(menu);
+}
+
+void SceneLoader::returnFromMenu() {
+    ViewControllerManager* viewControllerManager = ViewControllerManager::instance();
+    viewControllerManager->remove(viewControllerManager->getFocus());
+}
+

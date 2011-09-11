@@ -132,7 +132,11 @@ void MapObjectView::updateActions() {
     _actionPoints.clear();
     
     for (std::vector<ActionState>::iterator it = _state.actions.begin(); it != _state.actions.end(); ++it) {
-        actionView.pos = ViewControllerManager::instance()->transformModelPositionToView((*it).pos);
+        if ((*it).targetType == ActionNS::TARGET_SELF) {
+            actionView.pos = GPointMake(60.0f, 400.0f);
+        } else {
+            actionView.pos = ViewControllerManager::instance()->transformModelPositionToView((*it).pos);            
+        }
         actionView.actionId = (*it).actionId;
         actionView.active = (*it).active;
         actionView.statePoint = &(*it);

@@ -14,6 +14,7 @@
 #include <string>
 #include "toolkit.h"
 
+class MenuViewController;
 
 class SceneLoader {
 	static SceneLoader* _instance;
@@ -33,8 +34,10 @@ public:
 	
     void loadAdventureScene();
     void loadBattleScene();
+    void returnFromMenu();
     void switchToAdventureScene();
     void switchToMainMenu();
+    void switchToMenu(MenuViewController* menu);
 };
 
 #endif

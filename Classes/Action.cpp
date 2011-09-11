@@ -13,6 +13,7 @@
 #include "geometry.h"
 #include "ModelManager.h"
 #include "HexMapModel.h"
+#include "MenuView.h"
 #include "MessageView.h"
 #include "MapObject.h"
 #include "SceneLoader.h"
@@ -193,6 +194,8 @@ AdventureAction* AdventureAction::build(int actionId, MapObject* object) {
             return new AdvActionMove(actionId, object);
         case AACTION_FIGHT:
             return new AActionFight(actionId, object);
+        case AACTION_SHOP:
+            return new AActionShop(actionId, object);
 		default:
 			return 0;
 	}
@@ -219,6 +222,7 @@ std::vector<ActionState> AdventureAction::getActionPoints(int ap, const std::map
     state.cost = _cost;
     state.actionType = _type;
     state.active = true;
+    state.targetType = _targetType;
     
     if (_targetType == TARGET_HEX) {
         for (std::map<int, HexState>::const_iterator it = hexes.begin(); it != hexes.end(); ++it) {
@@ -236,8 +240,18 @@ std::vector<ActionState> AdventureAction::getActionPoints(int ap, const std::map
                 //std::cout << "Action (unit) " << _id << " at (" << state.pos.x << ", " << state.pos.y << ")" << std::endl;
             }
         }
+    } else if (_targetType == TARGET_SELF) {
+        if (this->isAvailable()) {
+            state.pos = _object->getPosition();
+            actionPoints.push_back(state);
+            std::cout << "Action (self) " << _id << " at (" << state.pos.x << ", " << state.pos.y << ")" << std::endl;
+        }
     }
     return actionPoints;
+}
+
+bool AdventureAction::isAvailable() {
+    return false;
 }
 
 bool AdventureAction::isAvailableAtHex(const MPoint& hex) {
@@ -285,12 +299,31 @@ void AActionFight::doIt(const ActionState& statePoint) {
 
 AActionShop::AActionShop(int anId, MapObject* object) : AdventureAction("SHOP", anId, object, 0, TARGET_SELF, 0) { }
 
-bool AActionShop::isAvailableAtHex(const MPoint& hex) {
-    return (_object->getPosition() == hex && ModelManager::instance()->getMapObjectAtPos(hex) != 0);
+bool AActionShop::isAvailable() {
+    return true;
 }
 
 void AActionShop::doIt(const ActionState& statePoint) {
+    MenuChoice item;
+    std::vector<MenuChoice> choices;
+    
+    item.choiceId = 0; item.label = "SWORD 10S";
+    choices.push_back(item);
+    item.choiceId = 1; item.label = "SHIELD 7S";
+    choices.push_back(item);
+    item.choiceId = 2; item.label = "HELMET 6S";
+    choices.push_back(item);
+    item.choiceId = 3; item.label = "BOOTS 3S";
+    choices.push_back(item);
+    
+    SceneLoader::instance()->switchToMenu(new ChoiceMenuVC(this, choices));
     CentralControl::instance()->switchMode(ControlMode::MENU);
+}
+
+void AActionShop::reportChoice(int choiceId) {
+    std::cout << "Shopped item " << choiceId << std::endl;
+    SceneLoader::instance()->returnFromMenu();
+    CentralControl::instance()->switchMode(ControlMode::ADVENTURE);
 }
 
 /*---------------------------------------------------------------*/

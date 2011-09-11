@@ -15,6 +15,7 @@
 #include <map>
 
 #include "toolkit.h"
+#include "MenuView.h"
 
 namespace ActionNS {
     const int BACTION_MOVE =    0;
@@ -26,7 +27,8 @@ namespace ActionNS {
     
     const int AACTION_MOVE =     0;
     const int AACTION_FIGHT =    1;
-
+    const int AACTION_SHOP =     2;
+    
     const int TARGET_HEX =      1;
     const int TARGET_UNIT =     2;
     const int TARGET_PARTY =    3;
@@ -55,6 +57,7 @@ struct ActionState {
     bool active;
     int cost;
     int actionType;
+    int targetType;
 };
 
 class BattleAction {
@@ -140,6 +143,7 @@ protected:
 	MapObject* _object;
     std::string _name;
 
+    virtual bool isAvailable();
     virtual bool isAvailableAtHex(const MPoint& hex);
     virtual bool isAvailableToObject(MapObject* targetObject);
 
@@ -175,13 +179,14 @@ public:
 
 /*---------------------------------------------------------------*/
 
-class AActionShop : public AdventureAction {
+class AActionShop : public AdventureAction, public IChoiceCallback {
 protected:
-    virtual bool isAvailableAtHex(const MPoint& hex);
+    virtual bool isAvailable();
     
 public:
     AActionShop(int anId, MapObject* object);
 	virtual void doIt(const ActionState& statePoint);
+    void reportChoice(int choiceId);
 };
 
 #endif

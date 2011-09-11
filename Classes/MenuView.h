@@ -9,8 +9,8 @@
 #define MENUVIEWCONTROLLER_H
 
 #include "ViewController.h"
-#include "Action.h"
 #include <vector>
+#include <string>
 
 class ShapeImage;
 class GameImage;
@@ -21,20 +21,17 @@ struct MenuChoice {
     std::string label;
 };
 
-
-/*
- class IChoiseCallback {
- public:
- void reportChoise(int choiseId) = 0;
- };
- */ 
+class IChoiceCallback {
+public:
+    virtual void reportChoice(int choiceId) = 0;
+};
 
 class BaseMenuNodeVC;
 
 /*---------------------------------------------------------------*/
 
 class MenuViewController : public ViewController {
-	AdventureAction* _action;
+protected:
     BaseMenuNodeVC* _rootNode;
     BaseMenuNodeVC* _focus;
     ShapeImage* _background;
@@ -42,13 +39,22 @@ class MenuViewController : public ViewController {
 public:
 	~MenuViewController();
 	MenuViewController();
-	MenuViewController(AdventureAction* action, std::vector<MenuChoice> choices);
 	void draw();
 	void drawGUI();
     void goUp();
 	bool handleEvent(const TouchEvent& event);
-    void reportChoice(int choiceId);
+    virtual void reportChoice(int choiceId);
     void setFocus(BaseMenuNodeVC* focus);
+};
+
+/*---------------------------------------------------------------*/
+
+class ChoiceMenuVC : public MenuViewController {
+    IChoiceCallback* _callback;
+    
+public:
+	ChoiceMenuVC(IChoiceCallback* callback, std::vector<MenuChoice> choices);
+    virtual void reportChoice(int choiceId);    
 };
 
 /*---------------------------------------------------------------*/
