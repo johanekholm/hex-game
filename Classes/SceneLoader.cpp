@@ -15,6 +15,7 @@
 #include "HexMap.h"
 #include "HexMapModel.h"
 #include "UnitFactory.h"
+#include "MenuView.h"
 
 SceneLoader* SceneLoader::_instance = 0;
 
@@ -60,4 +61,12 @@ void SceneLoader::switchToAdventureScene() {
     
     UnitFactory::produceAndRegisterMapObject("party", 1, MPointMake(1, 1));
     UnitFactory::produceAndRegisterMapObject("village", 1, MPointMake(0, 0));
+}
+
+void SceneLoader::switchToMainMenu() {
+    ViewController* menu;
+    
+    menu = new MenuViewController();
+    ViewControllerManager::instance()->add(menu);
+    ViewControllerManager::instance()->setFocus(menu);
 }

@@ -73,9 +73,12 @@ CentralControl::CentralControl() {
     //_unitFactory->produceAndRegisterUnit("archer", 2, MPointMake(2, 1));
     //_unitFactory->produceAndRegisterUnit("channeler", 1, MPointMake(0, 1));
     
-    SceneLoader::instance()->switchToAdventureScene();
-    this->switchMode(ControlMode::ADVENTURE);
+    //SceneLoader::instance()->switchToAdventureScene();
+    //this->switchMode(ControlMode::ADVENTURE);
     //this->switchMode(ControlMode::BATTLE);
+    
+    SceneLoader::instance()->switchToMainMenu();
+    this->switchMode(ControlMode::MENU);
 }
 
 void CentralControl::update() {
@@ -113,6 +116,10 @@ void CentralControl::update() {
 			case ControlMode::BATTLE_FOCUS:
 				this->handleEventFocus(event);				
                 break;
+
+			case ControlMode::MENU:
+				this->handleEventMenu(event);				
+                break;
 				
 		}
 	}
@@ -125,6 +132,8 @@ void CentralControl::draw() {
 		case ControlMode::BATTLE:
 		case ControlMode::BATTLE_FOCUS:
         case ControlMode::ADVENTURE:
+        case ControlMode::MENU:
+            
             _viewControllerManager->drawMap();
 			_viewControllerManager->draw();
             _viewControllerManager->drawGUI();
@@ -158,6 +167,16 @@ void CentralControl::handleEventAdventureNormal(const TouchEvent& event) {
             default:
                 break;
         }
+    }
+}
+
+void CentralControl::handleEventMenu(const TouchEvent& event) {
+    ViewController* focus;
+    
+    focus = _viewControllerManager->getFocus();
+    
+    if (focus != 0) {
+        focus->handleEvent(event);
     }
 }
 

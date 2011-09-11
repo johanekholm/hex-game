@@ -34,6 +34,7 @@ public:
     void loadAdventureScene();
     void loadBattleScene();
     void switchToAdventureScene();
+    void switchToMainMenu();
 };
 
 #endif
