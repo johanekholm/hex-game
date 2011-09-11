@@ -21,20 +21,6 @@ struct MenuChoice {
     std::string label;
 };
 
-class MenuItemView : public ViewController {
-    GPoint _pos;
-    int _choiceId;
-    StringImage* _label;
-    ShapeImage* _button;
-    
-public:
-    ~MenuItemView();
-    MenuItemView(const char& label, int choiceId, const GPoint& pos);
-    int getChoiceId();
-    void draw();
-    void drawGUI();
-	bool handleEvent(const TouchEvent& event);
-};
 
 /*
  class IChoiseCallback {
