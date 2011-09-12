@@ -74,17 +74,21 @@ void MenuViewController::setFocus(BaseMenuNodeVC* focus) {
 
 ChoiceMenuVC::ChoiceMenuVC(IChoiceCallback* callback, std::vector<MenuChoice> choices) {
     std::vector<BaseMenuNodeVC*> nodes;
-    int counter = 0;
+    int counter = 1;
+    GLfloat yStart = 440.0f;
     
     _callback = callback;
     _width = 320.0f;
     _height = 480.0f;
     _background = new RectangleImage(RGBAMake(0.0f, 0.0f, 0.0f, 0.3f), _width, _height, true);
     
+    nodes.push_back(new LeafMenuNodeVC(this, "CANCEL", -1, GPointMake(160.0f, yStart), 120.0f, 25.0f));
+
     for (std::vector<MenuChoice>::iterator it = choices.begin(); it != choices.end(); ++it) {
-        nodes.push_back(new LeafMenuNodeVC(this, (*it).label, (*it).choiceId, GPointMake(160.0f, 40.0f + counter*25.0f), 80.0f, 20.0f));
+        nodes.push_back(new LeafMenuNodeVC(this, (*it).label, (*it).choiceId, GPointMake(160.0f, yStart - counter*30.0f), 120.0f, 25.0f));
         counter++;
     }
+
 
     _rootNode = new ParentMenuNodeVC(this, "ROOT", nodes, GPointMake(0.0f, 0.0f), 80.0f, 32.0f);
     _focus = _rootNode;
@@ -140,7 +144,7 @@ LeafMenuNodeVC::~LeafMenuNodeVC() {
 
 LeafMenuNodeVC::LeafMenuNodeVC(MenuViewController* menuVC, const std::string& label, int choiceId, const GPoint& pos, GLfloat width, GLfloat height) : BaseMenuNodeVC(menuVC, label, choiceId, pos, width, height) {
     
-    _button = new RectangleImage(RGBAMake(0.2f, 0.2f, 1.0f, 0.8f), _width, _height, true);
+    _button = new RectangleImage(RGBAMake(0.2f, 0.2f, 1.0f, 1.0f), _width, _height, true);
     _label = new StringImage(label, 1.0f, 1.0f, 1.0f, 1.0f);
 }
 
