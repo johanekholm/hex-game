@@ -1,9 +1,7 @@
 /*
  *  UnitView.h
- *  igame
  *
- *  Created by Johan Ekholm on 2010-04-25.
- *  Copyright 2010 __MyCompanyName__. All rights reserved.
+ *  Created by Johan Ekholm.
  *
  */
 
@@ -24,13 +22,6 @@
 #define ACTION_RADIUS 64.0f
 
 class ShapeImage;
-
-/*struct ActionView {
-    GPoint pos;
-    int actionId;
-    bool active;
-    ActionState* statePoint;
-};*/
 
 class UnitView : public ViewController, public IObserver {
 	UnitModel* _unitModel;
