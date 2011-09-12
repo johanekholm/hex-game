@@ -11,6 +11,7 @@ SET(PRODUCT_NAME HexGame)
 SET( SOURCES
 	Classes/AbstractResourceLoader.cpp
 	Classes/Action.cpp
+    Classes/BaseUnitViewController.cpp
 	Classes/CentralControl.cpp
 	Classes/GameImage.cpp
 	Classes/geometry.cpp
@@ -40,6 +41,7 @@ SET( SOURCES
 SET( HEADERS
 	Classes/AbstractResourceLoader.h
 	Classes/Action.h
+    Classes/BaseUnitViewController.h
 	Classes/CentralControl.h
 	Classes/GameImage.h
 	Classes/geometry.h
