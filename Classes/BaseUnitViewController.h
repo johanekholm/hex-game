@@ -25,6 +25,7 @@ struct ActionView {
 };
 
 class BaseUnitViewController : public ViewController, public IObserver {
+protected:
     GameImage* _actionImage;
     ShapeImage *_actionMarker;
     ActionView* _selectedActionView;

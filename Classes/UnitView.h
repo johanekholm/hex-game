@@ -7,12 +7,15 @@
  *
  */
 
+#ifndef UNITVIEW_H
+#define UNITVIEW_H
+
 #include "GameImage.h"
-//#include "IUnitView.h"
 #include "IObserver.h"
 #include "ViewController.h"
 #include "UnitModel.h"
 #include "Action.h"
+#include "BaseUnitViewController.h"
 
 #include <vector>
 
@@ -22,12 +25,12 @@
 
 class ShapeImage;
 
-struct ActionView {
+/*struct ActionView {
     GPoint pos;
     int actionId;
     bool active;
     ActionState* statePoint;
-};
+};*/
 
 class UnitView : public ViewController, public IObserver {
 	UnitModel* _unitModel;
@@ -61,3 +64,4 @@ public:
 	void updateState();
 };
 
+#endif
