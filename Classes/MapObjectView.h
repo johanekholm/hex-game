@@ -45,6 +45,6 @@ public:
 	void drawGUI();
 	bool handleEvent(const TouchEvent& event);
     void setFocus(bool hasFocus);
-	void update();
+	void updateState();
 };
 

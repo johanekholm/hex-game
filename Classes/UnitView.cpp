@@ -130,7 +130,7 @@ void UnitView::setFocus(bool hasFocus) {
     this->update();
 }
 
-void UnitView::update() {
+void UnitView::updateState() {
     _state = _unitModel->getState();
 	this->updatePosition(_state.pos);
 	this->updateActions();

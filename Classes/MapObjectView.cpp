@@ -120,7 +120,7 @@ void MapObjectView::setFocus(bool hasFocus) {
     this->update();
 }
 
-void MapObjectView::update() {
+void MapObjectView::updateState() {
     _state = _objectModel->getState();
 	this->updatePosition(_state.pos);
 	this->updateActions();
