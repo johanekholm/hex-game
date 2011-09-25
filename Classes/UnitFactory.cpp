@@ -79,10 +79,10 @@ UnitModel* UnitFactory::produceUnit(const std::string& unitClass, int owner, con
 
 void UnitFactory::produceAndRegisterUnit(const std::string& unitClass, int owner, const MPoint& pos) {
     UnitModel* unit;
-    UnitView* view;
+    UnitViewController* view;
     
     unit = produceUnit(unitClass, owner, pos);
-	view = new UnitView(unit, 64.0f, 64.0f, unit->getVisualType());
+	view = new UnitViewController(unit, 64.0f, 64.0f, unit->getVisualType());
 
     unit->addObserver(view);
     ModelManager::instance()->addUnit(unit);

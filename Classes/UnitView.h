@@ -15,15 +15,31 @@
 #include "Action.h"
 #include "BaseUnitViewController.h"
 
-#include <vector>
-
 #define ACTION_ANGLE_INITIAL -PI/2.0f
 #define ACTION_ANGLE_INCREMENT PI/3.0f
 #define ACTION_RADIUS 64.0f
 
 class ShapeImage;
 
-class UnitView : public ViewController, public IObserver {
+class UnitViewController : public BaseUnitViewController {
+	UnitModel* _unitModel;
+    UnitState _state;
+	GameImage* _unitImage;
+    ShapeImage *_hpBar, *_hpBarSlot;
+    ShapeImage *_apBar, *_apBarSlot;
+
+    void updateBars();
+
+public:
+	~UnitViewController();
+	UnitViewController(UnitModel* model, GLfloat width, GLfloat height, int index);
+	void draw();
+	void drawGUI();
+	bool handleEvent(const TouchEvent& event);
+	void updateState();
+};
+
+/*class UnitView : public ViewController, public IObserver {
 	UnitModel* _unitModel;
     UnitState _state;
 	std::vector<ActionView> _actionPoints;
@@ -54,5 +70,5 @@ public:
     void setFocus(bool hasFocus);
 	void updateState();
 };
-
+*/
 #endif
