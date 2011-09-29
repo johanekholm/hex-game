@@ -30,6 +30,12 @@ AdventureAction* MapObject::addAction(int action) {
 	return _actions[action];
 }
 
+bool MapObject::canMoveTo(const MPoint& pos) {
+    int terrain = ModelManager::instance()->getAdventureMap()->getHexValue(pos);
+    
+    return (terrain < 2);
+}
+
 void MapObject::doAction(const ActionState& statePoint) {
 	if (_actions.find(statePoint.actionId) != _actions.end()) {
 		_actions[statePoint.actionId]->doIt(statePoint);
@@ -73,9 +79,10 @@ bool MapObject::matchesCategory(int category) {
 }
 
 void MapObject::move(const MPoint& targetPos) {
-    _pos = targetPos;        
-	
-	this->updateObservers();
+    if (this->canMoveTo(targetPos)) {
+        _pos = targetPos;        
+        this->updateObservers();        
+    }
 }
 
 void MapObject::setId(int objectId) {

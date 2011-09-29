@@ -33,12 +33,14 @@ protected:
     int _allegiance;
     int _id;
     std::map<int, AdventureAction*> _actions;
+    
 
 public:
     virtual ~MapObject();
     MapObject(int category, MPoint pos, int allegiance, std::vector<int> actionIds);
     MPoint getPosition();
     AdventureAction* addAction(int action);
+    bool canMoveTo(const MPoint& pos);
 	void doAction(const ActionState& statePoint);
     std::vector<ActionState> getActions();
     virtual MapObjectState getState();

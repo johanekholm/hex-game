@@ -25,7 +25,7 @@ HexMapModel::HexMapModel(int width, int height) {
     HexState state;
 	_width = width;
 	_height = height;
-    string data = "0 0 0 0 0 0 0 0\n1 1 1 1 1 1 1 1\n2 2 2 2 2 2 2 2\n1 2 1 2 1 2 1 2\n0 1 0 2 0 1 0 2\n1 2 1 2 1 2 1 2\n";
+    string data = "0 0 0 3 3 3 0 0\n1 1 1 1 3 1 1 1\n2 2 1 1 2 2 2 2\n1 2 1 2 1 2 1 2\n0 1 0 2 0 1 0 2\n1 2 1 2 1 2 1 2\n";
     istringstream dataStream(data);
     vector<string> tokens;
     vector<string>::const_iterator it;

@@ -268,7 +268,7 @@ AdvActionMove::AdvActionMove(int anId, MapObject* object) : AdventureAction("MOV
 
 bool AdvActionMove::isAvailableAtHex(const MPoint& hex) {
     int distance = hexDistance(_object->getPosition(), hex);
-    return (distance == 1 && ModelManager::instance()->getMapObjectAtPos(hex) == 0);
+    return (distance == 1 && ModelManager::instance()->getMapObjectAtPos(hex) == 0 && _object->canMoveTo(hex));
 }
 
 void AdvActionMove::doIt(const ActionState& statePoint) {
