@@ -36,7 +36,7 @@ protected:
     ActionView* getTouchedActionView(GPoint point);
 	void updateActions(std::vector<ActionState>& actionStates);
 	void updatePosition(const MPoint& pos);
-
+    virtual void updateState() = 0;
 public:
 	virtual ~BaseUnitViewController();
 	BaseUnitViewController(GLfloat width, GLfloat height, int index);

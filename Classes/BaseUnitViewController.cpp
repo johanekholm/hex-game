@@ -80,7 +80,7 @@ ActionView* BaseUnitViewController::getTouchedActionView(GPoint point) {
 
 void BaseUnitViewController::setFocus(bool hasFocus) {
     _hasFocus = hasFocus;
-    this->update();
+    this->updateState();
 }
 
 void BaseUnitViewController::updateActions(std::vector<ActionState>& actionStates) {
