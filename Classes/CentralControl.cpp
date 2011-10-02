@@ -147,6 +147,7 @@ void CentralControl::handleEventAdventureNormal(const TouchEvent& event) {
     ViewController* selection = 0;
     ViewController* focus;
     bool caughtEvent = false;
+    GPoint anchor;
     
     focus = _viewControllerManager->getFocus();
     
@@ -157,6 +158,11 @@ void CentralControl::handleEventAdventureNormal(const TouchEvent& event) {
     if (!caughtEvent) {
         switch (event.type) {
             case 1:
+                break;
+
+            case 2:
+                anchor = convertToGPoint(_input->previousTouchPoint());
+                _viewControllerManager->moveCamera(anchor - event.point);
                 break;
 
             case 3:

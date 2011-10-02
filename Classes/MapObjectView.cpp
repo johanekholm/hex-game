@@ -37,7 +37,7 @@ bool MapObjectView::handleEvent(const TouchEvent& event) {
     ActionState* statePoint;
         
 	if (event.type == 3) {
-        statePoint = this->getTouchedActionState(event.point);
+        statePoint = this->getTouchedActionState(event.translatedPoint);
         
         if (statePoint != 0) {
             _objectModel->doAction(*statePoint);
@@ -47,7 +47,7 @@ bool MapObjectView::handleEvent(const TouchEvent& event) {
 	}
     
     if (event.type == 1) {
-        _selectedActionView = this->getTouchedActionView(event.point);
+        _selectedActionView = this->getTouchedActionView(event.translatedPoint);
         return true;
 	}
 	return false;

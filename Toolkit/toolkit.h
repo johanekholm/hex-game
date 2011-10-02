@@ -154,6 +154,7 @@ extern "C" {
 #endif
 
 GPoint GPointMake(GLfloat x, GLfloat y);
+GPoint convertToGPoint(const GPointInTime& pit);
 MPoint MPointMake(int x, int y);
 //bool PointWithin(GPoint point, GPoint pos, GPoint size);
 bool PointWithin(const GPoint& point, const GPoint& pos, GLfloat size);

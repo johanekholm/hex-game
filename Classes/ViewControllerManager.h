@@ -39,11 +39,13 @@ public:
     void drawMap();
     ViewController* getFocus();
     ViewController* getTouched(const GPoint& point);	
+    void moveCamera(const GPoint& pos);
     void popMapView();
     void purge();
     void pushMapView(HexMap* mapView);
     void remove(ViewController* view);
     void removeSoft(ViewController* view);
+    void setCameraPosition(const GPoint& pos);
     void setFocus(ViewController* view);
     void setMapView(HexMap* mapView);
     GPoint transformModelPositionToView(const MPoint& pos);
