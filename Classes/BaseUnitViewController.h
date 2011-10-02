@@ -31,7 +31,7 @@ protected:
     ActionView* _selectedActionView;
     std::vector<ActionView> _actionPoints;
 
-	void drawActions();	
+	void drawActions(const GPoint& cameraPos);	
     ActionState* getTouchedActionState(GPoint point);
     ActionView* getTouchedActionView(GPoint point);
 	void updateActions(std::vector<ActionState>& actionStates);
@@ -41,7 +41,7 @@ public:
 	virtual ~BaseUnitViewController();
 	BaseUnitViewController(GLfloat width, GLfloat height, int index);
     void destroyed();
-	void drawGUI();
+	void drawGUI(const GPoint& cameraPos);
     void setFocus(bool hasFocus);
 };
 

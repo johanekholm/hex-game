@@ -39,8 +39,8 @@ protected:
 public:
 	~MenuViewController();
 	MenuViewController();
-	void draw();
-	void drawGUI();
+	void draw(const GPoint& cameraPos);
+	void drawGUI(const GPoint& cameraPos);
     void goUp();
 	bool handleEvent(const TouchEvent& event);
     virtual void reportChoice(int choiceId);
@@ -70,8 +70,8 @@ protected:
 public:
 	virtual ~BaseMenuNodeVC();
 	BaseMenuNodeVC(MenuViewController* menuVC, const std::string& label, int choiceId, const GPoint& pos, GLfloat width, GLfloat height);
-	void draw();
-	virtual void drawGUI();
+	void draw(const GPoint& cameraPos);
+	virtual void drawGUI(const GPoint& cameraPos);
     BaseMenuNodeVC* getParent();
 	virtual bool handleEvent(const TouchEvent& event) = 0;
     void setMenu(MenuViewController* menuVC);
@@ -87,7 +87,7 @@ class ParentMenuNodeVC : public BaseMenuNodeVC {
 public:
 	virtual ~ParentMenuNodeVC();
 	ParentMenuNodeVC(MenuViewController* menuVC, const std::string& label, const std::vector<BaseMenuNodeVC*>& subNodes, const GPoint& pos, GLfloat width, GLfloat height);
-	virtual void drawGUI();
+	virtual void drawGUI(const GPoint& cameraPos);
 	virtual bool handleEvent(const TouchEvent& event);
 };
 

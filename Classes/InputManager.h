@@ -24,6 +24,7 @@ class InputState;
 struct TouchEvent {
 	int type;
 	GPoint point;
+    GPoint translatedPoint;
 	TouchEvent() : type(0), point() {}
 	TouchEvent(int t, GPoint p) : type(t), point(p) {}
 };

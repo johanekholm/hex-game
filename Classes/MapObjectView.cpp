@@ -29,8 +29,8 @@ MapObjectView::MapObjectView(MapObject* model, GLfloat width, GLfloat height, in
     _objectImage = new GameImage(width, height, TextureCatalog::instance()->get("units"), index);
 }
 
-void MapObjectView::draw() {
-	_objectImage->drawAt(_pos);
+void MapObjectView::draw(const GPoint& cameraPos) {
+	_objectImage->drawAt(_pos - cameraPos);
 }
 
 bool MapObjectView::handleEvent(const TouchEvent& event) {

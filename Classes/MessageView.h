@@ -27,8 +27,8 @@ public:
 	~MessageView();
 	MessageView(const GPoint& pos, const std::string& string);
     MessageView(const GPoint& pos, const std::string& string, GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha);
-	void draw();
-	void drawGUI();
+	void draw(const GPoint& cameraPos);
+	void drawGUI(const GPoint& cameraPos);
 	bool handleEvent(const TouchEvent& event);
     void setFocus(bool hasFocus);
     void update();

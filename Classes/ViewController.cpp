@@ -15,6 +15,10 @@ ViewController::ViewController() {
     _hasFocus = false;
 }
 
+GPoint ViewController::getPosition() {
+    return _pos;
+}
+
 bool ViewController::isWithin(const GPoint& point) {
 	if (point.x >= _pos.x - _width/2 && point.x <= _pos.x + _width/2 && point.y >= _pos.y - _height/2 && point.y <= _pos.y + _height/2) {
 		return true;

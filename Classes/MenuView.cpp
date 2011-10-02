@@ -41,12 +41,12 @@ MenuViewController::MenuViewController() {
     _focus->setFocus(true);    
 }
 
-void MenuViewController::draw() {
+void MenuViewController::draw(const GPoint& cameraPos) {
 }
 
-void MenuViewController::drawGUI() {
+void MenuViewController::drawGUI(const GPoint& cameraPos) {
 	_background->drawAt(GPointMake(0.0f, 0.0f));
-    _focus->drawGUI();
+    _focus->drawGUI(cameraPos);
 }
 
 void MenuViewController::goUp() {
@@ -116,9 +116,9 @@ BaseMenuNodeVC::BaseMenuNodeVC(MenuViewController* menuVC, const std::string& la
     _parentNode = 0;
 }
 
-void BaseMenuNodeVC::draw() {}
+void BaseMenuNodeVC::draw(const GPoint& cameraPos) {}
 
-void BaseMenuNodeVC::drawGUI() {
+void BaseMenuNodeVC::drawGUI(const GPoint& cameraPos) {
     _button->drawCenteredAt(_pos);
     _label->drawCenteredAt(_pos);
 }
@@ -194,12 +194,12 @@ ParentMenuNodeVC::ParentMenuNodeVC(MenuViewController* menuVC, const std::string
     }
 }
 
-void ParentMenuNodeVC::drawGUI() {
+void ParentMenuNodeVC::drawGUI(const GPoint& cameraPos) {
     if (!_hasFocus) {
-        BaseMenuNodeVC::drawGUI();
+        BaseMenuNodeVC::drawGUI(cameraPos);
     } else {
         for (std::vector<BaseMenuNodeVC*>::iterator it = _subNodes.begin(); it != _subNodes.end(); ++it) {
-            (*it)->drawGUI();
+            (*it)->drawGUI(cameraPos);
         }
     }
 }

@@ -102,7 +102,8 @@ void CentralControl::update() {
 	if (_input->hasEvent()) {
 		
 		event = _input->popEvent();
-		
+		event.translatedPoint = _viewControllerManager->adjustForCamera(event.point);
+        
 		// dispatch event to current event handler
 		switch (this->_mode) {
 			case ControlMode::ADVENTURE:
@@ -158,8 +159,8 @@ void CentralControl::handleEventAdventureNormal(const TouchEvent& event) {
             case 1:
                 break;
 
-            case 3:                
-                selection = _viewControllerManager->getTouched(event.point);
+            case 3:
+                selection = _viewControllerManager->getTouched(event.translatedPoint);
                 _viewControllerManager->setFocus(selection);
                 break;
                 
@@ -183,7 +184,7 @@ void CentralControl::handleEventNormal(const TouchEvent& event) {
     ViewController* selection = 0;
 	 
 	if (event.type == 1) {
-        selection = _viewControllerManager->getTouched(event.point);
+        selection = _viewControllerManager->getTouched(event.translatedPoint);
 	 
         if (selection != 0) {
             _viewControllerManager->setFocus(selection);

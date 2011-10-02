@@ -36,26 +36,26 @@ void BaseUnitViewController::destroyed() {
     ViewControllerManager::instance()->remove(this);	
 }
 
-void BaseUnitViewController::drawActions() {
+void BaseUnitViewController::drawActions(const GPoint& cameraPos) {
 	for (std::vector<ActionView>::iterator it = _actionPoints.begin(); it != _actionPoints.end(); ++it) {
         if (!(*it).active) {
             glColor4f(1.0f, 1.0f, 1.0f, 0.3f);
         } else {
             glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         }
-		_actionImage->drawAtWithSubTexture((*it).pos, (*it).actionId);
+		_actionImage->drawAtWithSubTexture((*it).pos - cameraPos, (*it).actionId);
         
         if (_selectedActionView != 0) {
-            _actionMarker->drawCenteredAt((*_selectedActionView).pos);
+            _actionMarker->drawCenteredAt((*_selectedActionView).pos - cameraPos);
         }        
 	}
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
-void BaseUnitViewController::drawGUI() {
+void BaseUnitViewController::drawGUI(const GPoint& cameraPos) {
 	if (this->_hasFocus) {
-        _actionMarker->drawCenteredAt(_pos);
-        this->drawActions();
+        _actionMarker->drawCenteredAt(_pos - cameraPos);
+        this->drawActions(cameraPos);
     }
 }
 

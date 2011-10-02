@@ -34,13 +34,20 @@ struct GPoint {
 	GLfloat x;
 	GLfloat y;
 	
-	GPoint operator+(const GPoint& other) { 
+	GPoint operator+(const GPoint& other) const { 
 		GPoint result;
 		result.x = this->x + other.x;
 		result.y = this->y + other.y;
 		return result;
 	}
 
+	GPoint operator-(const GPoint& other) const { 
+		GPoint result;
+		result.x = this->x - other.x;
+		result.y = this->y - other.y;
+		return result;
+	}
+    
 	GPoint operator*(GLfloat scalar) { 
 		GPoint result;
 		result.x = this->x * scalar;

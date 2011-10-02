@@ -26,8 +26,8 @@ class UnitViewController : public BaseUnitViewController {
 public:
 	~UnitViewController();
 	UnitViewController(UnitModel* model, GLfloat width, GLfloat height, int index);
-	void draw();
-	void drawGUI();
+	void draw(const GPoint& cameraPos);
+	void drawGUI(const GPoint& cameraPos);
 	bool handleEvent(const TouchEvent& event);
 	void updateState();
 };

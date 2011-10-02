@@ -8,16 +8,16 @@
  */
 
 #include <vector>
+#include "toolkit.h"
 class ViewController;
 class HexMap;
-struct GPoint;
-struct MPoint;
 
 class ViewControllerManager {
     static ViewControllerManager* _instance;
 	std::vector<ViewController*> _views;
     HexMap *_mapView, *_pushedMapView;
     ViewController* _focus;
+    GPoint _cameraPos;
 
     ViewControllerManager();
 
@@ -32,6 +32,8 @@ public:
     static void destroy();
 
 	void add(ViewController* view);
+    GPoint adjustForCamera(const GPoint& pos);
+    void centerCamera(const GPoint& pos);
     void draw();
     void drawGUI();
     void drawMap();
@@ -45,6 +47,8 @@ public:
     void setFocus(ViewController* view);
     void setMapView(HexMap* mapView);
     GPoint transformModelPositionToView(const MPoint& pos);
+    void translateToCamera();
+    void translateToCameraAndPosition(const GPoint& pos);
     void update();
 };
 

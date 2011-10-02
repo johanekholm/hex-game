@@ -34,6 +34,7 @@ ViewControllerManager::ViewControllerManager() {
     _focus = 0;
     _mapView = 0;
     _pushedMapView = 0;
+    _cameraPos = 0;
 }
 
 /*ViewControllerManager::~ViewControllerManager() {
@@ -45,10 +46,14 @@ void ViewControllerManager::add(ViewController* view) {
 	_views.push_back(view);
 }
 
+GPoint ViewControllerManager::adjustForCamera(const GPoint& pos) {
+    return pos + _cameraPos;
+}
+
 void ViewControllerManager::draw() {
 	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end(); ++it) {
 		if (*it != 0) {
-            (*it)->draw();            
+            (*it)->draw(_cameraPos);            
         }
 	}
 }
@@ -56,14 +61,14 @@ void ViewControllerManager::draw() {
 void ViewControllerManager::drawGUI() {
 	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end(); ++it) {
 		if (*it != 0) {
-            (*it)->drawGUI();
+            (*it)->drawGUI(_cameraPos);
         }
 	}
 }
 
 void ViewControllerManager::drawMap() {
     if (_mapView != 0) {
-        _mapView->draw();
+        _mapView->draw(_cameraPos);
     }
 }
 
@@ -71,7 +76,8 @@ ViewController* ViewControllerManager::getFocus() {
     return _focus;
 }
 
-ViewController* ViewControllerManager::getTouched(const GPoint& point) {
+ViewController* ViewControllerManager::getTouched(const GPoint& point) {    
+    std::cout << "Get Touched: " << point.x << "," << point.y << std::endl;
 	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end(); ++it) {
 		if ((*it)->isWithin(point)) {
 			return (*it);	
@@ -134,6 +140,18 @@ void ViewControllerManager::removeSoft(ViewController* view) {
 	}
 }
 
+void ViewControllerManager::centerCamera(const GPoint& pos) {
+    _cameraPos = pos - GPointMake(160.0f, 240.0f);
+    
+    if (_cameraPos.x < 0) {
+        _cameraPos.x = 0;
+    }
+
+    if (_cameraPos.y < 0) {
+        _cameraPos.y = 0;
+    }
+}
+
 void ViewControllerManager::setFocus(ViewController* view) {
     // notify of focus lost
     if (_focus != 0) {
@@ -145,6 +163,9 @@ void ViewControllerManager::setFocus(ViewController* view) {
     // notify of focus won
     if (view != 0) {
         view->setFocus(true);
+        this->centerCamera(view->getPosition());
+    } else {
+        _cameraPos = 0;
     }
 }
 
@@ -165,6 +186,15 @@ GPoint ViewControllerManager::transformModelPositionToView(const MPoint& pos) {
     return viewPos;
 }
 
+void ViewControllerManager::translateToCamera() {
+    glLoadIdentity();
+	glTranslatef(-_cameraPos.x, -_cameraPos.y, 0.0f);
+}
+
+void ViewControllerManager::translateToCameraAndPosition(const GPoint& pos) {
+    glLoadIdentity();
+	glTranslatef(-_cameraPos.x + pos.x, -_cameraPos.y + pos.y, 0.0f);
+}
 
 void ViewControllerManager::update() {
 	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end();) {

@@ -75,11 +75,11 @@ void MessageView::destroy() {
     //delete this;
 }
 
-void MessageView::draw() {
+void MessageView::draw(const GPoint& cameraPos) {
 	return;
 }
 
-void MessageView::drawGUI() {
+void MessageView::drawGUI(const GPoint& cameraPos) {
     _stringImage->drawCenteredAt(_pos + _posOffset);
 }
 

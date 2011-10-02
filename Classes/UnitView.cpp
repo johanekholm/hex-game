@@ -35,18 +35,18 @@ UnitViewController::UnitViewController(UnitModel* model, GLfloat width, GLfloat 
     _apBarSlot = new RectangleImage(RGBAMake(0.5f, 0.5f, 0.5f, 1.0f), 32.0f, 6.0f, true);
 }
 
-void UnitViewController::draw() {
+void UnitViewController::draw(const GPoint& cameraPos) {
 	_unitImage->drawAt(_pos);
 }
 
-void UnitViewController::drawGUI() {
+void UnitViewController::drawGUI(const GPoint& cameraPos) {
     _hpBarSlot->drawAt(GPointMake(_pos.x - 16.0f, _pos.y + 32.0f));
     _apBarSlot->drawAt(GPointMake(_pos.x- 16.0f, _pos.y + 26.0f));
     
     _hpBar->drawAt(GPointMake(_pos.x - 16.0f, _pos.y + 32.0f));
     _apBar->drawAt(GPointMake(_pos.x- 16.0f, _pos.y + 26.0f));
     
-    BaseUnitViewController::drawGUI();
+    BaseUnitViewController::drawGUI(cameraPos);
 }
 
 bool UnitViewController::handleEvent(const TouchEvent& event) {
