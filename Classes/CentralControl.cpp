@@ -60,9 +60,10 @@ CentralControl::CentralControl() {
     Sound *sound = Sound::instance();
     sound->add("strike", "slash1");
     sound->add("fire", "fireball1");
+    sound->add("music1", "grotta");
 
     SceneLoader::instance()->loadAdventureScene();
-    SceneLoader::instance()->loadBattleScene();
+    //SceneLoader::instance()->loadBattleScene();
     
     _viewControllerManager = ViewControllerManager::instance();
     _unitFactory = new UnitFactory(_viewControllerManager);
@@ -73,7 +74,7 @@ CentralControl::CentralControl() {
     //_unitFactory->produceAndRegisterUnit("archer", 2, MPointMake(2, 1));
     //_unitFactory->produceAndRegisterUnit("channeler", 1, MPointMake(0, 1));
     
-    SceneLoader::instance()->switchToAdventureScene();
+    //SceneLoader::instance()->switchToAdventureScene();
     this->switchMode(ControlMode::ADVENTURE);
     //this->switchMode(ControlMode::BATTLE);
     

@@ -14,6 +14,7 @@
 #include "TextureCatalog.h"
 #include "HexMap.h"
 #include "HexMapModel.h"
+#include "Sound.h"
 #include "UnitFactory.h"
 #include "MenuView.h"
 
@@ -44,6 +45,8 @@ void SceneLoader::loadBattleScene() {
     UnitFactory::produceAndRegisterUnit("archer", 1, MPointMake(0, 0));
     UnitFactory::produceAndRegisterUnit("soldier", 2, MPointMake(1, 1));
     UnitFactory::produceAndRegisterUnit("channeler", 2, MPointMake(2, 1));
+    
+    Sound::instance()->play("music1");
 }
 
 void SceneLoader::loadAdventureScene() {
@@ -53,6 +56,8 @@ void SceneLoader::loadAdventureScene() {
     
     ModelManager::instance()->setAdventureMap(mapModel);
     ViewControllerManager::instance()->setMapView(new HexMap(mapModel, TextureCatalog::instance()->get("hexTiles"), 1.5f));
+    UnitFactory::produceAndRegisterMapObject("party", 1, MPointMake(1, 1));
+    UnitFactory::produceAndRegisterMapObject("village", 1, MPointMake(0, 0));
 }
 
 void SceneLoader::switchToAdventureScene() {

@@ -81,6 +81,7 @@ SET(RESOURCES
 SET(SOUNDS
 	Resources/fireball1.wav
 	Resources/slash1.wav
+    Resources/grotta.mp3
 )
 
 INCLUDE_DIRECTORIES( Toolkit )
