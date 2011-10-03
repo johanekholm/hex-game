@@ -49,7 +49,7 @@ void SceneLoader::loadBattleScene() {
 void SceneLoader::loadAdventureScene() {
     HexMapModel* mapModel;
     
-    mapModel = new HexMapModel(8, 6);
+    mapModel = new HexMapModel(8, 8);
     
     ModelManager::instance()->setAdventureMap(mapModel);
     ViewControllerManager::instance()->setMapView(new HexMap(mapModel, TextureCatalog::instance()->get("hexTiles"), 1.5f));
