@@ -23,12 +23,15 @@ class Item {
     int _type;
     int _count;
     bool _equipable;
+    std::string _name;
     
 public:
 	~Item();
-	Item(int type, int count, bool equipable);
+	Item(int type, int count, std::string name, bool equipable);
     
     static Item* buildItem(int type, int count);
+    std::string getDescription();
+    int getType();
 };
 
 #endif

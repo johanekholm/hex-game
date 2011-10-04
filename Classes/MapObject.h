@@ -49,6 +49,7 @@ public:
     bool matchesCategory(int category);
     void move(const MPoint& targetPos);
     void setId(int id);
+    void addItem(Item* item);
 };
 
 

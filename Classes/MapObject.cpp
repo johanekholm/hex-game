@@ -10,11 +10,15 @@
 #include "ModelManager.h"
 #include "HexMapModel.h"
 #include "Item.h"
-
 #include <iostream>
 
 MapObject::~MapObject() {
     this->updateObserversDestroyed();
+
+    for (std::map<int, Item*>::iterator it = _items.begin(); it != _items.end(); ++it) {
+        delete it->second;
+    }
+    _items.clear();
 }
 
 MapObject::MapObject(int category, MPoint pos, int allegiance, std::vector<int> actionIds) {
@@ -25,11 +29,20 @@ MapObject::MapObject(int category, MPoint pos, int allegiance, std::vector<int> 
     for (std::vector<int>::iterator it = actionIds.begin(); it != actionIds.end(); ++it) {
         this->addAction(*it);
     }
+    
+    this->addItem(Item::buildItem(ItemNS::SWORD, 1));
+    std::cout << _items[ItemNS::SWORD]->getDescription() << std::endl;
 }
 
 AdventureAction* MapObject::addAction(int action) {
 	_actions[action] = AdventureAction::build(action, this);
 	return _actions[action];
+}
+
+void MapObject::addItem(Item* item) {
+    if (item != 0) {
+        _items[item->getType()] = item;
+    }
 }
 
 bool MapObject::canMoveTo(const MPoint& pos) {
