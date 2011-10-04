@@ -14,6 +14,7 @@
 #include <vector>
 
 //struct ActionState;
+class Item;
 
 namespace MapObjectCategory {
     const int PARTY = 1;
@@ -33,6 +34,7 @@ protected:
     int _allegiance;
     int _id;
     std::map<int, AdventureAction*> _actions;
+    std::map<int, Item*> _items;
     
 
 public:

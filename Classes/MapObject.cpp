@@ -9,6 +9,8 @@
 #include "Action.h"
 #include "ModelManager.h"
 #include "HexMapModel.h"
+#include "Item.h"
+
 #include <iostream>
 
 MapObject::~MapObject() {
