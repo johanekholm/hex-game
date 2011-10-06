@@ -38,6 +38,7 @@ void ModelManager::destroy() {
 ModelManager::ModelManager() {
     _adventureMap = 0;
     _battleMap = 0;
+	_unitIdCounter = 0;
 }
 
 void ModelManager::addMapObject(MapObject* object) {
@@ -174,15 +175,15 @@ UnitModel* ModelManager::getUnitById(int unitId) {
 void ModelManager::removeAllMapObjects() {
     for (std::map<int, MapObject*>::iterator it = _mapObjects.begin(); it != _mapObjects.end(); ++it) {
 		delete it->second;
-        _mapObjects.erase(it);
 	}
+    _mapObjects.clear();
 }
 
 void ModelManager::removeAllUnits() {
     for (std::map<int, UnitModel*>::iterator it = _units.begin(); it != _units.end(); ++it) {
 		delete it->second;
-        _units.erase(it);
 	}
+	_units.clear();
 }
 
 void ModelManager::removeMapObject(int objectId) {
