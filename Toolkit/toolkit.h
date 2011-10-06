@@ -39,13 +39,20 @@ struct GPoint {
 	GLfloat x;
 	GLfloat y;
 	
-	GPoint operator+(const GPoint& other) { 
+	GPoint operator+(const GPoint& other) const { 
 		GPoint result;
 		result.x = this->x + other.x;
 		result.y = this->y + other.y;
 		return result;
 	}
 
+	GPoint operator-(const GPoint& other) const { 
+		GPoint result;
+		result.x = this->x - other.x;
+		result.y = this->y - other.y;
+		return result;
+	}
+    
 	GPoint operator*(GLfloat scalar) { 
 		GPoint result;
 		result.x = this->x * scalar;
@@ -152,6 +159,7 @@ extern "C" {
 #endif
 
 GPoint GPointMake(GLfloat x, GLfloat y);
+GPoint convertToGPoint(const GPointInTime& pit);
 MPoint MPointMake(int x, int y);
 //bool PointWithin(GPoint point, GPoint pos, GPoint size);
 bool PointWithin(const GPoint& point, const GPoint& pos, GLfloat size);

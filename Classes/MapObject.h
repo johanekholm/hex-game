@@ -14,6 +14,12 @@
 #include <vector>
 
 //struct ActionState;
+class Item;
+
+namespace MapObjectCategory {
+    const int PARTY = 1;
+    const int BUILDING = 2;
+};
 
 struct MapObjectState {
     MPoint pos;
@@ -23,18 +29,27 @@ struct MapObjectState {
 class MapObject : public Observable {
     
 protected:
+    int _category;
     MPoint _pos;
     int _allegiance;
     int _id;
+    std::map<int, AdventureAction*> _actions;
+    std::map<int, Item*> _items;
     
+
 public:
     virtual ~MapObject();
-    MapObject(MPoint pos, int allegiance);
-    virtual void availableActions(std::vector<ActionState>& actions);
+    MapObject(int category, MPoint pos, int allegiance, std::vector<int> actionIds);
     MPoint getPosition();
-	virtual void doAction(const ActionState& statePoint);
-    virtual MapObjectState getState();    
+    AdventureAction* addAction(int action);
+    bool canMoveTo(const MPoint& pos);
+	void doAction(const ActionState& statePoint);
+    std::vector<ActionState> getActions();
+    virtual MapObjectState getState();
+    bool matchesCategory(int category);
+    void move(const MPoint& targetPos);
     void setId(int id);
+    void addItem(Item* item);
 };
 
 
@@ -42,18 +57,11 @@ class PartyModel : public MapObject {
     
 protected:
     std::vector<UnitModel*> _members;
-    std::map<int, AdventureAction*> _actions;
 
     
 public:
     ~PartyModel();
-    PartyModel(MPoint pos, int allegiance, std::vector<int> actionIds, const std::vector<UnitModel*>& members);
-    void availableActions(std::vector<ActionState>& actions);
-    AdventureAction* addAction(int action);
-	void doAction(const ActionState& statePoint);
-    std::vector<ActionState> getActions();
-    //MPoint getPosition();
-    virtual MapObjectState getState();    
+    PartyModel(int category, MPoint pos, int allegiance, std::vector<int> actionIds, const std::vector<UnitModel*>& members);
     void move(const MPoint& targetPos);
 };
 

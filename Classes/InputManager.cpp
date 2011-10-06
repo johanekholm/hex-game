@@ -191,6 +191,10 @@ GPointInTime InputManager::pointInTimeAtIndex(int index) {
 	return _touchHistory[rawIndex];
 }
 
+GPointInTime InputManager::previousTouchPoint() {
+	return this->pointInTimeAtIndex(_historyCount - 2);
+}
+
 GPointInTime InputManager::lastTouchPoint() {
 	return this->pointInTimeAtIndex(_historyCount - 1);
 }
@@ -198,6 +202,11 @@ GPointInTime InputManager::lastTouchPoint() {
 GPointInTime InputManager::firstTouchPoint() {
 	return this->pointInTimeAtIndex(0);
 }
+
+/*GPoint InputManager::firstTouchPoint() {
+    GPointInTime pit = this->pointInTimeAtIndex(0);
+    return convertToGPoint(pit);
+}*/
 
 void InputManager::addToHistory(const GPoint& point) {
 	int rawIndex;

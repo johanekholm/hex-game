@@ -35,7 +35,8 @@ void GameImage::drawAt(const GPoint &pos) {
 	
 	glLoadIdentity();
 	glTranslatef(pos.x, pos.y, 0.0f);
-	
+    // ViewControllerManager::instance()->translateToCameraAndPosition(pos);
+    
 	texture->getTriangleTexCoordsForSub(texCoords, texIndex);
 	texture->bind();
 	
@@ -55,7 +56,8 @@ void GameImage::drawAtWithSubTexture(const GPoint &pos, int subTexture) {
 	
 	glLoadIdentity();
 	glTranslatef(pos.x, pos.y, 0.0f);
-	
+    //ViewControllerManager::instance()->translateToCameraAndPosition(pos);
+
 	texture->getTriangleTexCoordsForSub(texCoords, subTexture);
 	texture->bind();
 	
@@ -75,6 +77,7 @@ void GameImage::drawAtRotatedWithSubTexture(const GPoint &pos, GLfloat angle, in
 	
 	glLoadIdentity();
 	glTranslatef(pos.x, pos.y, 0.0f);
+    //ViewControllerManager::instance()->translateToCameraAndPosition(pos);
 	glRotatef(angle, 0.0f, 0.0f, 1.0f);
 	
 	texture->getTriangleTexCoordsForSub(texCoords, subTexture);

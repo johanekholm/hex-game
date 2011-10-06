@@ -60,9 +60,10 @@ CentralControl::CentralControl() {
     Sound *sound = Sound::instance();
     sound->add("strike", "slash1");
     sound->add("fire", "fireball1");
+    sound->add("music1", "grotta");
 
     SceneLoader::instance()->loadAdventureScene();
-    SceneLoader::instance()->loadBattleScene();
+    //SceneLoader::instance()->loadBattleScene();
     
     _viewControllerManager = ViewControllerManager::instance();
     _unitFactory = new UnitFactory(_viewControllerManager);
@@ -73,9 +74,12 @@ CentralControl::CentralControl() {
     //_unitFactory->produceAndRegisterUnit("archer", 2, MPointMake(2, 1));
     //_unitFactory->produceAndRegisterUnit("channeler", 1, MPointMake(0, 1));
     
-    SceneLoader::instance()->switchToAdventureScene();
+    //SceneLoader::instance()->switchToAdventureScene();
     this->switchMode(ControlMode::ADVENTURE);
     //this->switchMode(ControlMode::BATTLE);
+    
+    //SceneLoader::instance()->switchToMainMenu();
+    //this->switchMode(ControlMode::MENU);
 }
 
 void CentralControl::update() {
@@ -99,7 +103,8 @@ void CentralControl::update() {
 	if (_input->hasEvent()) {
 		
 		event = _input->popEvent();
-		
+		event.translatedPoint = _viewControllerManager->adjustForCamera(event.point);
+        
 		// dispatch event to current event handler
 		switch (this->_mode) {
 			case ControlMode::ADVENTURE:
@@ -113,6 +118,10 @@ void CentralControl::update() {
 			case ControlMode::BATTLE_FOCUS:
 				this->handleEventFocus(event);				
                 break;
+
+			case ControlMode::MENU:
+				this->handleEventMenu(event);				
+                break;
 				
 		}
 	}
@@ -125,6 +134,8 @@ void CentralControl::draw() {
 		case ControlMode::BATTLE:
 		case ControlMode::BATTLE_FOCUS:
         case ControlMode::ADVENTURE:
+        case ControlMode::MENU:
+            
             _viewControllerManager->drawMap();
 			_viewControllerManager->draw();
             _viewControllerManager->drawGUI();
@@ -137,6 +148,7 @@ void CentralControl::handleEventAdventureNormal(const TouchEvent& event) {
     ViewController* selection = 0;
     ViewController* focus;
     bool caughtEvent = false;
+    GPoint anchor;
     
     focus = _viewControllerManager->getFocus();
     
@@ -149,9 +161,13 @@ void CentralControl::handleEventAdventureNormal(const TouchEvent& event) {
             case 1:
                 break;
 
-            case 3:                
-                selection = _viewControllerManager->getTouched(event.point);
-                std::cout << selection << std::endl;
+            case 2:
+                anchor = convertToGPoint(_input->previousTouchPoint());
+                _viewControllerManager->moveCamera(anchor - event.point);
+                break;
+
+            case 3:
+                selection = _viewControllerManager->getTouched(event.translatedPoint);
                 _viewControllerManager->setFocus(selection);
                 break;
                 
@@ -161,11 +177,21 @@ void CentralControl::handleEventAdventureNormal(const TouchEvent& event) {
     }
 }
 
+void CentralControl::handleEventMenu(const TouchEvent& event) {
+    ViewController* focus;
+    
+    focus = _viewControllerManager->getFocus();
+    
+    if (focus != 0) {
+        focus->handleEvent(event);
+    }
+}
+
 void CentralControl::handleEventNormal(const TouchEvent& event) {
     ViewController* selection = 0;
 	 
 	if (event.type == 1) {
-        selection = _viewControllerManager->getTouched(event.point);
+        selection = _viewControllerManager->getTouched(event.translatedPoint);
 	 
         if (selection != 0) {
             _viewControllerManager->setFocus(selection);

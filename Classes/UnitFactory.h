@@ -24,6 +24,8 @@ public:
     static UnitModel* produceUnit(const std::string& unitClass, int owner, const MPoint& pos);
     static void produceAndRegisterMapObject(const std::string& unitClass, int owner, const MPoint& pos);
     static void produceAndRegisterUnit(const std::string& unitClass, int owner, const MPoint& pos);
+    static void produceAndRegisterMenuItem(const std::string& menuItemClass, const GPoint& pos);
+    //static void RegisterMenuItem(MenuItemView* menuItemView, const GPoint& pos);
 };
 
 

@@ -106,14 +106,14 @@ void UnitModel::doAI() {
         
         for (std::vector<ActionState>::iterator it = actionPoints.begin(); it != actionPoints.end(); ++it) {
             switch ((*it).actionType) {
-                case ACTION_TYPE_ATTACK:
+                case ActionNS::TYPE_ATTACK:
                     hasOffensiveAction = true;
                     if ((*it).active) {
                         offensives.push_back(*it);                        
                     }
                     break;
                     
-                case ACTION_TYPE_MOVEMENT:
+                case ActionNS::TYPE_MOVEMENT:
                     hasMovement = true;
                     movements.push_back(*it);
                     break;

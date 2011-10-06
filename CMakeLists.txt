@@ -11,14 +11,17 @@ SET(PRODUCT_NAME HexGame)
 SET( SOURCES
 	Classes/AbstractResourceLoader.cpp
 	Classes/Action.cpp
+    Classes/BaseUnitViewController.cpp
 	Classes/CentralControl.cpp
 	Classes/GameImage.cpp
 	Classes/geometry.cpp
 	Classes/HexMap.cpp
     Classes/HexMapModel.cpp
 	Classes/InputManager.cpp
+    Classes/Item.cpp
     Classes/MapObject.cpp
     Classes/MapObjectView.cpp
+    Classes/MenuView.cpp
     Classes/MessageView.cpp
     Classes/ModelManager.cpp
     Classes/Observable.cpp
@@ -39,15 +42,18 @@ SET( SOURCES
 SET( HEADERS
 	Classes/AbstractResourceLoader.h
 	Classes/Action.h
+    Classes/BaseUnitViewController.h
 	Classes/CentralControl.h
 	Classes/GameImage.h
 	Classes/geometry.h
 	Classes/HexMap.h
     Classes/HexMapModel.h
 	Classes/InputManager.h
+    Classes/Item.h
     Classes/IObserver.h
     Classes/MapObject.h
     Classes/MapObjectView.h
+    Classes/MenuView.h
     Classes/MessageView.h
     Classes/ModelManager.h
     Classes/SceneLoader.h
@@ -77,6 +83,7 @@ SET(RESOURCES
 SET(SOUNDS
 	Resources/fireball1.wav
 	Resources/slash1.wav
+    Resources/grotta.mp3
 )
 
 INCLUDE_DIRECTORIES( Toolkit )

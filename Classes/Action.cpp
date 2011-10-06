@@ -11,8 +11,10 @@
 #include "CentralControl.h"
 #include "UnitModel.h"
 #include "geometry.h"
+#include "Item.h"
 #include "ModelManager.h"
 #include "HexMapModel.h"
+#include "MenuView.h"
 #include "MessageView.h"
 #include "MapObject.h"
 #include "SceneLoader.h"
@@ -20,20 +22,22 @@
 #include <iostream>
 #include <string>
 
+using namespace ActionNS;
 
-BattleAction* BattleAction::build(int actionId, UnitModel* unit) {    
+
+BattleAction* BattleAction::build(int actionId, UnitModel* unit) {
     switch (actionId) {
-		case ACTION_MOVE:
+		case BACTION_MOVE:
             return new BActionMove(actionId, unit);
-		case ACTION_STRIKE:
+		case BACTION_STRIKE:
             return new BActionStrike(actionId, unit);
-		case ACTION_FIRE:
+		case BACTION_FIRE:
             return new BActionFire(actionId, unit);
-        case ACTION_BURN:
+        case BACTION_BURN:
             return new BActionBurn(actionId, unit);
-        case ACTION_GALE:
+        case BACTION_GALE:
             return 0;
-        case ACTION_HEAL:
+        case BACTION_HEAL:
             return new BActionHeal(actionId, unit);
             
 		default:
@@ -76,6 +80,7 @@ bool BattleAction::isAvailableToUnit(UnitModel* targetUnit) {
 }
 
 std::vector<ActionState> BattleAction::getActionPoints(int ap, const std::map<int, HexState>& hexes, const std::vector<UnitModel*>& units) {
+    
     ActionState state;
     std::vector<ActionState> actionPoints;
     
@@ -106,7 +111,8 @@ std::vector<ActionState> BattleAction::getActionPoints(int ap, const std::map<in
 
 /*---------------------------------------------------------------*/
 
-BActionMove::BActionMove(int anId, UnitModel* unit) : BattleAction(anId, unit, "MOVE", 1, TARGET_HEX, ACTION_TYPE_MOVEMENT, "") {}
+
+BActionMove::BActionMove(int anId, UnitModel* unit) : BattleAction(anId, unit, "MOVE", 1, TARGET_HEX, TYPE_MOVEMENT, "") {}
 
 bool BActionMove::isAvailableAtHex(const MPoint& hex) {
     if (hexDistance(_unit->getPosition(), hex) == 1) {
@@ -121,7 +127,7 @@ void BActionMove::doAction(const ActionState& statePoint) {
 
 /*---------------------------------------------------------------*/
 
-BActionStrike::BActionStrike(int anId, UnitModel* unit) : BattleAction(anId, unit, "STRIKE", 2, TARGET_UNIT, ACTION_TYPE_ATTACK, "strike") {}
+BActionStrike::BActionStrike(int anId, UnitModel* unit) : BattleAction(anId, unit, "STRIKE", 2, TARGET_UNIT, TYPE_ATTACK, "strike") {}
 
 bool BActionStrike::isAvailableToUnit(UnitModel* targetUnit) {
     int distance = hexDistance(_unit->getPosition(), targetUnit->getPosition());
@@ -135,7 +141,7 @@ void BActionStrike::doAction(const ActionState& statePoint) {
 
 /*---------------------------------------------------------------*/
 
-BActionFire::BActionFire(int anId, UnitModel* unit) : BattleAction(anId, unit, "FIRE", 2, TARGET_UNIT, ACTION_TYPE_ATTACK, "") {}
+BActionFire::BActionFire(int anId, UnitModel* unit) : BattleAction(anId, unit, "FIRE", 2, TARGET_UNIT, TYPE_ATTACK, "") {}
 
 bool BActionFire::isAvailableToUnit(UnitModel* targetUnit) {
     int distance = hexDistance(_unit->getPosition(), targetUnit->getPosition());
@@ -149,7 +155,7 @@ void BActionFire::doAction(const ActionState& statePoint) {
 
 /*---------------------------------------------------------------*/
 
-BActionHeal::BActionHeal(int anId, UnitModel* unit) : BattleAction(anId, unit, "HEAL", 2, TARGET_UNIT, ACTION_TYPE_DEFENSE, "heal") {}
+BActionHeal::BActionHeal(int anId, UnitModel* unit) : BattleAction(anId, unit, "HEAL", 2, TARGET_UNIT, TYPE_DEFENSE, "heal") {}
 
 bool BActionHeal::isAvailableToUnit(UnitModel* targetUnit) {
     int distance = hexDistance(_unit->getPosition(), targetUnit->getPosition());
@@ -166,7 +172,7 @@ void BActionHeal::doAction(const ActionState& statePoint) {
 
 /*---------------------------------------------------------------*/
 
-BActionBurn::BActionBurn(int anId, UnitModel* unit) : BattleAction(anId, unit, "BURN", 4, TARGET_UNIT, ACTION_TYPE_ATTACK, "fire") {}
+BActionBurn::BActionBurn(int anId, UnitModel* unit) : BattleAction(anId, unit, "BURN", 4, TARGET_UNIT, TYPE_ATTACK, "fire") {}
 
 bool BActionBurn::isAvailableToUnit(UnitModel* targetUnit) {
     int distance = hexDistance(_unit->getPosition(), targetUnit->getPosition());
@@ -183,20 +189,22 @@ void BActionBurn::doAction(const ActionState& statePoint) {
 
 /*---------------------------------------------------------------*/
 
-AdventureAction* AdventureAction::build(int actionId, PartyModel* party) {
+AdventureAction* AdventureAction::build(int actionId, MapObject* object) {
     switch (actionId) {
-        case ADV_ACTION_MOVE:
-            return new AdvActionMove(actionId, party);
-        case ADV_ACTION_FIGHT:
-            return new AActionFight(actionId, party);
+        case AACTION_MOVE:
+            return new AdvActionMove(actionId, object);
+        case AACTION_FIGHT:
+            return new AActionFight(actionId, object);
+        case AACTION_SHOP:
+            return new AActionShop(actionId, object);
 		default:
 			return 0;
 	}
 }
 
-AdventureAction::AdventureAction(const std::string& name, int anId, PartyModel* party, int cost, int targetType, int actionType) {
+AdventureAction::AdventureAction(const std::string& name, int anId, MapObject* object, int cost, int targetType, int actionType) {
 	_id = anId;	
-	_party = party;
+	_object = object;
     _cost = cost;
     _targetType = targetType;
     _type = actionType;
@@ -207,7 +215,7 @@ int AdventureAction::getCost() {
     return _cost;
 }
 
-std::vector<ActionState> AdventureAction::getActionPoints(int ap, const std::map<int, HexState>& hexes, const std::vector<PartyModel*>& parties) {
+std::vector<ActionState> AdventureAction::getActionPoints(int ap, const std::map<int, HexState>& hexes, const std::vector<MapObject*>& parties) {
     ActionState state;
     std::vector<ActionState> actionPoints;
     
@@ -215,6 +223,7 @@ std::vector<ActionState> AdventureAction::getActionPoints(int ap, const std::map
     state.cost = _cost;
     state.actionType = _type;
     state.active = true;
+    state.targetType = _targetType;
     
     if (_targetType == TARGET_HEX) {
         for (std::map<int, HexState>::const_iterator it = hexes.begin(); it != hexes.end(); ++it) {
@@ -225,44 +234,54 @@ std::vector<ActionState> AdventureAction::getActionPoints(int ap, const std::map
             }
         }
     } else if (_targetType == TARGET_PARTY) {
-        for (std::vector<PartyModel*>::const_iterator it = parties.begin(); it != parties.end(); ++it) {
-            if (this->isAvailableToParty(*it)) {
+        for (std::vector<MapObject*>::const_iterator it = parties.begin(); it != parties.end(); ++it) {
+            if (this->isAvailableToObject(*it)) {
                 state.pos = (*it)->getPosition();
                 actionPoints.push_back(state);
                 //std::cout << "Action (unit) " << _id << " at (" << state.pos.x << ", " << state.pos.y << ")" << std::endl;
             }
         }
+    } else if (_targetType == TARGET_SELF) {
+        if (this->isAvailable()) {
+            state.pos = _object->getPosition();
+            actionPoints.push_back(state);
+            std::cout << "Action (self) " << _id << " at (" << state.pos.x << ", " << state.pos.y << ")" << std::endl;
+        }
     }
     return actionPoints;
+}
+
+bool AdventureAction::isAvailable() {
+    return false;
 }
 
 bool AdventureAction::isAvailableAtHex(const MPoint& hex) {
     return false;
 }
 
-bool AdventureAction::isAvailableToParty(PartyModel* targetParty) {
+bool AdventureAction::isAvailableToObject(MapObject* targetObject) {
     return false;
 }
 
 /*---------------------------------------------------------------*/
 
-AdvActionMove::AdvActionMove(int anId, PartyModel* party) : AdventureAction("MOVE", anId, party, 0, TARGET_HEX, ACTION_TYPE_MOVEMENT) { }
+AdvActionMove::AdvActionMove(int anId, MapObject* object) : AdventureAction("MOVE", anId, object, 0, TARGET_HEX, TYPE_MOVEMENT) { }
 
 bool AdvActionMove::isAvailableAtHex(const MPoint& hex) {
-    int distance = hexDistance(_party->getPosition(), hex);
-    return (distance == 1 && ModelManager::instance()->getMapObjectAtPos(hex) == 0);
+    int distance = hexDistance(_object->getPosition(), hex);
+    return (distance == 1 && ModelManager::instance()->getMapObjectAtPos(hex) == 0 && _object->canMoveTo(hex));
 }
 
 void AdvActionMove::doIt(const ActionState& statePoint) {
-    _party->move(statePoint.pos);
+    _object->move(statePoint.pos);
 }
 
 /*---------------------------------------------------------------*/
 
-AActionFight::AActionFight(int anId, PartyModel* party) : AdventureAction("FIGHT", anId, party, 0, TARGET_HEX, ACTION_TYPE_ATTACK) { }
+AActionFight::AActionFight(int anId, MapObject* object) : AdventureAction("FIGHT", anId, object, 0, TARGET_HEX, TYPE_ATTACK) { }
 
 bool AActionFight::isAvailableAtHex(const MPoint& hex) {
-    int distance = hexDistance(_party->getPosition(), hex);
+    int distance = hexDistance(_object->getPosition(), hex);
     return (distance == 1 && ModelManager::instance()->getMapObjectAtPos(hex) != 0);
 }
 
@@ -270,11 +289,44 @@ void AActionFight::doIt(const ActionState& statePoint) {
     //PartyModel* target = (PartyModel*)UnitModel::instance()->getMapObjectAtPos(statePoint.pos);
     
     //if (target != 0) {
-        _party->move(statePoint.pos);
+        _object->move(statePoint.pos);
         SceneLoader::instance()->loadBattleScene();
         CentralControl::instance()->switchMode(ControlMode::BATTLE);
 
     //}
+}
+
+/*---------------------------------------------------------------*/
+
+AActionShop::AActionShop(int anId, MapObject* object) : AdventureAction("SHOP", anId, object, 0, TARGET_SELF, 0) { }
+
+bool AActionShop::isAvailable() {
+    return true;
+}
+
+void AActionShop::doIt(const ActionState& statePoint) {
+    MenuChoice item;
+    std::vector<MenuChoice> choices;
+    
+    item.choiceId = 0; item.label = "SWORD 10S";
+    choices.push_back(item);
+    item.choiceId = 1; item.label = "SHIELD 7S";
+    choices.push_back(item);
+    item.choiceId = 2; item.label = "HELMET 6S";
+    choices.push_back(item);
+    item.choiceId = 3; item.label = "BOOTS 3S";
+    choices.push_back(item);
+    
+    SceneLoader::instance()->switchToMenu(new ChoiceMenuVC(this, choices));
+    CentralControl::instance()->switchMode(ControlMode::MENU);
+}
+
+void AActionShop::reportChoice(int choiceId) {
+    std::cout << "Shopped item " << choiceId << std::endl;
+    
+    _object->addItem(Item::buildItem(ItemNS::SHIELD, 1));
+    SceneLoader::instance()->returnFromMenu();
+    CentralControl::instance()->switchMode(ControlMode::ADVENTURE);
 }
 
 /*---------------------------------------------------------------*/

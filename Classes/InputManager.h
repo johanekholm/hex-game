@@ -24,6 +24,7 @@ class InputState;
 struct TouchEvent {
 	int type;
 	GPoint point;
+    GPoint translatedPoint;
 	TouchEvent() : type(0), point() {}
 	TouchEvent(int t, GPoint p) : type(t), point(p) {}
 };
@@ -51,6 +52,7 @@ public:
 
 	TouchEvent popEvent();
 	bool hasEvent();
+    GPointInTime previousTouchPoint();
 
 private:
 	bool _wasFlicked;
@@ -69,7 +71,8 @@ private:
 	double linearInterpolate(double from, double to, double percent);
 	void addToHistory(const GPoint& point);
 	GPointInTime lastTouchPoint();
-	GPointInTime firstTouchPoint();
+	//GPoint firstTouchPoint();
+    GPointInTime firstTouchPoint();
 	GPointInTime pointInTimeAtIndex(int index);
 	void registerEvent(int aType, const GPoint& aPoint);
 };

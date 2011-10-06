@@ -22,6 +22,7 @@ namespace ControlMode {
     const int BATTLE = 1;
     const int BATTLE_FOCUS = 2;
     const int ADVENTURE = 3;
+    const int MENU = 4;
 };
 
 class CentralControl {
@@ -49,6 +50,7 @@ public:
 	void update();
 	void draw();
     void handleEventAdventureNormal(const TouchEvent& event);
+    void handleEventMenu(const TouchEvent& event);
 	void handleEventNormal(const TouchEvent& event);
 	void handleEventFocus(const TouchEvent& event);
 

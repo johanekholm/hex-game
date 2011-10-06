@@ -17,6 +17,14 @@ GPoint GPointMake(GLfloat x, GLfloat y) {
 	return point;
 }
 
+GPoint convertToGPoint(const GPointInTime& pit) {
+	GPoint point;
+	point.x = pit.x;
+	point.y = pit.y;
+	
+	return point;
+}
+
 MPoint MPointMake(int x, int y) {
 	MPoint point;
 	point.x = x;

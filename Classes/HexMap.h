@@ -42,7 +42,7 @@ class HexMap {
 public:
 	~HexMap();
 	HexMap(HexMapModel* model, TextureMap* tex, GLfloat scale);
-	void draw();
+	void draw(const GPoint& cameraPos);
     std::vector<MPoint> getAllHexes();
     GLfloat getScale();
 	//void drawAt(const GPoint &pos);

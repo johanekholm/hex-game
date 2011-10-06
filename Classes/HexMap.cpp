@@ -99,16 +99,13 @@ HexMap::HexMap(HexMapModel* model, TextureMap* tex, GLfloat scale) {
 			tIndex = index * 24;
 		}
 	}
-	
-	
-	_texture->getHexTexCoordsForSub(_texCoords, 1, HEX_TEX_Y1); //tileData->at(index));
 }
 
-void HexMap::draw() {
+void HexMap::draw(const GPoint& cameraPos) {
 	
 	glLoadIdentity();
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-	glTranslatef(64.0f, 64.0f, 0.0f);
+	glTranslatef(64.0f - cameraPos.x, 64.0f - cameraPos.y, 0.0f);
 	
 	_texture->bind();
 	
