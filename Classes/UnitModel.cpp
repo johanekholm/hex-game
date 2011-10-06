@@ -73,24 +73,20 @@ void UnitModel::defend(UnitModel* attacker, int power, int skill, int attackType
     damage = 0;
     skillDiff = skill - this->getStat(STAT_DEFENSE);
     
-    std::cout << "Roll: ";
     for (int i=0; i < power; i++) {
         roll = rand() % 8 + 1;
-        std::cout << roll << "+" << skillDiff;
+        DEBUGLOG("%i + %i", roll, skillDiff);
+        
         if (roll + skillDiff >= 5 || roll == 8) {
             damage++;
-            std::cout  << "(!)";
         }
-        std::cout << ", ";
     }
     
-    std::cout << " -- Damage: " << damage << std::endl;
     //attacker->reportHits(damage);
     this->inflictDamage(damage);
 }
 
 void UnitModel::doAction(const ActionState& statePoint) {
-    //std::cout << "Do action " << statePoint.actionId << std::endl;
 	if (_actions.find(statePoint.actionId) != _actions.end()) {
 		_actions[statePoint.actionId]->doIt(statePoint);
 	}
@@ -124,8 +120,6 @@ void UnitModel::doAI() {
         }
         
         if (hasOffensiveAction) {
-            //std::cout << "Has offensive actions: " << offensives.size() << std::endl;
-            //std::cout << "Has movement actions: " << movements.size() << std::endl;
             
             // choose offensive action randomly
             if (offensives.size() > 0) {
@@ -239,7 +233,6 @@ void UnitModel::inflictDamage(int damage) {
     
     if (_hp <= 0) {
         _hp = 0;
-        std::cout << "Destroyed" << std::endl;
         ModelManager::instance()->removeUnit(_id);
         return;
     } else if (_hp > _maxHp) {

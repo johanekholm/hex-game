@@ -54,8 +54,6 @@ CentralControl::CentralControl() {
 	_timer = 200;
     
     srand (time(NULL));
-
-    std::cout << "Setup sound..." << std::endl;
     
     Sound *sound = Sound::instance();
     sound->add("strike", "slash1");

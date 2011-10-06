@@ -94,7 +94,6 @@ std::vector<ActionState> BattleAction::getActionPoints(int ap, const std::map<in
             if (this->isAvailableAtHex((it->second).pos)) {
                 state.pos = (it->second).pos;
                 actionPoints.push_back(state);
-                //std::cout << "Action (hex) " << _id << " at (" << state.pos.x << ", " << state.pos.y << ")" << std::endl;
             }
         }
     } else if (_targetType == TARGET_UNIT) {
@@ -102,7 +101,6 @@ std::vector<ActionState> BattleAction::getActionPoints(int ap, const std::map<in
             if (this->isAvailableToUnit(*it)) {
                 state.pos = (*it)->getPosition();
                 actionPoints.push_back(state);
-                //std::cout << "Action (unit) " << _id << " at (" << state.pos.x << ", " << state.pos.y << ")" << std::endl;
             }
         }
     }
@@ -230,7 +228,6 @@ std::vector<ActionState> AdventureAction::getActionPoints(int ap, const std::map
             if (this->isAvailableAtHex((it->second).pos)) {
                 state.pos = (it->second).pos;
                 actionPoints.push_back(state);
-                //std::cout << "Action (hex) " << _id << " at (" << state.pos.x << ", " << state.pos.y << ")" << std::endl;
             }
         }
     } else if (_targetType == TARGET_PARTY) {
@@ -238,14 +235,12 @@ std::vector<ActionState> AdventureAction::getActionPoints(int ap, const std::map
             if (this->isAvailableToObject(*it)) {
                 state.pos = (*it)->getPosition();
                 actionPoints.push_back(state);
-                //std::cout << "Action (unit) " << _id << " at (" << state.pos.x << ", " << state.pos.y << ")" << std::endl;
             }
         }
     } else if (_targetType == TARGET_SELF) {
         if (this->isAvailable()) {
             state.pos = _object->getPosition();
             actionPoints.push_back(state);
-            std::cout << "Action (self) " << _id << " at (" << state.pos.x << ", " << state.pos.y << ")" << std::endl;
         }
     }
     return actionPoints;
@@ -322,7 +317,6 @@ void AActionShop::doIt(const ActionState& statePoint) {
 }
 
 void AActionShop::reportChoice(int choiceId) {
-    std::cout << "Shopped item " << choiceId << std::endl;
     
     _object->addItem(Item::buildItem(ItemNS::SHIELD, 1));
     SceneLoader::instance()->returnFromMenu();

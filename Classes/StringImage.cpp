@@ -48,7 +48,6 @@ StringImage::StringImage(const std::string& string, GLfloat red, GLfloat green, 
     _string = string;
     _size = _string.length();
     cString = _string.c_str();
-    //std::cout << "Length: " << _size << std::endl;
     _texture = TextureCatalog::instance()->get("font");
     
     _texCoords = new GLfloat [_size*12];    
@@ -70,14 +69,10 @@ StringImage::StringImage(const std::string& string, GLfloat red, GLfloat green, 
         }
         texRow = (int)(charTexPos[i]+charWidths[i]);
 
-        //std::cout << i << ": " << "Pos: " << charTexPos[i] << " Width: " << charWidths[i] << " Row: " << charRow[i] << std::endl;
     }
     
     for (int i=0; i < _size; i++) {
         character = cString[i] - 32;
-        //std::cout << "Charachter: " << character << std::endl;
-        //std::cout << "Caret: " << caret << std::endl;
-        //std::cout << "Tex pointer: " << _texCoords << std::endl;        
         tx = charTexPos[character];
         ty = charTexPosY[character];
         texWidth = charWidths[character];
@@ -96,9 +91,6 @@ StringImage::StringImage(const std::string& string, GLfloat red, GLfloat green, 
         _texCoords[i*12 + 11] = ty + texHeight;
     }
     
-    /*for (int j=0; j<36; j++) {
-        std::cout <<  "t" << j << ": " << _texCoords[j] << std::endl;
-    }*/
     
     height *= scale;
     
@@ -137,14 +129,6 @@ StringImage::StringImage(const std::string& string, GLfloat red, GLfloat green, 
     
     _width = caret;
     
-    /*for (int j=0; j<36; j++) {
-        std::cout << "v" << j << ": " << _vertices[j] << std::endl;
-    }
-    
-    for (int j=0; j<36; j++) {
-        std::cout <<  "t2" << j << ": " << _texCoords[j] << std::endl;
-    }*/
-
 }
 
 

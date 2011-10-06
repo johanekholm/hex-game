@@ -59,7 +59,7 @@ bool MenuViewController::handleEvent(const TouchEvent& event) {
 }
 
 void MenuViewController::reportChoice(int choiceId) {
-    std::cout << "Reporting Choice: " << choiceId << std::endl;
+
 }
 
 void MenuViewController::setFocus(BaseMenuNodeVC* focus) {
@@ -212,7 +212,6 @@ bool ParentMenuNodeVC::handleEvent(const TouchEvent& event) {
         }
         return false;
     } else {
-        std::cout << "Event to subnode " << event.point.x << "," << event.point.y << std::endl;
         for (std::vector<BaseMenuNodeVC*>::iterator it = _subNodes.begin(); it != _subNodes.end(); ++it) {
             if ((*it)->handleEvent(event)) {
                 return true;

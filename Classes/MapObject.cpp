@@ -31,7 +31,6 @@ MapObject::MapObject(int category, MPoint pos, int allegiance, std::vector<int> 
     }
     
     this->addItem(Item::buildItem(ItemNS::SWORD, 1));
-    //std::cout << _items[ItemNS::SWORD]->getDescription() << std::endl;
 }
 
 AdventureAction* MapObject::addAction(int action) {
@@ -51,8 +50,7 @@ void MapObject::addItem(Item* item) {
 
     
     for (std::map<int, Item*>::iterator it = _items.begin(); it != _items.end(); ++it) {
-        //std::cout << it->second->getDescription() << std::endl;
-        DEBUGLOG("An Item");
+        DEBUGLOG("An Item: %s", it->second->getDescription().c_str());
     }
 
 }

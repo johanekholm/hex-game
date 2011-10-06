@@ -32,7 +32,6 @@ HexMapModel::HexMapModel(int width, int height) {
     int number = 0;
     
     copy(istream_iterator<string>(dataStream), istream_iterator<string>(), back_inserter<vector<string> >(tokens));
-    //copy(istream_iterator<string>(dataStream), istream_iterator<string>(), ostream_iterator<string>(cout, ","));
     
     it = tokens.begin();
     
@@ -45,7 +44,6 @@ HexMapModel::HexMapModel(int width, int height) {
             } else {
                 state.value = 0;
             }
-            //cout << state.value << " (" << j << "," << i << ")" << endl;
             _hexes[i * _width + j] = state;
             ++it;
         }
@@ -65,7 +63,6 @@ int HexMapModel::getHexValue(const MPoint& hex) {
 }
 
 int HexMapModel::getHexValue(int x, int y) {
-    //std::cout << "Hex (" << x << ", " << y << "): " << _hexes[y * _width + x].value << std::endl;
     return _hexes[y * _width + x].value;
 }
 

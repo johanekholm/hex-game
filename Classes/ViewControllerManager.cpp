@@ -138,11 +138,8 @@ void ViewControllerManager::removeSoft(ViewController* view) {
 
 	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end(); ++it) {
         if (*it == view) {
-            //std::cout << "Soft remove " << *it << std::endl;
             delete (*it);
-            *it = 0;
-            //std::cout << "*it= " << *it << std::endl;
-            
+            *it = 0;            
             return;
         }
 	}
@@ -208,10 +205,8 @@ void ViewControllerManager::update() {
             (*it)->update();
             ++it;
         } else {
-            //std::cout << "Erasing it " << *it << " size is " << _views.size() << std::endl;
 
             it = _views.erase(it);
-            //std::cout << "Size after is " << _views.size() << std::endl;
         }
         
 	}

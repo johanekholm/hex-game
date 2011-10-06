@@ -92,7 +92,6 @@ UnitModel* ModelManager::getClosestTo(const MPoint& pos) {
             if (it->second->getOwner() == 1 && distance < minDistance) {
                 minDistance = distance;
                 closestUnit = it->second;
-                //std::cout << "Unit found at distance: " << minDistance << std::endl;
             }            
         }
 	}
@@ -111,7 +110,6 @@ int ModelManager::getDistanceToClosestEnemy(int owner, const MPoint& pos) {
             }            
         }
 	}
-    //std::cout << "Closest enemy: " << minDistance << std::endl;
     return minDistance;
 }
 
@@ -209,11 +207,7 @@ void ModelManager::setBattleMap(HexMapModel* map) {
 void ModelManager::tick() {
     std::map<int, UnitModel*>::iterator it, next;
     
-    std::cout << "--- Tick ---" << std::endl;
 	for (it = _units.begin(); it != _units.end();) {
-        //std::cout << "Iterator pointer: " << *it << std::endl;
-        
-        
         if (it->second != 0) {
             it->second->tick();
             it++;

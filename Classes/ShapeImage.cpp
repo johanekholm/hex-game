@@ -146,7 +146,6 @@ void RectangleImage::drawAsEllipse(int segments, const GPoint& pos, bool filled,
     for (GLfloat i = 0; i < 360.0f; i+=(360.0f/segments)) {
         vertices[count++] = (cos(i*PI/180)*width);
         vertices[count++] = (sin(i*PI/180)*height);
-        //std::cout << vertices[count-2] << ", " << vertices[count-1] << std::endl;
     }
 
 
