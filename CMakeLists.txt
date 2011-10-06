@@ -81,8 +81,8 @@ SET(RESOURCES
 )
 
 SET(SOUNDS
-	Resources/fireball1.wav
-	Resources/slash1.wav
+	Resources/fireball1.mp3
+	Resources/slash1.mp3
     Resources/grotta.mp3
 )
 
