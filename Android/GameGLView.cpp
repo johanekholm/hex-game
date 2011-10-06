@@ -5,6 +5,7 @@
 extern "C" {
 	JNIEXPORT void JNICALL Java_com_hexgame_game_GameGLView_touchBegan(JNIEnv * env, jobject obj, jfloat x, jfloat y);
 	JNIEXPORT void JNICALL Java_com_hexgame_game_GameGLView_touchEnded(JNIEnv * env, jobject obj, jfloat x, jfloat y);
+	JNIEXPORT void JNICALL Java_com_hexgame_game_GameGLView_touchMoved(JNIEnv * env, jobject obj, jfloat x, jfloat y);
 };
 
 JNIEXPORT void JNICALL Java_com_hexgame_game_GameGLView_touchBegan(JNIEnv * env, jobject obj, jfloat x, jfloat y)
@@ -15,4 +16,9 @@ JNIEXPORT void JNICALL Java_com_hexgame_game_GameGLView_touchBegan(JNIEnv * env,
 JNIEXPORT void JNICALL Java_com_hexgame_game_GameGLView_touchEnded(JNIEnv * env, jobject obj, jfloat x, jfloat y)
 {
 	CentralControl::instance()->touchesEnded(GPointMake(x * 320.0/480.0, y * 480.0/800.0));
+}
+
+JNIEXPORT void JNICALL Java_com_hexgame_game_GameGLView_touchMoved(JNIEnv * env, jobject obj, jfloat x, jfloat y)
+{
+	CentralControl::instance()->touchesMoved(GPointMake(x * 320.0/480.0, y * 480.0/800.0));
 }
