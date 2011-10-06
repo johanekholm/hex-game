@@ -11,6 +11,7 @@
 #include "CentralControl.h"
 #include "UnitModel.h"
 #include "geometry.h"
+#include "Item.h"
 #include "ModelManager.h"
 #include "HexMapModel.h"
 #include "MenuView.h"
@@ -322,6 +323,8 @@ void AActionShop::doIt(const ActionState& statePoint) {
 
 void AActionShop::reportChoice(int choiceId) {
     std::cout << "Shopped item " << choiceId << std::endl;
+    
+    _object->addItem(Item::buildItem(ItemNS::SHIELD, 1));
     SceneLoader::instance()->returnFromMenu();
     CentralControl::instance()->switchMode(ControlMode::ADVENTURE);
 }

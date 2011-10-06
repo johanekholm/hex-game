@@ -31,7 +31,7 @@ MapObject::MapObject(int category, MPoint pos, int allegiance, std::vector<int> 
     }
     
     this->addItem(Item::buildItem(ItemNS::SWORD, 1));
-    std::cout << _items[ItemNS::SWORD]->getDescription() << std::endl;
+    //std::cout << _items[ItemNS::SWORD]->getDescription() << std::endl;
 }
 
 AdventureAction* MapObject::addAction(int action) {
@@ -41,8 +41,19 @@ AdventureAction* MapObject::addAction(int action) {
 
 void MapObject::addItem(Item* item) {
     if (item != 0) {
-        _items[item->getType()] = item;
+        
+        if (_items.find(item->getType()) == _items.end()) {
+            _items[item->getType()] = item;
+        } else {
+            _items[item->getType()]->increaseCount(item->getCount());
+        }
     }
+
+    
+    for (std::map<int, Item*>::iterator it = _items.begin(); it != _items.end(); ++it) {
+        std::cout << it->second->getDescription() << std::endl;
+    }
+
 }
 
 bool MapObject::canMoveTo(const MPoint& pos) {

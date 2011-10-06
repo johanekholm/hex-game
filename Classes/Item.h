@@ -31,7 +31,9 @@ public:
     
     static Item* buildItem(int type, int count);
     std::string getDescription();
+    int getCount();
     int getType();
+    void increaseCount(int increase);
 };
 
 #endif

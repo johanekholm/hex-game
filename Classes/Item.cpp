@@ -44,6 +44,11 @@ Item* Item::buildItem(int type, int count) {
     return 0;
 }
 
+int Item::getCount() {
+    return _count;
+}
+
+
 std::string Item::getDescription() {
     std::stringstream stream;
 
@@ -53,4 +58,8 @@ std::string Item::getDescription() {
 
 int Item::getType() {
     return _type;
+}
+
+void Item::increaseCount(int increase) {
+    _count += increase;
 }
