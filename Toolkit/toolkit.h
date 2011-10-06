@@ -13,7 +13,8 @@
 #if defined(PLATFORM_IOS)
 	#import <Foundation/Foundation.h>
 	#import <OpenGLES/ES1/gl.h>
-    inline void DEBUGLOG(...) { } // TODO: Implement
+    #include <cstdio>
+    #define DEBUGLOG(...) { printf(__VA_ARGS__); printf("\n"); }
 #elif defined(PLATFORM_DESKTOP)
 	#include <QGLContext>
     inline void DEBUGLOG(...) { } // TODO: Implement

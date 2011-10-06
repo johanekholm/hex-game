@@ -51,7 +51,8 @@ void MapObject::addItem(Item* item) {
 
     
     for (std::map<int, Item*>::iterator it = _items.begin(); it != _items.end(); ++it) {
-        std::cout << it->second->getDescription() << std::endl;
+        //std::cout << it->second->getDescription() << std::endl;
+        DEBUGLOG("An Item");
     }
 
 }
