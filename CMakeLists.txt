@@ -75,6 +75,7 @@ SET(RESOURCES
 	Resources/actions.png
 	Resources/floortilemap.png
     Resources/font_1.png
+    Resources/game_objects.png
 	Resources/texmap.png
 	Resources/texmap_hex.png
 	Resources/icons.png

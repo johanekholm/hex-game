@@ -21,10 +21,10 @@ MapObject::~MapObject() {
     _items.clear();
 }
 
-MapObject::MapObject(int category, MPoint pos, int allegiance, std::vector<int> actionIds) {
+MapObject::MapObject(int category, MPoint pos, int owner, std::vector<int> actionIds) {
     _category = category;
     _pos = pos;
-    _allegiance = allegiance;
+    _owner = owner;
     
     for (std::vector<int>::iterator it = actionIds.begin(); it != actionIds.end(); ++it) {
         this->addAction(*it);
@@ -85,6 +85,10 @@ std::vector<ActionState> MapObject::getActions() {
 	return actionPoints;
 }
 
+int MapObject::getOwner() {
+    return _owner;
+}
+
 MPoint MapObject::getPosition() {
 	return MPointMake(_pos.x, _pos.y);
 }
@@ -122,7 +126,7 @@ PartyModel::~PartyModel() {
     
 }
 
-PartyModel::PartyModel(int category, MPoint pos, int allegiance, std::vector<int> actionIds, const std::vector<UnitModel*>& members) : MapObject(category, pos, allegiance, actionIds) {
+PartyModel::PartyModel(int category, MPoint pos, int owner, std::vector<int> actionIds, const std::vector<UnitModel*>& members) : MapObject(category, pos, owner, actionIds) {
     _members = members;
 }
 

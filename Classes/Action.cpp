@@ -277,7 +277,8 @@ AActionFight::AActionFight(int anId, MapObject* object) : AdventureAction("FIGHT
 
 bool AActionFight::isAvailableAtHex(const MPoint& hex) {
     int distance = hexDistance(_object->getPosition(), hex);
-    return (distance == 1 && ModelManager::instance()->getMapObjectAtPos(hex) != 0);
+    MapObject* target = ModelManager::instance()->getMapObjectAtPos(hex);
+    return (distance == 1 && target != 0 && target->matchesCategory(MapObjectCategory::PARTY));
 }
 
 void AActionFight::doIt(const ActionState& statePoint) {

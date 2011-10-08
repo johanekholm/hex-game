@@ -30,10 +30,19 @@ void UnitFactory::produceAndRegisterMapObject(const std::string& objectType, int
     int image;
     
     if (objectType == "village") {
-        image = 0;
-        object = new MapObject(MapObjectCategory::BUILDING, pos, owner, actions);
+        image = 4;
+        object = new MapObject(MapObjectCategory::CITY, pos, owner, actions);
+    } else if (objectType == "dungeon") {
+        image = 5;
+        object = new MapObject(MapObjectCategory::DUNGEON, pos, owner, actions);
     } else if (objectType == "party") {
-        image = 1;
+        
+        if (owner == 1) {
+            image = 1;
+        } else {
+            image = 6;
+        }
+        
         actions.push_back(ActionNS::AACTION_MOVE); actions.push_back(ActionNS::AACTION_FIGHT);
         actions.push_back(ActionNS::AACTION_SHOP);
         units.push_back(produceUnit("soldier", owner, MPointMake(0,0)));

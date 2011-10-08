@@ -57,7 +57,10 @@ void SceneLoader::loadAdventureScene() {
     ModelManager::instance()->setAdventureMap(mapModel);
     ViewControllerManager::instance()->setMapView(new HexMap(mapModel, TextureCatalog::instance()->get("hexTiles"), 1.5f));
     UnitFactory::produceAndRegisterMapObject("party", 1, MPointMake(1, 1));
+    UnitFactory::produceAndRegisterMapObject("party", 2, MPointMake(3, 2));
     UnitFactory::produceAndRegisterMapObject("village", 1, MPointMake(0, 0));
+    UnitFactory::produceAndRegisterMapObject("dungeon", 1, MPointMake(0, 3));
+
 }
 
 void SceneLoader::switchToAdventureScene() {
@@ -65,7 +68,9 @@ void SceneLoader::switchToAdventureScene() {
     ViewControllerManager::instance()->popMapView();
     
     UnitFactory::produceAndRegisterMapObject("party", 1, MPointMake(1, 1));
+    UnitFactory::produceAndRegisterMapObject("party", 2, MPointMake(3, 2));
     UnitFactory::produceAndRegisterMapObject("village", 1, MPointMake(0, 0));
+    UnitFactory::produceAndRegisterMapObject("dungeon", 1, MPointMake(0, 3));
 }
 
 void SceneLoader::switchToMainMenu() {
