@@ -339,13 +339,13 @@ void AActionShop::doIt(const ActionState& statePoint) {
     MenuChoice item;
     std::vector<MenuChoice> choices;
     
-    item.choiceId = 0; item.label = "SWORD 10S";
+    item.choiceId = ItemNS::SWORD; item.label = "SWORD 10S";
     choices.push_back(item);
-    item.choiceId = 1; item.label = "SHIELD 7S";
+    item.choiceId = ItemNS::SHIELD; item.label = "SHIELD 7S";
     choices.push_back(item);
-    item.choiceId = 2; item.label = "HELMET 6S";
+    item.choiceId = ItemNS::POTION; item.label = "POTION 6S";
     choices.push_back(item);
-    item.choiceId = 3; item.label = "BOOTS 3S";
+    item.choiceId = ItemNS::RING; item.label = "RING 8S";
     choices.push_back(item);
     
     SceneLoader::instance()->switchToMenu(new ChoiceMenuVC(this, choices));
@@ -354,7 +354,7 @@ void AActionShop::doIt(const ActionState& statePoint) {
 
 void AActionShop::reportChoice(int choiceId) {
     
-    _object->addItem(Item::buildItem(ItemNS::SHIELD, 1));
+    _object->addItem(Item::buildItem(choiceId, 1));
     SceneLoader::instance()->returnFromMenu();
     CentralControl::instance()->switchMode(ControlMode::ADVENTURE);
 }
