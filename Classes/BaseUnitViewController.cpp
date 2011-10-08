@@ -24,9 +24,10 @@ BaseUnitViewController::~BaseUnitViewController() {
     _actionPoints.clear();
 }
 
-BaseUnitViewController::BaseUnitViewController(GLfloat width, GLfloat height, int index) {
+BaseUnitViewController::BaseUnitViewController(GLfloat width, GLfloat height, int index, int layer) {
     _width = width;
     _height = height;
+    _layer = layer;
 	_actionImage = new GameImage(32.0f, 32.0f, TextureCatalog::instance()->get("actions"), 0);
     _actionMarker = new EllipseImage(RGBAMake(0.0f, 1.0f, 0.0f, 1.0f), 24.0f, 24.0f, 16, false);
     _selectedActionView = 0;

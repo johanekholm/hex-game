@@ -24,7 +24,7 @@ MapObjectView::~MapObjectView() {
 	_objectModel = 0;
 }
 
-MapObjectView::MapObjectView(MapObject* model, GLfloat width, GLfloat height, int index) : BaseUnitViewController(width, height, index) {
+MapObjectView::MapObjectView(MapObject* model, GLfloat width, GLfloat height, int index, int layer) : BaseUnitViewController(width, height, index, layer) {
 	_objectModel = model;
     _objectImage = new GameImage(width, height, TextureCatalog::instance()->get("units"), index);
 }

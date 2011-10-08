@@ -15,6 +15,10 @@ ViewController::ViewController() {
     _hasFocus = false;
 }
 
+int ViewController::getLayer() {
+    return _layer;
+}
+
 GPoint ViewController::getPosition() {
     return _pos;
 }

@@ -6,7 +6,6 @@
  */
 
 #include "IObserver.h"
-#include "ViewController.h"
 #include "MapObject.h"
 #include "BaseUnitViewController.h"
 #include <vector>
@@ -23,7 +22,7 @@ class MapObjectView : public BaseUnitViewController {
 
 public:
 	~MapObjectView();
-	MapObjectView(MapObject* model, GLfloat width, GLfloat height, int index);
+	MapObjectView(MapObject* model, GLfloat width, GLfloat height, int index, int layer);
 	void draw(const GPoint& cameraPos);
 	bool handleEvent(const TouchEvent& event);
 	void updateState();

@@ -39,7 +39,7 @@ protected:
     virtual void updateState() = 0;
 public:
 	virtual ~BaseUnitViewController();
-	BaseUnitViewController(GLfloat width, GLfloat height, int index);
+    BaseUnitViewController(GLfloat width, GLfloat height, int index, int layer);
     void destroyed();
 	void drawGUI(const GPoint& cameraPos);
     void setFocus(bool hasFocus);

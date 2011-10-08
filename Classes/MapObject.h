@@ -42,7 +42,6 @@ protected:
     MPoint _pos;
     int _id;
     int _owner;
-    int _layer;
     std::map<int, AdventureAction*> _actions;
     std::map<int, Item*> _items;
     

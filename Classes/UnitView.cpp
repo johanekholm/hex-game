@@ -26,7 +26,7 @@ UnitViewController::~UnitViewController() {
 	_unitModel = 0;
 }
 
-UnitViewController::UnitViewController(UnitModel* model, GLfloat width, GLfloat height, int index) : BaseUnitViewController(width, height, index) {
+UnitViewController::UnitViewController(UnitModel* model, GLfloat width, GLfloat height, int index) : BaseUnitViewController(width, height, index, 1) {
 	_unitModel = model;
 	_unitImage = new GameImage(width, height, TextureCatalog::instance()->get("units"), index);
     _hpBar = new RectangleImage(RGBAMake(0.0f, 1.0f, 0.0f, 1.0f), 32.0f, 4.0f, true);

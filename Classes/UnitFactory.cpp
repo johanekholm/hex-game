@@ -27,16 +27,17 @@ void UnitFactory::produceAndRegisterMapObject(const std::string& objectType, int
     MapObjectView* view;
     std::vector<UnitModel*> units;
     std::vector<int> actions;
-    int image;
+    int image = 0;
+    int layer = 0;
     
     if (objectType == "village") {
-        image = 4;
+        image = 4; layer = MapLayer::BUILDING;
         object = new MapObject(MapObjectCategory::CITY, pos, owner, actions);
     } else if (objectType == "dungeon") {
-        image = 5;
+        image = 5; layer = MapLayer::BUILDING;
         object = new MapObject(MapObjectCategory::DUNGEON, pos, owner, actions);
     } else if (objectType == "party") {
-        
+        layer = MapLayer::UNIT;
         if (owner == 1) {
             image = 1;
         } else {
@@ -52,7 +53,7 @@ void UnitFactory::produceAndRegisterMapObject(const std::string& objectType, int
         return;
     }
     
-    view = new MapObjectView(object, 64.0f, 64.0f, image);
+    view = new MapObjectView(object, 64.0f, 64.0f, image, layer);
     object->addObserver(view);
     
     ModelManager::instance()->addMapObject(object);

@@ -43,7 +43,14 @@ ViewControllerManager::ViewControllerManager() {
 
 
 void ViewControllerManager::add(ViewController* view) {
-	_views.push_back(view);
+    std::vector<ViewController*>::iterator it = _views.begin();
+	while (true) {
+		if (it == _views.end() || (*it != 0 && (*it)->getLayer() >= view->getLayer())) {
+            _views.insert(it, view);
+            break;
+        }
+        ++it;
+	}
 }
 
 GPoint ViewControllerManager::adjustForCamera(const GPoint& pos) {
