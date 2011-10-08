@@ -197,6 +197,8 @@ AdventureAction* AdventureAction::build(int actionId, MapObject* object) {
             return new AActionShop(actionId, object);
         case AACTION_ENTERDUNGEON:
             return new AActionEnterDungeon(actionId, object);
+        case AACTION_INVENTORY:
+            return new AActionInventory(actionId, object);
 		default:
 			return 0;
 	}
@@ -292,6 +294,37 @@ void AActionFight::doIt(const ActionState& statePoint) {
         CentralControl::instance()->switchMode(ControlMode::BATTLE);
 
     //}
+}
+
+/*---------------------------------------------------------------*/
+
+AActionInventory::AActionInventory(int anId, MapObject* object) : AdventureAction("INVENTORY", anId, object, 0, TARGET_SELF, 0) { }
+
+bool AActionInventory::isAvailable() {
+    return true;
+}
+
+void AActionInventory::doIt(const ActionState& statePoint) {
+    MenuChoice menuItem;
+    std::vector<MenuChoice> choices;
+    std::map<int, Item*> items;
+    
+    items = _object->getItems();
+    
+	for (std::map<int, Item*>::iterator it = items.begin(); it != items.end(); ++it) {
+        menuItem.choiceId = it->second->getType();
+        menuItem.label = it->second->getDescription();
+        choices.push_back(menuItem);
+	}
+    
+    SceneLoader::instance()->switchToMenu(new ChoiceMenuVC(this, choices));
+    CentralControl::instance()->switchMode(ControlMode::MENU);
+}
+
+void AActionInventory::reportChoice(int choiceId) {
+    DEBUGLOG("Chose item %i", choiceId);
+    SceneLoader::instance()->returnFromMenu();
+    CentralControl::instance()->switchMode(ControlMode::ADVENTURE);
 }
 
 /*---------------------------------------------------------------*/

@@ -54,6 +54,7 @@ public:
     bool canMoveTo(const MPoint& pos);
 	void doAction(const ActionState& statePoint);
     std::vector<ActionState> getActions();
+    std::map<int, Item*> getItems();
     int getOwner();
     virtual MapObjectState getState();
     bool matchesCategory(int category);

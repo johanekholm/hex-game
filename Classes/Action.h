@@ -29,6 +29,7 @@ namespace ActionNS {
     const int AACTION_FIGHT         = 1;
     const int AACTION_SHOP          = 2;
     const int AACTION_ENTERDUNGEON  = 3;
+    const int AACTION_INVENTORY     = 4;
     
     const int TARGET_HEX =      1;
     const int TARGET_UNIT =     2;
@@ -176,6 +177,18 @@ protected:
 public:
     AActionFight(int anId, MapObject* object);
 	virtual void doIt(const ActionState& statePoint);
+};
+
+/*---------------------------------------------------------------*/
+
+class AActionInventory : public AdventureAction, public IChoiceCallback {
+protected:
+    virtual bool isAvailable();
+    
+public:
+    AActionInventory(int anId, MapObject* object);
+	virtual void doIt(const ActionState& statePoint);
+    void reportChoice(int choiceId);
 };
 
 /*---------------------------------------------------------------*/

@@ -85,6 +85,10 @@ std::vector<ActionState> MapObject::getActions() {
 	return actionPoints;
 }
 
+std::map<int, Item*> MapObject::getItems() {
+    return _items;
+}
+
 int MapObject::getOwner() {
     return _owner;
 }
