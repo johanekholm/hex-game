@@ -45,6 +45,7 @@ public:
     int getOwnerWithNoUnits();
     UnitModel* getUnitAtPos(const MPoint& pos);
     UnitModel* getUnitById(int unitId);
+    bool mapObjectExistAtPos(int category, const MPoint& pos);
     void removeAllMapObjects();
     void removeAllUnits();
     void removeMapObject(int objectId);

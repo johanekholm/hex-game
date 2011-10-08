@@ -170,6 +170,16 @@ UnitModel* ModelManager::getUnitById(int unitId) {
     }
 }
 
+bool ModelManager::mapObjectExistAtPos(int category, const MPoint& pos) {
+	for (std::map<int, MapObject*>::iterator it = _mapObjects.begin(); it != _mapObjects.end(); ++it) {
+		if (it->second != 0 && it->second->getPosition() == pos && it->second->matchesCategory(category)) {
+            return true;
+        }
+	}
+    return false;
+}
+
+
 void ModelManager::removeAllMapObjects() {
     for (std::map<int, MapObject*>::iterator it = _mapObjects.begin(); it != _mapObjects.end(); ++it) {
 		delete it->second;

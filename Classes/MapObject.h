@@ -29,6 +29,7 @@ namespace MapObjectCategory {
     const int DUNGEON = 3;
 };
 
+
 struct MapObjectState {
     MPoint pos;
     std::vector<ActionState> actions;
@@ -41,6 +42,7 @@ protected:
     MPoint _pos;
     int _id;
     int _owner;
+    int _layer;
     std::map<int, AdventureAction*> _actions;
     std::map<int, Item*> _items;
     

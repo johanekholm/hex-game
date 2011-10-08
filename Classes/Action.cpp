@@ -195,6 +195,8 @@ AdventureAction* AdventureAction::build(int actionId, MapObject* object) {
             return new AActionFight(actionId, object);
         case AACTION_SHOP:
             return new AActionShop(actionId, object);
+        case AACTION_ENTERDUNGEON:
+            return new AActionEnterDungeon(actionId, object);
 		default:
 			return 0;
 	}
@@ -264,7 +266,7 @@ AdvActionMove::AdvActionMove(int anId, MapObject* object) : AdventureAction("MOV
 
 bool AdvActionMove::isAvailableAtHex(const MPoint& hex) {
     int distance = hexDistance(_object->getPosition(), hex);
-    return (distance == 1 && ModelManager::instance()->getMapObjectAtPos(hex) == 0 && _object->canMoveTo(hex));
+    return (distance == 1 && _object->canMoveTo(hex) && !ModelManager::instance()->mapObjectExistAtPos(MapObjectCategory::PARTY, hex));
 }
 
 void AdvActionMove::doIt(const ActionState& statePoint) {
@@ -297,7 +299,7 @@ void AActionFight::doIt(const ActionState& statePoint) {
 AActionShop::AActionShop(int anId, MapObject* object) : AdventureAction("SHOP", anId, object, 0, TARGET_SELF, 0) { }
 
 bool AActionShop::isAvailable() {
-    return true;
+    return (ModelManager::instance()->mapObjectExistAtPos(MapObjectCategory::CITY, _object->getPosition()));
 }
 
 void AActionShop::doIt(const ActionState& statePoint) {
@@ -325,3 +327,15 @@ void AActionShop::reportChoice(int choiceId) {
 }
 
 /*---------------------------------------------------------------*/
+
+
+AActionEnterDungeon::AActionEnterDungeon(int anId, MapObject* object) : AdventureAction("ENTERDUNGEON", anId, object, 0, TARGET_SELF, 0) { }
+
+bool AActionEnterDungeon::isAvailable() {
+    return (ModelManager::instance()->mapObjectExistAtPos(MapObjectCategory::DUNGEON, _object->getPosition()));
+}
+
+void AActionEnterDungeon::doIt(const ActionState& statePoint) {
+    SceneLoader::instance()->loadBattleScene();
+    CentralControl::instance()->switchMode(ControlMode::BATTLE);
+}

@@ -25,9 +25,10 @@ namespace ActionNS {
     const int BACTION_BURN =    4;
     const int BACTION_HEAL =    5;
     
-    const int AACTION_MOVE =     0;
-    const int AACTION_FIGHT =    1;
-    const int AACTION_SHOP =     2;
+    const int AACTION_MOVE          = 0;
+    const int AACTION_FIGHT         = 1;
+    const int AACTION_SHOP          = 2;
+    const int AACTION_ENTERDUNGEON  = 3;
     
     const int TARGET_HEX =      1;
     const int TARGET_UNIT =     2;
@@ -187,6 +188,17 @@ public:
     AActionShop(int anId, MapObject* object);
 	virtual void doIt(const ActionState& statePoint);
     void reportChoice(int choiceId);
+};
+
+/*---------------------------------------------------------------*/
+
+class AActionEnterDungeon : public AdventureAction {
+protected:
+    virtual bool isAvailable();
+    
+public:
+    AActionEnterDungeon(int anId, MapObject* object);
+	virtual void doIt(const ActionState& statePoint);
 };
 
 #endif
