@@ -44,12 +44,23 @@ void BaseUnitViewController::drawActions(const GPoint& cameraPos) {
         } else {
             glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         }
-		_actionImage->drawAtWithSubTexture((*it).pos - cameraPos, (*it).actionId);
         
-        if (_selectedActionView != 0) {
-            _actionMarker->drawCenteredAt((*_selectedActionView).pos - cameraPos);
-        }        
+        if ((*it).statePoint->targetType == ActionNS::TARGET_SELF) {
+            _actionImage->drawAtWithSubTexture((*it).pos, (*it).actionId);
+        } else {
+            _actionImage->drawAtWithSubTexture((*it).pos - cameraPos, (*it).actionId);
+        }
+        
 	}
+
+    if (_selectedActionView != 0) {
+        if (_selectedActionView->statePoint->targetType == ActionNS::TARGET_SELF) {
+            _actionMarker->drawCenteredAt((*_selectedActionView).pos);
+        } else {
+            _actionMarker->drawCenteredAt((*_selectedActionView).pos - cameraPos);
+        }
+    }
+    
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
@@ -86,12 +97,14 @@ void BaseUnitViewController::setFocus(bool hasFocus) {
 
 void BaseUnitViewController::updateActions(std::vector<ActionState>& actionStates) {
 	ActionView actionView;
+    int numFloating = 0;
     
     _actionPoints.clear();
     
     for (std::vector<ActionState>::iterator it = actionStates.begin(); it != actionStates.end(); ++it) {
         if ((*it).targetType == ActionNS::TARGET_SELF) {
-            actionView.pos = GPointMake(60.0f, 400.0f);
+            actionView.pos = GPointMake(60.0f + numFloating*60.0f, 400.0f);
+            ++numFloating;
         } else {
             actionView.pos = ViewControllerManager::instance()->transformModelPositionToView((*it).pos);            
         }
