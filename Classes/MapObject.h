@@ -10,6 +10,7 @@
 
 #include "Observable.h"
 #include "Action.h"
+#include "Item.h"
 #include "toolkit.h"
 #include <vector>
 
@@ -35,7 +36,7 @@ struct MapObjectState {
     std::vector<ActionState> actions;
 };
 
-class MapObject : public Observable {
+class MapObject : public ItemHandler, public Observable {
     
 protected:
     int _category;
@@ -43,7 +44,6 @@ protected:
     int _id;
     int _owner;
     std::map<int, AdventureAction*> _actions;
-    std::map<int, Item*> _items;
     
 
 public:
@@ -54,13 +54,11 @@ public:
     bool canMoveTo(const MPoint& pos);
 	void doAction(const ActionState& statePoint);
     std::vector<ActionState> getActions();
-    std::map<int, Item*> getItems();
     int getOwner();
     virtual MapObjectState getState();
     bool matchesCategory(int category);
     void move(const MPoint& targetPos);
     void setId(int id);
-    void addItem(Item* item);
 };
 
 

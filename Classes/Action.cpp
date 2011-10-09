@@ -354,9 +354,18 @@ void AActionShop::doIt(const ActionState& statePoint) {
 
 void AActionShop::reportChoice(int choiceId) {
     
-    _object->addItem(Item::buildItem(choiceId, 1));
-    SceneLoader::instance()->returnFromMenu();
-    CentralControl::instance()->switchMode(ControlMode::ADVENTURE);
+    if (choiceId != -1) {
+        if (_object->removeItem(ItemNS::SILVER, 6)) {
+            _object->addItem(Item::buildItem(choiceId, 1));
+            SceneLoader::instance()->returnFromMenu();
+            CentralControl::instance()->switchMode(ControlMode::ADVENTURE);                
+        } else {
+            DEBUGLOG("Not enough silver");
+        }
+    } else {
+        SceneLoader::instance()->returnFromMenu();
+        CentralControl::instance()->switchMode(ControlMode::ADVENTURE);                
+    }
 }
 
 /*---------------------------------------------------------------*/

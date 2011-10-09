@@ -14,11 +14,6 @@
 
 MapObject::~MapObject() {
     this->updateObserversDestroyed();
-
-    for (std::map<int, Item*>::iterator it = _items.begin(); it != _items.end(); ++it) {
-        delete it->second;
-    }
-    _items.clear();
 }
 
 MapObject::MapObject(int category, MPoint pos, int owner, std::vector<int> actionIds) {
@@ -31,28 +26,12 @@ MapObject::MapObject(int category, MPoint pos, int owner, std::vector<int> actio
     }
     
     this->addItem(Item::buildItem(ItemNS::SWORD, 1));
+    this->addItem(Item::buildItem(ItemNS::SILVER, 10));
 }
 
 AdventureAction* MapObject::addAction(int action) {
 	_actions[action] = AdventureAction::build(action, this);
 	return _actions[action];
-}
-
-void MapObject::addItem(Item* item) {
-    if (item != 0) {
-        
-        if (_items.find(item->getType()) == _items.end()) {
-            _items[item->getType()] = item;
-        } else {
-            _items[item->getType()]->increaseCount(item->getCount());
-        }
-    }
-
-    
-    for (std::map<int, Item*>::iterator it = _items.begin(); it != _items.end(); ++it) {
-        DEBUGLOG("An Item: %s", it->second->getDescription().c_str());
-    }
-
 }
 
 bool MapObject::canMoveTo(const MPoint& pos) {
@@ -83,10 +62,6 @@ std::vector<ActionState> MapObject::getActions() {
     }
     
 	return actionPoints;
-}
-
-std::map<int, Item*> MapObject::getItems() {
-    return _items;
 }
 
 int MapObject::getOwner() {
