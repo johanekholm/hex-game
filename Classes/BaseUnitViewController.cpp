@@ -103,7 +103,7 @@ void BaseUnitViewController::updateActions(std::vector<ActionState>& actionState
     
     for (std::vector<ActionState>::iterator it = actionStates.begin(); it != actionStates.end(); ++it) {
         if ((*it).targetType == ActionNS::TARGET_SELF) {
-            actionView.pos = GPointMake(60.0f + numFloating*60.0f, 400.0f);
+            actionView.pos = GPointMake(40.0f + numFloating*50.0f, 440.0f);
             ++numFloating;
         } else {
             actionView.pos = ViewControllerManager::instance()->transformModelPositionToView((*it).pos);            

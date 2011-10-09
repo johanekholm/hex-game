@@ -10,6 +10,7 @@
 #include "ViewControllerManager.h"
 #include "ViewController.h"
 #include "HexMap.h"
+#include "ShapeImage.h"
 #include <iostream>
 
 
@@ -25,6 +26,7 @@ void ViewControllerManager::destroy() {
         }
         
 		_instance->_views.clear();
+        delete _instance->_hudBackground;
 		delete _instance;
 		_instance=0;
 	}
@@ -35,6 +37,7 @@ ViewControllerManager::ViewControllerManager() {
     _mapView = 0;
     _pushedMapView = 0;
     _cameraPos = 0;
+    _hudBackground = new RectangleImage(RGBAMake(0.0f, 0.0f, 0.0f, 0.8f), 320.0f, 80.0f, true);
 }
 
 /*ViewControllerManager::~ViewControllerManager() {
@@ -70,6 +73,8 @@ void ViewControllerManager::draw() {
 }
 
 void ViewControllerManager::drawGUI() {
+    _hudBackground->drawAt(GPointMake(0.0f, 400.0f));
+    
 	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end(); ++it) {
 		if (*it != 0) {
             (*it)->drawGUI(_cameraPos);

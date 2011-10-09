@@ -11,6 +11,7 @@
 #include "toolkit.h"
 class ViewController;
 class HexMap;
+class ShapeImage;
 
 class ViewControllerManager {
     static ViewControllerManager* _instance;
@@ -18,6 +19,7 @@ class ViewControllerManager {
     HexMap *_mapView, *_pushedMapView;
     ViewController* _focus;
     GPoint _cameraPos;
+    ShapeImage *_hudBackground;
 
     ViewControllerManager();
 
