@@ -27,9 +27,9 @@ namespace ActionNS {
     
     const int AACTION_MOVE          = 0;
     const int AACTION_FIGHT         = 1;
-    const int AACTION_SHOP          = 2;
-    const int AACTION_ENTERDUNGEON  = 3;
-    const int AACTION_INVENTORY     = 4;
+    const int AACTION_SHOP          = 6;
+    const int AACTION_ENTERDUNGEON  = 7;
+    const int AACTION_INVENTORY     = 8;
     
     const int TARGET_HEX =      1;
     const int TARGET_UNIT =     2;
