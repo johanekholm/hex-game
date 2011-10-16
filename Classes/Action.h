@@ -16,6 +16,7 @@
 
 #include "toolkit.h"
 #include "MenuView.h"
+#include "ControlCallback.h"
 
 namespace ActionNS {
     const int BACTION_MOVE =    0;
@@ -205,13 +206,14 @@ public:
 
 /*---------------------------------------------------------------*/
 
-class AActionEnterDungeon : public AdventureAction {
+class AActionEnterDungeon : public AdventureAction, public ControlCallback {
 protected:
     virtual bool isAvailable();
     
 public:
     AActionEnterDungeon(int anId, MapObject* object);
 	virtual void doIt(const ActionState& statePoint);
+    void callbackVoid();
 };
 
 #endif

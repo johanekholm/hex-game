@@ -45,6 +45,7 @@ SET( HEADERS
 	Classes/Action.h
     Classes/BaseUnitViewController.h
 	Classes/CentralControl.h
+    Classes/ControlCallback.h
 	Classes/GameImage.h
 	Classes/geometry.h
 	Classes/HexMap.h

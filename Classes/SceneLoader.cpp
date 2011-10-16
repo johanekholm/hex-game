@@ -32,6 +32,11 @@ SceneLoader::SceneLoader() {
     
 }
 
+void SceneLoader::giveContinousControl(ViewController* control) {
+    ViewControllerManager::instance()->add(control);
+    ViewControllerManager::instance()->setFocus(control);
+}
+
 void SceneLoader::loadBattleScene() {
     HexMapModel* mapModel;
     

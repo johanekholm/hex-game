@@ -379,9 +379,11 @@ bool AActionEnterDungeon::isAvailable() {
 }
 
 void AActionEnterDungeon::doIt(const ActionState& statePoint) {
-    SceneLoader::instance()->switchToTransition(new TransitionViewController());
+    SceneLoader::instance()->switchToTransition(new TransitionViewController(*this));
     CentralControl::instance()->switchMode(ControlMode::MENU);
+}
 
-    //SceneLoader::instance()->loadBattleScene();
-    //CentralControl::instance()->switchMode(ControlMode::BATTLE);
+void AActionEnterDungeon::callbackVoid() {
+    SceneLoader::instance()->loadBattleScene();
+    CentralControl::instance()->switchMode(ControlMode::BATTLE);    
 }

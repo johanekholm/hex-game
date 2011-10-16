@@ -14,6 +14,7 @@
 #include <string>
 #include "toolkit.h"
 
+class ViewController;
 class MenuViewController;
 class TransitionViewController;
 
@@ -40,6 +41,7 @@ public:
     void switchToMainMenu();
     void switchToMenu(MenuViewController* menu);
     void switchToTransition(TransitionViewController* transition);
+    void giveContinousControl(ViewController* control);
 };
 
 #endif

@@ -7,6 +7,7 @@
 
 #include "TransitionViewController.h"
 #include "CentralControl.h"
+#include "ControlCallback.h"
 #include "ShapeImage.h"
 #include "ViewControllerManager.h"
 
@@ -14,8 +15,9 @@ TransitionViewController::~TransitionViewController() {
 	delete _background;
 }
 
-TransitionViewController::TransitionViewController() : ViewController(GPointMake(0.0f, 0.0f), 320.0f, 480.0f, MapLayer::ABOVE_GUI) {
+TransitionViewController::TransitionViewController(ControlCallback& control) : ViewController(GPointMake(0.0f, 0.0f), 320.0f, 480.0f, MapLayer::ABOVE_GUI), _returnControl(control) {
     
+    //_returnControl = control;
     _alpha = 0.0f;
     _background = new RectangleImage(RGBAMake(0.0f, 0.0f, 0.0f, _alpha), _width, _height, true);
     _counter = 0;
@@ -40,6 +42,7 @@ void TransitionViewController::update() {
         if (++_counter > 30) {
             ViewControllerManager::instance()->removeSoft(this);
             CentralControl::instance()->switchMode(ControlMode::ADVENTURE);
+            _returnControl.callbackVoid();
             return;            
         }
     }

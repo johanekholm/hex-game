@@ -13,6 +13,7 @@
 #include <string>
 
 class ShapeImage;
+class ControlCallback;
 
 /*---------------------------------------------------------------*/
 
@@ -21,10 +22,11 @@ protected:
     ShapeImage* _background;
     int _counter;
     GLfloat _alpha;
-
+    ControlCallback& _returnControl;
+    
 public:
 	~TransitionViewController();
-	TransitionViewController();
+	TransitionViewController(ControlCallback& control);
 	void draw(const GPoint& cameraPos);
 	void drawGUI(const GPoint& cameraPos);
 	bool handleEvent(const TouchEvent& event);
