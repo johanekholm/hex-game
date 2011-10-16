@@ -21,11 +21,9 @@ MenuViewController::~MenuViewController() {
     delete _rootNode;
 }
 
-MenuViewController::MenuViewController() {
+MenuViewController::MenuViewController() : ViewController(GPointMake(0.0f, 0.0f), 320.0f, 480.0f, MapLayer::ABOVE_GUI) {
     std::vector<BaseMenuNodeVC*> main, games;
     
-    _width = 320.0f;
-    _height = 480.0f;
     _background = new RectangleImage(RGBAMake(0.0f, 0.0f, 0.0f, 0.3f), _width, _height, true);
     
     games.push_back(new LeafMenuNodeVC(this, "GAME 1", 4, GPointMake(160.0f, 80.0f), 80.0f, 32.0f));
@@ -107,11 +105,8 @@ BaseMenuNodeVC::~BaseMenuNodeVC() {
     delete _label;
 }
 
-BaseMenuNodeVC::BaseMenuNodeVC(MenuViewController* menuVC, const std::string& label, int choiceId, const GPoint& pos, GLfloat width, GLfloat height) {
+BaseMenuNodeVC::BaseMenuNodeVC(MenuViewController* menuVC, const std::string& label, int choiceId, const GPoint& pos, GLfloat width, GLfloat height)  : ViewController(pos, width, height, MapLayer::ABOVE_GUI) {
     _menuVC = menuVC;
-    _pos = pos;
-    _width = width;
-    _height = height;
     _choiceId = choiceId;
     _parentNode = 0;
 }

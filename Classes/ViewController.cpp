@@ -15,6 +15,14 @@ ViewController::ViewController() {
     _hasFocus = false;
 }
 
+ViewController::ViewController(const GPoint& pos, GLfloat width, GLfloat height, int layer) {
+    _hasFocus = false;
+    _pos = pos;
+    _width = width;
+    _height = height;
+    _layer = layer;
+}
+
 int ViewController::getLayer() {
     return _layer;
 }

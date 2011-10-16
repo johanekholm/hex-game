@@ -16,6 +16,8 @@ namespace MapLayer {
     const int BUILDING = 1;
     const int UNIT = 2;
     const int PLAYER = 3;
+    const int GUI = 4;
+    const int ABOVE_GUI = 5;
 };
 
 //struct GPoint;
@@ -32,6 +34,7 @@ protected:
 	
 public:
     ViewController();
+    ViewController(const GPoint& pos, GLfloat width, GLfloat height, int layer);
 	bool isWithin(const GPoint& point);
     int getLayer();
     GPoint getPosition();

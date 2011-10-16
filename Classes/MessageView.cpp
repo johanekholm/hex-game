@@ -50,12 +50,9 @@ MessageView::~MessageView() {
 	delete _stringImage;
 }
 
-MessageView::MessageView(const GPoint& pos, const std::string& string) {
-	_pos = pos;
+MessageView::MessageView(const GPoint& pos, const std::string& string) : ViewController(pos, 0.0f, 0.0f, MapLayer::GUI) {
     _posOffset = GPointMake(0.0f, -10.0f);
     _counter = 0;
-    _width = 0.0f;
-    _height = 0.0f;
 
 	_stringImage = new StringImage(string, 1.0f, 1.0f, 1.0f, 1.0f);
 }
