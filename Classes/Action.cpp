@@ -19,6 +19,7 @@
 #include "MapObject.h"
 #include "SceneLoader.h"
 #include "Sound.h"
+#include "TransitionViewController.h"
 #include <iostream>
 #include <string>
 
@@ -378,6 +379,9 @@ bool AActionEnterDungeon::isAvailable() {
 }
 
 void AActionEnterDungeon::doIt(const ActionState& statePoint) {
-    SceneLoader::instance()->loadBattleScene();
-    CentralControl::instance()->switchMode(ControlMode::BATTLE);
+    SceneLoader::instance()->switchToTransition(new TransitionViewController());
+    CentralControl::instance()->switchMode(ControlMode::MENU);
+
+    //SceneLoader::instance()->loadBattleScene();
+    //CentralControl::instance()->switchMode(ControlMode::BATTLE);
 }

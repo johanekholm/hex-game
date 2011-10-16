@@ -15,6 +15,7 @@
 #include "HexMap.h"
 #include "HexMapModel.h"
 #include "Sound.h"
+#include "TransitionViewController.h"
 #include "UnitFactory.h"
 #include "MenuView.h"
 
@@ -84,6 +85,11 @@ void SceneLoader::switchToMainMenu() {
 void SceneLoader::switchToMenu(MenuViewController* menu) {
     ViewControllerManager::instance()->add(menu);
     ViewControllerManager::instance()->setFocus(menu);
+}
+
+void SceneLoader::switchToTransition(TransitionViewController* transition) {
+    ViewControllerManager::instance()->add(transition);
+    ViewControllerManager::instance()->setFocus(transition);
 }
 
 void SceneLoader::returnFromMenu() {

@@ -31,6 +31,7 @@ SET( SOURCES
     Classes/StringImage.cpp
 	Classes/TextureCatalog.cpp
 	Classes/TextureMap.cpp
+    Classes/TransitionViewController.cpp
     Classes/UnitFactory.cpp
 	Classes/UnitModel.cpp
 	Classes/UnitView.cpp
@@ -62,6 +63,7 @@ SET( HEADERS
     Classes/StringImage.h
 	Classes/TextureCatalog.h
 	Classes/TextureMap.h
+    Classes/TransitionViewController.h
     Classes/UnitFactory.h
 	Classes/UnitModel.h
 	Classes/UnitView.h

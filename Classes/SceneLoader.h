@@ -15,6 +15,7 @@
 #include "toolkit.h"
 
 class MenuViewController;
+class TransitionViewController;
 
 class SceneLoader {
 	static SceneLoader* _instance;
@@ -38,6 +39,7 @@ public:
     void switchToAdventureScene();
     void switchToMainMenu();
     void switchToMenu(MenuViewController* menu);
+    void switchToTransition(TransitionViewController* transition);
 };
 
 #endif
