@@ -12,7 +12,7 @@ class ControlCallback {
 public:
 	virtual ~ControlCallback() {}
 	virtual void callbackVoid() {};
-    virtual void callbackNumber() {};
+    virtual void callbackNumber(int num) {};
 };
 
 #endif

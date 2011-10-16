@@ -12,6 +12,7 @@
 #include <vector>
 #include <string>
 
+class ControlCallback;
 class ShapeImage;
 class GameImage;
 class StringImage;
@@ -19,11 +20,6 @@ class StringImage;
 struct MenuChoice {
     int choiceId;
     std::string label;
-};
-
-class IChoiceCallback {
-public:
-    virtual void reportChoice(int choiceId) = 0;
 };
 
 class BaseMenuNodeVC;
@@ -50,10 +46,10 @@ public:
 /*---------------------------------------------------------------*/
 
 class ChoiceMenuVC : public MenuViewController {
-    IChoiceCallback* _callback;
+    ControlCallback& _returnControl;
     
 public:
-	ChoiceMenuVC(IChoiceCallback* callback, std::vector<MenuChoice> choices);
+	ChoiceMenuVC(ControlCallback& control, std::vector<MenuChoice> choices);
     virtual void reportChoice(int choiceId);    
 };
 

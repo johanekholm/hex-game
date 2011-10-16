@@ -11,6 +11,7 @@
 #include "ViewControllerManager.h"
 #include "toolkit.h"
 #include "Action.h"
+#include "ControlCallback.h"
 #include "ShapeImage.h"
 #include "StringImage.h"
 #include <string>
@@ -70,12 +71,11 @@ void MenuViewController::setFocus(BaseMenuNodeVC* focus) {
 
 /*---------------------------------------------------------------*/
 
-ChoiceMenuVC::ChoiceMenuVC(IChoiceCallback* callback, std::vector<MenuChoice> choices) {
+ChoiceMenuVC::ChoiceMenuVC(ControlCallback& control, std::vector<MenuChoice> choices) : _returnControl(control) {
     std::vector<BaseMenuNodeVC*> nodes;
     int counter = 1;
     GLfloat yStart = 440.0f;
     
-    _callback = callback;
     _width = 320.0f;
     _height = 480.0f;
     _background = new RectangleImage(RGBAMake(0.0f, 0.0f, 0.0f, 0.3f), _width, _height, true);
@@ -94,7 +94,7 @@ ChoiceMenuVC::ChoiceMenuVC(IChoiceCallback* callback, std::vector<MenuChoice> ch
 }
 
 void ChoiceMenuVC::reportChoice(int choiceId) {
-    _callback->reportChoice(choiceId);
+    _returnControl.callbackNumber(choiceId);
 }
 
 

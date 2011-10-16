@@ -17,7 +17,6 @@ TransitionViewController::~TransitionViewController() {
 
 TransitionViewController::TransitionViewController(ControlCallback& control) : ViewController(GPointMake(0.0f, 0.0f), 320.0f, 480.0f, MapLayer::ABOVE_GUI), _returnControl(control) {
     
-    //_returnControl = control;
     _alpha = 0.0f;
     _background = new RectangleImage(RGBAMake(0.0f, 0.0f, 0.0f, _alpha), _width, _height, true);
     _counter = 0;

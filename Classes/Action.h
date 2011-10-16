@@ -182,26 +182,26 @@ public:
 
 /*---------------------------------------------------------------*/
 
-class AActionInventory : public AdventureAction, public IChoiceCallback {
+class AActionInventory : public AdventureAction, public ControlCallback {
 protected:
     virtual bool isAvailable();
     
 public:
     AActionInventory(int anId, MapObject* object);
 	virtual void doIt(const ActionState& statePoint);
-    void reportChoice(int choiceId);
+    void callbackNumber(int num);
 };
 
 /*---------------------------------------------------------------*/
 
-class AActionShop : public AdventureAction, public IChoiceCallback {
+class AActionShop : public AdventureAction, public ControlCallback {
 protected:
     virtual bool isAvailable();
     
 public:
     AActionShop(int anId, MapObject* object);
 	virtual void doIt(const ActionState& statePoint);
-    void reportChoice(int choiceId);
+    void callbackNumber(int num);
 };
 
 /*---------------------------------------------------------------*/

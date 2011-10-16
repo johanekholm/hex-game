@@ -318,12 +318,12 @@ void AActionInventory::doIt(const ActionState& statePoint) {
         choices.push_back(menuItem);
 	}
     
-    SceneLoader::instance()->switchToMenu(new ChoiceMenuVC(this, choices));
+    SceneLoader::instance()->switchToMenu(new ChoiceMenuVC(*this, choices));
     CentralControl::instance()->switchMode(ControlMode::MENU);
 }
 
-void AActionInventory::reportChoice(int choiceId) {
-    DEBUGLOG("Chose item %i", choiceId);
+void AActionInventory::callbackNumber(int num) {
+    DEBUGLOG("Chose item %i", num);
     SceneLoader::instance()->returnFromMenu();
     CentralControl::instance()->switchMode(ControlMode::ADVENTURE);
 }
@@ -349,15 +349,15 @@ void AActionShop::doIt(const ActionState& statePoint) {
     item.choiceId = ItemNS::RING; item.label = "RING 8S";
     choices.push_back(item);
     
-    SceneLoader::instance()->switchToMenu(new ChoiceMenuVC(this, choices));
+    SceneLoader::instance()->switchToMenu(new ChoiceMenuVC(*this, choices));
     CentralControl::instance()->switchMode(ControlMode::MENU);
 }
 
-void AActionShop::reportChoice(int choiceId) {
+void AActionShop::callbackNumber(int num) {
     
-    if (choiceId != -1) {
+    if (num != -1) {
         if (_object->removeItem(ItemNS::SILVER, 6)) {
-            _object->addItem(Item::buildItem(choiceId, 1));
+            _object->addItem(Item::buildItem(num, 1));
             SceneLoader::instance()->returnFromMenu();
             CentralControl::instance()->switchMode(ControlMode::ADVENTURE);                
         } else {
