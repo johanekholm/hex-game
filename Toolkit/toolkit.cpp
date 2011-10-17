@@ -66,3 +66,11 @@ RGBA RGBAMakeGray(GLfloat intensity) {
     color.alpha = 1.0f;
     return color;    
 }
+
+RGBA RGBAMakeWhite() {
+    RGBA color;
+    color.red=1.0f; 
+    color.green=1.0f; 
+    color.blue=1.0f; color.alpha=1.0f;
+    return color;
+}

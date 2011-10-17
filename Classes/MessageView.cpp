@@ -54,7 +54,7 @@ MessageView::MessageView(const GPoint& pos, const std::string& string) : ViewCon
     _posOffset = GPointMake(0.0f, -10.0f);
     _counter = 0;
 
-	_stringImage = new StringImage(string, 1.0f, 1.0f, 1.0f, 1.0f);
+	_stringImage = new StringImage(string, RGBAMake(1.0f, 1.0f, 1.0f, 1.0f));
 }
 
 MessageView::MessageView(const GPoint& pos, const std::string& string, GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha) {
@@ -64,7 +64,7 @@ MessageView::MessageView(const GPoint& pos, const std::string& string, GLfloat r
     _width = 0.0f;
     _height = 0.0f;
     
-	_stringImage = new StringImage(string, red, green, blue, alpha);
+	_stringImage = new StringImage(string, RGBAMake(red, green, blue, alpha));
 }
 
 void MessageView::destroy() {

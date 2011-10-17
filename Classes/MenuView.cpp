@@ -140,7 +140,7 @@ LeafMenuNodeVC::~LeafMenuNodeVC() {
 LeafMenuNodeVC::LeafMenuNodeVC(MenuViewController* menuVC, const std::string& label, int choiceId, const GPoint& pos, GLfloat width, GLfloat height) : BaseMenuNodeVC(menuVC, label, choiceId, pos, width, height) {
     
     _button = new RectangleImage(RGBAMake(0.2f, 0.2f, 1.0f, 1.0f), _width, _height, true);
-    _label = new StringImage(label, 1.0f, 1.0f, 1.0f, 1.0f);
+    _label = new StringImage(label, RGBAMakeWhite());
 }
 
 bool LeafMenuNodeVC::handleEvent(const TouchEvent& event) {
@@ -156,7 +156,7 @@ bool LeafMenuNodeVC::handleEvent(const TouchEvent& event) {
 BackButtonMenuNodeVC::BackButtonMenuNodeVC(MenuViewController* menuVC, const std::string& label, const GPoint& pos, GLfloat width, GLfloat height) : BaseMenuNodeVC(menuVC, label, -1, pos, width, height) {
     
     _button = new RectangleImage(RGBAMake(1.0f, 0.0f, 0.0f, 0.8f), _width, _height, true);
-    _label = new StringImage(label, 1.0f, 1.0f, 1.0f, 1.0f);
+    _label = new StringImage(label, RGBAMakeWhite());
 }
 
 bool BackButtonMenuNodeVC::handleEvent(const TouchEvent& event) {
@@ -181,7 +181,7 @@ ParentMenuNodeVC::~ParentMenuNodeVC() {
 ParentMenuNodeVC::ParentMenuNodeVC(MenuViewController* menuVC, const std::string& label, const std::vector<BaseMenuNodeVC*>& subNodes, const GPoint& pos, GLfloat width, GLfloat height) : BaseMenuNodeVC(menuVC, label, -1, pos, width, height){
 
     _button = new RectangleImage(RGBAMake(0.2f, 0.2f, 1.0f, 0.8f), _width, _height, true);
-    _label = new StringImage(label, 1.0f, 1.0f, 1.0f, 1.0f);
+    _label = new StringImage(label, RGBAMakeWhite());
     _subNodes = subNodes;
     
     for (std::vector<BaseMenuNodeVC*>::iterator it = _subNodes.begin(); it != _subNodes.end(); ++it) {
