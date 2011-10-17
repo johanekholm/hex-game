@@ -379,7 +379,7 @@ bool AActionEnterDungeon::isAvailable() {
 }
 
 void AActionEnterDungeon::doIt(const ActionState& statePoint) {
-    SceneLoader::instance()->switchToTransition(new TransitionViewController(*this));
+    SceneLoader::instance()->switchToTransition(new FadeOutTransition(*this));
     CentralControl::instance()->switchMode(ControlMode::MENU);
 }
 
