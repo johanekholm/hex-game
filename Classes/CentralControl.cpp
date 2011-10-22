@@ -89,12 +89,12 @@ void CentralControl::update() {
             _timer = 0;
             ModelManager::instance()->tick();
             
-            loser = ModelManager::instance()->getOwnerWithNoUnits();
+            /*loser = ModelManager::instance()->getOwnerWithNoUnits();
             if (loser != 0) {
                 this->switchMode(ControlMode::ADVENTURE);
                 SceneLoader::instance()->switchToAdventureScene();
                 MessageView::add(GPointMake(160.0f, 240.0f), "VICTORY!");
-            }
+            }*/
         }        
     }
     

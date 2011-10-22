@@ -65,13 +65,14 @@ public:
 class PartyModel : public MapObject {
     
 protected:
-    std::vector<UnitModel*> _members;
+    std::vector<UnitModel*> _memberUnits;
 
     
 public:
     ~PartyModel();
     PartyModel(int category, MPoint pos, int owner, std::vector<int> actionIds, const std::vector<UnitModel*>& members);
     void move(const MPoint& targetPos);
+    std::vector<UnitModel*> getMembers();
 };
 
 /*

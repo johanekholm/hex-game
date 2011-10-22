@@ -14,6 +14,7 @@
 #include "TextureCatalog.h"
 #include "HexMap.h"
 #include "HexMapModel.h"
+#include "MapObject.h"
 #include "Sound.h"
 #include "TransitionViewController.h"
 #include "UnitFactory.h"
@@ -52,6 +53,40 @@ void SceneLoader::loadBattleScene() {
     UnitFactory::produceAndRegisterUnit("soldier", 2, MPointMake(1, 1));
     UnitFactory::produceAndRegisterUnit("channeler", 2, MPointMake(2, 1));
     
+    Sound::instance()->play("music1");
+}
+
+void SceneLoader::loadBattleScene(const std::string& mapName, int enemyPartyType, std::vector<UnitModel*> members) {
+    HexMapModel* mapModel;
+    std::vector<UnitModel*> playerMembers;
+    
+    mapModel = new HexMapModel(4, 4);
+    
+    ModelManager::instance()->setBattleMap(mapModel);
+    ViewControllerManager::instance()->pushMapView(new HexMap(mapModel, TextureCatalog::instance()->get("hexTiles"), 1.0f));
+    
+    ViewControllerManager::instance()->removeAllSoftly();
+
+    for (std::vector<UnitModel*>::iterator it = members.begin(); it != members.end(); ++it) {
+        UnitFactory::registerUnit(*it);
+     }
+        
+    switch (enemyPartyType) {
+        case 1:
+            UnitFactory::produceAndRegisterUnit("soldier", 2, MPointMake(2, 2));
+            UnitFactory::produceAndRegisterUnit("soldier", 2, MPointMake(3, 2));            
+            break;
+
+        case 2:
+            UnitFactory::produceAndRegisterUnit("soldier", 2, MPointMake(2, 2));            
+            UnitFactory::produceAndRegisterUnit("archer", 2, MPointMake(2, 3));
+            UnitFactory::produceAndRegisterUnit("archer", 2, MPointMake(3, 2));            
+            break;
+
+        default:
+            break;
+    }
+
     Sound::instance()->play("music1");
 }
 

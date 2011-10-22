@@ -46,6 +46,7 @@ public:
     void purge();
     void pushMapView(HexMap* mapView);
     void remove(ViewController* view);
+    void removeAllSoftly();
     void removeSoft(ViewController* view);
     void setCameraPosition(const GPoint& pos);
     void setFocus(ViewController* view);

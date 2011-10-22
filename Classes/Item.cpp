@@ -89,9 +89,9 @@ void ItemHandler::addItem(Item* item) {
         }
     }
     
-    for (std::map<int, Item*>::iterator it = _items.begin(); it != _items.end(); ++it) {
+    /*for (std::map<int, Item*>::iterator it = _items.begin(); it != _items.end(); ++it) {
         DEBUGLOG("An Item: %s", it->second->getDescription().c_str());
-    }
+    }*/
 }
 
 std::map<int, Item*> ItemHandler::getItems() {

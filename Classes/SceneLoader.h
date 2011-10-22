@@ -12,11 +12,14 @@
 
 #include <map>
 #include <string>
+#include <vector>
 #include "toolkit.h"
 
 class ViewController;
 class MenuViewController;
 class TransitionViewController;
+class PartyModel;
+class UnitModel;
 
 class SceneLoader {
 	static SceneLoader* _instance;
@@ -36,6 +39,7 @@ public:
 	
     void loadAdventureScene();
     void loadBattleScene();
+    void loadBattleScene(const std::string& mapName, int enemyPartyType, std::vector<UnitModel*> members);
     void returnFromMenu();
     void switchToAdventureScene();
     void switchToMainMenu();

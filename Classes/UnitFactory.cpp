@@ -47,8 +47,8 @@ void UnitFactory::produceAndRegisterMapObject(const std::string& objectType, int
         actions.push_back(ActionNS::AACTION_MOVE); actions.push_back(ActionNS::AACTION_FIGHT);
         actions.push_back(ActionNS::AACTION_SHOP); actions.push_back(ActionNS::AACTION_ENTERDUNGEON);
         actions.push_back(ActionNS::AACTION_INVENTORY);
-        units.push_back(produceUnit("soldier", owner, MPointMake(0,0)));
-        units.push_back(produceUnit("soldier", owner, MPointMake(1,0)));
+        units.push_back(produceUnit("swordsman", owner, MPointMake(0,0)));
+        units.push_back(produceUnit("channeler", owner, MPointMake(1,0)));
         object = new PartyModel(MapObjectCategory::PARTY, pos, owner, actions, units);
     } else {
         return;
@@ -83,7 +83,7 @@ UnitModel* UnitFactory::produceUnit(const std::string& unitClass, int owner, con
     }
     
     unit = new UnitModel(pos.x, pos.y, owner, hp, ap, power, skill, defense, actions, image);
-    
+
     return unit;
 }
 
@@ -99,5 +99,15 @@ void UnitFactory::produceAndRegisterUnit(const std::string& unitClass, int owner
     ModelManager::instance()->addUnit(unit);
     ViewControllerManager::instance()->add(view);
 
+}
+
+void UnitFactory::registerUnit(UnitModel* unit) {
+    UnitViewController* view;
+    
+	view = new UnitViewController(unit, 64.0f, 64.0f, unit->getVisualType());
+    
+    unit->addObserver(view);
+    ModelManager::instance()->addUnit(unit);
+    ViewControllerManager::instance()->add(view);
 }
 

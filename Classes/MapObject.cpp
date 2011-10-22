@@ -9,6 +9,7 @@
 #include "Action.h"
 #include "ModelManager.h"
 #include "HexMapModel.h"
+#include "UnitModel.h"
 #include "Item.h"
 #include <iostream>
 
@@ -106,7 +107,11 @@ PartyModel::~PartyModel() {
 }
 
 PartyModel::PartyModel(int category, MPoint pos, int owner, std::vector<int> actionIds, const std::vector<UnitModel*>& members) : MapObject(category, pos, owner, actionIds) {
-    _members = members;
+    _memberUnits = members;
+}
+
+std::vector<UnitModel*> PartyModel::getMembers() {
+    return _memberUnits;
 }
 
 

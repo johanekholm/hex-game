@@ -143,6 +143,15 @@ void ViewControllerManager::remove(ViewController* view) {
 	}
 }
 
+void ViewControllerManager::removeAllSoftly() {
+    _focus = 0;
+	
+    for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end(); ++it) {
+        delete (*it);
+        *it = 0;
+	}    
+}
+
 void ViewControllerManager::removeSoft(ViewController* view) {
     if (view == _focus) {
         _focus = 0;

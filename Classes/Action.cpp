@@ -384,6 +384,6 @@ void AActionEnterDungeon::doIt(const ActionState& statePoint) {
 }
 
 void AActionEnterDungeon::callbackVoid() {
-    SceneLoader::instance()->loadBattleScene();
+    SceneLoader::instance()->loadBattleScene("dungeon1", 2, static_cast<PartyModel*>(_object)->getMembers());
     CentralControl::instance()->switchMode(ControlMode::BATTLE);    
 }
