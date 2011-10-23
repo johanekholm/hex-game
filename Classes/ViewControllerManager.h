@@ -8,6 +8,7 @@
  */
 
 #include <vector>
+#include <set>
 #include "toolkit.h"
 class ViewController;
 class HexMap;
@@ -15,7 +16,7 @@ class ShapeImage;
 
 class ViewControllerManager {
     static ViewControllerManager* _instance;
-	std::vector<ViewController*> _views;
+	std::vector<ViewController*> _views, _stagedViews;
     HexMap *_mapView, *_pushedMapView;
     ViewController* _focus;
     GPoint _cameraPos;
@@ -40,7 +41,8 @@ public:
     void drawGUI();
     void drawMap();
     ViewController* getFocus();
-    ViewController* getTouched(const GPoint& point);	
+    ViewController* getTouched(const GPoint& point);
+	void insert(ViewController* view);
     void moveCamera(const GPoint& pos);
     void popMapView();
     void purge();

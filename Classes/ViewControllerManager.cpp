@@ -26,6 +26,7 @@ void ViewControllerManager::destroy() {
         }
         
 		_instance->_views.clear();
+        _instance->_stagedViews.clear();
         delete _instance->_hudBackground;
 		delete _instance;
 		_instance=0;
@@ -46,14 +47,8 @@ ViewControllerManager::ViewControllerManager() {
 
 
 void ViewControllerManager::add(ViewController* view) {
-    std::vector<ViewController*>::iterator it = _views.begin();
-	while (true) {
-		if (it == _views.end() || (*it != 0 && (*it)->getLayer() >= view->getLayer())) {
-            _views.insert(it, view);
-            break;
-        }
-        ++it;
-	}
+    _stagedViews.push_back(view);
+    DEBUGLOG("View added: %x", view);
 }
 
 GPoint ViewControllerManager::adjustForCamera(const GPoint& pos) {
@@ -101,6 +96,21 @@ ViewController* ViewControllerManager::getTouched(const GPoint& point) {
 	
 	return 0;
 }
+
+void ViewControllerManager::insert(ViewController* view) {
+    DEBUGLOG("View inserted: %x", view);
+
+    std::vector<ViewController*>::iterator it = _views.begin();
+	while (true) {
+		if (it == _views.end() || (*it != 0 && (*it)->getLayer() >= view->getLayer())) {
+            _views.insert(it, view);
+            break;
+        }
+        ++it;
+	}
+}
+
+
 
 void ViewControllerManager::moveCamera(const GPoint& pos) {
     this->setCameraPosition(_cameraPos + pos);
@@ -221,15 +231,22 @@ void ViewControllerManager::translateToCameraAndPosition(const GPoint& pos) {
 }
 
 void ViewControllerManager::update() {
+    // insert newly added views before starting loop 
+    if (_stagedViews.size() > 0) {
+        for (std::vector<ViewController*>::iterator it = _stagedViews.begin(); it != _stagedViews.end(); ++it) {
+            this->insert(*it);
+        }
+        _stagedViews.clear();        
+    }
+
+    // update viewcontrollers, erase those that have been soft-removed in a controlled fashion
 	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end();) {
 		if ((*it) != 0) {
             (*it)->update();
             ++it;
         } else {
-
             it = _views.erase(it);
         }
-        
 	}
 }
 
