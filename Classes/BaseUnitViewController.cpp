@@ -89,6 +89,7 @@ ActionView* BaseUnitViewController::getTouchedActionView(GPoint point) {
 
 void BaseUnitViewController::setFocus(bool hasFocus) {
     _hasFocus = hasFocus;
+    _selectedActionView = 0;
     this->updateState();
 }
 

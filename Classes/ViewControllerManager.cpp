@@ -38,7 +38,7 @@ ViewControllerManager::ViewControllerManager() {
     _mapView = 0;
     _pushedMapView = 0;
     _cameraPos = 0;
-    _hudBackground = new RectangleImage(RGBAMake(0.0f, 0.0f, 0.0f, 0.8f), 320.0f, 80.0f, true);
+    _hudBackground = new RectangleImage(RGBAMake(0.1f, 0.1f, 0.1f, 1.0f), 320.0f, 80.0f, true);
 }
 
 /*ViewControllerManager::~ViewControllerManager() {
@@ -48,7 +48,6 @@ ViewControllerManager::ViewControllerManager() {
 
 void ViewControllerManager::add(ViewController* view) {
     _stagedViews.push_back(view);
-    DEBUGLOG("View added: %x", view);
 }
 
 GPoint ViewControllerManager::adjustForCamera(const GPoint& pos) {
@@ -98,7 +97,6 @@ ViewController* ViewControllerManager::getTouched(const GPoint& point) {
 }
 
 void ViewControllerManager::insert(ViewController* view) {
-    DEBUGLOG("View inserted: %x", view);
 
     std::vector<ViewController*>::iterator it = _views.begin();
 	while (true) {

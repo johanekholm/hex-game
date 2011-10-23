@@ -8,7 +8,6 @@
  */
 
 #include <vector>
-#include <set>
 #include "toolkit.h"
 class ViewController;
 class HexMap;
