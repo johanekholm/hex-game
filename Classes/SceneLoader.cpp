@@ -60,7 +60,7 @@ void SceneLoader::loadBattleScene(const std::string& mapName, int enemyPartyType
     HexMapModel* mapModel;
     std::vector<UnitModel*> playerMembers;
     
-    mapModel = new HexMapModel(4, 4);
+    mapModel = new HexMapModel(4, 4, "4 5 5 5\n5 5 5 5\n5 5 5 5\n5 5 5 4\n");
     
     ModelManager::instance()->setBattleMap(mapModel);
     ViewControllerManager::instance()->pushMapView(new HexMap(mapModel, TextureCatalog::instance()->get("hexTiles"), 1.0f));

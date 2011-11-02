@@ -47,7 +47,7 @@ void UnitFactory::produceAndRegisterMapObject(const std::string& objectType, int
         actions.push_back(ActionNS::AACTION_MOVE); actions.push_back(ActionNS::AACTION_FIGHT);
         actions.push_back(ActionNS::AACTION_SHOP); actions.push_back(ActionNS::AACTION_ENTERDUNGEON);
         actions.push_back(ActionNS::AACTION_INVENTORY);
-        units.push_back(produceUnit("swordsman", owner, MPointMake(0,0)));
+        units.push_back(produceUnit("swordsman", owner, MPointMake(1,1)));
         units.push_back(produceUnit("channeler", owner, MPointMake(1,0)));
         object = new PartyModel(MapObjectCategory::PARTY, pos, owner, actions, units);
     } else {
