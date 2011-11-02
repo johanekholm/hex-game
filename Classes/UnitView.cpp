@@ -40,11 +40,11 @@ void UnitViewController::draw(const GPoint& cameraPos) {
 }
 
 void UnitViewController::drawGUI(const GPoint& cameraPos) {
-    _hpBarSlot->drawAt(GPointMake(_pos.x - 16.0f, _pos.y + 32.0f));
-    _apBarSlot->drawAt(GPointMake(_pos.x- 16.0f, _pos.y + 26.0f));
+    _hpBarSlot->drawAt(GPointMake(_pos.x - 16.0f, _pos.y + 26.0f));
+    _apBarSlot->drawAt(GPointMake(_pos.x- 16.0f, _pos.y + 30.0f));
     
-    _hpBar->drawAt(GPointMake(_pos.x - 16.0f, _pos.y + 32.0f));
-    _apBar->drawAt(GPointMake(_pos.x- 16.0f, _pos.y + 26.0f));
+    _hpBar->drawAt(GPointMake(_pos.x - 16.0f, _pos.y + 26.0f));
+    _apBar->drawAt(GPointMake(_pos.x- 16.0f, _pos.y + 30.0f));
     
     BaseUnitViewController::drawGUI(cameraPos);
 }
