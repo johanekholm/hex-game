@@ -28,7 +28,6 @@ class StringImage {
 
 public:
 	~StringImage();
-	StringImage(const std::string& string, GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha);
 	StringImage(const std::string& string, const RGBA& color);
 	void drawAt(const GPoint &pos);
     void drawCenteredAt(const GPoint &pos);
