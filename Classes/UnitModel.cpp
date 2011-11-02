@@ -27,7 +27,7 @@ UnitModel::UnitModel(int x, int y, int owner, int maxHp, int maxAp, int power, i
     _maxHp = maxHp;
     _maxAp = maxAp;
     _hp = _maxHp;
-    _ap = 0; //_maxAp;
+    _ap = rand() % 8; //_maxAp;
     _basePower = power;
     _baseSkill = skill;
     _baseDefense = defense;

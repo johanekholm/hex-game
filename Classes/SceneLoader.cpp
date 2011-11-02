@@ -53,7 +53,7 @@ void SceneLoader::loadBattleScene() {
     UnitFactory::produceAndRegisterUnit("soldier", 2, MPointMake(1, 1));
     UnitFactory::produceAndRegisterUnit("channeler", 2, MPointMake(2, 1));
     
-    Sound::instance()->play("music1");
+    // Sound::instance()->play("music1");
 }
 
 void SceneLoader::loadBattleScene(const std::string& mapName, int enemyPartyType, std::vector<UnitModel*> members) {
@@ -87,7 +87,7 @@ void SceneLoader::loadBattleScene(const std::string& mapName, int enemyPartyType
             break;
     }
 
-    Sound::instance()->play("music1");
+    // Sound::instance()->play("music1");
 }
 
 void SceneLoader::loadAdventureScene() {

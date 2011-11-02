@@ -111,7 +111,7 @@ std::vector<ActionState> BattleAction::getActionPoints(int ap, const std::map<in
 /*---------------------------------------------------------------*/
 
 
-BActionMove::BActionMove(int anId, UnitModel* unit) : BattleAction(anId, unit, "MOVE", 1, TARGET_HEX, TYPE_MOVEMENT, "") {}
+BActionMove::BActionMove(int anId, UnitModel* unit) : BattleAction(anId, unit, "MOVE", 10, TARGET_HEX, TYPE_MOVEMENT, "") {}
 
 bool BActionMove::isAvailableAtHex(const MPoint& hex) {
     if (hexDistance(_unit->getPosition(), hex) == 1) {
@@ -126,7 +126,7 @@ void BActionMove::doAction(const ActionState& statePoint) {
 
 /*---------------------------------------------------------------*/
 
-BActionStrike::BActionStrike(int anId, UnitModel* unit) : BattleAction(anId, unit, "STRIKE", 2, TARGET_UNIT, TYPE_ATTACK, "strike") {}
+BActionStrike::BActionStrike(int anId, UnitModel* unit) : BattleAction(anId, unit, "STRIKE", 20, TARGET_UNIT, TYPE_ATTACK, "strike") {}
 
 bool BActionStrike::isAvailableToUnit(UnitModel* targetUnit) {
     int distance = hexDistance(_unit->getPosition(), targetUnit->getPosition());
@@ -140,7 +140,7 @@ void BActionStrike::doAction(const ActionState& statePoint) {
 
 /*---------------------------------------------------------------*/
 
-BActionFire::BActionFire(int anId, UnitModel* unit) : BattleAction(anId, unit, "FIRE", 2, TARGET_UNIT, TYPE_ATTACK, "") {}
+BActionFire::BActionFire(int anId, UnitModel* unit) : BattleAction(anId, unit, "FIRE", 20, TARGET_UNIT, TYPE_ATTACK, "") {}
 
 bool BActionFire::isAvailableToUnit(UnitModel* targetUnit) {
     int distance = hexDistance(_unit->getPosition(), targetUnit->getPosition());
@@ -154,7 +154,7 @@ void BActionFire::doAction(const ActionState& statePoint) {
 
 /*---------------------------------------------------------------*/
 
-BActionHeal::BActionHeal(int anId, UnitModel* unit) : BattleAction(anId, unit, "HEAL", 2, TARGET_UNIT, TYPE_DEFENSE, "heal") {}
+BActionHeal::BActionHeal(int anId, UnitModel* unit) : BattleAction(anId, unit, "HEAL", 20, TARGET_UNIT, TYPE_DEFENSE, "heal") {}
 
 bool BActionHeal::isAvailableToUnit(UnitModel* targetUnit) {
     int distance = hexDistance(_unit->getPosition(), targetUnit->getPosition());
@@ -171,7 +171,7 @@ void BActionHeal::doAction(const ActionState& statePoint) {
 
 /*---------------------------------------------------------------*/
 
-BActionBurn::BActionBurn(int anId, UnitModel* unit) : BattleAction(anId, unit, "BURN", 4, TARGET_UNIT, TYPE_ATTACK, "fire") {}
+BActionBurn::BActionBurn(int anId, UnitModel* unit) : BattleAction(anId, unit, "BURN", 40, TARGET_UNIT, TYPE_ATTACK, "fire") {}
 
 bool BActionBurn::isAvailableToUnit(UnitModel* targetUnit) {
     int distance = hexDistance(_unit->getPosition(), targetUnit->getPosition());

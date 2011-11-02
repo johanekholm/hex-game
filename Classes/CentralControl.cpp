@@ -85,7 +85,7 @@ void CentralControl::update() {
     int loser = 0;
 	
     if (_mode == ControlMode::BATTLE || _mode == ControlMode::BATTLE_FOCUS) {
-        if (++_timer >= 200) {
+        if (++_timer >= 20) {
             _timer = 0;
             ModelManager::instance()->tick();
             
