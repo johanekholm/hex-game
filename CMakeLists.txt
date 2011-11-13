@@ -13,6 +13,7 @@ SET( SOURCES
 	Classes/Action.cpp
     Classes/BaseUnitViewController.cpp
 	Classes/CentralControl.cpp
+    Classes/EventManager.cpp
 	Classes/GameImage.cpp
 	Classes/geometry.cpp
 	Classes/HexMap.cpp
@@ -46,7 +47,8 @@ SET( HEADERS
     Classes/BaseUnitViewController.h
 	Classes/CentralControl.h
     Classes/ControlCallback.h
-	Classes/GameImage.h
+    Classes/EventManager.h
+    Classes/GameImage.h
 	Classes/geometry.h
 	Classes/HexMap.h
     Classes/HexMapModel.h
