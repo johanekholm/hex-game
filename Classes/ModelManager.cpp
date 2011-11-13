@@ -11,6 +11,7 @@
 #include "UnitModel.h"
 #include "HexMapModel.h"
 #include "MapObject.h"
+#include "EventManager.h"
 #include "geometry.h"
 #include <iostream>
 
@@ -200,8 +201,24 @@ void ModelManager::removeMapObject(int objectId) {
 }
 
 void ModelManager::removeUnit(int unitId) {
+    int owner = _units[unitId]->getOwner();
+    
     delete _units[unitId];
     _units.erase(unitId);
+
+    // check for wipe-out
+    for (std::map<int, UnitModel*>::const_iterator it = _units.begin(); it != _units.end(); ++it) {
+		if (it->second != 0) {
+            if (it->second->getOwner() == owner) {
+                return;
+            }
+        }
+	}
+    
+    ModelEvent event;
+    event.type = ModelEventNS::PARTY_WIPEOUT;
+    
+    EventManager::instance()->publishEvent(event);
 }
 
 void ModelManager::setAdventureMap(HexMapModel* map) {

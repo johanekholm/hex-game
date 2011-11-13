@@ -19,6 +19,7 @@
 #include "TransitionViewController.h"
 #include "UnitFactory.h"
 #include "MenuView.h"
+#include "ScriptManager.h"
 
 SceneLoader* SceneLoader::_instance = 0;
 
@@ -86,6 +87,8 @@ void SceneLoader::loadBattleScene(const std::string& mapName, int enemyPartyType
         default:
             break;
     }
+    
+    ScriptManager::instance()->add(ScriptedAction::build(ScriptedActionNS::END_BATTLE, ModelEventNS::PARTY_WIPEOUT));
 
     // Sound::instance()->play("music1");
 }
