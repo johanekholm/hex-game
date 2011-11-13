@@ -69,13 +69,15 @@ ScriptedAction* ScriptedAction::build(int actionId, int eventType) {
 }
 
 ScriptedAction::ScriptedAction(const ModelEvent& triggerEvent) {
+    _active = true;
     _triggerEvent = triggerEvent;
 }
 
 void ScriptedAction::doAction() {}
 
 void ScriptedAction::updateState() {
-    if (EventManager::instance()->getEvent().type == _triggerEvent.type) {
+    if (_active && EventManager::instance()->getEvent().type == _triggerEvent.type) {
+        _active = false;
         this->doAction();
     }
 }
@@ -88,12 +90,14 @@ void ScriptedAction::destroyed() {}
 EndBattleSA::EndBattleSA(const ModelEvent& triggerEvent) : ScriptedAction(triggerEvent) {}
 
 void EndBattleSA::doAction() {
+    DEBUGLOG("Ending battle - Fade out");
     SceneLoader::instance()->switchToTransition(new FadeOutTransition(*this));
     CentralControl::instance()->switchMode(ControlMode::MENU);
 }
 
 void EndBattleSA::callbackVoid() {
-    CentralControl::instance()->switchMode(ControlMode::ADVENTURE);
+    DEBUGLOG("Ending battle - Load scene");
+    //CentralControl::instance()->switchMode(ControlMode::ADVENTURE);
     SceneLoader::instance()->switchToAdventureScene();    
 }
 

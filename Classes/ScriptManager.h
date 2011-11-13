@@ -21,6 +21,7 @@ namespace ScriptedActionNS {
 };
 
 class ScriptedAction : public IObserver {
+    bool _active;
     ModelEvent _triggerEvent;
     
 public:

@@ -70,7 +70,7 @@ UnitModel* UnitFactory::produceUnit(const std::string& unitClass, int owner, con
         hp = 10; ap = 30; power = 3; skill = 2; defense = 3; image = 0;
         actions.push_back(ActionNS::BACTION_MOVE); actions.push_back(ActionNS::BACTION_STRIKE);
     } else if (unitClass == "soldier") {
-        hp = 4; ap = 30; power = 2; skill = 2; defense = 2; image = 1;
+        hp = 1; ap = 30; power = 2; skill = 2; defense = 2; image = 1;
         actions.push_back(ActionNS::BACTION_MOVE); actions.push_back(ActionNS::BACTION_STRIKE);
     } else if (unitClass == "archer") {
         hp = 4; ap = 30; power = 2; skill = 3; defense = 1; image = 3;

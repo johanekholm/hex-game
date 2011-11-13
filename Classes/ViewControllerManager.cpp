@@ -99,7 +99,7 @@ ViewController* ViewControllerManager::getTouched(const GPoint& point) {
 }
 
 void ViewControllerManager::insert(ViewController* view) {
-
+    DEBUGLOG("Insert view: %x", view);
     std::vector<ViewController*>::iterator it = _views.begin();
 	while (true) {
 		if (it == _views.end() || (*it != 0 && (*it)->getLayer() >= view->getLayer())) {

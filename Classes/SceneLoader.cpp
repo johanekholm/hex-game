@@ -80,8 +80,8 @@ void SceneLoader::loadBattleScene(const std::string& mapName, int enemyPartyType
 
         case 2:
             UnitFactory::produceAndRegisterUnit("soldier", 2, MPointMake(2, 2));            
-            UnitFactory::produceAndRegisterUnit("archer", 2, MPointMake(2, 3));
-            UnitFactory::produceAndRegisterUnit("archer", 2, MPointMake(3, 2));            
+            //UnitFactory::produceAndRegisterUnit("archer", 2, MPointMake(2, 3));
+            //UnitFactory::produceAndRegisterUnit("archer", 2, MPointMake(3, 2));            
             break;
 
         default:
@@ -111,10 +111,11 @@ void SceneLoader::switchToAdventureScene() {
     ModelManager::instance()->removeAllUnits();
     ViewControllerManager::instance()->popMapView();
     
-    UnitFactory::produceAndRegisterMapObject("party", 1, MPointMake(1, 4));
+    /*UnitFactory::produceAndRegisterMapObject("party", 1, MPointMake(1, 4));
     UnitFactory::produceAndRegisterMapObject("party", 2, MPointMake(3, 2));
     UnitFactory::produceAndRegisterMapObject("village", 1, MPointMake(0, 0));
     UnitFactory::produceAndRegisterMapObject("dungeon", 1, MPointMake(0, 3));
+     */
 }
 
 void SceneLoader::switchToMainMenu() {
