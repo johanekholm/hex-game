@@ -160,7 +160,7 @@ void CentralControl::handleEventAdventureNormal(const TouchEvent& event) {
                 break;
 
             case 2:
-                anchor = convertToGPoint(_input->previousTouchPoint());
+                anchor = event.previousPoint;
                 _viewControllerManager->moveCamera(anchor - event.point);
                 break;
 

@@ -11,14 +11,31 @@
 #include "InputManager.h"
 #include <math.h>
 
+class InputManager::PrivateData {
+public:
+	std::vector<TouchEvent> events;
+};
+
 InputManager::~InputManager() {
+	d = new PrivateData();
 }
 
 InputManager::InputManager() {
+	delete d;
+}
+
+bool InputManager::hasEvent() {
+	return (!d->events.empty());
+}
+
+TouchEvent InputManager::popEvent() {
+	TouchEvent event;
+	event = d->events.front();
+	d->events.erase(d->events.begin());
+	return event;
 }
 
 void InputManager::touchesBegan(const GPoint& touchPoint) {
-  d->startPoint = touchPoint;
   this->registerEvent(TOUCH_EVENT_PRESS, touchPoint);
 }
 
@@ -39,17 +56,14 @@ void InputManager::touchesCancelled(const GPoint& touchPoint) {
  */
 
 void InputManager::registerEvent(int aType, const GPoint& aPoint) {
-	TouchEvent event(aType, aPoint);
-	_events.push_back(event);
+	GPoint previousTouchPoint;
+	if (d->events.empty()) {
+		previousTouchPoint = aPoint;
+	} else {
+		previousTouchPoint = d->events.back().point;
+	}
+	
+	TouchEvent event(aType, aPoint, previousTouchPoint);
+	d->events.push_back(event);
 }
 
-TouchEvent InputManager::popEvent() {
-	TouchEvent event;
-	event = _events.back();
-	_events.pop_back();
-	return event;
-}
-
-bool InputManager::hasEvent() {
-	return (!_events.empty());
-}

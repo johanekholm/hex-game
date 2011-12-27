@@ -25,25 +25,15 @@ struct TouchEvent {
 	int type;
 	GPoint point;
     GPoint translatedPoint;
+	GPoint previousPoint;
 	TouchEvent() : type(0), point() {}
-	TouchEvent(int t, GPoint p) : type(t), point(p) {}
+	TouchEvent(int t, GPoint p, GPoint pp) : type(t), point(p), previousPoint(pp) {}
 };
 
 class InputManager {
 public:
 	InputManager();
 	~InputManager();
-	
-	bool wasFlicked();
-	bool wasPressed();
-	bool wasClicked();
-	
-	GPoint clickPoint();
-	GPoint pressPoint();
-		
-	GPoint flickedVelocity();
-
-	InputState* currentState();
 
 	void touchesBegan(const GPoint& touchPoint);
 	void touchesMoved(const GPoint& touchPoint);
@@ -52,28 +42,10 @@ public:
 
 	TouchEvent popEvent();
 	bool hasEvent();
-    GPointInTime previousTouchPoint();
 
 private:
-	bool _wasFlicked;
-	bool _wasClicked;
-	bool _wasPressed;
-	int _historyCount;
-	int _historyHead;
-	GPoint _flickedVelocity;
-	GPointInTime _touchHistory[HISTORY_SIZE];
-	GPoint _clickPos;
-	GPoint _pressPos;
-	std::vector<TouchEvent> _events;
-	
-	double currentTime();
-	double linearMap(double value, double minValue, double maxValue, double minTarget, double maxTarget);
-	double linearInterpolate(double from, double to, double percent);
-	void addToHistory(const GPoint& point);
-	GPointInTime lastTouchPoint();
-	//GPoint firstTouchPoint();
-    GPointInTime firstTouchPoint();
-	GPointInTime pointInTimeAtIndex(int index);
+	class PrivateData;
+	PrivateData* d;
 	void registerEvent(int aType, const GPoint& aPoint);
 };
 
