@@ -1,0 +1,42 @@
+# Howto compile HexGame on iOS using CMake
+
+## Dependenceis
+
+In order to successfully build HexGame on iOS you will need the
+following:
+
+* python-for-iphone [https://github.com/cobbal/python-for-iphone/]
+
+## Preparations
+
+Before building, you need to set up your environment so that CMake can
+find the necessary tools, include files and libraries.
+
+1. Clone our repository of python-for-iphone somewhere outside HexGame:
+git clone https://mickeprag@github.com/mickeprag/python-for-iphone.git
+cd python-for-iphone
+
+2. Build it:
+./iOS-build.sh
+
+## Building HexGame
+
+1.  Create an out-of-source build directory and change to this
+directory, e.g.: mkdir build-ios cd build-ios
+
+2.  Run cmake with the required cmake flags:
+
+cmake .. -G Xcode -DTARGET_PLATFORM=iOS -DPYTHON_FOR_IOS_DIR=<path-to-python-for-iphone>/Python-2.6.5/_install
+
+Change <path-to-python-for-iphone> for the actual path to python for iphone.
+
+NOTE! If building this on Mac OS X, you will need to tell CMake where to
+find install_name_tool by adding the following flag to the line above:
+
+* On Mac OS X 10.5 - 10.6 (Leopard and Snow Leopard):
+-DCMAKE_INSTALL_NAME_TOOL=/usr/bin/install_name_tool
+
+* On Mac OS X 10.7 (Lion):
+-DCMAKE_INSTALL_NAME_TOOL=/Developer/usr/bin/install_name_tool
+
+4.  Now CMake successfully configured our project, open the created project in Xcode:
