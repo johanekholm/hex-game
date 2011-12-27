@@ -60,7 +60,7 @@ void InputManager::touchesCancelled(const GPoint& touchPoint) {
 
 void InputManager::registerEvent(int aType, const GPoint& aPoint) {
 	TouchEvent event(aType, aPoint);
-	if (aType = TOUCH_EVENT_MOVE) {
+	if (aType == TOUCH_EVENT_MOVE) {
 		event.previousPoint = d->previousTouchPoint;
 	}	
 	d->events.push_back(event);
