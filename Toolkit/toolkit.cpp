@@ -17,6 +17,14 @@ GPoint GPointMake(GLfloat x, GLfloat y) {
 	return point;
 }
 
+GPoint convertToGPoint(const GPointInTime& pit) {
+	GPoint point;
+	point.x = pit.x;
+	point.y = pit.y;
+	
+	return point;
+}
+
 MPoint MPointMake(int x, int y) {
 	MPoint point;
 	point.x = x;
@@ -57,4 +65,12 @@ RGBA RGBAMakeGray(GLfloat intensity) {
     color.blue = intensity;
     color.alpha = 1.0f;
     return color;    
+}
+
+RGBA RGBAMakeWhite() {
+    RGBA color;
+    color.red=1.0f; 
+    color.green=1.0f; 
+    color.blue=1.0f; color.alpha=1.0f;
+    return color;
 }

@@ -1,78 +1,35 @@
 /*
  *  UnitView.h
- *  igame
  *
- *  Created by Johan Ekholm on 2010-04-25.
- *  Copyright 2010 __MyCompanyName__. All rights reserved.
+ *  Created by Johan Ekholm.
  *
  */
 
-#include "GameImage.h"
-//#include "IUnitView.h"
-#include "IObserver.h"
-#include "ViewController.h"
+#ifndef UNITVIEWCONTROLLER_H
+#define UNITVIEWCONTROLLER_H
+
 #include "UnitModel.h"
-#include "Action.h"
+#include "BaseUnitViewController.h"
 
-#include <vector>
+class ShapeImage;
+class GameImage;
 
-#define ACTION_ANGLE_INITIAL -PI/2.0f
-#define ACTION_ANGLE_INCREMENT PI/3.0f
-#define ACTION_RADIUS 64.0f
-
-class RectangleImage;
-
-struct ActionView {
-    GPoint pos;
-    int actionId;
-    bool active;
-    ActionState* statePoint;
-};
-
-class UnitView : public ViewController, public IObserver {
+class UnitViewController : public BaseUnitViewController {
 	UnitModel* _unitModel;
     UnitState _state;
-	std::vector<ActionView> _actionPoints;
 	GameImage* _unitImage;
-	GameImage* _actionImage;
-	GameImage* _directionImage;
-    RectangleImage *_hpBar, *_hpBarSlot;
-    RectangleImage *_apBar, *_apBarSlot;
+    ShapeImage *_hpBar, *_hpBarSlot;
+    ShapeImage *_apBar, *_apBarSlot;
 
-
-	void drawActions();	
-	GPoint getActionPosition(int index);
-	void updateActions();
     void updateBars();
-	void updatePosition(const MPoint& pos);
 
 public:
-	~UnitView();
-	UnitView(UnitModel* model, GLfloat width, GLfloat height, int index);
-	void draw();
-	void drawGUI();
+	~UnitViewController();
+	UnitViewController(UnitModel* model, GLfloat width, GLfloat height, int index);
+	void draw(const GPoint& cameraPos);
+	void drawGUI(const GPoint& cameraPos);
 	bool handleEvent(const TouchEvent& event);
-	ActionState* touchedAction(GPoint point);
-	void update();
-    void destroyed();
-    void setFocus(bool hasFocus);
+	void updateState();
 };
 
-/*class UnitView : public GameImage, public IUnitView {
-	GPoint _pos;
-	GLfloat _facing;
-	std::vector<int> _actions;
-	GameImage* _actionImage;
-	GameImage* _directionImage;
-	
-	GPoint getActionPosition(int index);
-public:
-	~UnitView();
-	UnitView(GLfloat aWidth, GLfloat aHeight, TextureMap* tex, int index);
-	void draw();
-	void drawActions();
-	void updatePosition(const MPoint& pos, int direction);
-	void updateActions(std::vector<int> actions);
-	bool wasTouched(GPoint point);
-	int touchedAction(GPoint point);
-};*/
+#endif

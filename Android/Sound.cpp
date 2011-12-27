@@ -74,7 +74,7 @@ void Sound::destroyImpl() {
 void Sound::initFile(const std::string &name) {
 	SLresult result;
 
-	std::string filename = name + ".wav";
+	std::string filename = name + ".mp3";
     // use asset manager to open asset by filename
     AssetLoader *loader = AssetLoader::instance();
     AAsset *asset = loader->open(filename);

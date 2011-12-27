@@ -79,9 +79,7 @@ MPoint arrayToHex(const MPoint& arrayPos) {
     
     hexPos.x = arrayPos.x - Floor2(arrayPos.y);
     hexPos.y = arrayPos.x + Ceil2(arrayPos.y);
-    
-    //std::cout << "Array (x,y): " << arrayPos.x << ", " << arrayPos.y << " -> Hex (x,y): "  << hexPos.x << ", " << hexPos.y << std::endl;
-    
+        
     return hexPos;
 }
 
@@ -106,8 +104,6 @@ int hexDistance(const MPoint& start, const MPoint& dest) {
     } else {
         dist = abs(dx) + abs(dy);
     }
-
-    //std::cout << "Distance is: " << dist << std::endl;
     
     return dist;
 }
@@ -121,9 +117,7 @@ int sightDirection(const MPoint& subject, const MPoint& object) {
     
     dx = hexSubject.x - hexObject.x;
     dy = hexSubject.y - hexObject.y;
-    
-    //std::cout << "Direction - dx: " << dx << ", dy: " << dy << std::endl; 
-    
+        
     if (dx == 0) {
         if (dy > 0) {
             return GEOM_DIR_NW;
@@ -173,7 +167,6 @@ int directionTowards(const int& currentDirection, const MPoint& subject, const M
     for (std::map<int, int>::iterator it = axis.begin(); it != axis.end(); ++it) {
         angle = abs(it->first - currentDirection);
         
-        std::cout << "dir: " << it->first << ", cost: " << it->second << ", angle: " << angle << std::endl;
         angles[it->first] = angle;
         
 		if (it->second < min) {

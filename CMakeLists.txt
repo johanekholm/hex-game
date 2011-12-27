@@ -11,20 +11,27 @@ SET(PRODUCT_NAME HexGame)
 SET( SOURCES
 	Classes/AbstractResourceLoader.cpp
 	Classes/Action.cpp
+    Classes/BaseUnitViewController.cpp
 	Classes/CentralControl.cpp
 	Classes/GameImage.cpp
 	Classes/geometry.cpp
 	Classes/HexMap.cpp
     Classes/HexMapModel.cpp
 	Classes/InputManager.cpp
+    Classes/Item.cpp
+    Classes/MapObject.cpp
+    Classes/MapObjectView.cpp
+    Classes/MenuView.cpp
     Classes/MessageView.cpp
     Classes/ModelManager.cpp
     Classes/Observable.cpp
+    Classes/SceneLoader.cpp
     Classes/ShapeImage.cpp
 	Classes/Sound.cpp
     Classes/StringImage.cpp
 	Classes/TextureCatalog.cpp
 	Classes/TextureMap.cpp
+    Classes/TransitionViewController.cpp
     Classes/UnitFactory.cpp
 	Classes/UnitModel.cpp
 	Classes/UnitView.cpp
@@ -36,20 +43,28 @@ SET( SOURCES
 SET( HEADERS
 	Classes/AbstractResourceLoader.h
 	Classes/Action.h
+    Classes/BaseUnitViewController.h
 	Classes/CentralControl.h
+    Classes/ControlCallback.h
 	Classes/GameImage.h
 	Classes/geometry.h
 	Classes/HexMap.h
     Classes/HexMapModel.h
 	Classes/InputManager.h
+    Classes/Item.h
     Classes/IObserver.h
+    Classes/MapObject.h
+    Classes/MapObjectView.h
+    Classes/MenuView.h
     Classes/MessageView.h
     Classes/ModelManager.h
+    Classes/SceneLoader.h
     Classes/ShapeImage.h
     Classes/Sound.h
     Classes/StringImage.h
 	Classes/TextureCatalog.h
 	Classes/TextureMap.h
+    Classes/TransitionViewController.h
     Classes/UnitFactory.h
 	Classes/UnitModel.h
 	Classes/UnitView.h
@@ -63,14 +78,16 @@ SET(RESOURCES
 	Resources/actions.png
 	Resources/floortilemap.png
     Resources/font_1.png
+    Resources/game_objects.png
 	Resources/texmap.png
 	Resources/texmap_hex.png
 	Resources/icons.png
 )
 
 SET(SOUNDS
-	Resources/fireball1.wav
-	Resources/slash1.wav
+	Resources/fireball1.mp3
+	Resources/slash1.mp3
+    Resources/grotta.mp3
 )
 
 INCLUDE_DIRECTORIES( Toolkit )

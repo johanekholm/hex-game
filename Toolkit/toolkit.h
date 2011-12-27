@@ -13,7 +13,8 @@
 #if defined(PLATFORM_IOS)
 	#import <Foundation/Foundation.h>
 	#import <OpenGLES/ES1/gl.h>
-    inline void DEBUGLOG(...) { } // TODO: Implement
+    #include <cstdio>
+    #define DEBUGLOG(...) { printf(__VA_ARGS__); printf("\n"); }
 #elif defined(PLATFORM_DESKTOP)
 	#include <QGLContext>
     inline void DEBUGLOG(...) { } // TODO: Implement
@@ -39,13 +40,20 @@ struct GPoint {
 	GLfloat x;
 	GLfloat y;
 	
-	GPoint operator+(const GPoint& other) { 
+	GPoint operator+(const GPoint& other) const { 
 		GPoint result;
 		result.x = this->x + other.x;
 		result.y = this->y + other.y;
 		return result;
 	}
 
+	GPoint operator-(const GPoint& other) const { 
+		GPoint result;
+		result.x = this->x - other.x;
+		result.y = this->y - other.y;
+		return result;
+	}
+    
 	GPoint operator*(GLfloat scalar) { 
 		GPoint result;
 		result.x = this->x * scalar;
@@ -152,12 +160,14 @@ extern "C" {
 #endif
 
 GPoint GPointMake(GLfloat x, GLfloat y);
+GPoint convertToGPoint(const GPointInTime& pit);
 MPoint MPointMake(int x, int y);
 //bool PointWithin(GPoint point, GPoint pos, GPoint size);
 bool PointWithin(const GPoint& point, const GPoint& pos, GLfloat size);
 GPoint transformModelPositionToView(const MPoint& pos);
 RGBA RGBAMake(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha);
 RGBA RGBAMakeGray(GLfloat intensity);
+RGBA RGBAMakeWhite();
 	
 #ifdef __cplusplus
 }

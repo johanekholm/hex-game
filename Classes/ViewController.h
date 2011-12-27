@@ -12,6 +12,14 @@
 
 #include "toolkit.h"
 
+namespace MapLayer {
+    const int BUILDING = 1;
+    const int UNIT = 2;
+    const int PLAYER = 3;
+    const int GUI = 4;
+    const int ABOVE_GUI = 5;
+};
+
 //struct GPoint;
 struct TouchEvent;
 
@@ -20,16 +28,20 @@ protected:
     GPoint _pos;
 	GLfloat _width, _height;
 	bool _hasFocus;
+    int _layer;
     
 	//virtual void reactToEvent(int eventType) = 0;
 	
 public:
     ViewController();
+    ViewController(const GPoint& pos, GLfloat width, GLfloat height, int layer);
 	bool isWithin(const GPoint& point);
+    int getLayer();
+    GPoint getPosition();
     virtual void setFocus(bool hasFocus);
 	virtual bool handleEvent(const TouchEvent& event) = 0;
-	virtual void draw() = 0;
-	virtual void drawGUI() = 0;
+	virtual void draw(const GPoint& cameraPos) = 0;
+	virtual void drawGUI(const GPoint& cameraPos) = 0;
     virtual void update();
 };
 

@@ -28,8 +28,10 @@ public:
 	~HexMapModel();
 	HexMapModel(int width, int height);
     std::map<int, HexState> getAllHexes();
+    int getHeight();
     int getHexValue(const MPoint& hex);
     int getHexValue(int x, int y);
+    int getWidth();
 };
 
 

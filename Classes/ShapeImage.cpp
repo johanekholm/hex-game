@@ -81,8 +81,8 @@ void EllipseImage::buildVertices() {
     _vertices = new GLfloat[_segments*2];
     
     for (GLfloat i = 0; i < 360.0f; i+=(360.0f/_segments)) {
-        _vertices[count++] = (cos(i*PI/180)*_width);
-        _vertices[count++] = (sin(i*PI/180)*_height);
+        _vertices[count++] = (cos((i+90.0f) * PI/180) * _width);
+        _vertices[count++] = (sin((i+90.0f) * PI/180) * _height);
     }
 }
 
@@ -146,7 +146,6 @@ void RectangleImage::drawAsEllipse(int segments, const GPoint& pos, bool filled,
     for (GLfloat i = 0; i < 360.0f; i+=(360.0f/segments)) {
         vertices[count++] = (cos(i*PI/180)*width);
         vertices[count++] = (sin(i*PI/180)*height);
-        //std::cout << vertices[count-2] << ", " << vertices[count-1] << std::endl;
     }
 
 

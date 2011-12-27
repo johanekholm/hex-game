@@ -15,13 +15,13 @@ HexMap::~HexMap() {
 	delete [] _texCoords;
 }
 
-HexMap::HexMap(HexMapModel* model, TextureMap* tex, GLfloat scale, int aWidth, int aHeight) {
+HexMap::HexMap(HexMapModel* model, TextureMap* tex, GLfloat scale) {
 	int index = 0, vIndex = 0, tIndex = 0;
 	GLfloat tx, ty;
 
-	_width = aWidth;
-	_height = aHeight;
-
+	_width = model->getWidth();
+	_height = model->getHeight();
+    _scale = scale;
 	_texture = tex;
 
 	_numVertices = _width * _height * 3*4;
@@ -99,16 +99,13 @@ HexMap::HexMap(HexMapModel* model, TextureMap* tex, GLfloat scale, int aWidth, i
 			tIndex = index * 24;
 		}
 	}
-	
-	
-	_texture->getHexTexCoordsForSub(_texCoords, 1, HEX_TEX_Y1); //tileData->at(index));
 }
 
-void HexMap::draw() {
+void HexMap::draw(const GPoint& cameraPos) {
 	
 	glLoadIdentity();
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-	glTranslatef(64.0f, 64.0f, 0.0f);
+	glTranslatef(64.0f - cameraPos.x, 64.0f - cameraPos.y, 0.0f);
 	
 	_texture->bind();
 	
@@ -126,5 +123,9 @@ std::vector<MPoint> HexMap::getAllHexes() {
         }
     }
     return v;
+}
+
+GLfloat HexMap::getScale() {
+    return _scale;
 }
 

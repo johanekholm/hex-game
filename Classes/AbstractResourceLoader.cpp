@@ -24,7 +24,7 @@ void AbstractResourceLoader::load() {
     catalog->addAndLoad("hexTiles", this->loadTexture("texmap_hex.png"), 2);
     catalog->addAndLoad("actions", this->loadTexture("actions.png"), 4);
     catalog->addAndLoad("icons", this->loadTexture("icons.png"), 4);
-    catalog->addAndLoad("units", this->loadTexture("texmap.png"), 2);
+    catalog->addAndLoad("units", this->loadTexture("game_objects.png"), 4);
     catalog->addAndLoad("font", this->loadTexture("font_1.png"), 1);
 
 }

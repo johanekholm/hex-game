@@ -20,7 +20,7 @@ UnitModel::~UnitModel() {
     this->updateObserversDestroyed();
 }
 
-UnitModel::UnitModel(int x, int y, int owner, int maxHp, int maxAp, int power, int skill, int defense, std::vector<int> actionIds) {
+UnitModel::UnitModel(int x, int y, int owner, int maxHp, int maxAp, int power, int skill, int defense, std::vector<int> actionIds, int visualType) {
     _owner = owner;
 	_pos.x = x;
 	_pos.y = y;
@@ -32,6 +32,7 @@ UnitModel::UnitModel(int x, int y, int owner, int maxHp, int maxAp, int power, i
     _baseSkill = skill;
     _baseDefense = defense;
     _target = 0;
+    _visualType = visualType;
 
     for (std::vector<int>::iterator it = actionIds.begin(); it != actionIds.end(); ++it) {
         this->addAction(*it);
@@ -40,8 +41,8 @@ UnitModel::UnitModel(int x, int y, int owner, int maxHp, int maxAp, int power, i
 }
 
 
-Action* UnitModel::addAction(int action) {
-	_actions[action] = new Action(action, this);
+BattleAction* UnitModel::addAction(int action) {
+	_actions[action] = BattleAction::build(action, this); //new Action(action, this);
 	return _actions[action];
 }
 
@@ -72,24 +73,20 @@ void UnitModel::defend(UnitModel* attacker, int power, int skill, int attackType
     damage = 0;
     skillDiff = skill - this->getStat(STAT_DEFENSE);
     
-    std::cout << "Roll: ";
     for (int i=0; i < power; i++) {
         roll = rand() % 8 + 1;
-        std::cout << roll << "+" << skillDiff;
+        DEBUGLOG("%i + %i", roll, skillDiff);
+        
         if (roll + skillDiff >= 5 || roll == 8) {
             damage++;
-            std::cout  << "(!)";
         }
-        std::cout << ", ";
     }
     
-    std::cout << " -- Damage: " << damage << std::endl;
     //attacker->reportHits(damage);
     this->inflictDamage(damage);
 }
 
 void UnitModel::doAction(const ActionState& statePoint) {
-    //std::cout << "Do action " << statePoint.actionId << std::endl;
 	if (_actions.find(statePoint.actionId) != _actions.end()) {
 		_actions[statePoint.actionId]->doIt(statePoint);
 	}
@@ -105,14 +102,14 @@ void UnitModel::doAI() {
         
         for (std::vector<ActionState>::iterator it = actionPoints.begin(); it != actionPoints.end(); ++it) {
             switch ((*it).actionType) {
-                case ACTION_TYPE_ATTACK:
+                case ActionNS::TYPE_ATTACK:
                     hasOffensiveAction = true;
                     if ((*it).active) {
                         offensives.push_back(*it);                        
                     }
                     break;
                     
-                case ACTION_TYPE_MOVEMENT:
+                case ActionNS::TYPE_MOVEMENT:
                     hasMovement = true;
                     movements.push_back(*it);
                     break;
@@ -123,8 +120,6 @@ void UnitModel::doAI() {
         }
         
         if (hasOffensiveAction) {
-            //std::cout << "Has offensive actions: " << offensives.size() << std::endl;
-            //std::cout << "Has movement actions: " << movements.size() << std::endl;
             
             // choose offensive action randomly
             if (offensives.size() > 0) {
@@ -159,10 +154,10 @@ std::vector<ActionState> UnitModel::getActions() {
     //ActionState a;
     
     
-    hexes = ModelManager::instance()->getMap()->getAllHexes();
+    hexes = ModelManager::instance()->getBattleMap()->getAllHexes();
 	units = ModelManager::instance()->getAllUnits();
     
-	for (std::map<int, Action*>::iterator it = _actions.begin(); it != _actions.end(); ++it) {
+	for (std::map<int, BattleAction*>::iterator it = _actions.begin(); it != _actions.end(); ++it) {
         
         temp = (it->second)->getActionPoints(_ap, hexes, units);
         actionPoints.insert(actionPoints.end(), temp.begin(), temp.end());
@@ -216,6 +211,10 @@ UnitState UnitModel::getState() {
     return state;
 }
 
+int UnitModel::getVisualType() {
+    return _visualType;
+}
+
 void UnitModel::inflictDamage(int damage) {
     std::stringstream ss;
     
@@ -234,8 +233,7 @@ void UnitModel::inflictDamage(int damage) {
     
     if (_hp <= 0) {
         _hp = 0;
-        std::cout << "Destroyed" << std::endl;
-        ModelManager::instance()->remove(_id);
+        ModelManager::instance()->removeUnit(_id);
         return;
     } else if (_hp > _maxHp) {
         _hp = _maxHp;
