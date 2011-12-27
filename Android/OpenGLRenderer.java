@@ -18,6 +18,7 @@ import android.util.Log;
 public class OpenGLRenderer implements Renderer {
 
     static {
+        System.loadLibrary("python2.6");
         System.loadLibrary("HexGame");
     }
 

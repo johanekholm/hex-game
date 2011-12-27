@@ -61,6 +61,13 @@ FOREACH(javaSource ${JAVASOURCES})
 	LIST(APPEND SOURCES ${CMAKE_BINARY_DIR}/apk/src/com/hexgame/game/${sourceName})
 ENDFOREACH()
 
+ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_BINARY_DIR}/apk/libs/${ARM_TARGET}/libpython2.6.so
+  COMMAND ${CMAKE_COMMAND} -E copy ${PYTHON_FOR_ANDROID_DIR}/lib/libpython2.6.so ${CMAKE_BINARY_DIR}/apk/libs/${ARM_TARGET}/libpython2.6.so
+  DEPENDS ${PYTHON_FOR_ANDROID_DIR}/lib/libpython2.6.so
+  COMMENT "Copying python2.6.so"
+)
+LIST(APPEND SOURCES ${CMAKE_BINARY_DIR}/apk/libs/${ARM_TARGET}/libpython2.6.so)
+
 CONFIGURE_FILE(${CMAKE_SOURCE_DIR}/Android/AndroidManifest.xml ${CMAKE_BINARY_DIR}/apk/AndroidManifest.xml)
 CONFIGURE_FILE(${CMAKE_SOURCE_DIR}/Android/strings.xml ${CMAKE_BINARY_DIR}/apk/res/values/strings.xml)
 
