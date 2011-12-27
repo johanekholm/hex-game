@@ -14,14 +14,15 @@
 class InputManager::PrivateData {
 public:
 	std::vector<TouchEvent> events;
+	GPoint previousTouchPoint;
 };
 
 InputManager::~InputManager() {
-	d = new PrivateData();
+	delete d;
 }
 
 InputManager::InputManager() {
-	delete d;
+	d = new PrivateData();
 }
 
 bool InputManager::hasEvent() {
@@ -36,11 +37,13 @@ TouchEvent InputManager::popEvent() {
 }
 
 void InputManager::touchesBegan(const GPoint& touchPoint) {
-  this->registerEvent(TOUCH_EVENT_PRESS, touchPoint);
+	this->registerEvent(TOUCH_EVENT_PRESS, touchPoint);
+	d->previousTouchPoint = touchPoint;
 }
 
 void InputManager::touchesMoved(const GPoint& touchPoint) {
 	this->registerEvent(TOUCH_EVENT_MOVE, touchPoint);
+	d->previousTouchPoint = touchPoint;
 }
 
 void InputManager::touchesEnded(const GPoint& touchPoint) {
@@ -56,14 +59,10 @@ void InputManager::touchesCancelled(const GPoint& touchPoint) {
  */
 
 void InputManager::registerEvent(int aType, const GPoint& aPoint) {
-	GPoint previousTouchPoint;
-	if (d->events.empty()) {
-		previousTouchPoint = aPoint;
-	} else {
-		previousTouchPoint = d->events.back().point;
-	}
-	
-	TouchEvent event(aType, aPoint, previousTouchPoint);
+	TouchEvent event(aType, aPoint);
+	if (aType = TOUCH_EVENT_MOVE) {
+		event.previousPoint = d->previousTouchPoint;
+	}	
 	d->events.push_back(event);
 }
 

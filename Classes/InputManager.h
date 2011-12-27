@@ -27,7 +27,7 @@ struct TouchEvent {
     GPoint translatedPoint;
 	GPoint previousPoint;
 	TouchEvent() : type(0), point() {}
-	TouchEvent(int t, GPoint p, GPoint pp) : type(t), point(p), previousPoint(pp) {}
+	TouchEvent(int t, GPoint p) : type(t), point(p) {}
 };
 
 class InputManager {
