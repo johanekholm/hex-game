@@ -58,6 +58,7 @@ SET( HEADERS
     Classes/Item.h
     Classes/IObserver.h
     Classes/json.h
+    Classes/json-forwards.h
     Classes/MapObject.h
     Classes/MapObjectView.h
     Classes/MenuView.h

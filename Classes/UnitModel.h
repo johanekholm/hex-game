@@ -24,7 +24,7 @@
 #include <vector>
 #include "toolkit.h"
 #include "Observable.h"
-#include "json.h"
+#include "json-forwards.h"
 
 class Action;
 class BattleAction;

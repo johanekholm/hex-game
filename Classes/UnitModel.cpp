@@ -13,6 +13,7 @@
 #include "MessageView.h"
 #include "HexMapModel.h"
 #include "geometry.h"
+#include "json.h"
 #include <cstdlib>
 #include <iostream>
 
