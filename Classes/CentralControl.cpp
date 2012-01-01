@@ -23,6 +23,7 @@
 #include "ViewController.h"
 #include "ViewControllerManager.h"
 #include "SceneLoader.h"
+#include "StateManager.h"
 #include "toolkit.h"
 #include "geometry.h"
 
@@ -75,6 +76,7 @@ CentralControl::CentralControl() {
     //SceneLoader::instance()->switchToAdventureScene();
     this->switchMode(ControlMode::ADVENTURE);
     //this->switchMode(ControlMode::BATTLE);
+    
     
     //SceneLoader::instance()->switchToMainMenu();
     //this->switchMode(ControlMode::MENU);

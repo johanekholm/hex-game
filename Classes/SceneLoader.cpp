@@ -20,6 +20,7 @@
 #include "UnitFactory.h"
 #include "MenuView.h"
 #include "ScriptManager.h"
+#include "StateManager.h"
 
 SceneLoader* SceneLoader::_instance = 0;
 
@@ -91,6 +92,8 @@ void SceneLoader::loadBattleScene(const std::string& mapName, int enemyPartyType
     ScriptManager::instance()->add(ScriptedAction::build(ScriptedActionNS::END_BATTLE, ModelEventNS::PARTY_WIPEOUT));
 
     Sound::instance()->play("music1");
+    
+    StateManager::save("state.txt");
 }
 
 void SceneLoader::loadAdventureScene() {

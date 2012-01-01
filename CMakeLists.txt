@@ -31,6 +31,7 @@ SET( SOURCES
     Classes/ScriptManager.cpp
     Classes/ShapeImage.cpp
 	Classes/Sound.cpp
+    Classes/StateManager.cpp
     Classes/StringImage.cpp
 	Classes/TextureCatalog.cpp
 	Classes/TextureMap.cpp
@@ -68,6 +69,7 @@ SET( HEADERS
     Classes/ScriptManager.h
     Classes/ShapeImage.h
     Classes/Sound.h
+    Classes/StateManager.h
     Classes/StringImage.h
 	Classes/TextureCatalog.h
 	Classes/TextureMap.h
