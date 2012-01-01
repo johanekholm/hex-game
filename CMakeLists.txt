@@ -20,6 +20,7 @@ SET( SOURCES
     Classes/HexMapModel.cpp
 	Classes/InputManager.cpp
     Classes/Item.cpp
+    Classes/jsoncpp.cpp
     Classes/MapObject.cpp
     Classes/MapObjectView.cpp
     Classes/MenuView.cpp
@@ -56,6 +57,7 @@ SET( HEADERS
 	Classes/InputManager.h
     Classes/Item.h
     Classes/IObserver.h
+    Classes/json.h
     Classes/MapObject.h
     Classes/MapObjectView.h
     Classes/MenuView.h
