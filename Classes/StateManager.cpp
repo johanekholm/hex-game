@@ -15,24 +15,21 @@
 
 
 void StateManager::createState(Json::Value& root) {
-    Json::Value unitsNode = root["units"];
+    Json::Value& unitsNode = root["units"];
     Json::Value* unitState;
     std::vector<UnitModel*> units;
     ModelManager* modelManager = ModelManager::instance();
     Json::FastWriter writer;
     
     units = modelManager->getAllUnits();
-		DEBUGLOG("Iterating: %i", units.size());    
+
     for (std::vector<UnitModel*>::iterator it = units.begin(); it != units.end(); ++it) {
-		DEBUGLOG("Iterating over units");
         if (*it != 0) {
             unitState = new Json::Value();
             (*it)->serialize(*unitState);
-            DEBUGLOG("serialized: %s", writer.write(*unitState).c_str());
             unitsNode.append(*unitState);
         }
 	}
-
 }
 
 void StateManager::loadStateFromFile(Json::Value& root, const std::string& filename) {
