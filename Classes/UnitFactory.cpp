@@ -16,6 +16,7 @@
 #include "Action.h"
 #include "MapObject.h"
 #include "MapObjectView.h"
+#include "json.h"
 
 UnitFactory::UnitFactory(ViewControllerManager* viewControllerManager) {
     //_modelManager = modelManager; 
@@ -84,6 +85,14 @@ UnitModel* UnitFactory::produceUnit(const std::string& unitClass, int owner, con
     
     unit = new UnitModel(pos.x, pos.y, owner, hp, ap, power, skill, defense, actions, image);
 
+    Json::Value unitJson;
+    Json::FastWriter writer;
+    std::string jsonString;
+    
+    unit->serialize(unitJson);
+    jsonString = writer.write(unitJson);
+    DEBUGLOG("Unit produced, has Json [%s]", jsonString.c_str());
+    
     return unit;
 }
 
