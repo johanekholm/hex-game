@@ -80,8 +80,8 @@ void SceneLoader::loadBattleScene(const std::string& mapName, int enemyPartyType
 
         case 2:
             UnitFactory::produceAndRegisterUnit("soldier", 2, MPointMake(2, 2));            
-            //UnitFactory::produceAndRegisterUnit("archer", 2, MPointMake(2, 3));
-            //UnitFactory::produceAndRegisterUnit("archer", 2, MPointMake(3, 2));            
+            UnitFactory::produceAndRegisterUnit("archer", 2, MPointMake(2, 3));
+            UnitFactory::produceAndRegisterUnit("archer", 2, MPointMake(3, 2));            
             break;
 
         default:
@@ -90,7 +90,7 @@ void SceneLoader::loadBattleScene(const std::string& mapName, int enemyPartyType
     
     ScriptManager::instance()->add(ScriptedAction::build(ScriptedActionNS::END_BATTLE, ModelEventNS::PARTY_WIPEOUT));
 
-    // Sound::instance()->play("music1");
+    Sound::instance()->play("music1");
 }
 
 void SceneLoader::loadAdventureScene() {
