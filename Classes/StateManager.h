@@ -10,9 +10,11 @@
 
 #include "json-forwards.h"
 #include <vector>
+#include <map>
 #include <string>
 
 class StateManager {
+    static std::map<std::string, std::string> _inMemoryFileStore;
     
     StateManager() {}
     static void createState(Json::Value& root);
@@ -23,6 +25,7 @@ class StateManager {
 public:
     static void load(const std::string& filename);
     static void save(const std::string& filename);
+    static std::map<std::string, std::string> initStaticMap();
 };
 
 #endif
