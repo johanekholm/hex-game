@@ -20,10 +20,12 @@ MapObject::~MapObject() {
 
 MapObject::MapObject() {}
 
-MapObject::MapObject(int category, MPoint pos, int owner, std::vector<int> actionIds) {
+MapObject::MapObject(int category, MPoint pos, int owner, int layer, int visualType, std::vector<int> actionIds) {
     _category = category;
     _pos = pos;
     _owner = owner;
+    _layer = layer;
+    _visualType = visualType;
     
     for (std::vector<int>::iterator it = actionIds.begin(); it != actionIds.end(); ++it) {
         this->addAction(*it);
@@ -36,6 +38,8 @@ MapObject::MapObject(int category, MPoint pos, int owner, std::vector<int> actio
 void MapObject::serialize(Json::Value& root) {
     root["category"] = _category;
     root["owner"] = _owner;
+    root["layer"] = _layer;
+    root["visualType"] = _visualType;
     root["id"] = _id;
     root["x"] = _pos.x;
     root["y"] = _pos.y;
@@ -44,6 +48,8 @@ void MapObject::serialize(Json::Value& root) {
 void MapObject::deserialize(Json::Value& root) {
     _category = root.get("category", 0).asInt();
     _owner = root.get("owner", 0).asInt();
+    _layer = root.get("layer", 0).asInt();
+    _visualType = root.get("visualType", 0).asInt();
     _id = root.get("id", 0).asInt();
     _pos.x = root.get("x", 0.0f).asFloat();
     _pos.y = root.get("y", 0.0f).asFloat();    
@@ -85,6 +91,10 @@ std::vector<ActionState> MapObject::getActions() {
 	return actionPoints;
 }
 
+int MapObject::getLayer() {
+    return _layer;
+}
+
 int MapObject::getOwner() {
     return _owner;
 }
@@ -101,6 +111,10 @@ MapObjectState MapObject::getState() {
     state.actions = this->getActions();
     
     return state;
+}
+
+int MapObject::getVisualType() {
+    return _visualType;
 }
 
 bool MapObject::matchesCategory(int category) {
@@ -126,7 +140,7 @@ PartyModel::~PartyModel() {
     
 }
 
-PartyModel::PartyModel(int category, MPoint pos, int owner, std::vector<int> actionIds, const std::vector<UnitModel*>& members) : MapObject(category, pos, owner, actionIds) {
+PartyModel::PartyModel(int category, MPoint pos, int owner, int layer, int visualType, std::vector<int> actionIds, const std::vector<UnitModel*>& members) : MapObject(category, pos, owner, layer, visualType, actionIds) {
     _memberUnits = members;
 }
 

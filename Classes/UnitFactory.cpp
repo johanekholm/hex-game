@@ -25,7 +25,6 @@ UnitFactory::UnitFactory(ViewControllerManager* viewControllerManager) {
 
 void UnitFactory::createMapObjectFromTemplate(const std::string& objectType, int owner, const MPoint& pos) {
     MapObject* object;
-    MapObjectView* view;
     std::vector<UnitModel*> units;
     std::vector<int> actions;
     int image = 0;
@@ -33,10 +32,10 @@ void UnitFactory::createMapObjectFromTemplate(const std::string& objectType, int
     
     if (objectType == "village") {
         image = 4; layer = MapLayer::BUILDING;
-        object = new MapObject(MapObjectCategory::CITY, pos, owner, actions);
+        object = new MapObject(MapObjectCategory::CITY, pos, owner, layer, image, actions);
     } else if (objectType == "dungeon") {
         image = 5; layer = MapLayer::BUILDING;
-        object = new MapObject(MapObjectCategory::DUNGEON, pos, owner, actions);
+        object = new MapObject(MapObjectCategory::DUNGEON, pos, owner, layer, image, actions);
     } else if (objectType == "party") {
         layer = MapLayer::UNIT;
         if (owner == 1) {
@@ -50,16 +49,12 @@ void UnitFactory::createMapObjectFromTemplate(const std::string& objectType, int
         actions.push_back(ActionNS::AACTION_INVENTORY);
         units.push_back(produceUnit("swordsman", owner, MPointMake(1,1)));
         units.push_back(produceUnit("channeler", owner, MPointMake(1,0)));
-        object = new PartyModel(MapObjectCategory::PARTY, pos, owner, actions, units);
+        object = new PartyModel(MapObjectCategory::PARTY, pos, owner, layer, image, actions, units);
     } else {
         return;
     }
     
-    view = new MapObjectView(object, 64.0f, 64.0f, image, layer);
-    object->addObserver(view);
-    
-    ModelManager::instance()->addMapObject(object);
-    ViewControllerManager::instance()->add(view);
+    registerMapObject(object);
 }
 
 UnitModel* UnitFactory::produceUnit(const std::string& unitClass, int owner, const MPoint& pos) {
@@ -103,7 +98,7 @@ void UnitFactory::createUnitFromTemplate(const std::string& unitClass, int owner
 }
 
 void UnitFactory::registerMapObject(MapObject* object) {
-    MapObjectView* view = new MapObjectView(object, 64.0f, 64.0f, 1, MapLayer::UNIT);
+    MapObjectView* view = new MapObjectView(object, 64.0f, 64.0f, object->getVisualType(), object->getLayer());
     object->addObserver(view);
     
     ModelManager::instance()->addMapObject(object);

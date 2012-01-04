@@ -44,13 +44,15 @@ protected:
     MPoint _pos;
     int _id;
     int _owner;
+    int _layer;
+    int _visualType;
     std::map<int, AdventureAction*> _actions;
     
 
 public:
     virtual ~MapObject();
     MapObject();
-    MapObject(int category, MPoint pos, int owner, std::vector<int> actionIds);
+    MapObject(int category, MPoint pos, int owner, int layer, int visualType, std::vector<int> actionIds);
     void serialize(Json::Value& root);
     void deserialize(Json::Value& root);
 
@@ -59,7 +61,9 @@ public:
     bool canMoveTo(const MPoint& pos);
 	void doAction(const ActionState& statePoint);
     std::vector<ActionState> getActions();
+    int getLayer();
     int getOwner();
+    int getVisualType();
     virtual MapObjectState getState();
     bool matchesCategory(int category);
     void move(const MPoint& targetPos);
@@ -75,7 +79,7 @@ protected:
     
 public:
     ~PartyModel();
-    PartyModel(int category, MPoint pos, int owner, std::vector<int> actionIds, const std::vector<UnitModel*>& members);
+    PartyModel(int category, MPoint pos, int owner, int layer, int visualType, std::vector<int> actionIds, const std::vector<UnitModel*>& members);
     void move(const MPoint& targetPos);
     std::vector<UnitModel*> getMembers();
 };
