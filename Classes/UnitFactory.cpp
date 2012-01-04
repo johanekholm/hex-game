@@ -23,7 +23,7 @@ UnitFactory::UnitFactory(ViewControllerManager* viewControllerManager) {
     _viewControllerManager = viewControllerManager;
 }
 
-void UnitFactory::produceAndRegisterMapObject(const std::string& objectType, int owner, const MPoint& pos) {
+void UnitFactory::createMapObjectFromTemplate(const std::string& objectType, int owner, const MPoint& pos) {
     MapObject* object;
     MapObjectView* view;
     std::vector<UnitModel*> units;
@@ -89,7 +89,7 @@ UnitModel* UnitFactory::produceUnit(const std::string& unitClass, int owner, con
 }
 
 
-void UnitFactory::produceAndRegisterUnit(const std::string& unitClass, int owner, const MPoint& pos) {
+void UnitFactory::createUnitFromTemplate(const std::string& unitClass, int owner, const MPoint& pos) {
     UnitModel* unit;
     UnitViewController* view;
     
