@@ -8,6 +8,7 @@
 #include "StateManager.h"
 #include "ModelManager.h"
 #include "UnitModel.h"
+#include "MapObject.h"
 #include "UnitFactory.h"
 #include "json.h"
 #include <string>
@@ -38,18 +39,32 @@ void StateManager::save(const std::string& filename) {
 
 void StateManager::createState(Json::Value& root) {
     Json::Value& unitsNode = root["units"];
-    Json::Value* unitState;
+    Json::Value& mapObjectsNode = root["mapObjects"];
+    Json::Value state;
     std::vector<UnitModel*> units;
+    std::vector<MapObject*> mapObjects;
     ModelManager* modelManager = ModelManager::instance();
     Json::FastWriter writer;
     
     units = modelManager->getAllUnits();
-
+    mapObjects = modelManager->getAllMapObjects();
+    
+    // serialize all units
     for (std::vector<UnitModel*>::iterator it = units.begin(); it != units.end(); ++it) {
         if (*it != 0) {
-            unitState = new Json::Value();
-            (*it)->serialize(*unitState);
-            unitsNode.append(*unitState);
+            //unitState = new Json::Value();
+            (*it)->serialize(state);
+            unitsNode.append(state);
+        }
+	}
+
+    state.clear();
+    
+    // serialize all map objects
+    for (std::vector<MapObject*>::iterator it = mapObjects.begin(); it != mapObjects.end(); ++it) {
+        if (*it != 0) {
+            (*it)->serialize(state);
+            mapObjectsNode.append(state);
         }
 	}
 }

@@ -66,6 +66,18 @@ HexMapModel* ModelManager::getAdventureMap() {
     return _adventureMap;
 }
 
+std::vector<MapObject*> ModelManager::getAllMapObjects() {
+    std::vector<MapObject*> objectVector;
+    
+    for (std::map<int, MapObject*>::iterator it = _mapObjects.begin(); it != _mapObjects.end(); ++it) {
+		if (it->second != 0) {
+            objectVector.push_back(it->second);
+        }
+	}
+    
+    return objectVector;    
+}
+
 std::vector<UnitModel*> ModelManager::getAllUnits() {
     std::vector<UnitModel*> unitVector;
     

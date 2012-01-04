@@ -37,6 +37,7 @@ public:
     void addMapObject(MapObject* object);
 	void addUnit(UnitModel*);
     HexMapModel* getAdventureMap();    
+    std::vector<MapObject*> getAllMapObjects();
     std::vector<UnitModel*> getAllUnits();
     HexMapModel* getBattleMap();
     UnitModel* getClosestTo(const MPoint& pos);

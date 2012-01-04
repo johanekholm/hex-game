@@ -102,6 +102,14 @@ void UnitFactory::createUnitFromTemplate(const std::string& unitClass, int owner
 
 }
 
+void UnitFactory::registerMapObject(MapObject* object) {
+    MapObjectView* view = new MapObjectView(object, 64.0f, 64.0f, 1, MapLayer::UNIT);
+    object->addObserver(view);
+    
+    ModelManager::instance()->addMapObject(object);
+    ViewControllerManager::instance()->add(view);
+}
+
 void UnitFactory::registerUnit(UnitModel* unit) {
     UnitViewController* view;
     
@@ -112,12 +120,19 @@ void UnitFactory::registerUnit(UnitModel* unit) {
     ViewControllerManager::instance()->add(view);
 }
 
-void UnitFactory::createUnitFromJson(Json::Value& unitData) {
+void UnitFactory::createMapObjectFromJson(Json::Value& data) {
+    MapObject* object = new MapObject();
+    object->deserialize(data);
+    
+    registerMapObject(object);
+    DEBUGLOG("Map object created from Json");
+}
+
+void UnitFactory::createUnitFromJson(Json::Value& data) {
     UnitModel* unit = new UnitModel();
-    unit->deserialize(unitData);
+    unit->deserialize(data);
     
     registerUnit(unit);
     DEBUGLOG("Unit created from Json");
 }
-
 
