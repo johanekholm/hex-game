@@ -62,11 +62,12 @@ public:
 	~UnitModel();
     UnitModel();
     UnitModel(int x, int y, int owner, int maxHp, int maxAp, int power, int skill, int defense, std::vector<int> actionIds, int visualType);
+    void deserialize(Json::Value& root);
+    void serialize(Json::Value& root);
     
 	BattleAction* addAction(int action);
     int chooseMovementTarget(const std::vector<ActionState>& targets);
     void defend(UnitModel* attacker, int power, int skill, int attack_type);
-    void deserialize(Json::Value& root);
 	void doAction(const ActionState& statePoint);
     void doAI();
 	std::vector<ActionState> getActions();
@@ -79,7 +80,6 @@ public:
     void inflictDamage(int damage);
     void fire(const MPoint& targetPos);
 	void move(const MPoint& targetPos);
-    void serialize(Json::Value& root);
     void setId(int unitId);
 	bool spendAp(int cost);
 	void strike(const MPoint& targetPos);

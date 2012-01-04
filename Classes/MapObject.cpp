@@ -11,11 +11,14 @@
 #include "HexMapModel.h"
 #include "UnitModel.h"
 #include "Item.h"
+#include "json.h"
 #include <iostream>
 
 MapObject::~MapObject() {
     this->updateObserversDestroyed();
 }
+
+MapObject::MapObject() {}
 
 MapObject::MapObject(int category, MPoint pos, int owner, std::vector<int> actionIds) {
     _category = category;
@@ -29,6 +32,23 @@ MapObject::MapObject(int category, MPoint pos, int owner, std::vector<int> actio
     this->addItem(Item::buildItem(ItemNS::SWORD, 1));
     this->addItem(Item::buildItem(ItemNS::SILVER, 10));
 }
+
+void MapObject::serialize(Json::Value& root) {
+    root["category"] = _category;
+    root["owner"] = _owner;
+    root["id"] = _id;
+    root["x"] = _pos.x;
+    root["y"] = _pos.y;
+}
+
+void MapObject::deserialize(Json::Value& root) {
+    _category = root.get("category", 0).asInt();
+    _owner = root.get("owner", 0).asInt();
+    _id = root.get("id", 0).asInt();
+    _pos.x = root.get("x", 0.0f).asFloat();
+    _pos.y = root.get("y", 0.0f).asFloat();    
+}
+
 
 AdventureAction* MapObject::addAction(int action) {
 	_actions[action] = AdventureAction::build(action, this);

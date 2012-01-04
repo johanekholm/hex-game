@@ -117,7 +117,7 @@ void UnitFactory::createUnitFromJson(Json::Value& unitData) {
     unit->deserialize(unitData);
     
     registerUnit(unit);
-    DEBUGLOG("Unit produced from Json");
+    DEBUGLOG("Unit created from Json");
 }
 
 

@@ -12,6 +12,7 @@
 #include "Action.h"
 #include "Item.h"
 #include "toolkit.h"
+#include "json-forwards.h"
 #include <vector>
 
 namespace MapObjectNS {
@@ -48,7 +49,11 @@ protected:
 
 public:
     virtual ~MapObject();
+    MapObject();
     MapObject(int category, MPoint pos, int owner, std::vector<int> actionIds);
+    void serialize(Json::Value& root);
+    void deserialize(Json::Value& root);
+
     MPoint getPosition();
     AdventureAction* addAction(int action);
     bool canMoveTo(const MPoint& pos);
