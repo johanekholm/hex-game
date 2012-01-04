@@ -8,6 +8,7 @@
 #include "StateManager.h"
 #include "ModelManager.h"
 #include "UnitModel.h"
+#include "UnitFactory.h"
 #include "json.h"
 #include <string>
 #include <vector>
@@ -19,6 +20,20 @@ std::map<std::string, std::string> StateManager::initStaticMap() {
     std::map<std::string, std::string> emptyMap;
     
     return emptyMap;
+}
+
+void StateManager::load(const std::string& filename) {
+    Json::Value state;
+    
+    loadStateFromFile(state, filename);
+    recreateFromState(state);
+}
+
+void StateManager::save(const std::string& filename) {
+    Json::Value state;
+    
+    createState(state);
+    saveStateToFile(state, filename);
 }
 
 void StateManager::createState(Json::Value& root) {
@@ -69,18 +84,10 @@ void StateManager::saveStateToFile(Json::Value& root, const std::string& filenam
 
 void StateManager::recreateFromState(Json::Value& root) {
     // To-Do: implement loading objects
-}
-
-void StateManager::load(const std::string& filename) {
-    Json::Value state;
-
-    loadStateFromFile(state, filename);
-    recreateFromState(state);
-}
-
-void StateManager::save(const std::string& filename) {
-    Json::Value state;
     
-    createState(state);
-    saveStateToFile(state, filename);
+    // recreate units
+    for (Json::ValueIterator itr = root["units"].begin(); itr != root["units"].end(); itr++) {
+        UnitFactory::createUnitFromJson(*itr);
+    }
 }
+

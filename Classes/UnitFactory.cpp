@@ -120,3 +120,12 @@ void UnitFactory::registerUnit(UnitModel* unit) {
     ViewControllerManager::instance()->add(view);
 }
 
+void UnitFactory::createUnitFromJson(Json::Value& unitData) {
+    UnitModel* unit = new UnitModel();
+    unit->deserialize(unitData);
+    
+    registerUnit(unit);
+    DEBUGLOG("Unit produced from Json");
+}
+
+

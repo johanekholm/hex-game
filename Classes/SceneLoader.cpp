@@ -111,8 +111,10 @@ void SceneLoader::loadAdventureScene() {
 }
 
 void SceneLoader::switchToAdventureScene() {
-    ModelManager::instance()->removeAllUnits();
-    ViewControllerManager::instance()->popMapView();
+    StateManager::load("state.txt");
+    
+    //ModelManager::instance()->removeAllUnits();
+    //ViewControllerManager::instance()->popMapView();
     
     /*UnitFactory::produceAndRegisterMapObject("party", 1, MPointMake(1, 4));
     UnitFactory::produceAndRegisterMapObject("party", 2, MPointMake(3, 2));

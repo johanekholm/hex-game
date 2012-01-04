@@ -21,6 +21,8 @@ UnitModel::~UnitModel() {
     this->updateObserversDestroyed();
 }
 
+UnitModel::UnitModel() {}
+
 UnitModel::UnitModel(int x, int y, int owner, int maxHp, int maxAp, int power, int skill, int defense, std::vector<int> actionIds, int visualType) {
     _owner = owner;
 	_pos.x = x;
@@ -39,6 +41,37 @@ UnitModel::UnitModel(int x, int y, int owner, int maxHp, int maxAp, int power, i
         this->addAction(*it);
     }
 	
+}
+
+void UnitModel::serialize(Json::Value& root) {
+    root["x"] = _pos.x;
+    root["y"] = _pos.y;
+    root["ap"] = _ap;
+    root["hp"] = _hp;
+    root["basePower"] = _basePower;
+    root["baseSkill"] = _baseSkill;
+    root["baseDefense"] = _baseDefense;
+    root["maxAp"] = _maxAp;
+    root["maxHp"] = _maxHp;
+    root["owner"] = _owner;
+    root["visualType"] = _visualType;
+    root["id"] = _id;
+}
+
+void UnitModel::deserialize(Json::Value& root) {
+    _pos.x = root.get("x", 0.0f).asFloat();
+    _pos.y = root.get("y", 0.0f).asFloat();
+    _ap = root.get("ap", 0).asInt();
+    _hp = root.get("hp", 0).asInt();
+    _basePower = root.get("basePower", 0).asInt();
+    _baseSkill = root.get("baseSkill", 0).asInt();
+    _baseDefense = root.get("baseDefense", 0).asInt();
+    _maxAp = root.get("maxAp", 0).asInt();
+    _maxHp = root.get("maxHp", 0).asInt();
+    _owner = root.get("owner", 0).asInt();
+    _visualType = root.get("visualType", 0).asInt();
+    _id = root.get("id", 0).asInt();
+    
 }
 
 
@@ -85,37 +118,6 @@ void UnitModel::defend(UnitModel* attacker, int power, int skill, int attackType
     
     //attacker->reportHits(damage);
     this->inflictDamage(damage);
-}
-
-void UnitModel::serialize(Json::Value& root) {
-    root["x"] = _pos.x;
-    root["y"] = _pos.y;
-    root["ap"] = _ap;
-    root["hp"] = _hp;
-    root["basePower"] = _basePower;
-    root["baseSkill"] = _baseSkill;
-    root["baseDefense"] = _baseDefense;
-    root["maxAp"] = _maxAp;
-    root["maxHp"] = _maxHp;
-    root["owner"] = _owner;
-    root["visualType"] = _visualType;
-    root["id"] = _id;
-}
-
-void UnitModel::deserialize(Json::Value& root) {
-    _pos.x = root.get("x", 0.0f).asFloat();
-    _pos.y = root.get("y", 0.0f).asFloat();
-    _ap = root.get("ap", 0).asInt();
-    _hp = root.get("hp", 0).asInt();
-    _basePower = root.get("basePower", 0).asInt();
-    _baseSkill = root.get("baseSkill", 0).asInt();
-    _baseDefense = root.get("baseDefense", 0).asInt();
-    _maxAp = root.get("maxAp", 0).asInt();
-    _maxHp = root.get("maxHp", 0).asInt();
-    _owner = root.get("owner", 0).asInt();
-    _visualType = root.get("visualType", 0).asInt();
-    _id = root.get("id", 0).asInt();
-
 }
 
 void UnitModel::doAction(const ActionState& statePoint) {

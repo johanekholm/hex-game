@@ -60,6 +60,7 @@ class UnitModel : public Observable {
 public:
 	
 	~UnitModel();
+    UnitModel();
     UnitModel(int x, int y, int owner, int maxHp, int maxAp, int power, int skill, int defense, std::vector<int> actionIds, int visualType);
     
 	BattleAction* addAction(int action);
