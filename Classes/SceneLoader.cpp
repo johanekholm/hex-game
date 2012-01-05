@@ -17,7 +17,7 @@
 #include "MapObject.h"
 #include "Sound.h"
 #include "TransitionViewController.h"
-#include "UnitFactory.h"
+#include "ObjectBuilder.h"
 #include "MenuView.h"
 #include "ScriptManager.h"
 #include "StateManager.h"
@@ -50,10 +50,10 @@ void SceneLoader::loadBattleScene() {
 
     ModelManager::instance()->removeAllMapObjects();
 
-    UnitFactory::createUnitFromTemplate("swordsman", 1, MPointMake(1, 0));
-    UnitFactory::createUnitFromTemplate("archer", 1, MPointMake(0, 0));
-    UnitFactory::createUnitFromTemplate("soldier", 2, MPointMake(1, 1));
-    UnitFactory::createUnitFromTemplate("channeler", 2, MPointMake(2, 1));
+    ObjectBuilder::createUnitFromTemplate("swordsman", 1, MPointMake(1, 0));
+    ObjectBuilder::createUnitFromTemplate("archer", 1, MPointMake(0, 0));
+    ObjectBuilder::createUnitFromTemplate("soldier", 2, MPointMake(1, 1));
+    ObjectBuilder::createUnitFromTemplate("channeler", 2, MPointMake(2, 1));
     
     // Sound::instance()->play("music1");
 }
@@ -72,19 +72,19 @@ void SceneLoader::loadBattleScene(const std::string& mapName, int enemyPartyType
     ViewControllerManager::instance()->removeAllSoftly();
 
     for (std::vector<UnitModel*>::iterator it = members.begin(); it != members.end(); ++it) {
-        UnitFactory::registerUnit(*it);
+        ObjectBuilder::registerUnit(*it);
      }
         
     switch (enemyPartyType) {
         case 1:
-            UnitFactory::createUnitFromTemplate("soldier", 2, MPointMake(2, 2));
-            UnitFactory::createUnitFromTemplate("soldier", 2, MPointMake(3, 2));            
+            ObjectBuilder::createUnitFromTemplate("soldier", 2, MPointMake(2, 2));
+            ObjectBuilder::createUnitFromTemplate("soldier", 2, MPointMake(3, 2));            
             break;
 
         case 2:
-            UnitFactory::createUnitFromTemplate("soldier", 2, MPointMake(2, 2));            
-            //UnitFactory::createUnitFromTemplate("archer", 2, MPointMake(2, 3));
-            //UnitFactory::createUnitFromTemplate("archer", 2, MPointMake(3, 2));            
+            ObjectBuilder::createUnitFromTemplate("soldier", 2, MPointMake(2, 2));            
+            //ObjectBuilder::createUnitFromTemplate("archer", 2, MPointMake(2, 3));
+            //ObjectBuilder::createUnitFromTemplate("archer", 2, MPointMake(3, 2));            
             break;
 
         default:
@@ -103,10 +103,10 @@ void SceneLoader::loadAdventureScene() {
     
     ModelManager::instance()->setMap(mapModel);
     ViewControllerManager::instance()->setMapView(new HexMap(mapModel, TextureCatalog::instance()->get("hexTiles"), 1.5f));
-    UnitFactory::createMapObjectFromTemplate("party", 1, MPointMake(1, 4));
-    UnitFactory::createMapObjectFromTemplate("party", 2, MPointMake(3, 2));
-    UnitFactory::createMapObjectFromTemplate("village", 1, MPointMake(0, 0));
-    UnitFactory::createMapObjectFromTemplate("dungeon", 1, MPointMake(0, 3));
+    ObjectBuilder::createMapObjectFromTemplate("party", 1, MPointMake(1, 4));
+    ObjectBuilder::createMapObjectFromTemplate("party", 2, MPointMake(3, 2));
+    ObjectBuilder::createMapObjectFromTemplate("village", 1, MPointMake(0, 0));
+    ObjectBuilder::createMapObjectFromTemplate("dungeon", 1, MPointMake(0, 3));
 
 }
 
@@ -117,10 +117,10 @@ void SceneLoader::switchToAdventureScene() {
 
     StateManager::load("state.txt");
     
-    /*UnitFactory::createMapObjectFromTemplate("party", 1, MPointMake(1, 4));
-    UnitFactory::createMapObjectFromTemplate("party", 2, MPointMake(3, 2));
-    UnitFactory::createMapObjectFromTemplate("village", 1, MPointMake(0, 0));
-    UnitFactory::createMapObjectFromTemplate("dungeon", 1, MPointMake(0, 3));
+    /*ObjectBuilder::createMapObjectFromTemplate("party", 1, MPointMake(1, 4));
+    ObjectBuilder::createMapObjectFromTemplate("party", 2, MPointMake(3, 2));
+    ObjectBuilder::createMapObjectFromTemplate("village", 1, MPointMake(0, 0));
+    ObjectBuilder::createMapObjectFromTemplate("dungeon", 1, MPointMake(0, 3));
      */
 }
 

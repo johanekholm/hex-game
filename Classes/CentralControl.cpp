@@ -17,7 +17,7 @@
 #include "ModelManager.h"
 #include "StringImage.h"
 #include "TextureCatalog.h"
-#include "UnitFactory.h"
+#include "ObjectBuilder.h"
 #include "UnitModel.h"
 #include "UnitView.h"
 #include "ViewController.h"
@@ -42,7 +42,7 @@ void CentralControl::destroy() {
         delete _instance->_input;
         delete _instance->_viewControllerManager;
         ModelManager::destroy();
-        delete _instance->_unitFactory;
+        delete _instance->_objectBuilder;
         
         
 		delete _instance;
@@ -62,24 +62,12 @@ CentralControl::CentralControl() {
     sound->add("music1", "grotta");
 
     SceneLoader::instance()->loadAdventureScene();
-    //SceneLoader::instance()->loadBattleScene();
     
     _viewControllerManager = ViewControllerManager::instance();
-    _unitFactory = new UnitFactory(_viewControllerManager);
+    _objectBuilder = new ObjectBuilder(_viewControllerManager);
 	_input = new InputManager();
     
-    //_unitFactory->createUnitFromTemplate("swordsman", 1, MPointMake(0, 0));
-    //_unitFactory->createUnitFromTemplate("soldier", 2, MPointMake(1, 0));
-    //_unitFactory->createUnitFromTemplate("archer", 2, MPointMake(2, 1));
-    //_unitFactory->createUnitFromTemplate("channeler", 1, MPointMake(0, 1));
-    
-    //SceneLoader::instance()->switchToAdventureScene();
     this->switchMode(ControlMode::ADVENTURE);
-    //this->switchMode(ControlMode::BATTLE);
-    
-    
-    //SceneLoader::instance()->switchToMainMenu();
-    //this->switchMode(ControlMode::MENU);
 }
 
 void CentralControl::update() {

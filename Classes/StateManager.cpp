@@ -9,7 +9,7 @@
 #include "ModelManager.h"
 #include "UnitModel.h"
 #include "MapObject.h"
-#include "UnitFactory.h"
+#include "ObjectBuilder.h"
 #include "HexMapModel.h"
 #include "json.h"
 #include <string>
@@ -105,16 +105,16 @@ void StateManager::saveStateToFile(Json::Value& root, const std::string& filenam
 
 void StateManager::recreateFromState(Json::Value& root) {
     // recreate map
-    UnitFactory::createMapFromJson(root["map"]);
+    ObjectBuilder::createMapFromJson(root["map"]);
     
     // recreate units
     for (Json::ValueIterator itr = root["units"].begin(); itr != root["units"].end(); itr++) {
-        UnitFactory::createUnitFromJson(*itr);
+        ObjectBuilder::createUnitFromJson(*itr);
     }
 
     // recreate map objects
     for (Json::ValueIterator itr = root["mapObjects"].begin(); itr != root["mapObjects"].end(); itr++) {
-        UnitFactory::createMapObjectFromJson(*itr);
+        ObjectBuilder::createMapObjectFromJson(*itr);
     }
 }
 

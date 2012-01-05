@@ -13,7 +13,7 @@ class ViewController;
 class ViewControllerManager;
 class ModelManager;
 class StringImage;
-class UnitFactory;
+class ObjectBuilder;
 
 struct TouchEvent;
 struct GPoint;
@@ -32,7 +32,7 @@ class CentralControl {
 	InputManager* _input; 
     ModelManager* _modelManager;
     ViewControllerManager* _viewControllerManager;
-    UnitFactory* _unitFactory;
+    ObjectBuilder* _objectBuilder;
     StringImage* _stringImage;
 
     CentralControl();
