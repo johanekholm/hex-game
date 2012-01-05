@@ -106,11 +106,15 @@ void StateManager::saveStateToFile(Json::Value& root, const std::string& filenam
 void StateManager::recreateFromState(Json::Value& root) {
     // recreate map
     UnitFactory::createMapFromJson(root["map"]);
-    //ModelManager::instance()->getAdventureMap()->deserialize(root["map"]);
     
     // recreate units
     for (Json::ValueIterator itr = root["units"].begin(); itr != root["units"].end(); itr++) {
         UnitFactory::createUnitFromJson(*itr);
+    }
+
+    // recreate map objects
+    for (Json::ValueIterator itr = root["mapObjects"].begin(); itr != root["mapObjects"].end(); itr++) {
+        UnitFactory::createMapObjectFromJson(*itr);
     }
 }
 
