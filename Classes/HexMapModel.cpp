@@ -7,6 +7,7 @@
 //
 
 #include "HexMapModel.h"
+#include "json.h"
 #include <cstdlib>
 #include <iostream>
 #include <string>
@@ -76,6 +77,46 @@ HexMapModel::HexMapModel(int width, int height, const std::string& data) {
             _hexes[i * _width + j] = state;
             ++it;
         }
+    }
+}
+
+Json::Value HexState::serialize() {
+    Json::Value root;
+    root["x"] = pos.x;
+    root["y"] = pos.y;
+    root["v"] = value;    
+    
+    return root;
+}
+
+HexState HexState::deserialize(Json::Value& root) {
+    HexState hexState;
+    hexState.pos.x = root.get("x", 0.0f).asFloat();
+    hexState.pos.y = root.get("y", 0.0f).asFloat();
+    hexState.value = root.get("v", 0).asInt();
+    return hexState;
+}
+
+Json::Value HexMapModel::serialize() {
+    Json::Value root;
+    Json::Value& hexes = root["hexes"];
+    root["width"] = _width;
+    root["height"] = _height;
+    
+    // serialize hex data
+    for (std::map<int, HexState>::iterator it = _hexes.begin(); it != _hexes.end(); it++) {
+        hexes[it->first] = (it->second).serialize();
+    }
+    return root;
+}
+
+void HexMapModel::deserialize(Json::Value& root) {
+    _width = root.get("width", 0).asInt();
+    _height = root.get("height", 0).asInt();
+
+    // deserialize hex data
+    for (Json::ValueIterator it = root["hexes"].begin(); it != root["hexes"].end(); it++) {
+        _hexes[it.key().asInt()] = HexState::deserialize(*it);
     }
 }
 

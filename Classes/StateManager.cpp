@@ -10,6 +10,7 @@
 #include "UnitModel.h"
 #include "MapObject.h"
 #include "UnitFactory.h"
+#include "HexMapModel.h"
 #include "json.h"
 #include <string>
 #include <vector>
@@ -43,11 +44,16 @@ void StateManager::createState(Json::Value& root) {
     Json::Value state;
     std::vector<UnitModel*> units;
     std::vector<MapObject*> mapObjects;
+    HexMapModel* map;
     ModelManager* modelManager = ModelManager::instance();
     Json::FastWriter writer;
     
     units = modelManager->getAllUnits();
     mapObjects = modelManager->getAllMapObjects();
+    map = modelManager->getAdventureMap();
+    
+    // serialize map
+    root["map"] = map->serialize();
     
     // serialize all units
     for (std::vector<UnitModel*>::iterator it = units.begin(); it != units.end(); ++it) {
@@ -98,7 +104,8 @@ void StateManager::saveStateToFile(Json::Value& root, const std::string& filenam
 }
 
 void StateManager::recreateFromState(Json::Value& root) {
-    // To-Do: implement loading objects
+    // recreate map
+    ModelManager::instance()->getAdventureMap()->deserialize(root["map"]);
     
     // recreate units
     for (Json::ValueIterator itr = root["units"].begin(); itr != root["units"].end(); itr++) {

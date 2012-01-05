@@ -40,6 +40,7 @@ ModelManager::ModelManager() {
     _adventureMap = 0;
     _battleMap = 0;
 	_unitIdCounter = 0;
+    _objectIdCounter = 0;
 }
 
 void ModelManager::addMapObject(MapObject* object) {

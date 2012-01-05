@@ -62,6 +62,8 @@ void SceneLoader::loadBattleScene(const std::string& mapName, int enemyPartyType
     HexMapModel* mapModel;
     std::vector<UnitModel*> playerMembers;
     
+    StateManager::save("state.txt");
+    
     mapModel = new HexMapModel(4, 4, "4 5 5 5\n5 5 5 5\n5 5 5 5\n5 5 5 4\n");
     
     ModelManager::instance()->setBattleMap(mapModel);
@@ -92,8 +94,6 @@ void SceneLoader::loadBattleScene(const std::string& mapName, int enemyPartyType
     ScriptManager::instance()->add(ScriptedAction::build(ScriptedActionNS::END_BATTLE, ModelEventNS::PARTY_WIPEOUT));
 
     Sound::instance()->play("music1");
-    
-    StateManager::save("state.txt");
 }
 
 void SceneLoader::loadAdventureScene() {
@@ -111,10 +111,11 @@ void SceneLoader::loadAdventureScene() {
 }
 
 void SceneLoader::switchToAdventureScene() {
-    StateManager::load("state.txt");
     
-    //ModelManager::instance()->removeAllUnits();
+    ModelManager::instance()->removeAllUnits();
     //ViewControllerManager::instance()->popMapView();
+
+    StateManager::load("state.txt");
     
     /*UnitFactory::createMapObjectFromTemplate("party", 1, MPointMake(1, 4));
     UnitFactory::createMapObjectFromTemplate("party", 2, MPointMake(3, 2));
