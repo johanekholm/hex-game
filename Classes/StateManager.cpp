@@ -50,7 +50,7 @@ void StateManager::createState(Json::Value& root) {
     
     units = modelManager->getAllUnits();
     mapObjects = modelManager->getAllMapObjects();
-    map = modelManager->getAdventureMap();
+    map = modelManager->getMap();
     
     // serialize map
     root["map"] = map->serialize();

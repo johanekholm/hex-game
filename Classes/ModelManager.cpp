@@ -29,16 +29,14 @@ void ModelManager::destroy() {
         }
 		_instance->_units.clear();
         
-        delete _instance->_battleMap;
-        delete _instance->_adventureMap;
+        delete _instance->_map;
 		delete _instance;
 		_instance=0;
 	}
 }
 
 ModelManager::ModelManager() {
-    _adventureMap = 0;
-    _battleMap = 0;
+    _map = 0;
 	_unitIdCounter = 0;
     _objectIdCounter = 0;
 }
@@ -63,8 +61,8 @@ void ModelManager::addUnit(UnitModel* unit) {
     unit->setId(_unitIdCounter);
 }
 
-HexMapModel* ModelManager::getAdventureMap() {
-    return _adventureMap;
+HexMapModel* ModelManager::getMap() {
+    return _map;
 }
 
 std::vector<MapObject*> ModelManager::getAllMapObjects() {
@@ -89,10 +87,6 @@ std::vector<UnitModel*> ModelManager::getAllUnits() {
 	}
     
     return unitVector;
-}
-
-HexMapModel* ModelManager::getBattleMap() {
-    return _battleMap;
 }
 
 UnitModel* ModelManager::getClosestTo(const MPoint& pos) {
@@ -234,14 +228,9 @@ void ModelManager::removeUnit(int unitId) {
     EventManager::instance()->publishEvent(event);
 }
 
-void ModelManager::setAdventureMap(HexMapModel* map) {
-    delete _adventureMap;
-    _adventureMap = map;
-}
-
-void ModelManager::setBattleMap(HexMapModel* map) {
-    delete _battleMap;
-    _battleMap = map;
+void ModelManager::setMap(HexMapModel* map) {
+    delete _map;
+    _map = map;
 }
 
 void ModelManager::tick() {

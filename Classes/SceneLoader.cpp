@@ -45,7 +45,7 @@ void SceneLoader::loadBattleScene() {
     
     mapModel = new HexMapModel(4, 4);
 
-    ModelManager::instance()->setBattleMap(mapModel);
+    ModelManager::instance()->setMap(mapModel);
     ViewControllerManager::instance()->pushMapView(new HexMap(mapModel, TextureCatalog::instance()->get("hexTiles"), 1.0f));
 
     ModelManager::instance()->removeAllMapObjects();
@@ -66,7 +66,7 @@ void SceneLoader::loadBattleScene(const std::string& mapName, int enemyPartyType
     
     mapModel = new HexMapModel(4, 4, "4 5 5 5\n5 5 5 5\n5 5 5 5\n5 5 5 4\n");
     
-    ModelManager::instance()->setBattleMap(mapModel);
+    ModelManager::instance()->setMap(mapModel);
     ViewControllerManager::instance()->pushMapView(new HexMap(mapModel, TextureCatalog::instance()->get("hexTiles"), 1.0f));
     
     ViewControllerManager::instance()->removeAllSoftly();
@@ -101,7 +101,7 @@ void SceneLoader::loadAdventureScene() {
     
     mapModel = new HexMapModel(8, 8);
     
-    ModelManager::instance()->setAdventureMap(mapModel);
+    ModelManager::instance()->setMap(mapModel);
     ViewControllerManager::instance()->setMapView(new HexMap(mapModel, TextureCatalog::instance()->get("hexTiles"), 1.5f));
     UnitFactory::createMapObjectFromTemplate("party", 1, MPointMake(1, 4));
     UnitFactory::createMapObjectFromTemplate("party", 2, MPointMake(3, 2));

@@ -62,7 +62,7 @@ AdventureAction* MapObject::addAction(int action) {
 }
 
 bool MapObject::canMoveTo(const MPoint& pos) {
-    int terrain = ModelManager::instance()->getAdventureMap()->getHexValue(pos);
+    int terrain = ModelManager::instance()->getMap()->getHexValue(pos);
     
     return (terrain < 2);
 }
@@ -79,7 +79,7 @@ std::vector<ActionState> MapObject::getActions() {
     std::vector<MapObject*> objects;
     std::vector<MPoint> targets;
     
-    hexes = ModelManager::instance()->getAdventureMap()->getAllHexes();
+    hexes = ModelManager::instance()->getMap()->getAllHexes();
 	//objects = ModelManager::instance()->getAllUnits();
     
 	for (std::map<int, AdventureAction*>::iterator it = _actions.begin(); it != _actions.end(); ++it) {

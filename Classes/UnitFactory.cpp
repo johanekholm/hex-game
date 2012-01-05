@@ -103,7 +103,7 @@ void UnitFactory::createUnitFromTemplate(const std::string& unitClass, int owner
 }
 
 void UnitFactory::registerMap(HexMapModel* mapModel) {
-    ModelManager::instance()->setAdventureMap(mapModel);
+    ModelManager::instance()->setMap(mapModel);
     ViewControllerManager::instance()->pushMapView(new HexMap(mapModel, TextureCatalog::instance()->get("hexTiles"), 1.0f));
 }
 
