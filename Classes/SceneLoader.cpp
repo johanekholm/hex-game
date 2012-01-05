@@ -97,7 +97,9 @@ void SceneLoader::loadBattleScene(const std::string& mapName, int enemyPartyType
 }
 
 void SceneLoader::loadAdventureScene() {
-    HexMapModel* mapModel;
+    StateManager::load("newgame.jsn");
+    
+    /*HexMapModel* mapModel;
     
     mapModel = new HexMapModel(8, 8);
     
@@ -107,7 +109,7 @@ void SceneLoader::loadAdventureScene() {
     ObjectBuilder::createMapObjectFromTemplate("party", 2, MPointMake(3, 2));
     ObjectBuilder::createMapObjectFromTemplate("village", 1, MPointMake(0, 0));
     ObjectBuilder::createMapObjectFromTemplate("dungeon", 1, MPointMake(0, 3));
-
+     */
 }
 
 void SceneLoader::switchToAdventureScene() {
