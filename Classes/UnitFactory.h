@@ -11,6 +11,7 @@
 #include "toolkit.h"
 #include "json-forwards.h"
 
+class HexMapModel;
 class UnitModel;
 class MapObject;
 class ModelManager;
@@ -23,6 +24,7 @@ class UnitFactory {
     
 public:
     UnitFactory(ViewControllerManager* viewControllerManager);
+    static void createMapFromJson(Json::Value& data);
     static void createMapObjectFromJson(Json::Value& data);
     static void createMapObjectFromTemplate(const std::string& unitClass, int owner, const MPoint& pos);
     static void createUnitFromJson(Json::Value& data);    
@@ -30,6 +32,7 @@ public:
     static void createMenuItemFromTemplate(const std::string& menuItemClass, const GPoint& pos);
 
     static UnitModel* produceUnit(const std::string& unitClass, int owner, const MPoint& pos);
+    static void registerMap(HexMapModel* mapModel);
     static void registerMapObject(MapObject* object);
     static void registerUnit(UnitModel* unit);
     //static void RegisterMenuItem(MenuItemView* menuItemView, const GPoint& pos);

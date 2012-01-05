@@ -83,8 +83,8 @@ void SceneLoader::loadBattleScene(const std::string& mapName, int enemyPartyType
 
         case 2:
             UnitFactory::createUnitFromTemplate("soldier", 2, MPointMake(2, 2));            
-            UnitFactory::createUnitFromTemplate("archer", 2, MPointMake(2, 3));
-            UnitFactory::createUnitFromTemplate("archer", 2, MPointMake(3, 2));            
+            //UnitFactory::createUnitFromTemplate("archer", 2, MPointMake(2, 3));
+            //UnitFactory::createUnitFromTemplate("archer", 2, MPointMake(3, 2));            
             break;
 
         default:

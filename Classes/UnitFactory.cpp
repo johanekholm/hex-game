@@ -16,6 +16,11 @@
 #include "Action.h"
 #include "MapObject.h"
 #include "MapObjectView.h"
+#include "HexMapModel.h"
+#include "HexMap.h"
+#include "TextureCatalog.h"
+
+
 #include "json.h"
 
 UnitFactory::UnitFactory(ViewControllerManager* viewControllerManager) {
@@ -97,6 +102,11 @@ void UnitFactory::createUnitFromTemplate(const std::string& unitClass, int owner
 
 }
 
+void UnitFactory::registerMap(HexMapModel* mapModel) {
+    ModelManager::instance()->setAdventureMap(mapModel);
+    ViewControllerManager::instance()->pushMapView(new HexMap(mapModel, TextureCatalog::instance()->get("hexTiles"), 1.0f));
+}
+
 void UnitFactory::registerMapObject(MapObject* object) {
     MapObjectView* view = new MapObjectView(object, 64.0f, 64.0f, object->getVisualType(), object->getLayer());
     object->addObserver(view);
@@ -113,6 +123,14 @@ void UnitFactory::registerUnit(UnitModel* unit) {
     unit->addObserver(view);
     ModelManager::instance()->addUnit(unit);
     ViewControllerManager::instance()->add(view);
+}
+
+void UnitFactory::createMapFromJson(Json::Value& data) {
+    HexMapModel* mapModel = new HexMapModel();
+    mapModel->deserialize(data);
+    
+    registerMap(mapModel);
+    DEBUGLOG("Map created from Json");
 }
 
 void UnitFactory::createMapObjectFromJson(Json::Value& data) {

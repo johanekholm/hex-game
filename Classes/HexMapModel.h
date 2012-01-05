@@ -30,6 +30,7 @@ class HexMapModel {
     
 public:
 	~HexMapModel();
+    HexMapModel();
 	HexMapModel(int width, int height);
     HexMapModel(int width, int height, const std::string& data);
     Json::Value serialize();

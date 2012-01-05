@@ -21,6 +21,8 @@ HexMapModel::~HexMapModel() {
 
 }
 
+HexMapModel::HexMapModel() : _width(0), _height(0) {}
+
 HexMapModel::HexMapModel(int width, int height) {
     using namespace std;
     HexState state;
