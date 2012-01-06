@@ -23,9 +23,15 @@ class UnitModel;
 
 class SceneLoader {
 	static SceneLoader* _instance;
+    std::string _currentId;
+    std::string _previousId;
+    std::string _rootId;
+    bool _isPersistent;
+    bool _isLoaded;
     
 	SceneLoader();
-
+    void handleHistory(std::string sceneId);
+    
 public:
 	static SceneLoader* instance() {
 		if (_instance == 0) {
@@ -37,6 +43,10 @@ public:
 	
 	static void destroy();
 	
+    void loadPersistentScene(std::string sceneId);
+    void loadPrevious();
+    void loadRoot();
+    
     void loadAdventureScene();
     void loadBattleScene();
     void loadBattleScene(const std::string& mapName, int enemyPartyType, std::vector<UnitModel*> members);

@@ -32,7 +32,39 @@ void SceneLoader::destroy() {
 }
 
 SceneLoader::SceneLoader() {
+    _currentId = "";
+    _previousId = "";
+    _rootId = "";
+    _isLoaded = false;
+}
+
+void SceneLoader::loadPersistentScene(std::string sceneId) {
+    this->handleHistory(sceneId);
     
+    if (_isLoaded && _isPersistent) {
+        StateManager::save(_previousId);
+    }
+    
+    StateManager::load(sceneId);
+    _isPersistent = true;
+    _isLoaded = true;
+}
+
+void SceneLoader::loadPrevious() {
+    this->loadPersistentScene(_previousId);
+}
+
+void SceneLoader::loadRoot() {
+    this->loadPersistentScene(_rootId);    
+}
+
+void SceneLoader::handleHistory(std::string sceneId) {
+    _previousId = _currentId;
+    _currentId = sceneId;
+    
+    if (!_isLoaded) {
+        _rootId = _currentId;
+    }    
 }
 
 void SceneLoader::giveContinousControl(ViewController* control) {
