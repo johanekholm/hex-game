@@ -35,7 +35,9 @@ MapObject::MapObject(int category, MPoint pos, int owner, int layer, int visualT
     this->addItem(Item::buildItem(ItemNS::SILVER, 10));
 }
 
-void MapObject::serialize(Json::Value& root) {
+Json::Value MapObject::serialize() {
+    Json::Value root;
+    
     Json::Value& actions = root["actions"];
     root["category"] = _category;
     root["owner"] = _owner;
@@ -48,6 +50,8 @@ void MapObject::serialize(Json::Value& root) {
     for (std::map<int, AdventureAction*>::iterator it = _actions.begin(); it != _actions.end(); ++it) {
         actions.append(it->first);
     }
+    
+    return root;
 }
 
 void MapObject::deserialize(Json::Value& root) {

@@ -67,9 +67,7 @@ void StateManager::createState(Json::Value& root) {
     // serialize all units
     for (std::vector<UnitModel*>::iterator it = units.begin(); it != units.end(); ++it) {
         if (*it != 0) {
-            //unitState = new Json::Value();
-            (*it)->serialize(state);
-            unitsNode.append(state);
+            unitsNode.append((*it)->serialize());
         }
 	}
 
@@ -78,8 +76,7 @@ void StateManager::createState(Json::Value& root) {
     // serialize all map objects
     for (std::vector<MapObject*>::iterator it = mapObjects.begin(); it != mapObjects.end(); ++it) {
         if (*it != 0) {
-            (*it)->serialize(state);
-            mapObjectsNode.append(state);
+            mapObjectsNode.append((*it)->serialize());
         }
 	}
 }

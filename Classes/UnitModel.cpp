@@ -43,7 +43,9 @@ UnitModel::UnitModel(int x, int y, int owner, int maxHp, int maxAp, int power, i
 	
 }
 
-void UnitModel::serialize(Json::Value& root) {
+Json::Value UnitModel::serialize() {
+    Json::Value root;
+    
     root["x"] = _pos.x;
     root["y"] = _pos.y;
     root["ap"] = _ap;
@@ -56,6 +58,8 @@ void UnitModel::serialize(Json::Value& root) {
     root["owner"] = _owner;
     root["visualType"] = _visualType;
     root["id"] = _id;
+    
+    return root;
 }
 
 void UnitModel::deserialize(Json::Value& root) {

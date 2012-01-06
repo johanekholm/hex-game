@@ -53,7 +53,7 @@ public:
     virtual ~MapObject();
     MapObject();
     MapObject(int category, MPoint pos, int owner, int layer, int visualType, std::vector<int> actionIds);
-    void serialize(Json::Value& root);
+    Json::Value serialize();
     void deserialize(Json::Value& root);
 
     MPoint getPosition();

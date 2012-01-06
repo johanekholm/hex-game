@@ -62,8 +62,8 @@ public:
 	~UnitModel();
     UnitModel();
     UnitModel(int x, int y, int owner, int maxHp, int maxAp, int power, int skill, int defense, std::vector<int> actionIds, int visualType);
+    Json::Value serialize();
     void deserialize(Json::Value& root);
-    void serialize(Json::Value& root);
     
 	BattleAction* addAction(int action);
     int chooseMovementTarget(const std::vector<ActionState>& targets);
