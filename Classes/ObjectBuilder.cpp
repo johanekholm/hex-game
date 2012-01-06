@@ -104,7 +104,7 @@ void ObjectBuilder::createUnitFromTemplate(const std::string& unitClass, int own
 
 void ObjectBuilder::registerMap(HexMapModel* mapModel) {
     ModelManager::instance()->setMap(mapModel);
-    ViewControllerManager::instance()->setMapView(new HexMap(mapModel, TextureCatalog::instance()->get("hexTiles"), 1.0f));
+    ViewControllerManager::instance()->setMapView(new HexMap(mapModel, TextureCatalog::instance()->get("hexTiles"), mapModel->getScale()));
 }
 
 void ObjectBuilder::registerMapObject(MapObject* object) {

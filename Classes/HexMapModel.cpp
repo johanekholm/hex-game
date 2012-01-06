@@ -104,6 +104,7 @@ Json::Value HexMapModel::serialize() {
     Json::Value& hexes = root["hexes"];
     root["width"] = _width;
     root["height"] = _height;
+    root["scale"] = _scale;
     
     // serialize hex data
     for (std::map<int, HexState>::iterator it = _hexes.begin(); it != _hexes.end(); it++) {
@@ -115,6 +116,7 @@ Json::Value HexMapModel::serialize() {
 void HexMapModel::deserialize(Json::Value& root) {
     _width = root.get("width", 0).asInt();
     _height = root.get("height", 0).asInt();
+    _scale = root.get("scale", 1.0f).asFloat();
 
     // deserialize hex data
     for (Json::ValueIterator it = root["hexes"].begin(); it != root["hexes"].end(); it++) {
@@ -140,4 +142,8 @@ int HexMapModel::getHexValue(int x, int y) {
 
 int HexMapModel::getWidth() {
     return _width;
+}
+
+GLfloat HexMapModel::getScale() {
+    return _scale;
 }

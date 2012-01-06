@@ -26,6 +26,7 @@ struct HexState {
 
 class HexMapModel {
 	int _width, _height;
+    GLfloat _scale;
     std::map<int, HexState> _hexes;
     
 public:
@@ -40,6 +41,7 @@ public:
     int getHeight();
     int getHexValue(const MPoint& hex);
     int getHexValue(int x, int y);
+    GLfloat getScale();
     int getWidth();
 };
 
