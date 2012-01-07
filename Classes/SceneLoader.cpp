@@ -94,7 +94,6 @@ void SceneLoader::loadBattleScene(const std::string& mapName, int enemyPartyType
     HexMapModel* mapModel;
     std::vector<UnitModel*> playerMembers;
     
-    StateManager::save("state.txt");
     
     mapModel = new HexMapModel(4, 4, "4 5 5 5\n5 5 5 5\n5 5 5 5\n5 5 5 4\n");
     
@@ -126,10 +125,13 @@ void SceneLoader::loadBattleScene(const std::string& mapName, int enemyPartyType
     ScriptManager::instance()->add(ScriptedAction::build(ScriptedActionNS::END_BATTLE, ModelEventNS::PARTY_WIPEOUT));
 
     Sound::instance()->play("music1");
+    
+    StateManager::save("state.txt");
 }
 
 void SceneLoader::loadAdventureScene() {
-    StateManager::load("newgame.jsn");
+    //StateManager::load("newgame.jsn");
+    this->loadPersistentScene("newgame.jsn");
     
     /*HexMapModel* mapModel;
     
