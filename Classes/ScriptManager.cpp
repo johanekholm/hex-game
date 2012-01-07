@@ -38,17 +38,25 @@ void ScriptManager::add(ScriptedAction* script) {
 
     _scriptedActions[stream.str()] = script;
     EventManager::instance()->addObserver(script);
+    DEBUGLOG("Script registered");
 }
 
 void ScriptManager::add(std::string& key, ScriptedAction* script) {
     _scriptedActions[key] = script;
     EventManager::instance()->addObserver(script);
+    DEBUGLOG("Script registered: %s", key.c_str());
 }
 
 void ScriptManager::activate(std::string& key) {
     _scriptedActions[key]->doAction();
 }
 
+void ScriptManager::clear() {
+    for (std::map<std::string, ScriptedAction*>::iterator it = _scriptedActions.begin(); it != _scriptedActions.end(); ++it) {
+        delete it->second;
+    }
+    _scriptedActions.clear();
+}
 
 ScriptedAction* ScriptedAction::build(int actionId, int eventType) {
     using namespace ScriptedActionNS;

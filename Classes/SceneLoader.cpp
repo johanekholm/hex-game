@@ -40,6 +40,7 @@ SceneLoader::SceneLoader() {
 }
 
 void SceneLoader::loadPersistentScene(std::string sceneId) {
+    DEBUGLOG("Loading scene with id: %s", sceneId.c_str());
     this->handleHistory(sceneId);
     
     if (_isLoaded && _isPersistent) {
@@ -51,6 +52,9 @@ void SceneLoader::loadPersistentScene(std::string sceneId) {
     StateManager::load(sceneId);
     _isPersistent = true;
     _isLoaded = true;
+    
+    // To-Do: scripts should be loaded with state
+    ScriptManager::instance()->add(ScriptedAction::build(ScriptedActionNS::END_BATTLE, ModelEventNS::PARTY_WIPEOUT));
 }
 
 void SceneLoader::loadPrevious() {
@@ -64,6 +68,7 @@ void SceneLoader::loadRoot() {
 void SceneLoader::clearScene() {
     ModelManager::instance()->removeAllMapObjects();
     ModelManager::instance()->removeAllUnits();
+    ScriptManager::instance()->clear();
 }
 
 void SceneLoader::handleHistory(std::string sceneId) {

@@ -47,9 +47,10 @@ public:
 	}
     
     static void destroy();
+    void activate(std::string& key);
     void add(ScriptedAction* script);
     void add(std::string& key, ScriptedAction* script);
-    void activate(std::string& key);
+    void clear();
 };
 
 
