@@ -33,23 +33,17 @@ public:
 };
 
 class ScriptManager {
-    static ScriptManager* _instance;
-    std::map<std::string, ScriptedAction*> _scriptedActions;
-    
-    ScriptManager();
-
 public:
-    static ScriptManager* instance() {
-		if (_instance == 0) {
-			_instance = new ScriptManager();
-		}		
-		return _instance;
-	}
-    
+    static ScriptManager* instance();
     static void destroy();
     void add(ScriptedAction* script);
     void add(std::string& key, ScriptedAction* script);
     void activate(std::string& key);
+protected:
+    ScriptManager();
+private:
+	class PrivateData;
+	PrivateData *d;
 };
 
 

@@ -14,39 +14,52 @@
 
 #include <sstream>
 
-ScriptManager* ScriptManager::_instance = 0;
+class ScriptManager::PrivateData {
+public:
+    std::map<std::string, ScriptedAction*> scriptedActions;
+	static ScriptManager* instance;
+};
+
+ScriptManager* ScriptManager::PrivateData::instance = 0;
+
+ScriptManager* ScriptManager::instance() {
+	if (PrivateData::instance == 0) {
+		PrivateData::instance = new ScriptManager();
+	}
+	return PrivateData::instance;
+}
 
 void ScriptManager::destroy() {
-	if (_instance != 0) {
-       	for (std::map<std::string, ScriptedAction*>::iterator it = _instance->_scriptedActions.begin(); it != _instance->_scriptedActions.end(); ++it) {
+	if (PrivateData::instance != 0) {
+		for (std::map<std::string, ScriptedAction*>::iterator it = PrivateData::instance->d->scriptedActions.begin(); it != PrivateData::instance->d->scriptedActions.end(); ++it) {
             delete it->second;
         }
-		_instance->_scriptedActions.clear();
+		PrivateData::instance->d->scriptedActions.clear();
         
-		delete _instance;
-		_instance=0;
+		delete PrivateData::instance;
+		PrivateData::instance=0;
 	}
 }
 
 ScriptManager::ScriptManager() {
-    
+	d = new PrivateData;
 }
 
 void ScriptManager::add(ScriptedAction* script) {
     std::stringstream stream;
-    stream << "DEF-" << _scriptedActions.size();
+    stream << "DEF-" << d->scriptedActions.size();
 
-    _scriptedActions[stream.str()] = script;
+    d->scriptedActions[stream.str()] = script;
     EventManager::instance()->addObserver(script);
 }
 
 void ScriptManager::add(std::string& key, ScriptedAction* script) {
-    _scriptedActions[key] = script;
+    d->scriptedActions[key] = script;
     EventManager::instance()->addObserver(script);
 }
 
 void ScriptManager::activate(std::string& key) {
-    _scriptedActions[key]->doAction();
+    d->scriptedActions[key]->doAction();
 }
 
 
