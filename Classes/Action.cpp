@@ -287,14 +287,9 @@ bool AActionFight::isAvailableAtHex(const MPoint& hex) {
 }
 
 void AActionFight::doIt(const ActionState& statePoint) {
-    //PartyModel* target = (PartyModel*)UnitModel::instance()->getMapObjectAtPos(statePoint.pos);
-    
-    //if (target != 0) {
-        _object->move(statePoint.pos);
-        SceneLoader::instance()->loadBattleScene();
-        CentralControl::instance()->switchMode(ControlMode::BATTLE);
-
-    //}
+    _object->move(statePoint.pos);
+    SceneLoader::instance()->loadBattleScene();
+    CentralControl::instance()->switchMode(ControlMode::BATTLE);
 }
 
 /*---------------------------------------------------------------*/
@@ -384,7 +379,7 @@ void AActionEnterDungeon::doIt(const ActionState& statePoint) {
 }
 
 void AActionEnterDungeon::callbackVoid() {
-    //SceneLoader::instance()->loadBattleScene("dungeon1", 2, static_cast<PartyModel*>(_object)->getMembers());
+    //SceneLoader::instance()->loadBattleScene("dungeon1", 2, _object->getMembers());
     SceneLoader::instance()->loadPersistentScene("battle1.jsn");
     CentralControl::instance()->switchMode(ControlMode::BATTLE);
 }

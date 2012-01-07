@@ -18,7 +18,6 @@
 class ViewController;
 class MenuViewController;
 class TransitionViewController;
-class PartyModel;
 class UnitModel;
 
 class SceneLoader {

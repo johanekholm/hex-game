@@ -51,7 +51,6 @@ namespace ActionNS {
 class UnitModel;
 struct HexState;
 
-class PartyModel;
 class MapObject;
 
 struct ActionState {

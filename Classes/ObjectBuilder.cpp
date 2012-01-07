@@ -37,10 +37,10 @@ void ObjectBuilder::createMapObjectFromTemplate(const std::string& objectType, i
     
     if (objectType == "village") {
         image = 4; layer = MapLayer::BUILDING;
-        object = new MapObject(MapObjectCategory::CITY, pos, owner, layer, image, actions);
+        object = new MapObject(MapObjectCategory::CITY, pos, owner, layer, image, actions, units);
     } else if (objectType == "dungeon") {
         image = 5; layer = MapLayer::BUILDING;
-        object = new MapObject(MapObjectCategory::DUNGEON, pos, owner, layer, image, actions);
+        object = new MapObject(MapObjectCategory::DUNGEON, pos, owner, layer, image, actions, units);
     } else if (objectType == "party") {
         layer = MapLayer::UNIT;
         if (owner == 1) {
@@ -54,7 +54,7 @@ void ObjectBuilder::createMapObjectFromTemplate(const std::string& objectType, i
         actions.push_back(ActionNS::AACTION_INVENTORY);
         units.push_back(produceUnit("swordsman", owner, MPointMake(1,1)));
         units.push_back(produceUnit("channeler", owner, MPointMake(1,0)));
-        object = new PartyModel(MapObjectCategory::PARTY, pos, owner, layer, image, actions, units);
+        object = new MapObject(MapObjectCategory::PARTY, pos, owner, layer, image, actions, units);
     } else {
         return;
     }

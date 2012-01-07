@@ -20,12 +20,13 @@ MapObject::~MapObject() {
 
 MapObject::MapObject() {}
 
-MapObject::MapObject(int category, MPoint pos, int owner, int layer, int visualType, std::vector<int> actionIds) {
+MapObject::MapObject(int category, MPoint pos, int owner, int layer, int visualType, std::vector<int> actionIds, const std::vector<UnitModel*>& members) {
     _category = category;
     _pos = pos;
     _owner = owner;
     _layer = layer;
     _visualType = visualType;
+    _memberUnits = members;
     
     for (std::vector<int>::iterator it = actionIds.begin(); it != actionIds.end(); ++it) {
         this->addAction(*it);
@@ -109,6 +110,10 @@ int MapObject::getLayer() {
     return _layer;
 }
 
+std::vector<UnitModel*> MapObject::getMembers() {
+    return _memberUnits;
+}
+
 int MapObject::getOwner() {
     return _owner;
 }
@@ -145,23 +150,6 @@ void MapObject::move(const MPoint& targetPos) {
 void MapObject::setId(int objectId) {
     _id = objectId;
 }
-
-
-/*---------------------------------------------------------------*/
-
-
-PartyModel::~PartyModel() {
-    
-}
-
-PartyModel::PartyModel(int category, MPoint pos, int owner, int layer, int visualType, std::vector<int> actionIds, const std::vector<UnitModel*>& members) : MapObject(category, pos, owner, layer, visualType, actionIds) {
-    _memberUnits = members;
-}
-
-std::vector<UnitModel*> PartyModel::getMembers() {
-    return _memberUnits;
-}
-
 
 
 
