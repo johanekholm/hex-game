@@ -21,6 +21,7 @@ EAGLView::EAGLView(QWidget *parent)
 	d->timer.setInterval(1000.0 / 60.0);
 	connect(&d->timer, SIGNAL(timeout()), this, SLOT(mainGameLoop()));
 	this->setWindowTitle("HexGame");
+	this->resize(320, 480);
 }
 
 EAGLView::~EAGLView() {
