@@ -36,6 +36,7 @@ SceneLoader::SceneLoader() {
     _previousId = "";
     _rootId = "";
     _isLoaded = false;
+    _isPersistent = false;
 }
 
 void SceneLoader::loadPersistentScene(std::string sceneId) {
@@ -44,6 +45,8 @@ void SceneLoader::loadPersistentScene(std::string sceneId) {
     if (_isLoaded && _isPersistent) {
         StateManager::save(_previousId);
     }
+    
+    this->clearScene();
     
     StateManager::load(sceneId);
     _isPersistent = true;
@@ -56,6 +59,11 @@ void SceneLoader::loadPrevious() {
 
 void SceneLoader::loadRoot() {
     this->loadPersistentScene(_rootId);    
+}
+
+void SceneLoader::clearScene() {
+    ModelManager::instance()->removeAllMapObjects();
+    ModelManager::instance()->removeAllUnits();
 }
 
 void SceneLoader::handleHistory(std::string sceneId) {

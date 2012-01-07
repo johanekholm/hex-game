@@ -45,6 +45,7 @@ public:
     void loadPersistentScene(std::string sceneId);
     void loadPrevious();
     void loadRoot();
+    void clearScene();
     
     void loadAdventureScene();
     void loadBattleScene();

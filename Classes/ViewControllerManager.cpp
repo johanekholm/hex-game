@@ -186,6 +186,7 @@ void ViewControllerManager::setFocus(ViewController* view) {
 }
 
 void ViewControllerManager::setMapView(HexMap* mapView) {
+    delete _mapView;    
     _mapView = mapView;
 }
 
