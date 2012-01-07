@@ -30,7 +30,6 @@
 #include <cstdlib>
 #include <iostream>
 #include <ctime>
-#include <python.h>
 
 
 CentralControl* CentralControl::_instance = 0;
@@ -80,12 +79,6 @@ CentralControl::CentralControl() {
     
     //SceneLoader::instance()->switchToMainMenu();
     //this->switchMode(ControlMode::MENU);
-    //Python
-    Py_SetProgramName((char*)"HexGame");
-
-    Py_Initialize();
-
-    PyRun_SimpleString("print 'Hello from CentralControl in python'\n");
 }
 
 void CentralControl::update() {

@@ -13,6 +13,7 @@
 #include "TransitionViewController.h"
 
 #include <sstream>
+#include <python.h>
 
 class ScriptManager::PrivateData {
 public:
@@ -35,7 +36,9 @@ void ScriptManager::destroy() {
             delete it->second;
         }
 		PrivateData::instance->d->scriptedActions.clear();
-        
+
+		Py_Finalize();
+
 		delete PrivateData::instance;
 		PrivateData::instance=0;
 	}
@@ -43,6 +46,12 @@ void ScriptManager::destroy() {
 
 ScriptManager::ScriptManager() {
 	d = new PrivateData;
+	//Python
+	Py_SetProgramName((char*)"HexGame");
+
+	Py_Initialize();
+
+	PyRun_SimpleString("print 'Hello from CentralControl in python'\n");
 }
 
 void ScriptManager::add(ScriptedAction* script) {
