@@ -16,6 +16,7 @@
 #include "Action.h"
 #include "MapObject.h"
 #include "MapObjectView.h"
+#include "json.h"
 
 UnitFactory::UnitFactory(ViewControllerManager* viewControllerManager) {
     //_modelManager = modelManager; 
@@ -47,7 +48,7 @@ void UnitFactory::produceAndRegisterMapObject(const std::string& objectType, int
         actions.push_back(ActionNS::AACTION_MOVE); actions.push_back(ActionNS::AACTION_FIGHT);
         actions.push_back(ActionNS::AACTION_SHOP); actions.push_back(ActionNS::AACTION_ENTERDUNGEON);
         actions.push_back(ActionNS::AACTION_INVENTORY);
-        units.push_back(produceUnit("swordsman", owner, MPointMake(0,0)));
+        units.push_back(produceUnit("swordsman", owner, MPointMake(1,1)));
         units.push_back(produceUnit("channeler", owner, MPointMake(1,0)));
         object = new PartyModel(MapObjectCategory::PARTY, pos, owner, actions, units);
     } else {
@@ -67,16 +68,16 @@ UnitModel* UnitFactory::produceUnit(const std::string& unitClass, int owner, con
     std::vector<int> actions;
     
     if (unitClass == "swordsman") {
-        hp = 10; ap = 3; power = 3; skill = 2; defense = 3; image = 0;
+        hp = 10; ap = 30; power = 3; skill = 2; defense = 3; image = 0;
         actions.push_back(ActionNS::BACTION_MOVE); actions.push_back(ActionNS::BACTION_STRIKE);
     } else if (unitClass == "soldier") {
-        hp = 4; ap = 3; power = 2; skill = 2; defense = 2; image = 1;
+        hp = 1; ap = 30; power = 2; skill = 2; defense = 2; image = 1;
         actions.push_back(ActionNS::BACTION_MOVE); actions.push_back(ActionNS::BACTION_STRIKE);
     } else if (unitClass == "archer") {
-        hp = 4; ap = 3; power = 2; skill = 3; defense = 1; image = 3;
+        hp = 4; ap = 30; power = 2; skill = 3; defense = 1; image = 3;
         actions.push_back(ActionNS::BACTION_MOVE); actions.push_back(ActionNS::BACTION_FIRE);
     } else if (unitClass == "channeler") {
-        hp = 4; ap = 5; power = 2; skill = 3; defense = 1; image = 2;
+        hp = 4; ap = 50; power = 2; skill = 3; defense = 1; image = 2;
         actions.push_back(ActionNS::BACTION_MOVE); actions.push_back(ActionNS::BACTION_BURN); actions.push_back(ActionNS::BACTION_HEAL);
     } else {
         return 0;
@@ -84,6 +85,14 @@ UnitModel* UnitFactory::produceUnit(const std::string& unitClass, int owner, con
     
     unit = new UnitModel(pos.x, pos.y, owner, hp, ap, power, skill, defense, actions, image);
 
+    Json::Value unitJson;
+    Json::FastWriter writer;
+    std::string jsonString;
+    
+    unit->serialize(unitJson);
+    jsonString = writer.write(unitJson);
+    DEBUGLOG("Unit produced, has Json [%s]", jsonString.c_str());
+    
     return unit;
 }
 

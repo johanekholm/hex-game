@@ -27,6 +27,7 @@ class HexMapModel {
 public:
 	~HexMapModel();
 	HexMapModel(int width, int height);
+    HexMapModel(int width, int height, const std::string& data);
     std::map<int, HexState> getAllHexes();
     int getHeight();
     int getHexValue(const MPoint& hex);

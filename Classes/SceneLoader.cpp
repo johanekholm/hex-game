@@ -19,6 +19,8 @@
 #include "TransitionViewController.h"
 #include "UnitFactory.h"
 #include "MenuView.h"
+#include "ScriptManager.h"
+#include "StateManager.h"
 
 SceneLoader* SceneLoader::_instance = 0;
 
@@ -53,14 +55,14 @@ void SceneLoader::loadBattleScene() {
     UnitFactory::produceAndRegisterUnit("soldier", 2, MPointMake(1, 1));
     UnitFactory::produceAndRegisterUnit("channeler", 2, MPointMake(2, 1));
     
-    Sound::instance()->play("music1");
+    // Sound::instance()->play("music1");
 }
 
 void SceneLoader::loadBattleScene(const std::string& mapName, int enemyPartyType, std::vector<UnitModel*> members) {
     HexMapModel* mapModel;
     std::vector<UnitModel*> playerMembers;
     
-    mapModel = new HexMapModel(4, 4);
+    mapModel = new HexMapModel(4, 4, "4 5 5 5\n5 5 5 5\n5 5 5 5\n5 5 5 4\n");
     
     ModelManager::instance()->setBattleMap(mapModel);
     ViewControllerManager::instance()->pushMapView(new HexMap(mapModel, TextureCatalog::instance()->get("hexTiles"), 1.0f));
@@ -86,8 +88,12 @@ void SceneLoader::loadBattleScene(const std::string& mapName, int enemyPartyType
         default:
             break;
     }
+    
+    ScriptManager::instance()->add(ScriptedAction::build(ScriptedActionNS::END_BATTLE, ModelEventNS::PARTY_WIPEOUT));
 
     Sound::instance()->play("music1");
+    
+    StateManager::save("state.txt");
 }
 
 void SceneLoader::loadAdventureScene() {
@@ -108,10 +114,11 @@ void SceneLoader::switchToAdventureScene() {
     ModelManager::instance()->removeAllUnits();
     ViewControllerManager::instance()->popMapView();
     
-    UnitFactory::produceAndRegisterMapObject("party", 1, MPointMake(1, 4));
+    /*UnitFactory::produceAndRegisterMapObject("party", 1, MPointMake(1, 4));
     UnitFactory::produceAndRegisterMapObject("party", 2, MPointMake(3, 2));
     UnitFactory::produceAndRegisterMapObject("village", 1, MPointMake(0, 0));
     UnitFactory::produceAndRegisterMapObject("dungeon", 1, MPointMake(0, 3));
+     */
 }
 
 void SceneLoader::switchToMainMenu() {

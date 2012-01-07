@@ -24,6 +24,7 @@
 #include <vector>
 #include "toolkit.h"
 #include "Observable.h"
+#include "json-forwards.h"
 
 class Action;
 class BattleAction;
@@ -64,6 +65,7 @@ public:
 	BattleAction* addAction(int action);
     int chooseMovementTarget(const std::vector<ActionState>& targets);
     void defend(UnitModel* attacker, int power, int skill, int attack_type);
+    void deserialize(Json::Value& root);
 	void doAction(const ActionState& statePoint);
     void doAI();
 	std::vector<ActionState> getActions();
@@ -76,6 +78,7 @@ public:
     void inflictDamage(int damage);
     void fire(const MPoint& targetPos);
 	void move(const MPoint& targetPos);
+    void serialize(Json::Value& root);
     void setId(int unitId);
 	bool spendAp(int cost);
 	void strike(const MPoint& targetPos);

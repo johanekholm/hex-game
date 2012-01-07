@@ -50,6 +50,35 @@ HexMapModel::HexMapModel(int width, int height) {
     }
 }
 
+HexMapModel::HexMapModel(int width, int height, const std::string& data) {
+    using namespace std;
+    HexState state;
+	_width = width;
+	_height = height;
+    istringstream dataStream(data);
+    vector<string> tokens;
+    vector<string>::const_iterator it;
+    int number = 0;
+    
+    copy(istream_iterator<string>(dataStream), istream_iterator<string>(), back_inserter<vector<string> >(tokens));
+    
+    it = tokens.begin();
+    
+    for (int i = 0; i < _height; i++) {
+		for (int j = 0; j < _width; j++) {
+            state.pos = MPointMake(j, i);
+            
+            if (it != tokens.end()) {
+                (stringstream(*it) >> number) ? state.value = number : state.value = 0;
+            } else {
+                state.value = 0;
+            }
+            _hexes[i * _width + j] = state;
+            ++it;
+        }
+    }
+}
+
 std::map<int, HexState> HexMapModel::getAllHexes() {
     return _hexes;
 }

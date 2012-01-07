@@ -13,12 +13,14 @@ SET( SOURCES
 	Classes/Action.cpp
     Classes/BaseUnitViewController.cpp
 	Classes/CentralControl.cpp
+    Classes/EventManager.cpp
 	Classes/GameImage.cpp
 	Classes/geometry.cpp
 	Classes/HexMap.cpp
     Classes/HexMapModel.cpp
 	Classes/InputManager.cpp
     Classes/Item.cpp
+    Classes/jsoncpp.cpp
     Classes/MapObject.cpp
     Classes/MapObjectView.cpp
     Classes/MenuView.cpp
@@ -26,8 +28,10 @@ SET( SOURCES
     Classes/ModelManager.cpp
     Classes/Observable.cpp
     Classes/SceneLoader.cpp
+    Classes/ScriptManager.cpp
     Classes/ShapeImage.cpp
 	Classes/Sound.cpp
+    Classes/StateManager.cpp
     Classes/StringImage.cpp
 	Classes/TextureCatalog.cpp
 	Classes/TextureMap.cpp
@@ -46,21 +50,26 @@ SET( HEADERS
     Classes/BaseUnitViewController.h
 	Classes/CentralControl.h
     Classes/ControlCallback.h
-	Classes/GameImage.h
+    Classes/EventManager.h
+    Classes/GameImage.h
 	Classes/geometry.h
 	Classes/HexMap.h
     Classes/HexMapModel.h
 	Classes/InputManager.h
     Classes/Item.h
     Classes/IObserver.h
+    Classes/json.h
+    Classes/json-forwards.h
     Classes/MapObject.h
     Classes/MapObjectView.h
     Classes/MenuView.h
     Classes/MessageView.h
     Classes/ModelManager.h
     Classes/SceneLoader.h
+    Classes/ScriptManager.h
     Classes/ShapeImage.h
     Classes/Sound.h
+    Classes/StateManager.h
     Classes/StringImage.h
 	Classes/TextureCatalog.h
 	Classes/TextureMap.h

@@ -88,16 +88,18 @@ ViewController* ViewControllerManager::getFocus() {
 
 ViewController* ViewControllerManager::getTouched(const GPoint& point) {    
 	for (std::vector<ViewController*>::reverse_iterator it = _views.rbegin(); it != _views.rend(); ++it) {
-		if ((*it)->isWithin(point)) {
-			return (*it);	
-		}
+		if (*it != 0) {
+            if ((*it)->isWithin(point)) {
+                return (*it);	
+            }
+        }
 	}
 	
 	return 0;
 }
 
 void ViewControllerManager::insert(ViewController* view) {
-
+    DEBUGLOG("Insert view: %x", view);
     std::vector<ViewController*>::iterator it = _views.begin();
 	while (true) {
 		if (it == _views.end() || (*it != 0 && (*it)->getLayer() >= view->getLayer())) {

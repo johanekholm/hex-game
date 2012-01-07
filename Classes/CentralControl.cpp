@@ -23,6 +23,7 @@
 #include "ViewController.h"
 #include "ViewControllerManager.h"
 #include "SceneLoader.h"
+#include "StateManager.h"
 #include "toolkit.h"
 #include "geometry.h"
 
@@ -76,6 +77,7 @@ CentralControl::CentralControl() {
     this->switchMode(ControlMode::ADVENTURE);
     //this->switchMode(ControlMode::BATTLE);
     
+    
     //SceneLoader::instance()->switchToMainMenu();
     //this->switchMode(ControlMode::MENU);
     //Python
@@ -91,7 +93,7 @@ void CentralControl::update() {
     int loser = 0;
 	
     if (_mode == ControlMode::BATTLE || _mode == ControlMode::BATTLE_FOCUS) {
-        if (++_timer >= 200) {
+        if (++_timer >= 30) {
             _timer = 0;
             ModelManager::instance()->tick();
             

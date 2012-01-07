@@ -31,7 +31,7 @@ BaseUnitViewController::BaseUnitViewController(GLfloat width, GLfloat height, in
 }
 
 void BaseUnitViewController::destroyed() {
-    ViewControllerManager::instance()->remove(this);	
+    ViewControllerManager::instance()->removeSoft(this);	
 }
 
 void BaseUnitViewController::drawActions(const GPoint& cameraPos) {
