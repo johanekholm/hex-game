@@ -48,6 +48,7 @@ Json::Value MapObject::serialize() {
     root["x"] = _pos.x;
     root["y"] = _pos.y;
     
+    // serialize actions
     for (std::map<int, AdventureAction*>::iterator it = _actions.begin(); it != _actions.end(); ++it) {
         actions.append(it->first);
     }

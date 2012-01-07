@@ -46,6 +46,7 @@ UnitModel::UnitModel(int x, int y, int owner, int maxHp, int maxAp, int power, i
 Json::Value UnitModel::serialize() {
     Json::Value root;
     
+    Json::Value& actions = root["actions"];
     root["x"] = _pos.x;
     root["y"] = _pos.y;
     root["ap"] = _ap;
@@ -59,6 +60,11 @@ Json::Value UnitModel::serialize() {
     root["visualType"] = _visualType;
     root["id"] = _id;
     
+    // serialize actions
+    for (std::map<int, BattleAction*>::iterator it = _actions.begin(); it != _actions.end(); ++it) {
+        actions.append(it->first);
+    }
+
     return root;
 }
 
@@ -76,6 +82,10 @@ void UnitModel::deserialize(Json::Value& root) {
     _visualType = root.get("visualType", 0).asInt();
     _id = root.get("id", 0).asInt();
     
+    // deserialize actions
+    for (Json::ValueIterator it = root["actions"].begin(); it != root["actions"].end(); it++) {
+        this->addAction((*it).asInt());
+    }
 }
 
 
