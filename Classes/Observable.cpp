@@ -19,6 +19,15 @@ void Observable::addObserver(IObserver* observer) {
     observer->updateState();
 }
 
+void Observable::removeObserver(IObserver* observer) {
+	for (std::vector<IObserver*>::iterator it = _observers.begin(); it != _observers.end(); ++it) {
+		if ((*it) == observer) {
+            _observers.erase(it);
+            return;
+        }
+	}    
+}
+
 void Observable::updateObservers() {
 	for (std::vector<IObserver*>::iterator it = _observers.begin(); it != _observers.end(); ++it) {
 		(*it)->updateState();

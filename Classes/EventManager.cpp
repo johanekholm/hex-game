@@ -18,7 +18,7 @@ void EventManager::destroy() {
 }
 
 EventManager::EventManager() {
-    
+    _mostRecentEvent.type = -1;
 }
 
 ModelEvent EventManager::getEvent() {
@@ -30,6 +30,7 @@ void EventManager::publishEvent(const ModelEvent& event) {
     
     DEBUGLOG("Event published: %i", event.type);
     this->updateObservers();
+    _mostRecentEvent.type = -1;
 }
 
 

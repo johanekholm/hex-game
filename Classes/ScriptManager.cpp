@@ -38,7 +38,7 @@ void ScriptManager::add(ScriptedAction* script) {
 
     _scriptedActions[stream.str()] = script;
     EventManager::instance()->addObserver(script);
-    DEBUGLOG("Script registered");
+    DEBUGLOG("Script registered: %x", script);
 }
 
 void ScriptManager::add(std::string& key, ScriptedAction* script) {
@@ -52,7 +52,10 @@ void ScriptManager::activate(std::string& key) {
 }
 
 void ScriptManager::clear() {
+    DEBUGLOG("Clearing scripts");
+    EventManager* eventManager = EventManager::instance();
     for (std::map<std::string, ScriptedAction*>::iterator it = _scriptedActions.begin(); it != _scriptedActions.end(); ++it) {
+        eventManager->removeObserver(it->second);
         delete it->second;
     }
     _scriptedActions.clear();
@@ -73,7 +76,6 @@ ScriptedAction* ScriptedAction::build(int actionId, int eventType) {
 		default:
             return 0;
     }
-    
 }
 
 ScriptedAction::ScriptedAction(const ModelEvent& triggerEvent) {

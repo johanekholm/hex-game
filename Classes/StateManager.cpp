@@ -109,7 +109,7 @@ void StateManager::saveStateToFile(Json::Value& root, const std::string& filenam
     std::string jsonString;
     
     jsonString = writer.write(root);
-    DEBUGLOG("State saved with data: %s", jsonString.c_str());
+    //DEBUGLOG("State saved with data: %s", jsonString.c_str());
     
     // save to in-memory filestore
     _inMemoryFileStore[filename] = jsonString;
