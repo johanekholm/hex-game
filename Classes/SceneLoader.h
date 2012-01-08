@@ -42,10 +42,10 @@ public:
 	
 	static void destroy();
 	
-    void loadPersistentScene(std::string sceneId);
+    void clearScene();
+    void loadScene(std::string sceneId, bool isPersistent);
     void loadPrevious();
     void loadRoot();
-    void clearScene();
     
     void loadAdventureScene();
     void loadBattleScene(const std::string& mapName, int enemyPartyType, std::vector<UnitModel*> members);

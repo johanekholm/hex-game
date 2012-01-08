@@ -39,8 +39,13 @@ SceneLoader::SceneLoader() {
     _isPersistent = false;
 }
 
-void SceneLoader::loadPersistentScene(std::string sceneId) {
+void SceneLoader::loadScene(std::string sceneId, bool isPersistent) {
     DEBUGLOG("Loading scene with id: %s", sceneId.c_str());
+    
+    if (sceneId == "") {
+        return;
+    }
+    
     this->handleHistory(sceneId);
     
     if (_isLoaded && _isPersistent) {
@@ -50,7 +55,7 @@ void SceneLoader::loadPersistentScene(std::string sceneId) {
     this->clearScene();
     
     StateManager::load(sceneId);
-    _isPersistent = true;
+    _isPersistent = isPersistent;
     _isLoaded = true;
     
     // To-Do: scripts should be loaded with state
@@ -58,11 +63,11 @@ void SceneLoader::loadPersistentScene(std::string sceneId) {
 }
 
 void SceneLoader::loadPrevious() {
-    this->loadPersistentScene(_previousId);
+    this->loadScene(_previousId, true);
 }
 
 void SceneLoader::loadRoot() {
-    this->loadPersistentScene(_rootId);    
+    this->loadScene(_rootId, true);    
 }
 
 void SceneLoader::clearScene() {
@@ -126,7 +131,7 @@ void SceneLoader::loadBattleScene(const std::string& mapName, int enemyPartyType
 
 void SceneLoader::loadAdventureScene() {
     //StateManager::load("newgame.jsn");
-    this->loadPersistentScene("newgame.jsn");
+    this->loadScene("newgame.jsn", true);
     
     /*HexMapModel* mapModel;
     
