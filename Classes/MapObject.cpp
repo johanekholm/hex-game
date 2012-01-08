@@ -40,6 +40,7 @@ Json::Value MapObject::serialize() {
     Json::Value root;
     
     Json::Value& actions = root["actions"];
+    Json::Value& members = root["members"];
     root["category"] = _category;
     root["owner"] = _owner;
     root["layer"] = _layer;
@@ -51,6 +52,11 @@ Json::Value MapObject::serialize() {
     // serialize actions
     for (std::map<int, AdventureAction*>::iterator it = _actions.begin(); it != _actions.end(); ++it) {
         actions.append(it->first);
+    }
+    
+    // serialize members
+    for (std::vector<UnitModel*>::iterator it = _memberUnits.begin(); it != _memberUnits.end(); ++it) {
+        members.append((*it)->serialize());
     }
     
     return root;
@@ -69,6 +75,14 @@ void MapObject::deserialize(Json::Value& root) {
     for (Json::ValueIterator it = root["actions"].begin(); it != root["actions"].end(); it++) {
         this->addAction((*it).asInt());
     }
+    
+    // deserialize members
+    for (Json::ValueIterator it = root["members"].begin(); it != root["members"].end(); it++) {
+        UnitModel* unit = new UnitModel();
+        unit->deserialize(*it);
+        _memberUnits.push_back(unit);
+    }
+
 }
 
 
