@@ -25,13 +25,7 @@ class ModelManager {
     ModelManager();
 
 public:
-    static ModelManager* instance() {
-		if (_instance == 0) {
-			_instance = new ModelManager();
-		}		
-		return _instance;
-	}
-    
+    static ModelManager* instance();
     static void destroy();
 
     void addMapObject(MapObject* object);

@@ -24,13 +24,7 @@ class ViewControllerManager {
     ViewControllerManager();
 
 public:
-    static ViewControllerManager* instance() {
-		if (_instance == 0) {
-			_instance = new ViewControllerManager();
-		}		
-		return _instance;
-	}
-    
+    static ViewControllerManager* instance();
     static void destroy();
 
 	void add(ViewController* view);

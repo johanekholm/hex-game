@@ -38,13 +38,7 @@ class CentralControl {
     CentralControl();
 
 public:
-	static CentralControl* instance() {
-		if (_instance == 0) {
-			_instance = new CentralControl();
-		} 
-		return _instance;
-	}
-    
+	static CentralControl* instance();
     static void destroy();
     
 	void update();

@@ -35,6 +35,13 @@
 
 CentralControl* CentralControl::_instance = 0;
 
+CentralControl* CentralControl::instance() {
+    if (_instance == 0) {
+        _instance = new CentralControl();
+    } 
+    return _instance;
+}
+
 void CentralControl::destroy() {
 	if (_instance != 0) {
         

@@ -16,6 +16,13 @@
 
 ScriptManager* ScriptManager::_instance = 0;
 
+ScriptManager* ScriptManager::instance() {
+    if (_instance == 0) {
+        _instance = new ScriptManager();
+    }		
+    return _instance;
+}
+
 void ScriptManager::destroy() {
 	if (_instance != 0) {
        	for (std::map<std::string, ScriptedAction*>::iterator it = _instance->_scriptedActions.begin(); it != _instance->_scriptedActions.end(); ++it) {

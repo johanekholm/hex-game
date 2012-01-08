@@ -16,6 +16,13 @@
 
 ViewControllerManager* ViewControllerManager::_instance = 0;
 
+ViewControllerManager* ViewControllerManager::instance() {
+    if (_instance == 0) {
+        _instance = new ViewControllerManager();
+    }		
+    return _instance;
+}
+
 void ViewControllerManager::destroy() {
 	if (_instance != 0) {
         delete _instance->_mapView;

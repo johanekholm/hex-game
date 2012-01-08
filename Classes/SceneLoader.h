@@ -32,14 +32,7 @@ class SceneLoader {
     void handleHistory(std::string sceneId);
     
 public:
-	static SceneLoader* instance() {
-		if (_instance == 0) {
-			_instance = new SceneLoader();
-		}
-		
-		return _instance;
-	}
-	
+	static SceneLoader* instance();
 	static void destroy();
 	
     void clearScene();

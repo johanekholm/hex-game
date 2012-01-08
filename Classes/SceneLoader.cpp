@@ -24,6 +24,14 @@
 
 SceneLoader* SceneLoader::_instance = 0;
 
+SceneLoader* SceneLoader::instance() {
+    if (_instance == 0) {
+        _instance = new SceneLoader();
+    }
+    
+    return _instance;
+}
+
 void SceneLoader::destroy() {
 	if (_instance != 0) {
 		delete _instance;

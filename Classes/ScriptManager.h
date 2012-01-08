@@ -39,13 +39,7 @@ class ScriptManager {
     ScriptManager();
 
 public:
-    static ScriptManager* instance() {
-		if (_instance == 0) {
-			_instance = new ScriptManager();
-		}		
-		return _instance;
-	}
-    
+    static ScriptManager* instance();
     static void destroy();
     void activate(std::string& key);
     void add(ScriptedAction* script);

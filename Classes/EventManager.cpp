@@ -10,6 +10,13 @@
 
 EventManager* EventManager::_instance = 0;
 
+EventManager* EventManager::instance() {
+    if (_instance == 0) {
+        _instance = new EventManager();
+    }		
+    return _instance;
+}
+
 void EventManager::destroy() {
 	if (_instance != 0) {
 		delete _instance;

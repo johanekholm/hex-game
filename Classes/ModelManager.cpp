@@ -17,6 +17,13 @@
 
 ModelManager* ModelManager::_instance = 0;
 
+ModelManager* ModelManager::instance() {
+    if (_instance == 0) {
+        _instance = new ModelManager();
+    }		
+    return _instance;
+}
+
 void ModelManager::destroy() {
 	if (_instance != 0) {
        	for (std::map<int, MapObject*>::iterator it = _instance->_mapObjects.begin(); it != _instance->_mapObjects.end(); ++it) {
