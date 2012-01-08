@@ -83,6 +83,7 @@ void SceneLoader::clearScene() {
     ModelManager::instance()->removeAllMapObjects();
     ModelManager::instance()->removeAllUnits();
     ScriptManager::instance()->clear();
+    ViewControllerManager::instance()->setCameraPosition(GPointMake(0.0f, 0.0f));
 }
 
 void SceneLoader::handleHistory(std::string sceneId) {
