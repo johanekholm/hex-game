@@ -15,6 +15,7 @@
 #include "HexMap.h"
 #include "HexMapModel.h"
 #include "MapObject.h"
+#include "UnitModel.h"
 #include "Sound.h"
 #include "TransitionViewController.h"
 #include "ObjectBuilder.h"
@@ -96,6 +97,23 @@ void SceneLoader::handleHistory(std::string sceneId) {
 void SceneLoader::giveContinousControl(ViewController* control) {
     ViewControllerManager::instance()->add(control);
     ViewControllerManager::instance()->setFocus(control);
+}
+
+void SceneLoader::loadBattleScene(const std::string& sceneId, std::vector<UnitModel*> party1, std::vector<UnitModel*> party2) {
+    std::vector<UnitModel*> party1Copy, party2Copy;
+    
+    // copy passed units
+    for (std::vector<UnitModel*>::iterator it = party1.begin(); it != party1.end(); ++it) {
+        party1Copy.push_back(new UnitModel(*(*it)));
+    }
+    
+    // load new scene, clear model
+    this->loadScene(sceneId, false);
+
+    // register passed units
+    for (std::vector<UnitModel*>::iterator it = party1Copy.begin(); it != party1Copy.end(); ++it) {
+        ObjectBuilder::registerUnit(*it);
+    }    
 }
 
 void SceneLoader::loadBattleScene(const std::string& mapName, int enemyPartyType, std::vector<UnitModel*> members) {

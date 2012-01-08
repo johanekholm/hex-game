@@ -42,6 +42,7 @@ public:
     
     void loadAdventureScene();
     void loadBattleScene(const std::string& mapName, int enemyPartyType, std::vector<UnitModel*> members);
+    void loadBattleScene(const std::string& sceneId, std::vector<UnitModel*> party1, std::vector<UnitModel*> party2);
     void returnFromMenu();
     void switchToMainMenu();
     void switchToMenu(MenuViewController* menu);
