@@ -85,24 +85,6 @@ void SceneLoader::giveContinousControl(ViewController* control) {
     ViewControllerManager::instance()->setFocus(control);
 }
 
-void SceneLoader::loadBattleScene() {
-    HexMapModel* mapModel;
-    
-    mapModel = new HexMapModel(4, 4);
-
-    ModelManager::instance()->setMap(mapModel);
-    ViewControllerManager::instance()->setMapView(new HexMap(mapModel, TextureCatalog::instance()->get("hexTiles"), 1.0f));
-
-    ModelManager::instance()->removeAllMapObjects();
-
-    ObjectBuilder::createUnitFromTemplate("swordsman", 1, MPointMake(1, 0));
-    ObjectBuilder::createUnitFromTemplate("archer", 1, MPointMake(0, 0));
-    ObjectBuilder::createUnitFromTemplate("soldier", 2, MPointMake(1, 1));
-    ObjectBuilder::createUnitFromTemplate("channeler", 2, MPointMake(2, 1));
-    
-    // Sound::instance()->play("music1");
-}
-
 void SceneLoader::loadBattleScene(const std::string& mapName, int enemyPartyType, std::vector<UnitModel*> members) {
     HexMapModel* mapModel;
     std::vector<UnitModel*> playerMembers;
@@ -157,13 +139,6 @@ void SceneLoader::loadAdventureScene() {
     ObjectBuilder::createMapObjectFromTemplate("village", 1, MPointMake(0, 0));
     ObjectBuilder::createMapObjectFromTemplate("dungeon", 1, MPointMake(0, 3));
     */
-}
-
-void SceneLoader::switchToAdventureScene() {
-    
-    ModelManager::instance()->removeAllUnits();
-
-    StateManager::load("state.txt");
 }
 
 void SceneLoader::switchToMainMenu() {

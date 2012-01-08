@@ -48,10 +48,8 @@ public:
     void clearScene();
     
     void loadAdventureScene();
-    void loadBattleScene();
     void loadBattleScene(const std::string& mapName, int enemyPartyType, std::vector<UnitModel*> members);
     void returnFromMenu();
-    void switchToAdventureScene();
     void switchToMainMenu();
     void switchToMenu(MenuViewController* menu);
     void switchToTransition(TransitionViewController* transition);

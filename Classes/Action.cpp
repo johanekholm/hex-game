@@ -288,7 +288,7 @@ bool AActionFight::isAvailableAtHex(const MPoint& hex) {
 
 void AActionFight::doIt(const ActionState& statePoint) {
     _object->move(statePoint.pos);
-    SceneLoader::instance()->loadBattleScene();
+    //SceneLoader::instance()->loadBattleScene();
     CentralControl::instance()->switchMode(ControlMode::BATTLE);
 }
 
