@@ -45,15 +45,17 @@ void ObjectBuilder::createMapObjectFromTemplate(const std::string& objectType, i
         layer = MapLayer::UNIT;
         if (owner == 1) {
             image = 1;
+            units.push_back(produceUnit("swordsman", owner, MPointMake(1,1)));
+            units.push_back(produceUnit("channeler", owner, MPointMake(1,0)));
         } else {
             image = 6;
+            units.push_back(produceUnit("soldier", owner, MPointMake(3,2)));
+            units.push_back(produceUnit("archer", owner, MPointMake(3,3)));
         }
         
         actions.push_back(ActionNS::AACTION_MOVE); actions.push_back(ActionNS::AACTION_FIGHT);
         actions.push_back(ActionNS::AACTION_SHOP); actions.push_back(ActionNS::AACTION_ENTERDUNGEON);
         actions.push_back(ActionNS::AACTION_INVENTORY);
-        units.push_back(produceUnit("swordsman", owner, MPointMake(1,1)));
-        units.push_back(produceUnit("channeler", owner, MPointMake(1,0)));
         object = new MapObject(MapObjectCategory::PARTY, pos, owner, layer, image, actions, units);
     } else {
         return;

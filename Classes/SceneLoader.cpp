@@ -106,12 +106,20 @@ void SceneLoader::loadBattleScene(const std::string& sceneId, std::vector<UnitMo
     for (std::vector<UnitModel*>::iterator it = party1.begin(); it != party1.end(); ++it) {
         party1Copy.push_back(new UnitModel(*(*it)));
     }
+
+    for (std::vector<UnitModel*>::iterator it = party2.begin(); it != party2.end(); ++it) {
+        party2Copy.push_back(new UnitModel(*(*it)));
+    }
     
     // load new scene, clear model
     this->loadScene(sceneId, false);
 
     // register passed units
     for (std::vector<UnitModel*>::iterator it = party1Copy.begin(); it != party1Copy.end(); ++it) {
+        ObjectBuilder::registerUnit(*it);
+    }    
+
+    for (std::vector<UnitModel*>::iterator it = party2Copy.begin(); it != party2Copy.end(); ++it) {
         ObjectBuilder::registerUnit(*it);
     }    
 }
