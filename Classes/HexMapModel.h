@@ -12,6 +12,7 @@
 
 #include <vector>
 #include <map>
+#include <string>
 
 #include "toolkit.h"
 #include "json-forwards.h"
