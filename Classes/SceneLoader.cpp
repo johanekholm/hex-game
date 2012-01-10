@@ -122,7 +122,9 @@ void SceneLoader::loadBattleScene(const std::string& sceneId, std::vector<UnitMo
 
     for (std::vector<UnitModel*>::iterator it = party2Copy.begin(); it != party2Copy.end(); ++it) {
         ObjectBuilder::registerUnit(*it);
-    }    
+    }
+    
+    CentralControl::instance()->switchMode(ControlMode::BATTLE);
 }
 
 void SceneLoader::loadBattleScene(const std::string& mapName, int enemyPartyType, std::vector<UnitModel*> members) {
