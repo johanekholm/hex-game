@@ -36,12 +36,14 @@ public:
     UnitModel* getClosestTo(const MPoint& pos);
     int getDistanceToClosestEnemy(int owner, const MPoint& pos);
     MapObject* getMapObjectAtPos(const MPoint& pos);
+    MapObject* getMapObjectById(int mapObjectId);
     int getOwnerWithNoUnits();
     UnitModel* getUnitAtPos(const MPoint& pos);
     UnitModel* getUnitById(int unitId);
     bool mapObjectExistAtPos(int category, const MPoint& pos);
-    void removeAllMapObjects();
-    void removeAllUnits();
+    void deleteAllMapObjects();
+    void deleteAllUnits();
+    std::vector<UnitModel*> removeAllUnits();
     void removeMapObject(int objectId);
     void removeUnit(int unitId);
     void setMap(HexMapModel* map);

@@ -81,8 +81,8 @@ void SceneLoader::loadRoot() {
 }
 
 void SceneLoader::clearScene() {
-    ModelManager::instance()->removeAllMapObjects();
-    ModelManager::instance()->removeAllUnits();
+    ModelManager::instance()->deleteAllMapObjects();
+    ModelManager::instance()->deleteAllUnits();
     ScriptManager::instance()->clear();
     ViewControllerManager::instance()->setCameraPosition(GPointMake(0.0f, 0.0f));
 }
@@ -205,17 +205,27 @@ void SceneLoader::returnToAdventureScene() {
 	std::vector<UnitModel*> allUnits;
 	MapObject* party1;
 	MapObject* party2;
+	ModelManager* modelManager = ModelManager::instance();
 	
-	allUnits = ModelManager::instance()->getAllUnits();
+	allUnits = modelManager->removeAllUnits();
 	
 	this->loadRoot();
-	
+
+	party1 = modelManager->getMapObjectById(SceneContext::instance()->getPartyId1());
+	party2 = modelManager->getMapObjectById(SceneContext::instance()->getPartyId1());
+
 	// re-insert units to parties
 	for (std::vector<UnitModel*>::iterator it = allUnits.begin(); it != allUnits.end(); it++) {
+		DEBUGLOG("Moving unit");
 		if (party1->getOwner() == (*it)->getOwner()) {
 			party1->addMember(*it);
+			DEBUGLOG("Add to party1");
 		} else if (party2->getOwner() == (*it)->getOwner()) {
 			party2->addMember(*it);
+			DEBUGLOG("Add to party2");
+		} else {
+			delete *it;
+			DEBUGLOG("Delete");
 		}
 	}
 	
