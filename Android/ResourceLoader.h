@@ -17,7 +17,7 @@ public:
     void setEnv(JNIEnv* env);
     void setGL(jobject gl);
     void setCallingObject(jobject callingObject);
-    static std::string loadLuaScript(const std::string &scriptName);
+    static std::string loadFileAsString(const std::string &scriptName);
 protected:
     virtual GLuint loadTexture(const std::string &filename);
 private:

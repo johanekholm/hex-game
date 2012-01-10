@@ -49,8 +49,7 @@ void ResourceLoader::setGL(jobject gl) {
 	d->gl = gl;
 }
 
-std::string ResourceLoader::loadLuaScript(const std::string &scriptname) {
-	const std::string &filename = scriptname + ".lua";
+std::string ResourceLoader::loadFileAsString(const std::string &filename) {
 	AssetLoader *loader = AssetLoader::instance();
     AAsset *asset = loader->open(filename);
 
