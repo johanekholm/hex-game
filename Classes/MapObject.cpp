@@ -162,6 +162,15 @@ void MapObject::move(const MPoint& targetPos) {
     }
 }
 
+std::vector<UnitModel*> MapObject::removeMembers() {
+    std::vector<UnitModel*> copy;
+	
+	copy.assign(_memberUnits.begin(), _memberUnits.end());
+    _memberUnits.clear();
+    
+    return copy;
+}
+
 void MapObject::setId(int objectId) {
     _id = objectId;
 }

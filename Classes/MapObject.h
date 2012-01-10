@@ -69,6 +69,7 @@ public:
     virtual MapObjectState getState();
     bool matchesCategory(int category);
     void move(const MPoint& targetPos);
+    std::vector<UnitModel*> removeMembers();
     void setId(int id);
 };
 

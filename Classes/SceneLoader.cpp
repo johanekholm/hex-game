@@ -103,24 +103,15 @@ void SceneLoader::giveContinousControl(ViewController* control) {
 void SceneLoader::loadBattleScene(const std::string& sceneId, std::vector<UnitModel*> party1, std::vector<UnitModel*> party2) {
     std::vector<UnitModel*> party1Copy, party2Copy;
     
-    // copy passed units
-    for (std::vector<UnitModel*>::iterator it = party1.begin(); it != party1.end(); ++it) {
-        party1Copy.push_back(new UnitModel(*(*it)));
-    }
-
-    for (std::vector<UnitModel*>::iterator it = party2.begin(); it != party2.end(); ++it) {
-        party2Copy.push_back(new UnitModel(*(*it)));
-    }
-    
     // load new scene, clear model
     this->loadScene(sceneId, false);
 
     // register passed units
-    for (std::vector<UnitModel*>::iterator it = party1Copy.begin(); it != party1Copy.end(); ++it) {
+    for (std::vector<UnitModel*>::iterator it = party1.begin(); it != party1.end(); ++it) {
         ObjectBuilder::registerUnit(*it);
     }    
 
-    for (std::vector<UnitModel*>::iterator it = party2Copy.begin(); it != party2Copy.end(); ++it) {
+    for (std::vector<UnitModel*>::iterator it = party2.begin(); it != party2.end(); ++it) {
         ObjectBuilder::registerUnit(*it);
     }
     
