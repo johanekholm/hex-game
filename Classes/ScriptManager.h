@@ -9,6 +9,7 @@
 #ifndef SCRIPTMANAGER_H
 #define SCRIPTMANAGER_H
 
+#include <string>
 #include <map>
 #include "toolkit.h"
 #include "EventManager.h"
