@@ -11,6 +11,7 @@
 #include "MapObject.h"
 #include "ObjectBuilder.h"
 #include "HexMapModel.h"
+#include "SceneContext.h"
 #include "json.h"
 #include <string>
 #include <vector>
@@ -74,7 +75,10 @@ void StateManager::createState(Json::Value& root) {
     
     // serialize map
     root["map"] = map->serialize();
-    
+
+	// serialize context
+    root["context"] = SceneContext::instance()->serialize();
+
     // serialize all units
     for (std::vector<UnitModel*>::iterator it = units.begin(); it != units.end(); ++it) {
         if (*it != 0) {
@@ -123,6 +127,9 @@ void StateManager::saveStateToFile(Json::Value& root, const std::string& filenam
 void StateManager::recreateFromState(Json::Value& root) {
     // recreate map
     ObjectBuilder::createMapFromJson(root["map"]);
+	
+	// recreate context
+	SceneContext::instance()->deserialize(root["context"]);
     
     // recreate units
     for (Json::ValueIterator itr = root["units"].begin(); itr != root["units"].end(); itr++) {
