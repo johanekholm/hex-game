@@ -18,6 +18,7 @@
 class AssetLoader::PrivateData {
 public:
 	AAssetManager *manager;
+	jobject assetManager;
     static AssetLoader *instance;
 };
 
@@ -48,8 +49,14 @@ AssetLoader* AssetLoader::instance() {
 }
 
 void AssetLoader::realize(JNIEnv *env, jobject assetManager) {
-    d->manager = AAssetManager_fromJava(env, assetManager);
+	d->assetManager = env->NewGlobalRef(assetManager);
+    d->manager = AAssetManager_fromJava(env, d->assetManager);
     if (!d->manager) {
  	   DEBUGLOG("Failed to Realize AssetLoader");
  	}
 }   
+
+void AssetLoader::destroy(JNIEnv *env) {
+    env->DeleteGlobalRef(d->assetManager);
+    d->assetManager = NULL;
+}

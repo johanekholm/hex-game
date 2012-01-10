@@ -17,6 +17,7 @@ public:
 	AAsset* open (const std::string &filename);
 	
 	static AssetLoader *instance();
+	void destroy(JNIEnv *env);
 	void realize(JNIEnv *env, jobject assetManager);
 protected:
 

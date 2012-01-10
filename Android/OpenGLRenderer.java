@@ -89,7 +89,7 @@ public class OpenGLRenderer implements Renderer {
 	public int loadTexture(GL10 gl, String textureName) {
 	    int id = newTextureID(gl);
 
-		AssetManager assetManager = HexGame.context.getResources().getAssets();
+		AssetManager assetManager = HexGame.assetManager;
 
 		InputStream textureInputStream = null;
 
