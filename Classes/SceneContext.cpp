@@ -36,6 +36,7 @@ void SceneContext::destroy() {
 }
 
 SceneContext::SceneContext() {
+	d = new PrivateData();
 	d->partyId1 = 0;
 	d->partyId2 = 0;
 }

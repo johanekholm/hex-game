@@ -218,6 +218,8 @@ void SceneLoader::returnToAdventureScene() {
 			party2->addMember(*it);
 		}
 	}
+	
+	CentralControl::instance()->switchMode(ControlMode::ADVENTURE);
 }
 
 void SceneLoader::switchToMainMenu() {

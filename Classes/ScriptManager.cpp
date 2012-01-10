@@ -115,8 +115,8 @@ void EndBattleSA::doAction() {
 void EndBattleSA::callbackVoid() {
     DEBUGLOG("Ending battle - Load scene");
     //CentralControl::instance()->switchMode(ControlMode::ADVENTURE);
-    //SceneLoader::instance()->switchToAdventureScene();
-    SceneLoader::instance()->loadPrevious();
+    SceneLoader::instance()->returnToAdventureScene();
+    //SceneLoader::instance()->loadPrevious();
 }
 
 
