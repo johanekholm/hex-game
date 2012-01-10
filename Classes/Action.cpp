@@ -289,8 +289,7 @@ bool AActionFight::isAvailableAtHex(const MPoint& hex) {
 void AActionFight::doIt(const ActionState& statePoint) {
     MapObject* target = ModelManager::instance()->getMapObjectAtPos(statePoint.pos);
     _object->move(statePoint.pos);
-    SceneLoader::instance()->loadBattleScene("battleMap1.jsn", _object->getMembers(), target->getMembers());
-    CentralControl::instance()->switchMode(ControlMode::BATTLE);
+    SceneLoader::instance()->loadBattleScene("battleMap1.jsn", _object->removeMembers(), target->removeMembers());
 }
 
 /*---------------------------------------------------------------*/
