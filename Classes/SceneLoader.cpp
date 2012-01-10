@@ -22,6 +22,7 @@
 #include "MenuView.h"
 #include "ScriptManager.h"
 #include "StateManager.h"
+#include "SceneContext.h"
 
 SceneLoader* SceneLoader::_instance = 0;
 
@@ -100,6 +101,32 @@ void SceneLoader::giveContinousControl(ViewController* control) {
     ViewControllerManager::instance()->setFocus(control);
 }
 
+void SceneLoader::loadBattleScene(const std::string& sceneId, MapObject& party1, MapObject& party2) {
+    std::vector<UnitModel*> party1Members, party2Members;
+    SceneContext* context = SceneContext::instance();
+	
+	party1Members = party1.removeMembers();
+	party2Members = party2.removeMembers();
+	
+	// cache party ids for later
+	context->setPartyId1(party1.getId());
+	context->setPartyId2(party2.getId());
+	
+    // load new scene, clear model
+    this->loadScene(sceneId, false);
+	
+    // register passed units
+    for (std::vector<UnitModel*>::iterator it = party1Members.begin(); it != party1Members.end(); ++it) {
+        ObjectBuilder::registerUnit(*it);
+    }    
+	
+    for (std::vector<UnitModel*>::iterator it = party2Members.begin(); it != party2Members.end(); ++it) {
+        ObjectBuilder::registerUnit(*it);
+    }
+    
+    CentralControl::instance()->switchMode(ControlMode::BATTLE);
+}
+
 void SceneLoader::loadBattleScene(const std::string& sceneId, std::vector<UnitModel*> party1, std::vector<UnitModel*> party2) {
     std::vector<UnitModel*> party1Copy, party2Copy;
     
@@ -172,6 +199,25 @@ void SceneLoader::loadAdventureScene() {
     ObjectBuilder::createMapObjectFromTemplate("dungeon", 1, MPointMake(0, 3));
     
     StateManager::save("temp1.jsn");*/
+}
+
+void SceneLoader::returnToAdventureScene() {
+	std::vector<UnitModel*> allUnits;
+	MapObject* party1;
+	MapObject* party2;
+	
+	allUnits = ModelManager::instance()->getAllUnits();
+	
+	this->loadRoot();
+	
+	// re-insert units to parties
+	for (std::vector<UnitModel*>::iterator it = allUnits.begin(); it != allUnits.end(); it++) {
+		if (party1->getOwner() == (*it)->getOwner()) {
+			party1->addMember(*it);
+		} else if (party2->getOwner() == (*it)->getOwner()) {
+			party2->addMember(*it);
+		}
+	}
 }
 
 void SceneLoader::switchToMainMenu() {

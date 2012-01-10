@@ -59,9 +59,11 @@ public:
 
     MPoint getPosition();
     AdventureAction* addAction(int action);
+	UnitModel* addMember(UnitModel* unit);
     bool canMoveTo(const MPoint& pos);
 	void doAction(const ActionState& statePoint);
     std::vector<ActionState> getActions();
+	int getId();
     int getLayer();
     std::vector<UnitModel*> getMembers();
     int getOwner();

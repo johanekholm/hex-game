@@ -91,6 +91,11 @@ AdventureAction* MapObject::addAction(int action) {
 	return _actions[action];
 }
 
+UnitModel* MapObject::addMember(UnitModel* unit) {
+	_memberUnits.push_back(unit);
+	return unit;
+}
+
 bool MapObject::canMoveTo(const MPoint& pos) {
     int terrain = ModelManager::instance()->getMap()->getHexValue(pos);
     
@@ -119,6 +124,10 @@ std::vector<ActionState> MapObject::getActions() {
     }
     
 	return actionPoints;
+}
+
+int MapObject::getId() {
+    return _id;
 }
 
 int MapObject::getLayer() {

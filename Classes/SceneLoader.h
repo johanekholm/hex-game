@@ -19,6 +19,7 @@ class ViewController;
 class MenuViewController;
 class TransitionViewController;
 class UnitModel;
+class MapObject;
 
 class SceneLoader {
 	static SceneLoader* _instance;
@@ -41,6 +42,8 @@ public:
     void loadRoot();
     
     void loadAdventureScene();
+	void returnToAdventureScene();
+	void loadBattleScene(const std::string& sceneId, MapObject& party1, MapObject& party2);
     void loadBattleScene(const std::string& mapName, int enemyPartyType, std::vector<UnitModel*> members);
     void loadBattleScene(const std::string& sceneId, std::vector<UnitModel*> party1, std::vector<UnitModel*> party2);
     void returnFromMenu();
