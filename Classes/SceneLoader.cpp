@@ -173,22 +173,9 @@ void SceneLoader::loadBattleScene(const std::string& sceneId, MapObject* party1,
     CentralControl::instance()->switchMode(ControlMode::BATTLE);
 }
 
-void SceneLoader::loadBattleScene(const std::string& mapName, int enemyPartyType, std::vector<UnitModel*> members) {
-    HexMapModel* mapModel;
-    std::vector<UnitModel*> playerMembers;
-    
-    
-    mapModel = new HexMapModel(4, 4, "4 5 5 5\n5 5 5 5\n5 5 5 5\n5 5 5 4\n");
-    
-    ModelManager::instance()->setMap(mapModel);
-    ViewControllerManager::instance()->setMapView(new HexMap(mapModel, TextureCatalog::instance()->get("hexTiles"), 1.0f));
-    
-    ViewControllerManager::instance()->removeAllSoftly();
-
-    for (std::vector<UnitModel*>::iterator it = members.begin(); it != members.end(); ++it) {
-        ObjectBuilder::registerUnit(*it);
-     }
-        
+void SceneLoader::loadBattleSceneFromTemplate(const std::string& mapName, MapObject* party1, int enemyPartyType) {
+	this->loadBattleScene(mapName, party1, 0);
+	
     switch (enemyPartyType) {
         case 1:
             ObjectBuilder::createUnitFromTemplate("soldier", 2, MPointMake(2, 2));
@@ -197,19 +184,14 @@ void SceneLoader::loadBattleScene(const std::string& mapName, int enemyPartyType
 
         case 2:
             ObjectBuilder::createUnitFromTemplate("soldier", 2, MPointMake(2, 2));            
-            //ObjectBuilder::createUnitFromTemplate("archer", 2, MPointMake(2, 3));
-            //ObjectBuilder::createUnitFromTemplate("archer", 2, MPointMake(3, 2));            
+            ObjectBuilder::createUnitFromTemplate("archer", 2, MPointMake(2, 3));
             break;
 
         default:
             break;
     }
     
-    ScriptManager::instance()->add(ScriptedAction::build(ScriptedActionNS::END_BATTLE, ModelEventNS::PARTY_WIPEOUT));
-
     Sound::instance()->play("music1");
-    
-    StateManager::save("state.txt");
 }
 
 void SceneLoader::loadDungeonScene(const std::string& sceneId, MapObject* party) {
