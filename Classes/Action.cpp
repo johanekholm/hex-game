@@ -379,7 +379,5 @@ void AActionEnterDungeon::doIt(const ActionState& statePoint) {
 }
 
 void AActionEnterDungeon::callbackVoid() {
-    //SceneLoader::instance()->loadBattleScene("dungeon1", 2, _object->getMembers());
-    SceneLoader::instance()->loadScene("battle1.jsn", true);
-    CentralControl::instance()->switchMode(ControlMode::BATTLE);
+	SceneLoader::instance()->loadDungeonScene("dungeon1.jsn", *_object);
 }

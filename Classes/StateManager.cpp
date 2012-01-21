@@ -26,18 +26,20 @@ std::map<std::string, std::string> StateManager::initStaticMap() {
     std::string adventureState = "{'map':{'height':8,'hexes':[{'v':0,'x':0,'y':0},{'v':0,'x':1,'y':0},{'v':0,'x':2,'y':0},{'v':3,'x':3,'y':0},{'v':3,'x':4,'y':0},{'v':3,'x':5,'y':0},{'v':0,'x':6,'y':0},{'v':0,'x':7,'y':0},{'v':1,'x':0,'y':1},{'v':1,'x':1,'y':1},{'v':1,'x':2,'y':1},{'v':1,'x':3,'y':1},{'v':3,'x':4,'y':1},{'v':1,'x':5,'y':1},{'v':1,'x':6,'y':1},{'v':1,'x':7,'y':1},{'v':2,'x':0,'y':2},{'v':2,'x':1,'y':2},{'v':1,'x':2,'y':2},{'v':1,'x':3,'y':2},{'v':2,'x':4,'y':2},{'v':2,'x':5,'y':2},{'v':0,'x':6,'y':2},{'v':2,'x':7,'y':2},{'v':1,'x':0,'y':3},{'v':2,'x':1,'y':3},{'v':1,'x':2,'y':3},{'v':1,'x':3,'y':3},{'v':1,'x':4,'y':3},{'v':2,'x':5,'y':3},{'v':1,'x':6,'y':3},{'v':2,'x':7,'y':3},{'v':0,'x':0,'y':4},{'v':1,'x':1,'y':4},{'v':0,'x':2,'y':4},{'v':2,'x':3,'y':4},{'v':0,'x':4,'y':4},{'v':1,'x':5,'y':4},{'v':0,'x':6,'y':4},{'v':2,'x':7,'y':4},{'v':1,'x':0,'y':5},{'v':2,'x':1,'y':5},{'v':1,'x':2,'y':5},{'v':2,'x':3,'y':5},{'v':1,'x':4,'y':5},{'v':0,'x':5,'y':5},{'v':1,'x':6,'y':5},{'v':2,'x':7,'y':5},{'v':0,'x':0,'y':6},{'v':1,'x':1,'y':6},{'v':0,'x':2,'y':6},{'v':2,'x':3,'y':6},{'v':0,'x':4,'y':6},{'v':1,'x':5,'y':6},{'v':0,'x':6,'y':6},{'v':2,'x':7,'y':6},{'v':1,'x':0,'y':7},{'v':2,'x':1,'y':7},{'v':1,'x':2,'y':7},{'v':2,'x':3,'y':7},{'v':1,'x':4,'y':7},{'v':2,'x':5,'y':7},{'v':1,'x':6,'y':7},{'v':2,'x':7,'y':7}],'scale':1.5,'width':8},'mapObjects':[{'actions':[0,1,6,7,8],'category':1,'id':1,'layer':2,'members':[{'actions':[0,1],'ap':6,'baseDefense':3,'basePower':3,'baseSkill':2,'hp':10,'id':540221491,'maxAp':30,'maxHp':10,'owner':1,'visualType':0,'x':1,'y':1},{'actions':[0,4,5],'ap':3,'baseDefense':1,'basePower':2,'baseSkill':3,'hp':4,'id':1,'maxAp':50,'maxHp':4,'owner':1,'visualType':2,'x':1,'y':0}],'owner':1,'visualType':1,'x':1,'y':4},{'actions':[0,1,6,7,8],'category':1,'id':2,'layer':2,'members':[{'actions':[0,1],'ap':2,'baseDefense':2,'basePower':2,'baseSkill':2,'hp':1,'id':0,'maxAp':30,'maxHp':1,'owner':2,'visualType':1,'x':3,'y':2},{'actions':[0,2],'ap':5,'baseDefense':1,'basePower':2,'baseSkill':3,'hp':4,'id':0,'maxAp':30,'maxHp':4,'owner':2,'visualType':3,'x':3,'y':3}],'owner':2,'visualType':6,'x':3,'y':2},{'actions':null,'category':2,'id':3,'layer':1,'members':null,'owner':1,'visualType':4,'x':0,'y':0},{'actions':null,'category':3,'id':4,'layer':1,'members':null,'owner':1,'visualType':5,'x':0,'y':3}],'units':null}";
     
     std::string battleState = "{'map':{'height':4,'hexes':[{'v':4,'x':0,'y':0},{'v':5,'x':1,'y':0},{'v':5,'x':2,'y':0},{'v':5,'x':3,'y':0},{'v':5,'x':0,'y':1},{'v':5,'x':1,'y':1},{'v':5,'x':2,'y':1},{'v':5,'x':3,'y':1},{'v':5,'x':0,'y':2},{'v':5,'x':1,'y':2},{'v':5,'x':2,'y':2},{'v':5,'x':3,'y':2},{'v':5,'x':0,'y':3},{'v':5,'x':1,'y':3},{'v':5,'x':2,'y':3},{'v':4,'x':3,'y':3}],'scale':1.0,'width':4},'units':[{'actions':[0,1],'ap':2,'baseDefense':3,'basePower':3,'baseSkill':2,'hp':10,'id':1,'maxAp':30,'maxHp':10,'owner':1,'visualType':0,'x':1,'y':1},{'actions':[0,1],'ap':7,'baseDefense':1,'basePower':2,'baseSkill':3,'hp':4,'id':2,'maxAp':50,'maxHp':4,'owner':1,'visualType':2,'x':1,'y':0},{'actions':[0,1],'ap':6,'baseDefense':2,'basePower':2,'baseSkill':2,'hp':1,'id':3,'maxAp':30,'maxHp':1,'owner':2,'visualType':1,'x':2,'y':2}]}";
+	
+	std::string dungeonMap1 = "{'map':{'height':4,'hexes':[{'v':4,'x':0,'y':0},{'v':5,'x':1,'y':0},{'v':5,'x':2,'y':0},{'v':5,'x':3,'y':0},{'v':5,'x':0,'y':1},{'v':5,'x':1,'y':1},{'v':5,'x':2,'y':1},{'v':5,'x':3,'y':1},{'v':5,'x':0,'y':2},{'v':5,'x':1,'y':2},{'v':5,'x':2,'y':2},{'v':5,'x':3,'y':2},{'v':5,'x':0,'y':3},{'v':5,'x':1,'y':3},{'v':5,'x':2,'y':3},{'v':4,'x':3,'y':3}],'scale':1.0,'width':4},'units':[{'actions':[0,1],'ap':6,'baseDefense':2,'basePower':2,'baseSkill':2,'hp':1,'id':3,'maxAp':30,'maxHp':1,'owner':2,'visualType':1,'x':2,'y':2},{'actions':[0,1],'ap':6,'baseDefense':2,'basePower':2,'baseSkill':2,'hp':1,'id':3,'maxAp':30,'maxHp':1,'owner':2,'visualType':1,'x':2,'y':3}]}";
     
     std::string battleMap = "{'map':{'height':4,'hexes':[{'v':4,'x':0,'y':0},{'v':5,'x':1,'y':0},{'v':5,'x':2,'y':0},{'v':5,'x':3,'y':0},{'v':5,'x':0,'y':1},{'v':5,'x':1,'y':1},{'v':5,'x':2,'y':1},{'v':5,'x':3,'y':1},{'v':5,'x':0,'y':2},{'v':5,'x':1,'y':2},{'v':5,'x':2,'y':2},{'v':5,'x':3,'y':2},{'v':5,'x':0,'y':3},{'v':5,'x':1,'y':3},{'v':5,'x':2,'y':3},{'v':4,'x':3,'y':3}],'scale':1.0,'width':4},'units':null}";
 
     // replace single with double qoutes, as per json standard
     std::replace(adventureState.begin(), adventureState.end(), '\'', '"');
-    states["newgame.jsn"] = adventureState;
-
-    // replace single with double qoutes, as per json standard
     std::replace(battleState.begin(), battleState.end(), '\'', '"');
-    states["battle1.jsn"] = battleState;
-
+    std::replace(dungeonMap1.begin(), dungeonMap1.end(), '\'', '"');
     std::replace(battleMap.begin(), battleMap.end(), '\'', '"');
+
+    states["newgame.jsn"] = adventureState;
+    states["battle1.jsn"] = battleState;
+    states["dungeon1.jsn"] = dungeonMap1;
     states["battleMap1.jsn"] = battleMap;
 
     return states;

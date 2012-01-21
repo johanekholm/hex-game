@@ -184,6 +184,26 @@ void SceneLoader::loadBattleScene(const std::string& mapName, int enemyPartyType
     StateManager::save("state.txt");
 }
 
+void SceneLoader::loadDungeonScene(const std::string& sceneId, MapObject& party) {
+	std::vector<UnitModel*> partyMembers;
+    SceneContext* context = SceneContext::instance();
+	
+	partyMembers = party.removeMembers();
+	
+	// cache party id for later
+	context->setPartyId1(party.getId());
+	
+    // load new scene, clear model
+    this->loadScene(sceneId, true);
+	
+    // register passed units
+    for (std::vector<UnitModel*>::iterator it = partyMembers.begin(); it != partyMembers.end(); ++it) {
+        ObjectBuilder::registerUnit(*it);
+    }    
+	
+    CentralControl::instance()->switchMode(ControlMode::BATTLE);
+}
+
 void SceneLoader::loadAdventureScene() {
     this->loadScene("newgame.jsn", true);
     
