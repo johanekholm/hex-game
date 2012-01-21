@@ -101,46 +101,74 @@ void SceneLoader::giveContinousControl(ViewController* control) {
     ViewControllerManager::instance()->setFocus(control);
 }
 
-void SceneLoader::loadBattleScene(const std::string& sceneId, MapObject& party1, MapObject& party2) {
-    std::vector<UnitModel*> party1Members, party2Members;
-    SceneContext* context = SceneContext::instance();
+
+void SceneLoader::insertUnitsIntoScene(std::vector<UnitModel*>* party1Members, std::vector<UnitModel*>* party2Members) {
+	// register passed units
+	if (party1Members != 0) {
+		for (std::vector<UnitModel*>::iterator it = party1Members->begin(); it != party1Members->end(); ++it) {
+			ObjectBuilder::registerUnit(*it);
+		}    		
+	}
 	
-	party1Members = party1.removeMembers();
-	party2Members = party2.removeMembers();
-	
-	// cache party ids for later
-	context->setPartyId1(party1.getId());
-	context->setPartyId2(party2.getId());
-	
-    // load new scene, clear model
-    this->loadScene(sceneId, false);
-	
-    // register passed units
-    for (std::vector<UnitModel*>::iterator it = party1Members.begin(); it != party1Members.end(); ++it) {
-        ObjectBuilder::registerUnit(*it);
-    }    
-	
-    for (std::vector<UnitModel*>::iterator it = party2Members.begin(); it != party2Members.end(); ++it) {
-        ObjectBuilder::registerUnit(*it);
-    }
-    
-    CentralControl::instance()->switchMode(ControlMode::BATTLE);
+	if (party2Members != 0) {
+		for (std::vector<UnitModel*>::iterator it = party2Members->begin(); it != party2Members->end(); ++it) {
+			ObjectBuilder::registerUnit(*it);
+		}		
+	}
 }
 
-void SceneLoader::loadBattleScene(const std::string& sceneId, std::vector<UnitModel*> party1, std::vector<UnitModel*> party2) {
-    std::vector<UnitModel*> party1Copy, party2Copy;
-    
+void SceneLoader::removeUnitsFromParties(MapObject* party1, MapObject* party2, std::vector<UnitModel*>* party1Members, std::vector<UnitModel*>* party2Members) {
+	
+    SceneContext* context = SceneContext::instance();
+	
+	if (party1 != 0) {
+		*party1Members = party1->removeMembers();
+		
+		// cache party id for later
+		context->setPartyId1(party1->getId());
+	}
+
+	if (party2 != 0) {
+		*party2Members = party2->removeMembers();
+	
+		// cache party id for later
+		context->setPartyId2(party2->getId());
+	}
+}
+
+void SceneLoader::returnUnitsToParties(std::vector<UnitModel*> units) {
+	ModelManager* modelManager = ModelManager::instance();
+
+	MapObject* party1 = modelManager->getMapObjectById(SceneContext::instance()->getPartyId1());
+	MapObject* party2 = modelManager->getMapObjectById(SceneContext::instance()->getPartyId1());
+	
+	// re-insert units to parties
+	for (std::vector<UnitModel*>::iterator it = units.begin(); it != units.end(); it++) {
+		DEBUGLOG("Moving unit");
+		if (party1 != 0 && party1->getOwner() == (*it)->getOwner()) {
+			party1->addMember(*it);
+			DEBUGLOG("Add to party1");
+		} else if (party2 != 0 && party2->getOwner() == (*it)->getOwner()) {
+			party2->addMember(*it);
+			DEBUGLOG("Add to party2");
+		} else {
+			delete *it;
+			DEBUGLOG("Delete");
+		}
+	}
+	
+}
+
+void SceneLoader::loadBattleScene(const std::string& sceneId, MapObject* party1, MapObject* party2) {
+    std::vector<UnitModel*> party1Members, party2Members;
+	DEBUGLOG("New battle loader");
+	
+	this->removeUnitsFromParties(party1, party2, &party1Members, &party2Members);
+	
     // load new scene, clear model
     this->loadScene(sceneId, false);
-
-    // register passed units
-    for (std::vector<UnitModel*>::iterator it = party1.begin(); it != party1.end(); ++it) {
-        ObjectBuilder::registerUnit(*it);
-    }    
-
-    for (std::vector<UnitModel*>::iterator it = party2.begin(); it != party2.end(); ++it) {
-        ObjectBuilder::registerUnit(*it);
-    }
+	
+	this->insertUnitsIntoScene(&party1Members, &party2Members);
     
     CentralControl::instance()->switchMode(ControlMode::BATTLE);
 }
@@ -184,23 +212,13 @@ void SceneLoader::loadBattleScene(const std::string& mapName, int enemyPartyType
     StateManager::save("state.txt");
 }
 
-void SceneLoader::loadDungeonScene(const std::string& sceneId, MapObject& party) {
+void SceneLoader::loadDungeonScene(const std::string& sceneId, MapObject* party) {
 	std::vector<UnitModel*> partyMembers;
-    SceneContext* context = SceneContext::instance();
 	
-	partyMembers = party.removeMembers();
-	
-	// cache party id for later
-	context->setPartyId1(party.getId());
-	
-    // load new scene, clear model
-    this->loadScene(sceneId, true);
-	
-    // register passed units
-    for (std::vector<UnitModel*>::iterator it = partyMembers.begin(); it != partyMembers.end(); ++it) {
-        ObjectBuilder::registerUnit(*it);
-    }    
-	
+	this->removeUnitsFromParties(party, 0, &partyMembers, 0);
+	this->loadScene(sceneId, true);
+	this->insertUnitsIntoScene(&partyMembers, 0);
+
     CentralControl::instance()->switchMode(ControlMode::BATTLE);
 }
 
@@ -223,31 +241,12 @@ void SceneLoader::loadAdventureScene() {
 
 void SceneLoader::returnToAdventureScene() {
 	std::vector<UnitModel*> allUnits;
-	MapObject* party1;
-	MapObject* party2;
 	ModelManager* modelManager = ModelManager::instance();
 	
 	allUnits = modelManager->removeAllUnits();
 	
 	this->loadRoot();
-
-	party1 = modelManager->getMapObjectById(SceneContext::instance()->getPartyId1());
-	party2 = modelManager->getMapObjectById(SceneContext::instance()->getPartyId1());
-
-	// re-insert units to parties
-	for (std::vector<UnitModel*>::iterator it = allUnits.begin(); it != allUnits.end(); it++) {
-		DEBUGLOG("Moving unit");
-		if (party1->getOwner() == (*it)->getOwner()) {
-			party1->addMember(*it);
-			DEBUGLOG("Add to party1");
-		} else if (party2->getOwner() == (*it)->getOwner()) {
-			party2->addMember(*it);
-			DEBUGLOG("Add to party2");
-		} else {
-			delete *it;
-			DEBUGLOG("Delete");
-		}
-	}
+	this->returnUnitsToParties(allUnits);
 	
 	CentralControl::instance()->switchMode(ControlMode::ADVENTURE);
 }

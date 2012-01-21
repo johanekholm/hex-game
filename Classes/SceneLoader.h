@@ -41,12 +41,15 @@ public:
     void loadPrevious();
     void loadRoot();
     
-    void loadAdventureScene();
+	void insertUnitsIntoScene(std::vector<UnitModel*>* party1Members, std::vector<UnitModel*>* party2Members);
+	void removeUnitsFromParties(MapObject* party1, MapObject* party2, std::vector<UnitModel*> *party1Members, std::vector<UnitModel*> *party2Members);
+	void returnUnitsToParties(std::vector<UnitModel*> units);
+    
+	void loadAdventureScene();
 	void returnToAdventureScene();
-	void loadBattleScene(const std::string& sceneId, MapObject& party1, MapObject& party2);
+	void loadBattleScene(const std::string& sceneId, MapObject* party1, MapObject* party2);
     void loadBattleScene(const std::string& mapName, int enemyPartyType, std::vector<UnitModel*> members);
-    void loadBattleScene(const std::string& sceneId, std::vector<UnitModel*> party1, std::vector<UnitModel*> party2);
-	void loadDungeonScene(const std::string& sceneId, MapObject& party);
+	void loadDungeonScene(const std::string& sceneId, MapObject* party);
     void returnFromMenu();
     void switchToMainMenu();
     void switchToMenu(MenuViewController* menu);
