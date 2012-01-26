@@ -8,6 +8,7 @@
 #ifndef ITEM_H
 #define ITEM_H
 
+#include "json-forwards.h"
 #include <vector>
 #include <map>
 #include <string>
@@ -29,9 +30,13 @@ class Item {
     
 public:
 	~Item();
+	Item();
 	Item(int type, int count, std::string name, bool equipable);
     
     static Item* buildItem(int type, int count);
+	Json::Value serialize();
+    void deserialize(Json::Value& root);
+
     bool decreaseCount(int decrease);
     std::string getDescription();
     int getCount();
@@ -46,6 +51,9 @@ class ItemHandler {
 
 public:
     ~ItemHandler();
+	Json::Value serializeItems();
+    void deserializeItems(Json::Value& root);
+
     void addItem(Item* item);
     std::map<int, Item*> getItems();
     bool hasItem(int type, int count);

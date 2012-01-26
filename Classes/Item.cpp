@@ -7,11 +7,19 @@
 
 #include "Item.h"
 #include "toolkit.h"
+#include "json.h"
 #include <iostream>
 #include <sstream>
 
 Item::~Item() {
 
+}
+
+Item::Item() {
+	_type = 0;
+	_name = "";
+	_count = 0;
+	_equipable = false;
 }
 
 Item::Item(int type, int count, std::string name, bool equipable) {
@@ -42,6 +50,24 @@ Item* Item::buildItem(int type, int count) {
     
     return 0;
 }
+
+Json::Value Item::serialize() {
+    Json::Value root;
+    root["type"] = _type;
+    root["count"] = _count;
+    root["name"] = _name;
+    root["equip"] = _equipable;
+	
+    return root;
+}
+
+void Item::deserialize(Json::Value& root) {
+    _type = root.get("type", 0).asInt();
+    _count = root.get("count", 0).asInt();
+    _name = root.get("name", 0).asString();
+    _equipable = root.get("equip", 0).asBool();
+}
+
 
 bool Item::decreaseCount(int decrease) {
     if (_count >= decrease) {
@@ -79,6 +105,27 @@ ItemHandler::~ItemHandler() {
     }
     _items.clear();
 }
+
+Json::Value ItemHandler::serializeItems() {
+	Json::Value root;
+
+    for (std::map<int, Item*>::iterator it = _items.begin(); it != _items.end(); ++it) {
+        root.append(it->second->serialize());
+    }
+	
+	return root;
+}
+
+void ItemHandler::deserializeItems(Json::Value& root) {
+	Item* item;
+	
+    for (Json::ValueIterator it = root.begin(); it != root.end(); it++) {
+		item = new Item();
+		item->deserialize(*it);
+        this->addItem(item);
+    }
+}
+
 
 void ItemHandler::addItem(Item* item) {
     if (item != 0) {
