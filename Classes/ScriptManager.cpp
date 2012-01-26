@@ -11,6 +11,7 @@
 #include "EventManager.h"
 #include "SceneLoader.h"
 #include "TransitionViewController.h"
+#include "MenuView.h"
 
 #include <sstream>
 
@@ -107,14 +108,17 @@ void ScriptedAction::destroyed() {}
 EndBattleSA::EndBattleSA(const ModelEvent& triggerEvent) : ScriptedAction(triggerEvent) {}
 
 void EndBattleSA::doAction() {
-    DEBUGLOG("Ending battle - Fade out");
-    SceneLoader::instance()->switchToTransition(new FadeOutTransition(*this));
+    DEBUGLOG("Ending battle - menu");
+    //SceneLoader::instance()->switchToTransition(new FadeOutTransition(*this));
+    //CentralControl::instance()->switchMode(ControlMode::MENU);
+	SceneLoader::instance()->switchToMenu(new TextboxMenuVC(*this, "YOU GOT 5 SILVER", "OK"));
     CentralControl::instance()->switchMode(ControlMode::MENU);
 }
 
 void EndBattleSA::callbackVoid() {
     DEBUGLOG("Ending battle - Load scene");
     //CentralControl::instance()->switchMode(ControlMode::ADVENTURE);
+	SceneLoader::instance()->returnFromMenu();
     SceneLoader::instance()->returnToAdventureScene();
     //SceneLoader::instance()->loadPrevious();
 }

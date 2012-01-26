@@ -55,6 +55,16 @@ public:
 
 /*---------------------------------------------------------------*/
 
+class TextboxMenuVC : public MenuViewController {
+    ControlCallback& _returnControl;
+    
+public:
+	TextboxMenuVC(ControlCallback& control, const std::string& text, const std::string& buttonLabel);
+    virtual void reportChoice(int choiceId);    
+};
+
+/*---------------------------------------------------------------*/
+
 class BaseMenuNodeVC : public ViewController {
 protected:
     MenuViewController* _menuVC;
@@ -103,6 +113,15 @@ class BackButtonMenuNodeVC : public BaseMenuNodeVC {
     
 public:
 	BackButtonMenuNodeVC(MenuViewController* _menuVC, const std::string& label, const GPoint& pos, GLfloat width, GLfloat height);
+	virtual bool handleEvent(const TouchEvent& event);
+};
+
+/*---------------------------------------------------------------*/
+
+class TextMenuNodeVC : public BaseMenuNodeVC {
+    
+public:
+	TextMenuNodeVC(MenuViewController* _menuVC, const std::string& label, const GPoint& pos, GLfloat width, GLfloat height);
 	virtual bool handleEvent(const TouchEvent& event);
 };
 

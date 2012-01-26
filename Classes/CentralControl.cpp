@@ -96,10 +96,9 @@ void CentralControl::update() {
     }
     
 	if (_input->hasEvent()) {
-		
 		event = _input->popEvent();
 		event.translatedPoint = _viewControllerManager->adjustForCamera(event.point);
-        
+
 		// dispatch event to current event handler
 		switch (this->_mode) {
 			case ControlMode::ADVENTURE:
@@ -176,7 +175,7 @@ void CentralControl::handleEventMenu(const TouchEvent& event) {
     ViewController* focus;
     
     focus = _viewControllerManager->getFocus();
-    
+
     if (focus != 0) {
         focus->handleEvent(event);
     }
@@ -204,9 +203,9 @@ void CentralControl::handleEventFocus(const TouchEvent& event) {
         focus->handleEvent(event);
     }
 	
-	if (event.type == 3) {
+	if (event.type == 3 && _mode == ControlMode::BATTLE_FOCUS) {
         _viewControllerManager->setFocus(0);
-		this->switchMode(1);
+		this->switchMode(ControlMode::BATTLE);
 	}	
 }
 
