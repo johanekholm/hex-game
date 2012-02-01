@@ -156,6 +156,14 @@ void ViewControllerManager::removeSoft(ViewController* view) {
         _focus = 0;
     }
 
+	for (std::vector<ViewController*>::iterator it = _stagedViews.begin(); it != _stagedViews.end(); ++it) {
+        if (*it == view) {
+            delete (*it);
+            it = _stagedViews.erase(it);
+            return;
+        }
+	}
+
 	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end(); ++it) {
         if (*it == view) {
             delete (*it);

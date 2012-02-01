@@ -137,24 +137,28 @@ void SceneLoader::removeUnitsFromParties(MapObject* party1, MapObject* party2, s
 }
 
 void SceneLoader::returnUnitsToParties(std::vector<UnitModel*> units) {
+	bool isEmptyParty1 = true;
+	bool isEmptyParty2 = true;	
 	ModelManager* modelManager = ModelManager::instance();
 
 	MapObject* party1 = modelManager->getMapObjectById(SceneContext::instance()->getPartyId1());
-	MapObject* party2 = modelManager->getMapObjectById(SceneContext::instance()->getPartyId1());
+	MapObject* party2 = modelManager->getMapObjectById(SceneContext::instance()->getPartyId2());
 	
 	// re-insert units to parties
 	for (std::vector<UnitModel*>::iterator it = units.begin(); it != units.end(); it++) {
-		DEBUGLOG("Moving unit");
 		if (party1 != 0 && party1->getOwner() == (*it)->getOwner()) {
 			party1->addMember(*it);
-			DEBUGLOG("Add to party1");
+			isEmptyParty1 = false;
 		} else if (party2 != 0 && party2->getOwner() == (*it)->getOwner()) {
 			party2->addMember(*it);
-			DEBUGLOG("Add to party2");
+			isEmptyParty2 = false;
 		} else {
 			delete *it;
-			DEBUGLOG("Delete");
 		}
+	}
+	
+	if (isEmptyParty2) {
+		modelManager->removeMapObject(party2->getId());
 	}
 	
 }
