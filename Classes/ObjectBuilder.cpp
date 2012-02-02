@@ -46,11 +46,11 @@ void ObjectBuilder::createMapObjectFromTemplate(const std::string& objectType, i
         if (owner == 1) {
             image = 1;
             units.push_back(produceUnit("swordsman", owner, MPointMake(1,1)));
-            units.push_back(produceUnit("channeler", owner, MPointMake(1,0)));
+            units.push_back(produceUnit("archer", owner, MPointMake(1,0)));
         } else {
             image = 6;
-            units.push_back(produceUnit("soldier", owner, MPointMake(3,2)));
-            units.push_back(produceUnit("archer", owner, MPointMake(3,3)));
+            units.push_back(produceUnit("soldier", owner, MPointMake(2,2)));
+            units.push_back(produceUnit("archer", owner, MPointMake(2,3)));
         }
         
         actions.push_back(ActionNS::AACTION_MOVE); actions.push_back(ActionNS::AACTION_FIGHT);

@@ -217,8 +217,10 @@ void SceneLoader::loadAdventureScene() {
     
     ModelManager::instance()->setMap(mapModel);
     ViewControllerManager::instance()->setMapView(new HexMap(mapModel, TextureCatalog::instance()->get("hexTiles"), 1.5f));
-    ObjectBuilder::createMapObjectFromTemplate("party", 1, MPointMake(1, 4));
+    ObjectBuilder::createMapObjectFromTemplate("party", 1, MPointMake(1, 1));
     ObjectBuilder::createMapObjectFromTemplate("party", 2, MPointMake(3, 2));
+    ObjectBuilder::createMapObjectFromTemplate("party", 2, MPointMake(1, 6));
+    ObjectBuilder::createMapObjectFromTemplate("party", 2, MPointMake(7, 1));
     ObjectBuilder::createMapObjectFromTemplate("village", 1, MPointMake(0, 0));
     ObjectBuilder::createMapObjectFromTemplate("dungeon", 1, MPointMake(0, 3));
     
