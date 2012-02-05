@@ -157,8 +157,16 @@ void SceneLoader::returnUnitsToParties(std::vector<UnitModel*> units) {
 		}
 	}
 	
+	if (isEmptyParty1) {
+		if (party1->getOwner() != 1) {
+			modelManager->removeMapObject(party1->getId());			
+		}
+	}
+
 	if (isEmptyParty2) {
-		modelManager->removeMapObject(party2->getId());
+		if (party2->getOwner() != 1) {
+			modelManager->removeMapObject(party2->getId());			
+		}
 	}
 	
 }
