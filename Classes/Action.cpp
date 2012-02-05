@@ -275,7 +275,12 @@ bool AdvActionMove::isAvailableAtHex(const MPoint& hex) {
 
 void AdvActionMove::doIt(const ActionState& statePoint) {
     _object->move(statePoint.pos);
-	ViewControllerManager::instance()->centerCamera(_object->getPosition());
+	
+	// advance to next turn if player party moves
+	if (_object->getOwner() == 1) {
+		CentralControl::instance()->nextTurn();
+		//ViewControllerManager::instance()->centerCamera(_object->getPosition());
+	}
 }
 
 /*---------------------------------------------------------------*/

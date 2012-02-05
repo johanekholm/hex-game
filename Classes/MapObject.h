@@ -62,6 +62,8 @@ public:
 	UnitModel* addMember(UnitModel* unit);
     bool canMoveTo(const MPoint& pos);
 	void doAction(const ActionState& statePoint);
+	void doAI();
+	void doTurn();
     std::vector<ActionState> getActions();
 	int getId();
     int getLayer();

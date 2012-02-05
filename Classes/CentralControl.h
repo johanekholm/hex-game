@@ -34,6 +34,8 @@ class CentralControl {
     ViewControllerManager* _viewControllerManager;
     ObjectBuilder* _objectBuilder;
     StringImage* _stringImage;
+	bool _turnEnded;
+
 
     CentralControl();
 
@@ -55,6 +57,7 @@ public:
 		
 public:
 	void switchMode(int mode);
+	void nextTurn();
     
 };
 

@@ -73,6 +73,8 @@ CentralControl::CentralControl() {
     _viewControllerManager = ViewControllerManager::instance();
     _objectBuilder = new ObjectBuilder(_viewControllerManager);
 	_input = new InputManager();
+	
+	_turnEnded = false;
     
     this->switchMode(ControlMode::ADVENTURE);
 }
@@ -93,7 +95,10 @@ void CentralControl::update() {
                 MessageView::add(GPointMake(160.0f, 240.0f), "VICTORY!");
             }*/
         }        
-    }
+    } else if (_mode == ControlMode::ADVENTURE && _turnEnded) {
+		_turnEnded = false;
+		ModelManager::instance()->doTurn();
+	}
     
 	if (_input->hasEvent()) {
 		event = _input->popEvent();
@@ -228,4 +233,8 @@ void CentralControl::touchesCancelled(const GPoint& touchPoint) {
 
 void CentralControl::switchMode(int mode) {
 	_mode = mode;
+}
+
+void CentralControl::nextTurn() {
+	_turnEnded = true;
 }

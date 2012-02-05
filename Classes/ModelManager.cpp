@@ -46,6 +46,7 @@ ModelManager::ModelManager() {
     _map = 0;
 	_unitIdCounter = 0;
     _objectIdCounter = 0;
+	_abortMapObjectIteration = false;
 }
 
 void ModelManager::addMapObject(MapObject* object) {
@@ -224,6 +225,7 @@ void ModelManager::deleteAllMapObjects() {
 		delete it->second;
 	}
     _mapObjects.clear();
+	_abortMapObjectIteration = true;
 }
 
 void ModelManager::deleteAllUnits() {
@@ -291,4 +293,10 @@ void ModelManager::tick() {
 	}
 }
 
-
+void ModelManager::doTurn() {
+	_abortMapObjectIteration = false;
+	
+	for (std::map<int, MapObject*>::iterator it = _mapObjects.begin(); it != _mapObjects.end() && !_abortMapObjectIteration; it++) {
+		it->second->doTurn();
+	}
+}

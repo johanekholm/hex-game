@@ -115,6 +115,55 @@ void MapObject::doAction(const ActionState& statePoint) {
 	}    
 }
 
+void MapObject::doAI() {
+    bool hasOffensiveAction = false;
+    bool hasMovement = false;
+    std::vector<ActionState> actionPoints, offensives, movements;
+	
+    if (_owner == 2 && _category == MapObjectCategory::PARTY) {
+		DEBUGLOG("Does AI for enemy party");
+        actionPoints = this->getActions();
+        
+        for (std::vector<ActionState>::iterator it = actionPoints.begin(); it != actionPoints.end(); ++it) {
+            switch ((*it).actionType) {
+                case ActionNS::TYPE_ATTACK:
+                    hasOffensiveAction = true;
+                    if ((*it).active) {
+                        offensives.push_back(*it);                        
+                    }
+                    break;
+                    
+                case ActionNS::TYPE_MOVEMENT:
+                    hasMovement = true;
+                    movements.push_back(*it);
+                    break;
+                    
+                default:
+                    break;
+            }
+        }
+        
+        if (hasOffensiveAction) {
+            
+            // choose offensive action randomly
+            if (offensives.size() > 0) {
+                this->doAction(offensives.at(rand() % offensives.size()));
+            } else {
+                // unit has to wait until offensive action becomes active, do nothing this tick
+            }
+        } else {
+            // move about randomly
+            if (movements.size() > 0) {
+                this->doAction(movements.at(rand() % movements.size()));
+            }
+        }
+    }
+}
+
+void MapObject::doTurn() {
+	this->doAI();
+}
+
 std::vector<ActionState> MapObject::getActions() {
 	std::vector<ActionState> actionPoints, temp;
     std::map<int, HexState> hexes;

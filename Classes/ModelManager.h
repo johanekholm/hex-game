@@ -21,7 +21,8 @@ class ModelManager {
 	std::map<int, MapObject*> _mapObjects;
     HexMapModel *_map;
     int _unitIdCounter, _objectIdCounter;
-    
+    bool _abortMapObjectIteration;
+	
     ModelManager();
 
 public:
@@ -48,5 +49,6 @@ public:
     void removeUnit(int unitId);
     void setMap(HexMapModel* map);
     void tick();
+	void doTurn();
 };
 
