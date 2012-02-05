@@ -63,6 +63,10 @@ void ViewControllerManager::centerCamera(const GPoint& pos) {
     this->setCameraPosition(pos - GPointMake(160.0f, 240.0f));
 }
 
+void ViewControllerManager::centerCamera(const MPoint& pos) {
+    this->setCameraPosition(this->transformModelPositionToView(pos) - GPointMake(160.0f, 240.0f));
+}
+
 void ViewControllerManager::draw() {
 	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end(); ++it) {
 		if (*it != 0) {

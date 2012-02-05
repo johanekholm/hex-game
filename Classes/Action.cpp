@@ -20,6 +20,7 @@
 #include "SceneLoader.h"
 #include "Sound.h"
 #include "TransitionViewController.h"
+#include "ViewControllerManager.h"
 #include <iostream>
 #include <string>
 
@@ -274,6 +275,7 @@ bool AdvActionMove::isAvailableAtHex(const MPoint& hex) {
 
 void AdvActionMove::doIt(const ActionState& statePoint) {
     _object->move(statePoint.pos);
+	ViewControllerManager::instance()->centerCamera(_object->getPosition());
 }
 
 /*---------------------------------------------------------------*/
