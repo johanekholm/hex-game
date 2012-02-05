@@ -214,6 +214,10 @@ std::vector<ActionState> UnitModel::getActions() {
 	return actionPoints;
 }
 
+int UnitModel::getId() {
+	return _id;
+}
+
 int UnitModel::getOwner() {
 	return _owner;
 }

@@ -215,4 +215,19 @@ public:
     void callbackVoid();
 };
 
+/*---------------------------------------------------------------*/
+
+class CallbackActionUseItemOnMap : public ControlCallback {
+protected:
+    int _item;
+    MapObject* _object;
+	
+public:
+    CallbackActionUseItemOnMap(MapObject* object, int item);
+    void callbackNumber(int num);
+};
+
+/*---------------------------------------------------------------*/
+
+
 #endif

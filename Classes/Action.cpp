@@ -326,9 +326,32 @@ void AActionInventory::doIt(const ActionState& statePoint) {
 }
 
 void AActionInventory::callbackNumber(int num) {
+    MenuChoice menuItem;
+    std::vector<MenuChoice> choices;
     DEBUGLOG("Chose item %i", num);
     SceneLoader::instance()->returnFromMenu();
     CentralControl::instance()->switchMode(ControlMode::ADVENTURE);
+	std::vector<UnitModel*> units;
+
+	switch (num) {
+		case ItemNS::POTION:
+			DEBUGLOG("Do potion");
+			units = _object->getMembers();
+			
+			for (std::vector<UnitModel*>::iterator it = units.begin(); it != units.end(); ++it) {
+				menuItem.choiceId = (*it)->getId();
+				menuItem.label = "UNIT";
+				choices.push_back(menuItem);
+			}
+
+			SceneLoader::instance()->switchToMenu(new ChoiceMenuVC(*(new CallbackActionUseItemOnMap(_object, num)), choices));
+			CentralControl::instance()->switchMode(ControlMode::MENU);
+			
+			break;
+			
+		default:
+			break;
+	}
 }
 
 /*---------------------------------------------------------------*/
@@ -388,4 +411,40 @@ void AActionEnterDungeon::doIt(const ActionState& statePoint) {
 
 void AActionEnterDungeon::callbackVoid() {
 	SceneLoader::instance()->loadDungeonScene("dungeon1.jsn", _object);
+}
+
+/*---------------------------------------------------------------*/
+
+CallbackActionUseItemOnMap::CallbackActionUseItemOnMap(MapObject* object, int item) {
+	_object = object;
+	_item = item;
+}
+
+void CallbackActionUseItemOnMap::callbackNumber(int num) {
+	std::vector<UnitModel*> units = _object->getMembers();
+	UnitModel* unit = 0;
+	DEBUGLOG("Callback do item");
+
+	SceneLoader::instance()->returnFromMenu();
+    CentralControl::instance()->switchMode(ControlMode::ADVENTURE);
+
+	for (std::vector<UnitModel*>::iterator it = units.begin(); it != units.end(); it++) {
+		if ((*it)->getId() == num) {
+			unit = *it;
+			break;
+		}
+	}
+	
+	if (unit != 0) {
+		switch (_item) {
+			case ItemNS::POTION:
+				unit->inflictDamage(-3);
+				_object->removeItem(ItemNS::POTION, 1);
+				DEBUGLOG("Healing potion");
+				break;
+				
+			default:
+				break;
+		}
+	}
 }

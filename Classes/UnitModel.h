@@ -72,6 +72,7 @@ public:
     void doAI();
 	std::vector<ActionState> getActions();
     int getOwner();
+	int getId();
 	MPoint getPosition();
     int getStat(int stat);
     bool isFacing(const MPoint& pos);
