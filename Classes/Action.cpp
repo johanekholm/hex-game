@@ -201,6 +201,8 @@ AdventureAction* AdventureAction::build(int actionId, MapObject* object) {
             return new AActionEnterDungeon(actionId, object);
         case AACTION_INVENTORY:
             return new AActionInventory(actionId, object);
+        case AACTION_PARTYOPTIONS:
+            return new AActionPartyOptions(actionId, object);
 		default:
 			return 0;
 	}
@@ -415,6 +417,32 @@ void AActionEnterDungeon::callbackVoid() {
 
 /*---------------------------------------------------------------*/
 
+AActionPartyOptions::AActionPartyOptions(int anId, MapObject* object) : AdventureAction("PARTY", anId, object, 0, TARGET_SELF, 0) { }
+
+bool AActionPartyOptions::isAvailable() {
+    return true;
+}
+
+void AActionPartyOptions::doIt(const ActionState& statePoint) {
+	BaseMenuNodeVC* rootNode;
+	std::vector<BaseMenuNodeVC*> main, empty;
+	MenuActionCallback* equip = new CallbackActionEquip(_object);
+        
+    main.push_back(new LeafMenuNodeVC(0, "NEW", 1,				GPointMake(160.0f, 320.0f), 80.0f, 32.0f));
+    main.push_back(new ActionMenuNodeVC(*equip, 0, "EQUIP", empty,	GPointMake(160.0f, 360.0f), 80.0f, 32.0f));
+    main.push_back(new LeafMenuNodeVC(0, "CANCEL", -1,			GPointMake(160.0f, 400.0f), 80.0f, 32.0f));
+    
+    rootNode = new ParentMenuNodeVC(0, "ROOT", main, GPointMake(0.0f, 0.0f), 80.0f, 32.0f);
+	DEBUGLOG("Party options");
+    
+    SceneLoader::instance()->switchToMenu(new MenuViewController(rootNode));
+    CentralControl::instance()->switchMode(ControlMode::MENU);
+}
+
+
+/*---------------------------------------------------------------*/
+
+
 CallbackActionUseItemOnMap::CallbackActionUseItemOnMap(MapObject* object, int item) {
 	_object = object;
 	_item = item;
@@ -448,3 +476,35 @@ void CallbackActionUseItemOnMap::callbackNumber(int num) {
 		}
 	}
 }
+
+/*---------------------------------------------------------------*/
+
+CallbackActionEquip::CallbackActionEquip(MapObject* object) {
+	_slot = 0;
+	_object = object;
+	_item = 0;
+}
+
+void CallbackActionEquip::callbackVoid() {
+	DEBUGLOG("Equip on slot: %i", _slot);
+}
+
+void CallbackActionEquip::callbackNumber(int num) {
+	_slot = num;
+}
+
+bool CallbackActionEquip::isInputRequired() {
+	return (_slot == 0);
+}
+
+std::vector<MenuChoice> CallbackActionEquip::getChoices() {
+	MenuChoice slot;
+    std::vector<MenuChoice> choices;
+    
+    slot.choiceId = 1; slot.label = "RIGHT HAND"; choices.push_back(slot);
+    slot.choiceId = 2; slot.label = "LEFT HAND"; choices.push_back(slot);
+    slot.choiceId = 3; slot.label = "HEAD"; choices.push_back(slot);
+    slot.choiceId = 4; slot.label = "BODY"; choices.push_back(slot);
+	return choices;
+}
+

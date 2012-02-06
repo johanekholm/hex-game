@@ -22,6 +22,14 @@ MenuViewController::~MenuViewController() {
     delete _rootNode;
 }
 
+MenuViewController::MenuViewController(BaseMenuNodeVC* root) {
+    _background = new RectangleImage(RGBAMake(0.0f, 0.0f, 0.0f, 0.3f), _width, _height, true);
+    _rootNode = root;
+	_rootNode->setMenu(this);
+    _focus = _rootNode;
+    _focus->setFocus(true);    	
+}
+
 MenuViewController::MenuViewController() : ViewController(GPointMake(0.0f, 0.0f), 320.0f, 480.0f, MapLayer::ABOVE_GUI) {
     std::vector<BaseMenuNodeVC*> main, games;
     
@@ -250,6 +258,15 @@ bool ParentMenuNodeVC::handleEvent(const TouchEvent& event) {
     }
     return false;
 }
+
+void ParentMenuNodeVC::setMenu(MenuViewController* menuVC) {
+    _menuVC = menuVC;
+	
+	for (std::vector<BaseMenuNodeVC*>::iterator it = _subNodes.begin(); it != _subNodes.end(); ++it) {
+		(*it)->setMenu(menuVC);
+	}
+}
+
 
 /*---------------------------------------------------------------*/
 

@@ -35,6 +35,7 @@ protected:
 public:
 	~MenuViewController();
 	MenuViewController();
+	MenuViewController(BaseMenuNodeVC* root);
 	void draw(const GPoint& cameraPos);
 	void drawGUI(const GPoint& cameraPos);
     void goUp();
@@ -89,7 +90,7 @@ public:
 	virtual void drawGUI(const GPoint& cameraPos);
     BaseMenuNodeVC* getParent();
 	virtual bool handleEvent(const TouchEvent& event) = 0;
-    void setMenu(MenuViewController* menuVC);
+    virtual void setMenu(MenuViewController* menuVC);
     void setParent(BaseMenuNodeVC* parent);
 };
 
@@ -105,6 +106,7 @@ public:
 	ParentMenuNodeVC(MenuViewController* menuVC, const std::string& label, const std::vector<BaseMenuNodeVC*>& subNodes, const GPoint& pos, GLfloat width, GLfloat height);
 	virtual void drawGUI(const GPoint& cameraPos);
 	virtual bool handleEvent(const TouchEvent& event);
+    virtual void setMenu(MenuViewController* menuVC);
 };
 
 /*---------------------------------------------------------------*/
