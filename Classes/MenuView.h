@@ -9,10 +9,10 @@
 #define MENUVIEWCONTROLLER_H
 
 #include "ViewController.h"
+#include "ControlCallback.h"
 #include <vector>
 #include <string>
 
-class ControlCallback;
 class ShapeImage;
 class GameImage;
 class StringImage;
@@ -41,6 +41,15 @@ public:
 	bool handleEvent(const TouchEvent& event);
     virtual void reportChoice(int choiceId);
     void setFocus(BaseMenuNodeVC* focus);
+};
+
+/*---------------------------------------------------------------*/
+
+class MenuActionCallback : public ControlCallback {
+public:
+	virtual ~MenuActionCallback() {}
+	virtual bool isInputRequired() {return false;};
+    virtual std::vector<MenuChoice> getChoices() = 0;
 };
 
 /*---------------------------------------------------------------*/
@@ -88,12 +97,27 @@ public:
 /*---------------------------------------------------------------*/
 
 class ParentMenuNodeVC : public BaseMenuNodeVC {
+protected:
     std::vector<BaseMenuNodeVC*> _subNodes;
 
 public:
 	virtual ~ParentMenuNodeVC();
 	ParentMenuNodeVC(MenuViewController* menuVC, const std::string& label, const std::vector<BaseMenuNodeVC*>& subNodes, const GPoint& pos, GLfloat width, GLfloat height);
 	virtual void drawGUI(const GPoint& cameraPos);
+	virtual bool handleEvent(const TouchEvent& event);
+};
+
+/*---------------------------------------------------------------*/
+
+class ActionMenuNodeVC : public ParentMenuNodeVC {
+protected:
+	MenuActionCallback& _action;
+	
+	void buildSubNodes();
+	
+public:
+	virtual ~ActionMenuNodeVC();
+	ActionMenuNodeVC(MenuActionCallback& action, MenuViewController* menuVC, const std::string& label, const std::vector<BaseMenuNodeVC*>& subNodes, const GPoint& pos, GLfloat width, GLfloat height);
 	virtual bool handleEvent(const TouchEvent& event);
 };
 

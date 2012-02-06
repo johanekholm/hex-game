@@ -251,4 +251,55 @@ bool ParentMenuNodeVC::handleEvent(const TouchEvent& event) {
     return false;
 }
 
+/*---------------------------------------------------------------*/
+
+ActionMenuNodeVC::~ActionMenuNodeVC() {
+	
+}
+
+ActionMenuNodeVC::ActionMenuNodeVC(MenuActionCallback& action, MenuViewController* menuVC, const std::string& label, const std::vector<BaseMenuNodeVC*>& subNodes, const GPoint& pos, GLfloat width, GLfloat height) : ParentMenuNodeVC(menuVC, label, subNodes, pos, width, height), _action(action) {
+
+}
+
+void ActionMenuNodeVC::buildSubNodes() {
+	std::vector<MenuChoice> choices = _action.getChoices();
+	int counter = 1;
+    GLfloat yStart = 440.0f;
+    
+    _subNodes.push_back(new LeafMenuNodeVC(_menuVC, "CANCEL", -1, GPointMake(160.0f, yStart), 120.0f, 25.0f));
+	
+    for (std::vector<MenuChoice>::iterator it = choices.begin(); it != choices.end(); ++it) {
+        _subNodes.push_back(new LeafMenuNodeVC(_menuVC, (*it).label, (*it).choiceId, GPointMake(160.0f, yStart - counter*30.0f), 120.0f, 25.0f));
+        counter++;
+    }
+	
+	for (std::vector<BaseMenuNodeVC*>::iterator it = _subNodes.begin(); it != _subNodes.end(); ++it) {
+        (*it)->setParent(this);
+    }
+}
+
+bool ActionMenuNodeVC::handleEvent(const TouchEvent& event) {
+    if (!_hasFocus) {
+        if (event.type == 3 && this->isWithin(event.point)) {
+			if (_action.isInputRequired()) {
+				this->buildSubNodes();
+				_menuVC->setFocus(this);
+				return true;         				
+			} else {
+				_action.callbackVoid();
+			}
+        }
+        return false;
+    } else {
+        for (std::vector<BaseMenuNodeVC*>::iterator it = _subNodes.begin(); it != _subNodes.end(); ++it) {
+            if ((*it)->handleEvent(event)) {
+                return true;
+            }
+        }
+    }
+    return false;	
+}
+
+/*---------------------------------------------------------------*/
+
 
