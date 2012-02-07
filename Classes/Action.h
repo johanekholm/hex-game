@@ -254,6 +254,7 @@ public:
     void callbackNumber(int num);
 	bool isInputRequired();
 	std::vector<MenuChoice> getChoices();
+	void reset();
 };
 
 /*---------------------------------------------------------------*/

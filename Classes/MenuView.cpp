@@ -190,7 +190,7 @@ BackButtonMenuNodeVC::BackButtonMenuNodeVC(MenuViewController* menuVC, const std
 
 bool BackButtonMenuNodeVC::handleEvent(const TouchEvent& event) {
     if (event.type == 3 && this->isWithin(event.point)) {
-        _menuVC->goUp();
+        _parentNode->goUp();
         return true;
     }
     return false;
@@ -244,6 +244,10 @@ void ParentMenuNodeVC::drawGUI(const GPoint& cameraPos) {
     }
 }
 
+void ParentMenuNodeVC::goUp() {
+	_menuVC->goUp();
+}
+
 bool ParentMenuNodeVC::handleEvent(const TouchEvent& event) {
     if (!_hasFocus) {
         if (event.type == 3 && this->isWithin(event.point)) {
@@ -289,7 +293,7 @@ void ActionMenuNodeVC::buildSubNodes() {
 	int counter = 1;
     GLfloat yStart = 440.0f;
     
-    _subNodes.push_back(new LeafMenuNodeVC(_menuVC, "CANCEL", -1, GPointMake(160.0f, yStart), 120.0f, 25.0f));
+	_subNodes.push_back(new BackButtonMenuNodeVC(_menuVC, "CANCEL", GPointMake(160.0f, yStart), 120.0f, 25.0f)); 
 	
     for (std::vector<MenuChoice>::iterator it = choices.begin(); it != choices.end(); ++it) {
         _subNodes.push_back(new LeafMenuNodeVC(_menuVC, (*it).label, (*it).choiceId, GPointMake(160.0f, yStart - counter*30.0f), 120.0f, 25.0f));
@@ -299,6 +303,11 @@ void ActionMenuNodeVC::buildSubNodes() {
 	for (std::vector<BaseMenuNodeVC*>::iterator it = _subNodes.begin(); it != _subNodes.end(); ++it) {
         (*it)->setParent(this);
     }
+}
+
+void ActionMenuNodeVC::goUp() {
+	_action.reset();
+	_menuVC->goUp();
 }
 
 bool ActionMenuNodeVC::handleEvent(const TouchEvent& event) {

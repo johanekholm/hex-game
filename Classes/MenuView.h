@@ -49,8 +49,9 @@ public:
 class MenuActionCallback : public ControlCallback {
 public:
 	virtual ~MenuActionCallback() {}
-	virtual bool isInputRequired() {return false;};
+	virtual bool isInputRequired() = 0;
     virtual std::vector<MenuChoice> getChoices() = 0;
+	virtual void reset() = 0;
 };
 
 /*---------------------------------------------------------------*/
@@ -89,6 +90,7 @@ public:
 	void draw(const GPoint& cameraPos);
 	virtual void drawGUI(const GPoint& cameraPos);
     BaseMenuNodeVC* getParent();
+	virtual void goUp() {};
 	virtual bool handleEvent(const TouchEvent& event) = 0;
 	virtual void reportChoice(int choiceId) {}
     virtual void setMenu(MenuViewController* menuVC);
@@ -108,6 +110,7 @@ public:
 	virtual ~ParentMenuNodeVC();
 	ParentMenuNodeVC(MenuViewController* menuVC, const std::string& label, const std::vector<BaseMenuNodeVC*>& subNodes, const GPoint& pos, GLfloat width, GLfloat height);
 	virtual void drawGUI(const GPoint& cameraPos);
+	virtual void goUp();
 	virtual bool handleEvent(const TouchEvent& event);
     virtual void reportChoice(int choiceId);
     virtual void setMenu(MenuViewController* menuVC);
@@ -124,6 +127,7 @@ protected:
 public:
 	virtual ~ActionMenuNodeVC();
 	ActionMenuNodeVC(MenuActionCallback& action, MenuViewController* menuVC, const std::string& label, const std::vector<BaseMenuNodeVC*>& subNodes, const GPoint& pos, GLfloat width, GLfloat height);
+	virtual void goUp();
 	virtual bool handleEvent(const TouchEvent& event);
     virtual void reportChoice(int choiceId);
 };

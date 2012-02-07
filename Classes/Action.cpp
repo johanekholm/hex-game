@@ -518,3 +518,8 @@ std::vector<MenuChoice> CallbackActionEquip::getChoices() {
 	return choices;		
 }
 
+void CallbackActionEquip::reset() {
+	_slot = 0;
+	_item = 0;
+}
+
