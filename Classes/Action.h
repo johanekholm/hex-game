@@ -244,12 +244,13 @@ public:
 
 class CallbackActionEquip : public MenuActionCallback {
 protected:
-    int _item;
     MapObject* _object;
+	UnitModel* _unit;
+    int _item;
 	int _slot;
 	
 public:
-    CallbackActionEquip(MapObject* object);
+    CallbackActionEquip(MapObject* object, UnitModel* unit);
 	void callbackVoid();
     void callbackNumber(int num);
 	bool isInputRequired();

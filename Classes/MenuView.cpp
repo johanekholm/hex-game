@@ -226,7 +226,6 @@ ParentMenuNodeVC::ParentMenuNodeVC(MenuViewController* menuVC, const std::string
 }
 
 void ParentMenuNodeVC::destroySubNodes() {
-	DEBUGLOG("destroySubNodes");
 	for (std::vector<BaseMenuNodeVC*>::iterator it = _subNodes.begin(); it != _subNodes.end(); ++it) {
         delete (*it);
     }

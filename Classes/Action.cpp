@@ -425,14 +425,26 @@ bool AActionPartyOptions::isAvailable() {
 
 void AActionPartyOptions::doIt(const ActionState& statePoint) {
 	BaseMenuNodeVC* rootNode;
-	std::vector<BaseMenuNodeVC*> main, empty;
-	MenuActionCallback* equip = new CallbackActionEquip(_object);
-        
-    main.push_back(new LeafMenuNodeVC(0, "NEW", 1,				GPointMake(160.0f, 320.0f), 80.0f, 32.0f));
-    main.push_back(new ActionMenuNodeVC(equip, 0, "EQUIP", empty,	GPointMake(160.0f, 360.0f), 80.0f, 32.0f));
-    main.push_back(new LeafMenuNodeVC(0, "CANCEL", -1,			GPointMake(160.0f, 400.0f), 80.0f, 32.0f));
-    
-    rootNode = new ParentMenuNodeVC(0, "ROOT", main, GPointMake(0.0f, 0.0f), 80.0f, 32.0f);
+	std::vector<BaseMenuNodeVC*> unitNodes, actionNodes, empty;
+	std::vector<UnitModel*> units;
+	MenuActionCallback* equip;
+	int counter = 1;
+
+    units = _object->getMembers();
+	
+	for (std::vector<UnitModel*>::iterator it = units.begin(); it != units.end(); ++it) {
+		equip = new CallbackActionEquip(_object, *it);
+		actionNodes.clear();
+		actionNodes.push_back(new ActionMenuNodeVC(equip, 0, "EQUIP", empty, GPointMake(160.0f, 360.0f), 80.0f, 32.0f));
+		actionNodes.push_back(new BackButtonMenuNodeVC(0, "CANCEL", GPointMake(160.0f, 400.0f), 80.0f, 32.0f));
+		
+		unitNodes.push_back(new ParentMenuNodeVC(0, "UNIT", actionNodes, GPointMake(160.0f, 400.0f - counter * 40.0f), 80.0f, 32.0f));
+		counter++;
+	}
+	
+	unitNodes.push_back(new BackButtonMenuNodeVC(0, "CANCEL", GPointMake(160.0f, 400.0f), 80.0f, 32.0f));
+	
+    rootNode = new ParentMenuNodeVC(0, "ROOT", unitNodes, GPointMake(0.0f, 0.0f), 80.0f, 32.0f);
 	DEBUGLOG("Party options");
     
     SceneLoader::instance()->switchToMenu(new MenuViewController(rootNode));
@@ -479,14 +491,16 @@ void CallbackActionUseItemOnMap::callbackNumber(int num) {
 
 /*---------------------------------------------------------------*/
 
-CallbackActionEquip::CallbackActionEquip(MapObject* object) {
+CallbackActionEquip::CallbackActionEquip(MapObject* object, UnitModel* unit) {
 	_object = object;
+	_unit = unit;
 	_slot = 0;
 	_item = 0;
 }
 
 void CallbackActionEquip::callbackVoid() {
-	DEBUGLOG("Equip on slot: %i", _slot);
+	DEBUGLOG("Equip that");
+	
 }
 
 void CallbackActionEquip::callbackNumber(int num) {
@@ -503,17 +517,23 @@ bool CallbackActionEquip::isInputRequired() {
 }
 
 std::vector<MenuChoice> CallbackActionEquip::getChoices() {
-	MenuChoice slot;
+	MenuChoice node;
     std::vector<MenuChoice> choices;
-    
+	std::map<int, Item*> items;
+
     if (_slot == 0) {
-		slot.choiceId = 1; slot.label = "RIGHT HAND"; choices.push_back(slot);
-		slot.choiceId = 2; slot.label = "LEFT HAND"; choices.push_back(slot);
-		slot.choiceId = 3; slot.label = "HEAD"; choices.push_back(slot);
-		slot.choiceId = 4; slot.label = "BODY"; choices.push_back(slot);
-	} else {
-		slot.choiceId = 1; slot.label = "ITEM 1"; choices.push_back(slot);
-		slot.choiceId = 2; slot.label = "ITEM 2"; choices.push_back(slot);		
+		node.choiceId = 1; node.label = "RIGHT HAND"; choices.push_back(node);
+		node.choiceId = 2; node.label = "LEFT HAND"; choices.push_back(node);
+		node.choiceId = 3; node.label = "HEAD"; choices.push_back(node);
+		node.choiceId = 4; node.label = "BODY"; choices.push_back(node);
+	} else {		
+		items = _object->getItems();
+		
+		for (std::map<int, Item*>::iterator it = items.begin(); it != items.end(); ++it) {
+			node.choiceId = it->second->getType();
+			node.label = it->second->getDescription();
+			choices.push_back(node);
+		}
 	}
 	return choices;		
 }
