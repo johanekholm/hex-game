@@ -149,7 +149,7 @@ void BaseMenuNodeVC::drawGUI(const GPoint& cameraPos) {
     _label->drawCenteredAt(_pos);
 }
 
-BaseMenuNodeVC* BaseMenuNodeVC::getParent() {
+ParentMenuNodeVC* BaseMenuNodeVC::getParent() {
     return _parentNode;
 }
 
@@ -157,7 +157,7 @@ void BaseMenuNodeVC::setMenu(MenuViewController* menuVC) {
     _menuVC = menuVC;
 }
 
-void BaseMenuNodeVC::setParent(BaseMenuNodeVC* parent) {
+void BaseMenuNodeVC::setParent(ParentMenuNodeVC* parent) {
     _parentNode = parent;
 }
 

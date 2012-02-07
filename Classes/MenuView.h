@@ -23,6 +23,7 @@ struct MenuChoice {
 };
 
 class BaseMenuNodeVC;
+class ParentMenuNodeVC;
 
 /*---------------------------------------------------------------*/
 
@@ -79,7 +80,7 @@ public:
 class BaseMenuNodeVC : public ViewController {
 protected:
     MenuViewController* _menuVC;
-    BaseMenuNodeVC* _parentNode;
+    ParentMenuNodeVC* _parentNode;
     int _choiceId;
     StringImage* _label;
     ShapeImage* _button;
@@ -89,12 +90,10 @@ public:
 	BaseMenuNodeVC(MenuViewController* menuVC, const std::string& label, int choiceId, const GPoint& pos, GLfloat width, GLfloat height);
 	void draw(const GPoint& cameraPos);
 	virtual void drawGUI(const GPoint& cameraPos);
-    BaseMenuNodeVC* getParent();
-	virtual void goUp() {};
+    ParentMenuNodeVC* getParent();
 	virtual bool handleEvent(const TouchEvent& event) = 0;
-	virtual void reportChoice(int choiceId) {}
     virtual void setMenu(MenuViewController* menuVC);
-    void setParent(BaseMenuNodeVC* parent);
+    void setParent(ParentMenuNodeVC* parent);
 };
 
 
