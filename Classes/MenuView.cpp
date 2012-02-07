@@ -12,6 +12,7 @@
 #include "toolkit.h"
 #include "Action.h"
 #include "ControlCallback.h"
+#include "SceneLoader.h"
 #include "ShapeImage.h"
 #include "StringImage.h"
 #include <string>
@@ -57,7 +58,11 @@ void MenuViewController::drawGUI(const GPoint& cameraPos) {
 }
 
 void MenuViewController::goUp() {
-    this->setFocus(_focus->getParent());
+	if (_focus == _rootNode) {
+		SceneLoader::instance()->returnFromMenu();
+	} else {
+		this->setFocus(_focus->getParent());		
+	}
 }
 
 bool MenuViewController::handleEvent(const TouchEvent& event) {

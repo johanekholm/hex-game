@@ -268,5 +268,6 @@ void SceneLoader::switchToTransition(TransitionViewController* transition) {
 void SceneLoader::returnFromMenu() {
     ViewControllerManager* viewControllerManager = ViewControllerManager::instance();
     viewControllerManager->remove(viewControllerManager->getFocus());
+	CentralControl::instance()->switchMode(ControlMode::ADVENTURE);                
 }
 
