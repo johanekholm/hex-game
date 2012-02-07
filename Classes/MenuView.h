@@ -90,6 +90,7 @@ public:
 	virtual void drawGUI(const GPoint& cameraPos);
     BaseMenuNodeVC* getParent();
 	virtual bool handleEvent(const TouchEvent& event) = 0;
+	virtual void reportChoice(int choiceId) {}
     virtual void setMenu(MenuViewController* menuVC);
     void setParent(BaseMenuNodeVC* parent);
 };
@@ -101,11 +102,14 @@ class ParentMenuNodeVC : public BaseMenuNodeVC {
 protected:
     std::vector<BaseMenuNodeVC*> _subNodes;
 
+	void destroySubNodes();
+
 public:
 	virtual ~ParentMenuNodeVC();
 	ParentMenuNodeVC(MenuViewController* menuVC, const std::string& label, const std::vector<BaseMenuNodeVC*>& subNodes, const GPoint& pos, GLfloat width, GLfloat height);
 	virtual void drawGUI(const GPoint& cameraPos);
 	virtual bool handleEvent(const TouchEvent& event);
+    virtual void reportChoice(int choiceId);
     virtual void setMenu(MenuViewController* menuVC);
 };
 
@@ -121,6 +125,7 @@ public:
 	virtual ~ActionMenuNodeVC();
 	ActionMenuNodeVC(MenuActionCallback& action, MenuViewController* menuVC, const std::string& label, const std::vector<BaseMenuNodeVC*>& subNodes, const GPoint& pos, GLfloat width, GLfloat height);
 	virtual bool handleEvent(const TouchEvent& event);
+    virtual void reportChoice(int choiceId);
 };
 
 /*---------------------------------------------------------------*/

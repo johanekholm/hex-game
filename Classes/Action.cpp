@@ -480,8 +480,8 @@ void CallbackActionUseItemOnMap::callbackNumber(int num) {
 /*---------------------------------------------------------------*/
 
 CallbackActionEquip::CallbackActionEquip(MapObject* object) {
-	_slot = 0;
 	_object = object;
+	_slot = 0;
 	_item = 0;
 }
 
@@ -490,21 +490,31 @@ void CallbackActionEquip::callbackVoid() {
 }
 
 void CallbackActionEquip::callbackNumber(int num) {
-	_slot = num;
+	if (_slot == 0) {
+		_slot = num;		
+	} else {
+		_item = num;
+	}
+	DEBUGLOG("Slot is: %i, Item is: %i", _slot, _item);
 }
 
 bool CallbackActionEquip::isInputRequired() {
-	return (_slot == 0);
+	return (_slot == 0 || _item == 0);
 }
 
 std::vector<MenuChoice> CallbackActionEquip::getChoices() {
 	MenuChoice slot;
     std::vector<MenuChoice> choices;
     
-    slot.choiceId = 1; slot.label = "RIGHT HAND"; choices.push_back(slot);
-    slot.choiceId = 2; slot.label = "LEFT HAND"; choices.push_back(slot);
-    slot.choiceId = 3; slot.label = "HEAD"; choices.push_back(slot);
-    slot.choiceId = 4; slot.label = "BODY"; choices.push_back(slot);
-	return choices;
+    if (_slot == 0) {
+		slot.choiceId = 1; slot.label = "RIGHT HAND"; choices.push_back(slot);
+		slot.choiceId = 2; slot.label = "LEFT HAND"; choices.push_back(slot);
+		slot.choiceId = 3; slot.label = "HEAD"; choices.push_back(slot);
+		slot.choiceId = 4; slot.label = "BODY"; choices.push_back(slot);
+	} else {
+		slot.choiceId = 1; slot.label = "ITEM 1"; choices.push_back(slot);
+		slot.choiceId = 2; slot.label = "ITEM 2"; choices.push_back(slot);		
+	}
+	return choices;		
 }
 

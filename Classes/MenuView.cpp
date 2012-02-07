@@ -164,8 +164,6 @@ void BaseMenuNodeVC::setParent(BaseMenuNodeVC* parent) {
 /*---------------------------------------------------------------*/
 
 LeafMenuNodeVC::~LeafMenuNodeVC() {
-    delete _button;
-    delete _label;
 }
 
 LeafMenuNodeVC::LeafMenuNodeVC(MenuViewController* menuVC, const std::string& label, int choiceId, const GPoint& pos, GLfloat width, GLfloat height) : BaseMenuNodeVC(menuVC, label, choiceId, pos, width, height) {
@@ -176,7 +174,7 @@ LeafMenuNodeVC::LeafMenuNodeVC(MenuViewController* menuVC, const std::string& la
 
 bool LeafMenuNodeVC::handleEvent(const TouchEvent& event) {
     if (event.type == 3 && this->isWithin(event.point)) {
-        _menuVC->reportChoice(_choiceId);
+        _parentNode->reportChoice(_choiceId);
         return true;
     }
     return false;
@@ -213,12 +211,7 @@ bool TextMenuNodeVC::handleEvent(const TouchEvent& event) {
 /*---------------------------------------------------------------*/
 
 ParentMenuNodeVC::~ParentMenuNodeVC() {
-    delete _button;
-    delete _label;
-    for (std::vector<BaseMenuNodeVC*>::iterator it = _subNodes.begin(); it != _subNodes.end(); ++it) {
-        delete (*it);
-    }
-    _subNodes.clear();
+	this->destroySubNodes();
 }
 
 ParentMenuNodeVC::ParentMenuNodeVC(MenuViewController* menuVC, const std::string& label, const std::vector<BaseMenuNodeVC*>& subNodes, const GPoint& pos, GLfloat width, GLfloat height) : BaseMenuNodeVC(menuVC, label, -1, pos, width, height){
@@ -231,6 +224,15 @@ ParentMenuNodeVC::ParentMenuNodeVC(MenuViewController* menuVC, const std::string
         (*it)->setParent(this);
     }
 }
+
+void ParentMenuNodeVC::destroySubNodes() {
+	DEBUGLOG("destroySubNodes");
+	for (std::vector<BaseMenuNodeVC*>::iterator it = _subNodes.begin(); it != _subNodes.end(); ++it) {
+        delete (*it);
+    }
+    _subNodes.clear();
+}
+
 
 void ParentMenuNodeVC::drawGUI(const GPoint& cameraPos) {
     if (!_hasFocus) {
@@ -257,6 +259,10 @@ bool ParentMenuNodeVC::handleEvent(const TouchEvent& event) {
         }
     }
     return false;
+}
+
+void ParentMenuNodeVC::reportChoice(int choiceId) {
+	_menuVC->reportChoice(choiceId);
 }
 
 void ParentMenuNodeVC::setMenu(MenuViewController* menuVC) {
@@ -315,6 +321,18 @@ bool ActionMenuNodeVC::handleEvent(const TouchEvent& event) {
         }
     }
     return false;	
+}
+
+void ActionMenuNodeVC::reportChoice(int choiceId) {
+	this->destroySubNodes();
+	
+	_action.callbackNumber(choiceId);
+	
+	if (_action.isInputRequired()) {
+		this->buildSubNodes();
+	} else {
+		_action.callbackVoid();
+	}
 }
 
 /*---------------------------------------------------------------*/
