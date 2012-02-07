@@ -36,6 +36,7 @@ UnitModel::UnitModel(int x, int y, int owner, int maxHp, int maxAp, int power, i
     _baseDefense = defense;
     _target = 0;
     _visualType = visualType;
+	_name = "UNIT";
 
     for (std::vector<int>::iterator it = actionIds.begin(); it != actionIds.end(); ++it) {
         this->addAction(*it);
@@ -81,6 +82,7 @@ void UnitModel::deserialize(Json::Value& root) {
     _owner = root.get("owner", 0).asInt();
     _visualType = root.get("visualType", 0).asInt();
     _id = root.get("id", 0).asInt();
+	_name = "UNIT";
     
     // deserialize actions
     for (Json::ValueIterator it = root["actions"].begin(); it != root["actions"].end(); it++) {
@@ -213,6 +215,14 @@ std::vector<ActionState> UnitModel::getActions() {
     
 	return actionPoints;
 }
+
+std::string UnitModel::getDescription() {
+    std::stringstream stream;
+	
+    stream << _name << " " << _hp << "/" << _maxHp;
+    return stream.str();
+}
+
 
 int UnitModel::getId() {
 	return _id;

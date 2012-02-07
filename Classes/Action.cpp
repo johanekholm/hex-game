@@ -435,14 +435,14 @@ void AActionPartyOptions::doIt(const ActionState& statePoint) {
 	for (std::vector<UnitModel*>::iterator it = units.begin(); it != units.end(); ++it) {
 		equip = new CallbackActionEquip(_object, *it);
 		actionNodes.clear();
-		actionNodes.push_back(new ActionMenuNodeVC(equip, 0, "EQUIP", empty, GPointMake(160.0f, 360.0f), 80.0f, 32.0f));
-		actionNodes.push_back(new BackButtonMenuNodeVC(0, "CANCEL", GPointMake(160.0f, 400.0f), 80.0f, 32.0f));
+		actionNodes.push_back(new ActionMenuNodeVC(equip, 0, "EQUIP", empty, GPointMake(160.0f, 360.0f), 120.0f, 32.0f));
+		actionNodes.push_back(new BackButtonMenuNodeVC(0, "BACK", GPointMake(160.0f, 400.0f), 120.0f, 32.0f));
 		
-		unitNodes.push_back(new ParentMenuNodeVC(0, "UNIT", actionNodes, GPointMake(160.0f, 400.0f - counter * 40.0f), 80.0f, 32.0f));
+		unitNodes.push_back(new ParentMenuNodeVC(0, (*it)->getDescription(), actionNodes, GPointMake(160.0f, 400.0f - counter * 40.0f), 120.0f, 32.0f));
 		counter++;
 	}
 	
-	unitNodes.push_back(new BackButtonMenuNodeVC(0, "CANCEL", GPointMake(160.0f, 400.0f), 80.0f, 32.0f));
+	unitNodes.push_back(new BackButtonMenuNodeVC(0, "BACK", GPointMake(160.0f, 400.0f), 120.0f, 32.0f));
 	
     rootNode = new ParentMenuNodeVC(0, "ROOT", unitNodes, GPointMake(0.0f, 0.0f), 80.0f, 32.0f);
 	DEBUGLOG("Party options");

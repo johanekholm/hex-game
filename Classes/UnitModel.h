@@ -22,6 +22,7 @@
 
 #include <map>
 #include <vector>
+#include <string>
 #include "toolkit.h"
 #include "Observable.h"
 #include "json-forwards.h"
@@ -49,6 +50,7 @@ class UnitModel : public Observable {
     int _baseDefense;
     int _maxAp;
     int _maxHp;
+	std::string _name;
     int _owner;
     int _visualType;
     UnitModel* _target;
@@ -71,6 +73,7 @@ public:
 	void doAction(const ActionState& statePoint);
     void doAI();
 	std::vector<ActionState> getActions();
+	std::string getDescription();
     int getOwner();
 	int getId();
 	MPoint getPosition();
