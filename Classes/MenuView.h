@@ -119,13 +119,13 @@ public:
 
 class ActionMenuNodeVC : public ParentMenuNodeVC {
 protected:
-	MenuActionCallback& _action;
+	MenuActionCallback* _action;
 	
 	void buildSubNodes();
 	
 public:
 	virtual ~ActionMenuNodeVC();
-	ActionMenuNodeVC(MenuActionCallback& action, MenuViewController* menuVC, const std::string& label, const std::vector<BaseMenuNodeVC*>& subNodes, const GPoint& pos, GLfloat width, GLfloat height);
+	ActionMenuNodeVC(MenuActionCallback* action, MenuViewController* menuVC, const std::string& label, const std::vector<BaseMenuNodeVC*>& subNodes, const GPoint& pos, GLfloat width, GLfloat height);
 	virtual void goUp();
 	virtual bool handleEvent(const TouchEvent& event);
     virtual void reportChoice(int choiceId);

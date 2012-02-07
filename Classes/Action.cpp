@@ -429,7 +429,7 @@ void AActionPartyOptions::doIt(const ActionState& statePoint) {
 	MenuActionCallback* equip = new CallbackActionEquip(_object);
         
     main.push_back(new LeafMenuNodeVC(0, "NEW", 1,				GPointMake(160.0f, 320.0f), 80.0f, 32.0f));
-    main.push_back(new ActionMenuNodeVC(*equip, 0, "EQUIP", empty,	GPointMake(160.0f, 360.0f), 80.0f, 32.0f));
+    main.push_back(new ActionMenuNodeVC(equip, 0, "EQUIP", empty,	GPointMake(160.0f, 360.0f), 80.0f, 32.0f));
     main.push_back(new LeafMenuNodeVC(0, "CANCEL", -1,			GPointMake(160.0f, 400.0f), 80.0f, 32.0f));
     
     rootNode = new ParentMenuNodeVC(0, "ROOT", main, GPointMake(0.0f, 0.0f), 80.0f, 32.0f);
