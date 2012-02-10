@@ -146,7 +146,7 @@ std::map<int, Item*> ItemHandler::getItems() {
 }
 
 bool ItemHandler::hasItem(int type, int count) {
-    if (_items.find(type) == _items.end()) {
+    if (_items.find(type) != _items.end()) {
         return (_items[type]->getCount() >= count);
     }
     return false;
@@ -162,5 +162,62 @@ bool ItemHandler::removeItem(int type, int count) {
         }
     }
     return false;
+}
+
+
+/*---------------------------------------------------------------*/
+
+ItemEquipper::~ItemEquipper() {
+    for (std::map<int, Item*>::iterator it = _equippedItems.begin(); it != _equippedItems.end(); ++it) {
+        delete it->second;
+    }
+    _equippedItems.clear();
+}
+
+Json::Value ItemEquipper::serializeEquippedItems() {
+	Json::Value root;
+	
+    for (std::map<int, Item*>::iterator it = _equippedItems.begin(); it != _equippedItems.end(); ++it) {
+        root[it->first] = it->second->serialize();
+    }
+	
+	return root;
+}
+
+void ItemEquipper::deserializeEquippedItems(Json::Value& root) {
+	Item* item;
+	
+    for (Json::ValueIterator it = root.begin(); it != root.end(); it++) {
+		item = new Item();
+		item->deserialize(*it);
+        _equippedItems[it.key().asInt()] = item;
+    }
+}
+
+Item* ItemEquipper::replaceEquipment(Item* item, int slot) {
+	Item* oldItem = 0;
+	
+    if (_equippedItems.find(slot) != _equippedItems.end()) {
+        oldItem = _equippedItems[slot];
+    }
+	
+	_equippedItems[slot] = item;
+	return oldItem;
+}
+
+std::map<int, Item*> ItemEquipper::getEquippedItems() {
+	return _equippedItems;
+}
+
+Item* ItemEquipper::getItemInSlot(int slot) {
+    if (_equippedItems.find(slot) != _equippedItems.end()) {
+        return _equippedItems[slot];
+    } else {
+		return 0;
+	}
+}
+
+Item* ItemEquipper::removeEquipment(int slot){
+	return this->replaceEquipment(0, slot);
 }
 

@@ -50,7 +50,7 @@ class ItemHandler {
     std::map<int, Item*> _items;
 
 public:
-    ~ItemHandler();
+    virtual ~ItemHandler();
 	Json::Value serializeItems();
     void deserializeItems(Json::Value& root);
 
@@ -58,6 +58,22 @@ public:
     std::map<int, Item*> getItems();
     bool hasItem(int type, int count);
     bool removeItem(int type, int count);
+};
+
+
+class ItemEquipper {
+protected:
+    std::map<int, Item*> _equippedItems;
+	
+public:
+    virtual ~ItemEquipper();
+	Json::Value serializeEquippedItems();
+    void deserializeEquippedItems(Json::Value& root);
+	
+    std::map<int, Item*> getEquippedItems();
+    Item* getItemInSlot(int slot);
+    Item* removeEquipment(int slot);
+    Item* replaceEquipment(Item* item, int slot);
 };
 
 #endif
