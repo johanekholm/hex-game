@@ -501,6 +501,11 @@ CallbackActionEquip::CallbackActionEquip(MapObject* object, UnitModel* unit) {
 void CallbackActionEquip::callbackVoid() {
 	DEBUGLOG("Equip that");
 	
+	if (_object->removeItem(_item, 1)) {
+		_object->addItem(_unit->replaceEquipment(Item::buildItem(_item, 1), _slot));
+	}
+	
+	SceneLoader::instance()->returnFromMenu();
 }
 
 void CallbackActionEquip::callbackNumber(int num) {

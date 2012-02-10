@@ -48,6 +48,8 @@ Json::Value UnitModel::serialize() {
     Json::Value root;
     
     Json::Value& actions = root["actions"];
+    Json::Value& equip = root["equip"];
+	
     root["x"] = _pos.x;
     root["y"] = _pos.y;
     root["ap"] = _ap;
@@ -65,6 +67,9 @@ Json::Value UnitModel::serialize() {
     for (std::map<int, BattleAction*>::iterator it = _actions.begin(); it != _actions.end(); ++it) {
         actions.append(it->first);
     }
+	
+	// serialize items
+	equip = this->serializeEquippedItems();
 
     return root;
 }
@@ -88,6 +93,8 @@ void UnitModel::deserialize(Json::Value& root) {
     for (Json::ValueIterator it = root["actions"].begin(); it != root["actions"].end(); it++) {
         this->addAction((*it).asInt());
     }
+	
+	this->deserializeEquippedItems(root["equip"]);
 }
 
 

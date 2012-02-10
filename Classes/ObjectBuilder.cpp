@@ -55,7 +55,7 @@ void ObjectBuilder::createMapObjectFromTemplate(const std::string& objectType, i
         
         actions.push_back(ActionNS::AACTION_MOVE); actions.push_back(ActionNS::AACTION_FIGHT);
         actions.push_back(ActionNS::AACTION_SHOP); actions.push_back(ActionNS::AACTION_ENTERDUNGEON);
-        actions.push_back(ActionNS::AACTION_INVENTORY);
+        actions.push_back(ActionNS::AACTION_INVENTORY); actions.push_back(ActionNS::AACTION_PARTYOPTIONS);
         object = new MapObject(MapObjectCategory::PARTY, pos, owner, layer, image, actions, units);
     } else {
         return;

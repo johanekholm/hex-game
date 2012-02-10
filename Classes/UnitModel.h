@@ -24,6 +24,7 @@
 #include <vector>
 #include <string>
 #include "toolkit.h"
+#include "Item.h"
 #include "Observable.h"
 #include "json-forwards.h"
 
@@ -40,7 +41,7 @@ struct UnitState {
     std::vector<ActionState> actions;
 };
 
-class UnitModel : public Observable {
+class UnitModel : public Observable, public ItemEquipper {
 	MPoint _pos;
     int _id;
 	int _ap;

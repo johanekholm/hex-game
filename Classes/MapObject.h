@@ -67,6 +67,7 @@ public:
     std::vector<ActionState> getActions();
 	int getId();
     int getLayer();
+	UnitModel* getMember(int unitId);
     std::vector<UnitModel*> getMembers();
     int getOwner();
     int getVisualType();

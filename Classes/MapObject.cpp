@@ -190,6 +190,15 @@ int MapObject::getLayer() {
     return _layer;
 }
 
+UnitModel* MapObject::getMember(int unitId) {
+	for (std::vector<UnitModel*>::iterator it = _memberUnits.begin(); it != _memberUnits.end(); ++it) {
+        if (*it != 0 && (*it)->getId() == unitId) {
+			return *it;
+		}
+    }
+	return 0;
+}
+
 std::vector<UnitModel*> MapObject::getMembers() {
     return _memberUnits;
 }
