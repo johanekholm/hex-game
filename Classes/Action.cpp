@@ -502,6 +502,7 @@ void CallbackActionEquip::callbackVoid() {
 	DEBUGLOG("Equip that");
 	
 	if (_object->removeItem(_item, 1)) {
+		// add new item to equipment and move old equipment to inventory
 		_object->addItem(_unit->replaceEquipment(Item::buildItem(_item, 1), _slot));
 	}
 	
@@ -525,12 +526,21 @@ std::vector<MenuChoice> CallbackActionEquip::getChoices() {
 	MenuChoice node;
     std::vector<MenuChoice> choices;
 	std::map<int, Item*> items;
+	Item* item;
+	std::string itemDescription;
 
     if (_slot == 0) {
-		node.choiceId = 1; node.label = "RIGHT HAND"; choices.push_back(node);
-		node.choiceId = 2; node.label = "LEFT HAND"; choices.push_back(node);
-		node.choiceId = 3; node.label = "HEAD"; choices.push_back(node);
-		node.choiceId = 4; node.label = "BODY"; choices.push_back(node);
+		item = _unit->getItemInSlot(1); node.choiceId = 1; 
+		node.label.assign("RIGHT HAND: ").append((item == 0) ? "EMPTY":item->getDescription()); choices.push_back(node);
+		
+		item = _unit->getItemInSlot(2); node.choiceId = 2; 
+		node.label.assign("LEFT HAND: ").append((item == 0) ? "EMPTY":item->getDescription()); choices.push_back(node);
+		
+		item = _unit->getItemInSlot(3); node.choiceId = 3; 
+		node.label.assign("HEAD: ").append((item == 0) ? "EMPTY":item->getDescription()); choices.push_back(node);
+		
+		item = _unit->getItemInSlot(4); node.choiceId = 4; 
+		node.label.assign("BODY: ").append((item == 0) ? "EMPTY":item->getDescription()); choices.push_back(node);
 	} else {		
 		items = _object->getItems();
 		
