@@ -385,7 +385,7 @@ void AActionShop::callbackNumber(int num) {
     
     if (num != -1) {
         if (_object->removeItem(ItemNS::SILVER, 6)) {
-            _object->addItem(Item::buildItem(num, 1));
+            _object->addItem(new Item(num, 1));
             SceneLoader::instance()->returnFromMenu();
             CentralControl::instance()->switchMode(ControlMode::ADVENTURE);                
         } else {
@@ -503,7 +503,7 @@ void CallbackActionEquip::callbackVoid() {
 	
 	if (_object->removeItem(_item, 1)) {
 		// add new item to equipment and move old equipment to inventory
-		_object->addItem(_unit->replaceEquipment(Item::buildItem(_item, 1), _slot));
+		_object->addItem(_unit->replaceEquipment(new Item(_item, 1), _slot));
 	}
 	
 	SceneLoader::instance()->returnFromMenu();

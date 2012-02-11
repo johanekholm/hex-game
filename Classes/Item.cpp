@@ -12,6 +12,30 @@
 #include <iostream>
 #include <sstream>
 
+std::map<int, ItemTemplate*> ItemTemplate::_templates = ItemTemplate::initTemplates();
+
+std::map<int, ItemTemplate*> ItemTemplate::initTemplates() {
+	using namespace ItemNS;
+	std::map<int, ItemTemplate*> templates;
+	
+	templates[SILVER] =		new ItemTemplate(SWORD, "SILVER", 0, 0, 0, 0);
+	templates[SWORD] =		new ItemTemplate(SWORD, "SWORD", 0, 0, 1, 0);
+	templates[SHIELD] =		new ItemTemplate(SWORD, "SHIELD", 0, 0, 0, 1);
+	templates[HELMET] =		new ItemTemplate(SWORD, "HELMET", 0, 0, 0, 1);
+	templates[CHAIN_MAIL] = new ItemTemplate(SWORD, "CHAIN MAIL", 0, 0, 0, 1);
+	templates[POTION] =		new ItemTemplate(SWORD, "POTION", 0, 0, 0, 0);
+
+	return templates;
+}
+
+ItemTemplate* ItemTemplate::getTemplate(int type) {
+	if (_templates.find(type) != _templates.end()) {
+        return _templates[type];
+    } else {
+		return 0;
+	}
+}
+
 ItemTemplate::ItemTemplate() {
 	_type = 0;
 	_name = "";
@@ -28,6 +52,10 @@ ItemTemplate::ItemTemplate(int type, std::string name, int hp, int power, int sk
 	_powerBonus = power;
 	_skillBonus = skill;
 	_defenseBonus = defense;
+}
+
+std::string ItemTemplate::getName() {
+	return _name;
 }
 
 int ItemTemplate::getStatBonus(int stat) {
@@ -57,19 +85,16 @@ Item::~Item() {
 
 Item::Item() {
 	_type = 0;
-	_name = "";
 	_count = 0;
-	_equipable = false;
 }
 
-Item::Item(int type, int count, std::string name, bool equipable) {
+Item::Item(int type, int count) {
     _type = type;
-    _name = name;
     _count = count;
-    _equipable = equipable;
+	_template = ItemTemplate::getTemplate(type);
 }
 
-Item* Item::buildItem(int type, int count) {
+/*Item* Item::buildItem(int type, int count) {
     using namespace ItemNS;
     
     switch (type) {
@@ -89,14 +114,12 @@ Item* Item::buildItem(int type, int count) {
     }
     
     return 0;
-}
+}*/
 
 Json::Value Item::serialize() {
     Json::Value root;
     root["type"] = _type;
     root["count"] = _count;
-    root["name"] = _name;
-    root["equip"] = _equipable;
 	
     return root;
 }
@@ -104,8 +127,7 @@ Json::Value Item::serialize() {
 void Item::deserialize(Json::Value& root) {
     _type = root.get("type", 0).asInt();
     _count = root.get("count", 0).asInt();
-    _name = root.get("name", 0).asString();
-    _equipable = root.get("equip", 0).asBool();
+	_template = ItemTemplate::getTemplate(_type);
 }
 
 
@@ -125,7 +147,7 @@ int Item::getCount() {
 std::string Item::getDescription() {
     std::stringstream stream;
 
-    stream << _count << " " << _name;
+    stream << _count << " " << _template->getName();
     return stream.str();
 }
 

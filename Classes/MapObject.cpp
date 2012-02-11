@@ -32,8 +32,8 @@ MapObject::MapObject(int category, MPoint pos, int owner, int layer, int visualT
         this->addAction(*it);
     }
     
-    this->addItem(Item::buildItem(ItemNS::SWORD, 1));
-    this->addItem(Item::buildItem(ItemNS::SILVER, 10));
+    this->addItem(new Item(ItemNS::SWORD, 1));
+    this->addItem(new Item(ItemNS::SILVER, 10));
 }
 
 Json::Value MapObject::serialize() {

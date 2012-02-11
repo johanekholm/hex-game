@@ -19,10 +19,15 @@ namespace ItemNS {
     const int POTION    = 3;
     const int RING      = 4;
     const int SILVER    = 5;
+	const int HELMET	= 6;
+	const int CHAIN_MAIL = 7;
 };
+
 
 class ItemTemplate {
 protected:
+	static std::map<int, ItemTemplate*> _templates;
+
     int _type;
     bool _equipable;
     std::string _name;
@@ -30,25 +35,27 @@ protected:
 	int _powerBonus;
 	int _skillBonus;
 	int _defenseBonus;
-
+	
 public:
+	static std::map<int, ItemTemplate*> initTemplates();
+	static ItemTemplate* getTemplate(int type);
 	ItemTemplate();
 	ItemTemplate(int type, std::string name, int hp, int power, int skill, int defense);
+	std::string getName();
 	int getStatBonus(int stat);
 };
 
 class Item {
     int _type;
     int _count;
-    bool _equipable;
-    std::string _name;
+	ItemTemplate* _template;
     
 public:
 	~Item();
 	Item();
-	Item(int type, int count, std::string name, bool equipable);
+	Item(int type, int count);
     
-    static Item* buildItem(int type, int count);
+    //static Item* buildItem(int type, int count);
 	Json::Value serialize();
     void deserialize(Json::Value& root);
 
