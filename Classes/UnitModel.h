@@ -32,6 +32,14 @@ class Action;
 class BattleAction;
 struct ActionState;
 
+namespace Stats {
+	const int POWER = 1;
+	const int SKILL = 2;
+	const int DEFENSE = 3;
+	const int MAXHP = 4;
+	const int MAXAP = 5;
+};
+
 struct UnitState {
     MPoint pos;
     int ap;

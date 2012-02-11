@@ -8,8 +8,48 @@
 #include "Item.h"
 #include "toolkit.h"
 #include "json.h"
+#include "UnitModel.h"
 #include <iostream>
 #include <sstream>
+
+ItemTemplate::ItemTemplate() {
+	_type = 0;
+	_name = "";
+	_hpBonus = 0;
+	_powerBonus = 0;
+	_skillBonus = 0;
+	_defenseBonus = 0;	
+}
+
+ItemTemplate::ItemTemplate(int type, std::string name, int hp, int power, int skill, int defense) {
+	_type = type;
+	_name = name;
+	_hpBonus = hp;
+	_powerBonus = power;
+	_skillBonus = skill;
+	_defenseBonus = defense;
+}
+
+int ItemTemplate::getStatBonus(int stat) {
+	using namespace Stats;
+	
+	switch (stat) {
+		case POWER:
+			return _powerBonus;
+		case SKILL:
+			return _skillBonus;
+		case DEFENSE:
+			return _defenseBonus;
+		case MAXHP:
+			return _hpBonus;
+			
+		default:
+			return 0;
+	}
+}
+
+/*---------------------------------------------------------------*/
+
 
 Item::~Item() {
 

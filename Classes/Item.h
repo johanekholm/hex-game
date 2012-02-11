@@ -21,6 +21,21 @@ namespace ItemNS {
     const int SILVER    = 5;
 };
 
+class ItemTemplate {
+protected:
+    int _type;
+    bool _equipable;
+    std::string _name;
+	int _hpBonus;
+	int _powerBonus;
+	int _skillBonus;
+	int _defenseBonus;
+
+public:
+	ItemTemplate();
+	ItemTemplate(int type, std::string name, int hp, int power, int skill, int defense);
+	int getStatBonus(int stat);
+};
 
 class Item {
     int _type;
