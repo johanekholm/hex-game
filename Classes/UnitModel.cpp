@@ -128,7 +128,7 @@ void UnitModel::defend(UnitModel* attacker, int power, int skill, int attackType
     int skillDiff, damage, roll;
     
     damage = 0;
-    skillDiff = skill - this->getStat(STAT_DEFENSE);
+    skillDiff = skill - this->getStat(StatNS::DEFENSE);
     
     for (int i=0; i < power; i++) {
         roll = rand() % 8 + 1;
@@ -199,7 +199,7 @@ void UnitModel::fire(const MPoint& targetPos) {
     target = ModelManager::instance()->getUnitAtPos(targetPos);
     
     if (target != 0) {
-        target->defend(this, this->getStat(STAT_POWER), this->getStat(STAT_SKILL), ATTACK_TYPE_PIERCE);    
+        target->defend(this, this->getStat(StatNS::POWER), this->getStat(StatNS::SKILL), ATTACK_TYPE_PIERCE);    
     }
 }
 
@@ -246,19 +246,19 @@ MPoint UnitModel::getPosition() {
 
 int UnitModel::getStat(int stat) {
     switch (stat) {
-        case STAT_POWER:
-            return _basePower;
+        case StatNS::POWER:
+            return _basePower + this->getStatBonus(stat);
 
-        case STAT_SKILL:
-            return _baseSkill;
+        case StatNS::SKILL:
+            return _baseSkill + this->getStatBonus(stat);
 
-        case STAT_DEFENSE:
-            return _baseDefense;
+        case StatNS::DEFENSE:
+            return _baseDefense + this->getStatBonus(stat);
 
-        case STAT_MAXHP:
-            return _maxHp;
+        case StatNS::MAXHP:
+            return _maxHp + this->getStatBonus(stat);
 
-        case STAT_MAXAP:
+        case StatNS::MAXAP:
             return _maxAp;
 
         default:
@@ -337,12 +337,12 @@ void UnitModel::strike(const MPoint& targetPos) {
     
     target = ModelManager::instance()->getUnitAtPos(targetPos);
     if (target != 0) {
-        target->defend(this, this->getStat(STAT_POWER), this->getStat(STAT_SKILL), ATTACK_TYPE_SLICE);    
+        target->defend(this, this->getStat(StatNS::POWER), this->getStat(StatNS::SKILL), ATTACK_TYPE_SLICE);    
     }
 }
 
 void UnitModel::tick() {
-    if (this->_ap < this->getStat(STAT_MAXAP)) {
+    if (this->_ap < this->getStat(StatNS::MAXAP)) {
         this->_ap += 1;
         this->doAI();
         this->updateObservers();

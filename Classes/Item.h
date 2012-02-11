@@ -62,6 +62,7 @@ public:
     bool decreaseCount(int decrease);
     std::string getDescription();
     int getCount();
+	int getStatBonus(int stat);
     int getType();
     void increaseCount(int increase);
 };
@@ -94,6 +95,7 @@ public:
 	
     std::map<int, Item*> getEquippedItems();
     Item* getItemInSlot(int slot);
+	int getStatBonus(int stat);
     Item* removeEquipment(int slot);
     Item* replaceEquipment(Item* item, int slot);
 };

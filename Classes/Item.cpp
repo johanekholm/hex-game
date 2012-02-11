@@ -59,7 +59,7 @@ std::string ItemTemplate::getName() {
 }
 
 int ItemTemplate::getStatBonus(int stat) {
-	using namespace Stats;
+	using namespace StatNS;
 	
 	switch (stat) {
 		case POWER:
@@ -94,28 +94,6 @@ Item::Item(int type, int count) {
 	_template = ItemTemplate::getTemplate(type);
 }
 
-/*Item* Item::buildItem(int type, int count) {
-    using namespace ItemNS;
-    
-    switch (type) {
-        case SWORD:
-            return new Item(type, count, "SWORD", true);
-        case SHIELD:
-            return new Item(type, count, "SHIELD", true);
-        case POTION:
-            return new Item(type, count, "POTION", false);
-        case RING:
-            return new Item(type, count, "RING", true);
-        case SILVER:
-            return new Item(type, count, "SILVER", true);
-
-        default:
-            break;
-    }
-    
-    return 0;
-}*/
-
 Json::Value Item::serialize() {
     Json::Value root;
     root["type"] = _type;
@@ -149,6 +127,10 @@ std::string Item::getDescription() {
 
     stream << _count << " " << _template->getName();
     return stream.str();
+}
+
+int Item::getStatBonus(int stat) {
+	return _template->getStatBonus(stat);
 }
 
 int Item::getType() {
@@ -197,10 +179,6 @@ void ItemHandler::addItem(Item* item) {
             _items[item->getType()]->increaseCount(item->getCount());
         }
     }
-    
-    /*for (std::map<int, Item*>::iterator it = _items.begin(); it != _items.end(); ++it) {
-        DEBUGLOG("An Item: %s", it->second->getDescription().c_str());
-    }*/
 }
 
 std::map<int, Item*> ItemHandler::getItems() {
@@ -277,6 +255,16 @@ Item* ItemEquipper::getItemInSlot(int slot) {
     } else {
 		return 0;
 	}
+}
+
+int ItemEquipper::getStatBonus(int stat) {
+	int bonus = 0;
+	
+	for (std::map<int, Item*>::iterator it = _equippedItems.begin(); it != _equippedItems.end(); ++it) {
+        bonus += (it->second == 0) ? 0 : it->second->getStatBonus(stat);
+    }
+	DEBUGLOG("Bonus for stat %i is %i", stat, bonus);
+	return bonus;
 }
 
 Item* ItemEquipper::removeEquipment(int slot){

@@ -14,12 +14,12 @@
 #define ATTACK_TYPE_PIERCE 2
 #define ATTACK_TYPE_FIRE 3
 
-#define STAT_POWER 1
+/*#define STAT_POWER 1
 #define STAT_SKILL 2
 #define STAT_DEFENSE 3
 #define STAT_MAXHP 4
 #define STAT_MAXAP 5
-
+*/
 #include <map>
 #include <vector>
 #include <string>
@@ -32,7 +32,7 @@ class Action;
 class BattleAction;
 struct ActionState;
 
-namespace Stats {
+namespace StatNS {
 	const int POWER = 1;
 	const int SKILL = 2;
 	const int DEFENSE = 3;

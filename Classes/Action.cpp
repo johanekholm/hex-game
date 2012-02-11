@@ -499,13 +499,12 @@ CallbackActionEquip::CallbackActionEquip(MapObject* object, UnitModel* unit) {
 }
 
 void CallbackActionEquip::callbackVoid() {
-	DEBUGLOG("Equip that");
 	
 	if (_object->removeItem(_item, 1)) {
 		// add new item to equipment and move old equipment to inventory
 		_object->addItem(_unit->replaceEquipment(new Item(_item, 1), _slot));
 	}
-	
+
 	SceneLoader::instance()->returnFromMenu();
 }
 
