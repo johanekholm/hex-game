@@ -32,8 +32,7 @@ protected:
     std::vector<ActionView> _actionPoints;
 
 	void drawActions(const GPoint& cameraPos);	
-    ActionState* getTouchedActionState(GPoint point);
-    ActionView* getTouchedActionView(GPoint point);
+	ActionView* getTouchedActionView(const TouchEvent& event);
 	void updateActions(std::vector<ActionState>& actionStates);
 	void updatePosition(const MPoint& pos);
     virtual void updateState() = 0;

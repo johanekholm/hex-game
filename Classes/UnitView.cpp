@@ -50,18 +50,18 @@ void UnitViewController::drawGUI(const GPoint& cameraPos) {
 }
 
 bool UnitViewController::handleEvent(const TouchEvent& event) {
-    ActionState* statePoint;
+	ActionView* action;
     
 	if (event.type == 3) {
-        statePoint = this->getTouchedActionState(event.point);
-        
-        if (statePoint != 0) {
-            _unitModel->doAction(*statePoint);
+		action = this->getTouchedActionView(event);
+
+        if (action != 0) {
+            _unitModel->doAction(*(action->statePoint));
         }
 	}
     
     if (event.type == 2) {
-        _selectedActionView = this->getTouchedActionView(event.point);
+        _selectedActionView = this->getTouchedActionView(event);
 	}
 	return true;
 }
