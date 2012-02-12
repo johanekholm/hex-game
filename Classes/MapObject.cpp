@@ -21,6 +21,7 @@ MapObject::~MapObject() {
 MapObject::MapObject() {}
 
 MapObject::MapObject(int category, MPoint pos, int owner, int layer, int visualType, std::vector<int> actionIds, const std::vector<UnitModel*>& members) {
+	_id = 0;
     _category = category;
     _pos = pos;
     _owner = owner;
@@ -121,7 +122,6 @@ void MapObject::doAI() {
     std::vector<ActionState> actionPoints, offensives, movements;
 	
     if (_owner == 2 && _category == MapObjectCategory::PARTY) {
-		DEBUGLOG("Does AI for enemy party");
         actionPoints = this->getActions();
         
         for (std::vector<ActionState>::iterator it = actionPoints.begin(); it != actionPoints.end(); ++it) {
