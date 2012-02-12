@@ -263,7 +263,6 @@ int ItemEquipper::getStatBonus(int stat) {
 	for (std::map<int, Item*>::iterator it = _equippedItems.begin(); it != _equippedItems.end(); ++it) {
         bonus += (it->second == 0) ? 0 : it->second->getStatBonus(stat);
     }
-	DEBUGLOG("Bonus for stat %i is %i", stat, bonus);
 	return bonus;
 }
 

@@ -81,19 +81,11 @@ CentralControl::CentralControl() {
 
 void CentralControl::update() {
 	TouchEvent event;
-    int loser = 0;
 	
     if (_mode == ControlMode::BATTLE || _mode == ControlMode::BATTLE_FOCUS) {
         if (++_timer >= 30) {
             _timer = 0;
             ModelManager::instance()->tick();
-            
-            /*loser = ModelManager::instance()->getOwnerWithNoUnits();
-            if (loser != 0) {
-                this->switchMode(ControlMode::ADVENTURE);
-                SceneLoader::instance()->switchToAdventureScene();
-                MessageView::add(GPointMake(160.0f, 240.0f), "VICTORY!");
-            }*/
         }        
     } else if (_mode == ControlMode::ADVENTURE && _turnEnded) {
 		_turnEnded = false;

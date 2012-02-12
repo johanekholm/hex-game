@@ -330,14 +330,14 @@ void AActionInventory::doIt(const ActionState& statePoint) {
 void AActionInventory::callbackNumber(int num) {
     MenuChoice menuItem;
     std::vector<MenuChoice> choices;
-    DEBUGLOG("Chose item %i", num);
+
     SceneLoader::instance()->returnFromMenu();
     CentralControl::instance()->switchMode(ControlMode::ADVENTURE);
 	std::vector<UnitModel*> units;
 
 	switch (num) {
 		case ItemNS::POTION:
-			DEBUGLOG("Do potion");
+
 			units = _object->getMembers();
 			
 			for (std::vector<UnitModel*>::iterator it = units.begin(); it != units.end(); ++it) {
@@ -445,7 +445,6 @@ void AActionPartyOptions::doIt(const ActionState& statePoint) {
 	unitNodes.push_back(new BackButtonMenuNodeVC(0, "BACK", GPointMake(160.0f, 400.0f), 120.0f, 32.0f));
 	
     rootNode = new ParentMenuNodeVC(0, "ROOT", unitNodes, GPointMake(0.0f, 0.0f), 80.0f, 32.0f);
-	DEBUGLOG("Party options");
     
     SceneLoader::instance()->switchToMenu(new MenuViewController(rootNode));
     CentralControl::instance()->switchMode(ControlMode::MENU);
@@ -463,7 +462,6 @@ CallbackActionUseItemOnMap::CallbackActionUseItemOnMap(MapObject* object, int it
 void CallbackActionUseItemOnMap::callbackNumber(int num) {
 	std::vector<UnitModel*> units = _object->getMembers();
 	UnitModel* unit = 0;
-	DEBUGLOG("Callback do item");
 
 	SceneLoader::instance()->returnFromMenu();
     CentralControl::instance()->switchMode(ControlMode::ADVENTURE);
@@ -480,7 +478,6 @@ void CallbackActionUseItemOnMap::callbackNumber(int num) {
 			case ItemNS::POTION:
 				unit->inflictDamage(-3);
 				_object->removeItem(ItemNS::POTION, 1);
-				DEBUGLOG("Healing potion");
 				break;
 				
 			default:
@@ -514,7 +511,6 @@ void CallbackActionEquip::callbackNumber(int num) {
 	} else {
 		_item = num;
 	}
-	DEBUGLOG("Slot is: %i, Item is: %i", _slot, _item);
 }
 
 bool CallbackActionEquip::isInputRequired() {

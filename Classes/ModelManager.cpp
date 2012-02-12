@@ -57,7 +57,7 @@ void ModelManager::addMapObject(MapObject* object) {
     }
     
 	objectId = object->getId();
-	DEBUGLOG("Adding object with id: %i", objectId);
+
     if (objectId > 0) {
 		if (_objectIdCounter < objectId) {
 			_objectIdCounter = objectId;

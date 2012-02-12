@@ -45,7 +45,6 @@ void Sound::add(const std::string &name, const std::string &filename) {
 void Sound::play(const std::string &name) {
     soundmap::const_iterator it = d->catalog.find(name);
     if (it == d->catalog.end()) {
-        DEBUGLOG("No sound added for '%s'", name.c_str());
         return;
     }
     playImpl(d->catalog[name].front());

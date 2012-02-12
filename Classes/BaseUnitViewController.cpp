@@ -31,7 +31,6 @@ BaseUnitViewController::BaseUnitViewController(GLfloat width, GLfloat height, in
 }
 
 void BaseUnitViewController::destroyed() {
-	DEBUGLOG("model destroyed: %x", this);
     ViewControllerManager::instance()->removeSoft(this);	
 }
 

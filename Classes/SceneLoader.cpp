@@ -173,7 +173,6 @@ void SceneLoader::returnUnitsToParties(std::vector<UnitModel*> units) {
 
 void SceneLoader::loadBattleScene(const std::string& sceneId, MapObject* party1, MapObject* party2) {
     std::vector<UnitModel*> party1Members, party2Members;
-	DEBUGLOG("New battle loader");
 	
 	this->removeUnitsFromParties(party1, party2, &party1Members, &party2Members);
 	

@@ -46,13 +46,11 @@ void ScriptManager::add(ScriptedAction* script) {
 
     _scriptedActions[stream.str()] = script;
     EventManager::instance()->addObserver(script);
-    DEBUGLOG("Script registered: %x", script);
 }
 
 void ScriptManager::add(std::string& key, ScriptedAction* script) {
     _scriptedActions[key] = script;
     EventManager::instance()->addObserver(script);
-    DEBUGLOG("Script registered: %s", key.c_str());
 }
 
 void ScriptManager::activate(std::string& key) {
@@ -60,7 +58,6 @@ void ScriptManager::activate(std::string& key) {
 }
 
 void ScriptManager::clear() {
-    DEBUGLOG("Clearing scripts");
     EventManager* eventManager = EventManager::instance();
     for (std::map<std::string, ScriptedAction*>::iterator it = _scriptedActions.begin(); it != _scriptedActions.end(); ++it) {
         eventManager->removeObserver(it->second);
@@ -108,19 +105,13 @@ void ScriptedAction::destroyed() {}
 EndBattleSA::EndBattleSA(const ModelEvent& triggerEvent) : ScriptedAction(triggerEvent) {}
 
 void EndBattleSA::doAction() {
-    DEBUGLOG("Ending battle - menu");
-    //SceneLoader::instance()->switchToTransition(new FadeOutTransition(*this));
-    //CentralControl::instance()->switchMode(ControlMode::MENU);
 	SceneLoader::instance()->switchToMenu(new TextboxMenuVC(*this, "YOU GOT 5 SILVER", "OK"));
     CentralControl::instance()->switchMode(ControlMode::MENU);
 }
 
 void EndBattleSA::callbackVoid() {
-    DEBUGLOG("Ending battle - Load scene");
-    //CentralControl::instance()->switchMode(ControlMode::ADVENTURE);
 	SceneLoader::instance()->returnFromMenu();
     SceneLoader::instance()->returnToAdventureScene();
-    //SceneLoader::instance()->loadPrevious();
 }
 
 

@@ -132,7 +132,6 @@ void UnitModel::defend(UnitModel* attacker, int power, int skill, int attackType
     
     for (int i=0; i < power; i++) {
         roll = rand() % 8 + 1;
-        DEBUGLOG("%i + %i", roll, skillDiff);
         
         if (roll + skillDiff >= 5 || roll == 8) {
             damage++;

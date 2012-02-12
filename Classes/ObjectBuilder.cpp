@@ -132,7 +132,6 @@ void ObjectBuilder::createMapFromJson(Json::Value& data) {
     mapModel->deserialize(data);
     
     registerMap(mapModel);
-    DEBUGLOG("Map created from Json");
 }
 
 void ObjectBuilder::createMapObjectFromJson(Json::Value& data) {
@@ -140,7 +139,6 @@ void ObjectBuilder::createMapObjectFromJson(Json::Value& data) {
     object->deserialize(data);
     
     registerMapObject(object);
-    DEBUGLOG("Map object created from Json");
 }
 
 void ObjectBuilder::createUnitFromJson(Json::Value& data) {
@@ -148,6 +146,5 @@ void ObjectBuilder::createUnitFromJson(Json::Value& data) {
     unit->deserialize(data);
     
     registerUnit(unit);
-    DEBUGLOG("Unit created from Json");
 }
 
