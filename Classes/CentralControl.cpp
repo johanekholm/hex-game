@@ -42,6 +42,7 @@ public:
 	ViewControllerManager* viewControllerManager;
 	ObjectBuilder* objectBuilder;
 	StringImage* stringImage;
+	bool turnEnded;
 };
 
 CentralControl* CentralControl::PrivateData::instance = 0;
@@ -149,10 +150,10 @@ void CentralControl::handleEventFocus(const TouchEvent& event) {
 		focus->handleEvent(event);
 	}
 	
-	if (event.type == 3) {
-		d->viewControllerManager->setFocus(0);
-		this->switchMode(1);
-	}
+	if (event.type == 3 && d->mode == ControlMode::BATTLE_FOCUS) {
+	    d->viewControllerManager->setFocus(0);
+		this->switchMode(ControlMode::BATTLE);
+	}	
 }
 
 void CentralControl::init() {
@@ -235,4 +236,8 @@ void CentralControl::update() {
 		}
 	}
 	d->viewControllerManager->update();
+}
+
+void CentralControl::nextTurn() {
+	d->turnEnded = true;
 }

@@ -12,6 +12,7 @@
 #include "toolkit.h"
 #include "Action.h"
 #include "ControlCallback.h"
+#include "SceneLoader.h"
 #include "ShapeImage.h"
 #include "StringImage.h"
 #include <string>
@@ -20,6 +21,14 @@
 MenuViewController::~MenuViewController() {
 	delete _background;
     delete _rootNode;
+}
+
+MenuViewController::MenuViewController(BaseMenuNodeVC* root) {
+    _background = new RectangleImage(RGBAMake(0.0f, 0.0f, 0.0f, 0.3f), _width, _height, true);
+    _rootNode = root;
+	_rootNode->setMenu(this);
+    _focus = _rootNode;
+    _focus->setFocus(true);    	
 }
 
 MenuViewController::MenuViewController() : ViewController(GPointMake(0.0f, 0.0f), 320.0f, 480.0f, MapLayer::ABOVE_GUI) {
@@ -49,7 +58,11 @@ void MenuViewController::drawGUI(const GPoint& cameraPos) {
 }
 
 void MenuViewController::goUp() {
-    this->setFocus(_focus->getParent());
+	if (_focus == _rootNode) {
+		SceneLoader::instance()->returnFromMenu();
+	} else {
+		this->setFocus(_focus->getParent());		
+	}
 }
 
 bool MenuViewController::handleEvent(const TouchEvent& event) {
@@ -100,6 +113,29 @@ void ChoiceMenuVC::reportChoice(int choiceId) {
 
 /*---------------------------------------------------------------*/
 
+TextboxMenuVC::TextboxMenuVC(ControlCallback& control, const std::string& text, const std::string& buttonLabel) : _returnControl(control) {
+    std::vector<BaseMenuNodeVC*> nodes;
+    GLfloat yStart = 340.0f;
+    
+    _width = 320.0f;
+    _height = 480.0f;
+    _background = new RectangleImage(RGBAMake(0.0f, 0.0f, 0.0f, 0.3f), _width, _height, true);
+	
+    nodes.push_back(new LeafMenuNodeVC(this, buttonLabel, -1, GPointMake(160.0f, yStart), 120.0f, 25.0f));
+    nodes.push_back(new TextMenuNodeVC(this, text, GPointMake(160.0f, yStart - 100.0f), 240.0f, 60.0f));
+	
+    _rootNode = new ParentMenuNodeVC(this, "ROOT", nodes, GPointMake(0.0f, 0.0f), 80.0f, 32.0f);
+    _focus = _rootNode;
+    _focus->setFocus(true);    
+}
+
+void TextboxMenuVC::reportChoice(int choiceId) {
+    _returnControl.callbackVoid();
+}
+
+
+/*---------------------------------------------------------------*/
+
 BaseMenuNodeVC::~BaseMenuNodeVC() {
     delete _button;
     delete _label;
@@ -118,7 +154,7 @@ void BaseMenuNodeVC::drawGUI(const GPoint& cameraPos) {
     _label->drawCenteredAt(_pos);
 }
 
-BaseMenuNodeVC* BaseMenuNodeVC::getParent() {
+ParentMenuNodeVC* BaseMenuNodeVC::getParent() {
     return _parentNode;
 }
 
@@ -126,15 +162,13 @@ void BaseMenuNodeVC::setMenu(MenuViewController* menuVC) {
     _menuVC = menuVC;
 }
 
-void BaseMenuNodeVC::setParent(BaseMenuNodeVC* parent) {
+void BaseMenuNodeVC::setParent(ParentMenuNodeVC* parent) {
     _parentNode = parent;
 }
 
 /*---------------------------------------------------------------*/
 
 LeafMenuNodeVC::~LeafMenuNodeVC() {
-    delete _button;
-    delete _label;
 }
 
 LeafMenuNodeVC::LeafMenuNodeVC(MenuViewController* menuVC, const std::string& label, int choiceId, const GPoint& pos, GLfloat width, GLfloat height) : BaseMenuNodeVC(menuVC, label, choiceId, pos, width, height) {
@@ -145,7 +179,7 @@ LeafMenuNodeVC::LeafMenuNodeVC(MenuViewController* menuVC, const std::string& la
 
 bool LeafMenuNodeVC::handleEvent(const TouchEvent& event) {
     if (event.type == 3 && this->isWithin(event.point)) {
-        _menuVC->reportChoice(_choiceId);
+        _parentNode->reportChoice(_choiceId);
         return true;
     }
     return false;
@@ -161,7 +195,7 @@ BackButtonMenuNodeVC::BackButtonMenuNodeVC(MenuViewController* menuVC, const std
 
 bool BackButtonMenuNodeVC::handleEvent(const TouchEvent& event) {
     if (event.type == 3 && this->isWithin(event.point)) {
-        _menuVC->goUp();
+        _parentNode->goUp();
         return true;
     }
     return false;
@@ -169,13 +203,20 @@ bool BackButtonMenuNodeVC::handleEvent(const TouchEvent& event) {
 
 /*---------------------------------------------------------------*/
 
+TextMenuNodeVC::TextMenuNodeVC(MenuViewController* menuVC, const std::string& label, const GPoint& pos, GLfloat width, GLfloat height) : BaseMenuNodeVC(menuVC, label, -1, pos, width, height) {
+    
+    _button = new RectangleImage(RGBAMake(0.5f, 0.5f, 0.5f, 1.0f), _width, _height, true);
+    _label = new StringImage(label, RGBAMakeWhite());
+}
+
+bool TextMenuNodeVC::handleEvent(const TouchEvent& event) {
+    return false;
+}
+
+/*---------------------------------------------------------------*/
+
 ParentMenuNodeVC::~ParentMenuNodeVC() {
-    delete _button;
-    delete _label;
-    for (std::vector<BaseMenuNodeVC*>::iterator it = _subNodes.begin(); it != _subNodes.end(); ++it) {
-        delete (*it);
-    }
-    _subNodes.clear();
+	this->destroySubNodes();
 }
 
 ParentMenuNodeVC::ParentMenuNodeVC(MenuViewController* menuVC, const std::string& label, const std::vector<BaseMenuNodeVC*>& subNodes, const GPoint& pos, GLfloat width, GLfloat height) : BaseMenuNodeVC(menuVC, label, -1, pos, width, height){
@@ -189,6 +230,14 @@ ParentMenuNodeVC::ParentMenuNodeVC(MenuViewController* menuVC, const std::string
     }
 }
 
+void ParentMenuNodeVC::destroySubNodes() {
+	for (std::vector<BaseMenuNodeVC*>::iterator it = _subNodes.begin(); it != _subNodes.end(); ++it) {
+        delete (*it);
+    }
+    _subNodes.clear();
+}
+
+
 void ParentMenuNodeVC::drawGUI(const GPoint& cameraPos) {
     if (!_hasFocus) {
         BaseMenuNodeVC::drawGUI(cameraPos);
@@ -197,6 +246,10 @@ void ParentMenuNodeVC::drawGUI(const GPoint& cameraPos) {
             (*it)->drawGUI(cameraPos);
         }
     }
+}
+
+void ParentMenuNodeVC::goUp() {
+	_menuVC->goUp();
 }
 
 bool ParentMenuNodeVC::handleEvent(const TouchEvent& event) {
@@ -215,5 +268,86 @@ bool ParentMenuNodeVC::handleEvent(const TouchEvent& event) {
     }
     return false;
 }
+
+void ParentMenuNodeVC::reportChoice(int choiceId) {
+	_menuVC->reportChoice(choiceId);
+}
+
+void ParentMenuNodeVC::setMenu(MenuViewController* menuVC) {
+    _menuVC = menuVC;
+	
+	for (std::vector<BaseMenuNodeVC*>::iterator it = _subNodes.begin(); it != _subNodes.end(); ++it) {
+		(*it)->setMenu(menuVC);
+	}
+}
+
+
+/*---------------------------------------------------------------*/
+
+ActionMenuNodeVC::~ActionMenuNodeVC() {
+	delete _action;
+}
+
+ActionMenuNodeVC::ActionMenuNodeVC(MenuActionCallback* action, MenuViewController* menuVC, const std::string& label, const std::vector<BaseMenuNodeVC*>& subNodes, const GPoint& pos, GLfloat width, GLfloat height) : ParentMenuNodeVC(menuVC, label, subNodes, pos, width, height) {
+	_action = action;
+}
+
+void ActionMenuNodeVC::buildSubNodes() {
+	std::vector<MenuChoice> choices = _action->getChoices();
+	int counter = 1;
+    GLfloat yStart = 440.0f;
+    
+	_subNodes.push_back(new BackButtonMenuNodeVC(_menuVC, "CANCEL", GPointMake(160.0f, yStart), 120.0f, 25.0f)); 
+	
+    for (std::vector<MenuChoice>::iterator it = choices.begin(); it != choices.end(); ++it) {
+        _subNodes.push_back(new LeafMenuNodeVC(_menuVC, (*it).label, (*it).choiceId, GPointMake(160.0f, yStart - counter*30.0f), 120.0f, 25.0f));
+        counter++;
+    }
+	
+	for (std::vector<BaseMenuNodeVC*>::iterator it = _subNodes.begin(); it != _subNodes.end(); ++it) {
+        (*it)->setParent(this);
+    }
+}
+
+void ActionMenuNodeVC::goUp() {
+	_action->reset();
+	_menuVC->goUp();
+}
+
+bool ActionMenuNodeVC::handleEvent(const TouchEvent& event) {
+    if (!_hasFocus) {
+        if (event.type == 3 && this->isWithin(event.point)) {
+			if (_action->isInputRequired()) {
+				this->buildSubNodes();
+				_menuVC->setFocus(this);
+				return true;         				
+			} else {
+				_action->callbackVoid();
+			}
+        }
+        return false;
+    } else {
+        for (std::vector<BaseMenuNodeVC*>::iterator it = _subNodes.begin(); it != _subNodes.end(); ++it) {
+            if ((*it)->handleEvent(event)) {
+                return true;
+            }
+        }
+    }
+    return false;	
+}
+
+void ActionMenuNodeVC::reportChoice(int choiceId) {
+	this->destroySubNodes();
+	
+	_action->callbackNumber(choiceId);
+	
+	if (_action->isInputRequired()) {
+		this->buildSubNodes();
+	} else {
+		_action->callbackVoid();
+	}
+}
+
+/*---------------------------------------------------------------*/
 
 

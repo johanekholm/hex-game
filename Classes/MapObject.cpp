@@ -21,6 +21,7 @@ MapObject::~MapObject() {
 MapObject::MapObject() {}
 
 MapObject::MapObject(int category, MPoint pos, int owner, int layer, int visualType, std::vector<int> actionIds, const std::vector<UnitModel*>& members) {
+	_id = 0;
     _category = category;
     _pos = pos;
     _owner = owner;
@@ -32,8 +33,8 @@ MapObject::MapObject(int category, MPoint pos, int owner, int layer, int visualT
         this->addAction(*it);
     }
     
-    this->addItem(Item::buildItem(ItemNS::SWORD, 1));
-    this->addItem(Item::buildItem(ItemNS::SILVER, 10));
+    this->addItem(new Item(ItemNS::SWORD, 1));
+    this->addItem(new Item(ItemNS::SILVER, 10));
 }
 
 Json::Value MapObject::serialize() {
@@ -41,6 +42,7 @@ Json::Value MapObject::serialize() {
     
     Json::Value& actions = root["actions"];
     Json::Value& members = root["members"];
+    Json::Value& items = root["items"];
     root["category"] = _category;
     root["owner"] = _owner;
     root["layer"] = _layer;
@@ -58,6 +60,9 @@ Json::Value MapObject::serialize() {
     for (std::vector<UnitModel*>::iterator it = _memberUnits.begin(); it != _memberUnits.end(); ++it) {
         members.append((*it)->serialize());
     }
+	
+	// serialize items
+	items = this->serializeItems();
     
     return root;
 }
@@ -82,6 +87,9 @@ void MapObject::deserialize(Json::Value& root) {
         unit->deserialize(*it);
         _memberUnits.push_back(unit);
     }
+	
+	// deserialize items
+	this->deserializeItems(root["items"]);
 
 }
 
@@ -89,6 +97,11 @@ void MapObject::deserialize(Json::Value& root) {
 AdventureAction* MapObject::addAction(int action) {
 	_actions[action] = AdventureAction::build(action, this);
 	return _actions[action];
+}
+
+UnitModel* MapObject::addMember(UnitModel* unit) {
+	_memberUnits.push_back(unit);
+	return unit;
 }
 
 bool MapObject::canMoveTo(const MPoint& pos) {
@@ -101,6 +114,54 @@ void MapObject::doAction(const ActionState& statePoint) {
 	if (_actions.find(statePoint.actionId) != _actions.end()) {
 		_actions[statePoint.actionId]->doIt(statePoint);
 	}    
+}
+
+void MapObject::doAI() {
+    bool hasOffensiveAction = false;
+    bool hasMovement = false;
+    std::vector<ActionState> actionPoints, offensives, movements;
+	
+    if (_owner == 2 && _category == MapObjectCategory::PARTY) {
+        actionPoints = this->getActions();
+        
+        for (std::vector<ActionState>::iterator it = actionPoints.begin(); it != actionPoints.end(); ++it) {
+            switch ((*it).actionType) {
+                case ActionNS::TYPE_ATTACK:
+                    hasOffensiveAction = true;
+                    if ((*it).active) {
+                        offensives.push_back(*it);                        
+                    }
+                    break;
+                    
+                case ActionNS::TYPE_MOVEMENT:
+                    hasMovement = true;
+                    movements.push_back(*it);
+                    break;
+                    
+                default:
+                    break;
+            }
+        }
+        
+        if (hasOffensiveAction) {
+            
+            // choose offensive action randomly
+            if (offensives.size() > 0) {
+                this->doAction(offensives.at(rand() % offensives.size()));
+            } else {
+                // unit has to wait until offensive action becomes active, do nothing this tick
+            }
+        } else {
+            // move about randomly
+            if (movements.size() > 0) {
+                this->doAction(movements.at(rand() % movements.size()));
+            }
+        }
+    }
+}
+
+void MapObject::doTurn() {
+	this->doAI();
 }
 
 std::vector<ActionState> MapObject::getActions() {
@@ -121,8 +182,21 @@ std::vector<ActionState> MapObject::getActions() {
 	return actionPoints;
 }
 
+int MapObject::getId() {
+    return _id;
+}
+
 int MapObject::getLayer() {
     return _layer;
+}
+
+UnitModel* MapObject::getMember(int unitId) {
+	for (std::vector<UnitModel*>::iterator it = _memberUnits.begin(); it != _memberUnits.end(); ++it) {
+        if (*it != 0 && (*it)->getId() == unitId) {
+			return *it;
+		}
+    }
+	return 0;
 }
 
 std::vector<UnitModel*> MapObject::getMembers() {

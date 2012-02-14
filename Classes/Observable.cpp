@@ -38,4 +38,5 @@ void Observable::updateObserversDestroyed() {
 	for (std::vector<IObserver*>::iterator it = _observers.begin(); it != _observers.end(); ++it) {
 		(*it)->destroyed();
 	}
+	_observers.clear();
 }

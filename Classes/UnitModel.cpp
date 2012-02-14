@@ -36,6 +36,7 @@ UnitModel::UnitModel(int x, int y, int owner, int maxHp, int maxAp, int power, i
     _baseDefense = defense;
     _target = 0;
     _visualType = visualType;
+	_name = "UNIT";
 
     for (std::vector<int>::iterator it = actionIds.begin(); it != actionIds.end(); ++it) {
         this->addAction(*it);
@@ -47,6 +48,8 @@ Json::Value UnitModel::serialize() {
     Json::Value root;
     
     Json::Value& actions = root["actions"];
+    Json::Value& equip = root["equip"];
+	
     root["x"] = _pos.x;
     root["y"] = _pos.y;
     root["ap"] = _ap;
@@ -64,6 +67,9 @@ Json::Value UnitModel::serialize() {
     for (std::map<int, BattleAction*>::iterator it = _actions.begin(); it != _actions.end(); ++it) {
         actions.append(it->first);
     }
+	
+	// serialize items
+	equip = this->serializeEquippedItems();
 
     return root;
 }
@@ -81,11 +87,14 @@ void UnitModel::deserialize(Json::Value& root) {
     _owner = root.get("owner", 0).asInt();
     _visualType = root.get("visualType", 0).asInt();
     _id = root.get("id", 0).asInt();
+	_name = "UNIT";
     
     // deserialize actions
     for (Json::ValueIterator it = root["actions"].begin(); it != root["actions"].end(); it++) {
         this->addAction((*it).asInt());
     }
+	
+	this->deserializeEquippedItems(root["equip"]);
 }
 
 
@@ -119,11 +128,10 @@ void UnitModel::defend(UnitModel* attacker, int power, int skill, int attackType
     int skillDiff, damage, roll;
     
     damage = 0;
-    skillDiff = skill - this->getStat(STAT_DEFENSE);
+    skillDiff = skill - this->getStat(StatNS::DEFENSE);
     
     for (int i=0; i < power; i++) {
         roll = rand() % 8 + 1;
-        DEBUGLOG("%i + %i", roll, skillDiff);
         
         if (roll + skillDiff >= 5 || roll == 8) {
             damage++;
@@ -190,7 +198,7 @@ void UnitModel::fire(const MPoint& targetPos) {
     target = ModelManager::instance()->getUnitAtPos(targetPos);
     
     if (target != 0) {
-        target->defend(this, this->getStat(STAT_POWER), this->getStat(STAT_SKILL), ATTACK_TYPE_PIERCE);    
+        target->defend(this, this->getStat(StatNS::POWER), this->getStat(StatNS::SKILL), ATTACK_TYPE_PIERCE);    
     }
 }
 
@@ -214,6 +222,18 @@ std::vector<ActionState> UnitModel::getActions() {
 	return actionPoints;
 }
 
+std::string UnitModel::getDescription() {
+    std::stringstream stream;
+	
+    stream << _name << " " << _hp << "/" << _maxHp;
+    return stream.str();
+}
+
+
+int UnitModel::getId() {
+	return _id;
+}
+
 int UnitModel::getOwner() {
 	return _owner;
 }
@@ -225,19 +245,19 @@ MPoint UnitModel::getPosition() {
 
 int UnitModel::getStat(int stat) {
     switch (stat) {
-        case STAT_POWER:
-            return _basePower;
+        case StatNS::POWER:
+            return _basePower + this->getStatBonus(stat);
 
-        case STAT_SKILL:
-            return _baseSkill;
+        case StatNS::SKILL:
+            return _baseSkill + this->getStatBonus(stat);
 
-        case STAT_DEFENSE:
-            return _baseDefense;
+        case StatNS::DEFENSE:
+            return _baseDefense + this->getStatBonus(stat);
 
-        case STAT_MAXHP:
-            return _maxHp;
+        case StatNS::MAXHP:
+            return _maxHp + this->getStatBonus(stat);
 
-        case STAT_MAXAP:
+        case StatNS::MAXAP:
             return _maxAp;
 
         default:
@@ -316,12 +336,12 @@ void UnitModel::strike(const MPoint& targetPos) {
     
     target = ModelManager::instance()->getUnitAtPos(targetPos);
     if (target != 0) {
-        target->defend(this, this->getStat(STAT_POWER), this->getStat(STAT_SKILL), ATTACK_TYPE_SLICE);    
+        target->defend(this, this->getStat(StatNS::POWER), this->getStat(StatNS::SKILL), ATTACK_TYPE_SLICE);    
     }
 }
 
 void UnitModel::tick() {
-    if (this->_ap < this->getStat(STAT_MAXAP)) {
+    if (this->_ap < this->getStat(StatNS::MAXAP)) {
         this->_ap += 1;
         this->doAI();
         this->updateObservers();

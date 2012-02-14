@@ -46,16 +46,16 @@ void ObjectBuilder::createMapObjectFromTemplate(const std::string& objectType, i
         if (owner == 1) {
             image = 1;
             units.push_back(produceUnit("swordsman", owner, MPointMake(1,1)));
-            units.push_back(produceUnit("channeler", owner, MPointMake(1,0)));
+            units.push_back(produceUnit("archer", owner, MPointMake(1,0)));
         } else {
             image = 6;
-            units.push_back(produceUnit("soldier", owner, MPointMake(3,2)));
-            units.push_back(produceUnit("archer", owner, MPointMake(3,3)));
+            units.push_back(produceUnit("soldier", owner, MPointMake(2,2)));
+            units.push_back(produceUnit("archer", owner, MPointMake(2,3)));
         }
         
         actions.push_back(ActionNS::AACTION_MOVE); actions.push_back(ActionNS::AACTION_FIGHT);
         actions.push_back(ActionNS::AACTION_SHOP); actions.push_back(ActionNS::AACTION_ENTERDUNGEON);
-        actions.push_back(ActionNS::AACTION_INVENTORY);
+        actions.push_back(ActionNS::AACTION_INVENTORY); actions.push_back(ActionNS::AACTION_PARTYOPTIONS);
         object = new MapObject(MapObjectCategory::PARTY, pos, owner, layer, image, actions, units);
     } else {
         return;
@@ -132,7 +132,6 @@ void ObjectBuilder::createMapFromJson(Json::Value& data) {
     mapModel->deserialize(data);
     
     registerMap(mapModel);
-    DEBUGLOG("Map created from Json");
 }
 
 void ObjectBuilder::createMapObjectFromJson(Json::Value& data) {
@@ -140,7 +139,6 @@ void ObjectBuilder::createMapObjectFromJson(Json::Value& data) {
     object->deserialize(data);
     
     registerMapObject(object);
-    DEBUGLOG("Map object created from Json");
 }
 
 void ObjectBuilder::createUnitFromJson(Json::Value& data) {
@@ -148,6 +146,5 @@ void ObjectBuilder::createUnitFromJson(Json::Value& data) {
     unit->deserialize(data);
     
     registerUnit(unit);
-    DEBUGLOG("Unit created from Json");
 }
 

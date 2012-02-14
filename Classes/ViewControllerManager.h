@@ -30,6 +30,7 @@ public:
 	void add(ViewController* view);
     GPoint adjustForCamera(const GPoint& pos);
     void centerCamera(const GPoint& pos);
+	void centerCamera(const MPoint& pos);
     void draw();
     void drawGUI();
     void drawMap();

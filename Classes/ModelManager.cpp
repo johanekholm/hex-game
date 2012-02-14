@@ -46,16 +46,29 @@ ModelManager::ModelManager() {
     _map = 0;
 	_unitIdCounter = 0;
     _objectIdCounter = 0;
+	_abortMapObjectIteration = false;
 }
 
 void ModelManager::addMapObject(MapObject* object) {
+	int objectId;
+	
     if (object == 0) {
         return;
     }
     
-    _objectIdCounter++;
-    _mapObjects[_objectIdCounter] = object;
-    object->setId(_objectIdCounter);
+	objectId = object->getId();
+
+    if (objectId > 0) {
+		if (_objectIdCounter < objectId) {
+			_objectIdCounter = objectId;
+		}
+		
+		_mapObjects[objectId] = object;
+	} else {
+		_objectIdCounter++;
+		_mapObjects[_objectIdCounter] = object;
+		object->setId(_objectIdCounter);
+	}
 }
 
 void ModelManager::addUnit(UnitModel* unit) {
@@ -128,6 +141,18 @@ int ModelManager::getDistanceToClosestEnemy(int owner, const MPoint& pos) {
     return minDistance;
 }
 
+MapObject* ModelManager::getMapObjectById(int mapObjectId) {
+    std::map<int, MapObject*>::iterator it;
+    
+    it = _mapObjects.find(mapObjectId);
+    
+    if (it != _mapObjects.end()) {
+        return it->second;
+    } else {
+        return 0;
+    }
+}
+
 MapObject* ModelManager::getMapObjectAtPos(const MPoint& pos) {
 	for (std::map<int, MapObject*>::iterator it = _mapObjects.begin(); it != _mapObjects.end(); ++it) {
 		if (it->second != 0) {
@@ -195,19 +220,34 @@ bool ModelManager::mapObjectExistAtPos(int category, const MPoint& pos) {
 }
 
 
-void ModelManager::removeAllMapObjects() {
+void ModelManager::deleteAllMapObjects() {
     for (std::map<int, MapObject*>::iterator it = _mapObjects.begin(); it != _mapObjects.end(); ++it) {
 		delete it->second;
 	}
     _mapObjects.clear();
+	_abortMapObjectIteration = true;
 }
 
-void ModelManager::removeAllUnits() {
+void ModelManager::deleteAllUnits() {
     for (std::map<int, UnitModel*>::iterator it = _units.begin(); it != _units.end(); ++it) {
 		delete it->second;
 	}
 	_units.clear();
 }
+
+std::vector<UnitModel*> ModelManager::removeAllUnits() {
+	std::vector<UnitModel*> unitVector;
+	
+    for (std::map<int, UnitModel*>::iterator it = _units.begin(); it != _units.end(); ++it) {
+		if (it->second != 0) {
+			it->second->updateObserversDestroyed();
+            unitVector.push_back(it->second);
+        }
+	}
+	_units.clear();
+	return unitVector;
+}
+
 
 void ModelManager::removeMapObject(int objectId) {
     delete _mapObjects[objectId];
@@ -253,4 +293,10 @@ void ModelManager::tick() {
 	}
 }
 
-
+void ModelManager::doTurn() {
+	_abortMapObjectIteration = false;
+	
+	for (std::map<int, MapObject*>::iterator it = _mapObjects.begin(); it != _mapObjects.end() && !_abortMapObjectIteration; it++) {
+		it->second->doTurn();
+	}
+}

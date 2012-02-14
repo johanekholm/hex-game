@@ -63,6 +63,10 @@ void ViewControllerManager::centerCamera(const GPoint& pos) {
     this->setCameraPosition(pos - GPointMake(160.0f, 240.0f));
 }
 
+void ViewControllerManager::centerCamera(const MPoint& pos) {
+    this->setCameraPosition(this->transformModelPositionToView(pos) - GPointMake(160.0f, 240.0f));
+}
+
 void ViewControllerManager::draw() {
 	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end(); ++it) {
 		if (*it != 0) {
@@ -155,6 +159,14 @@ void ViewControllerManager::removeSoft(ViewController* view) {
     if (view == _focus) {
         _focus = 0;
     }
+
+	for (std::vector<ViewController*>::iterator it = _stagedViews.begin(); it != _stagedViews.end(); ++it) {
+        if (*it == view) {
+            delete (*it);
+            it = _stagedViews.erase(it);
+            return;
+        }
+	}
 
 	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end(); ++it) {
         if (*it == view) {

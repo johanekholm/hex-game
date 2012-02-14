@@ -28,6 +28,7 @@ SET( SOURCES
     Classes/ModelManager.cpp
     Classes/ObjectBuilder.cpp
     Classes/Observable.cpp
+	Classes/SceneContext.cpp
     Classes/SceneLoader.cpp
     Classes/ScriptManager.cpp
     Classes/ShapeImage.cpp
@@ -66,6 +67,7 @@ SET( HEADERS
     Classes/MessageView.h
     Classes/ModelManager.h
     Classes/ObjectBuilder.h
+	Classes/SceneContext.h
     Classes/SceneLoader.h
     Classes/ScriptManager.h
     Classes/ShapeImage.h

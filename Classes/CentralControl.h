@@ -28,7 +28,6 @@ namespace ControlMode {
 class CentralControl {
 private:
 	class PrivateData;
-
 	PrivateData *d;
 	CentralControl();
 
@@ -42,6 +41,7 @@ public:
 	void handleEventNormal(const TouchEvent& event);
 	void handleEventFocus(const TouchEvent& event);
 	void init();
+	void nextTurn();
 	void switchMode(int mode);
 	void touchesBegan(const GPoint& touchPoint);
 	void touchesMoved(const GPoint& touchPoint);
