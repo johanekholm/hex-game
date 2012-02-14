@@ -31,13 +31,6 @@ ScriptManager* ScriptManager::instance() {
 	return PrivateData::instance;
 }
 
-ScriptManager* ScriptManager::instance() {
-    if (_instance == 0) {
-        _instance = new ScriptManager();
-    }		
-    return _instance;
-}
-
 void ScriptManager::destroy() {
 	if (PrivateData::instance != 0) {
 		for (std::map<std::string, ScriptedAction*>::iterator it = PrivateData::instance->d->scriptedActions.begin(); it != PrivateData::instance->d->scriptedActions.end(); ++it) {
