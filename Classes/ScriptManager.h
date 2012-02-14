@@ -40,6 +40,7 @@ public:
     void add(ScriptedAction* script);
     void add(std::string& key, ScriptedAction* script);
     void activate(std::string& key);
+    void clear();
 protected:
     ScriptManager();
 private:
