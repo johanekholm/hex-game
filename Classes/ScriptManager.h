@@ -25,7 +25,7 @@ namespace ScriptedActionNS {
 class ScriptedAction : public IObserver {
     bool _active;
     ModelEvent _triggerEvent;
-    
+
 public:
     static ScriptedAction* build(int actionId, int eventType);
     ScriptedAction(const ModelEvent& triggerEvent);

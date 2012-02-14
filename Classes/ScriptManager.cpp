@@ -107,10 +107,10 @@ void ScriptManager::clear() {
 
 ScriptedAction* ScriptedAction::build(int actionId, int eventType) {
     using namespace ScriptedActionNS;
-    
+
     ModelEvent event;
     event.type = eventType;
-    
+
     switch (actionId) {
 		case END_BATTLE:
             return new EndBattleSA(event);
