@@ -102,6 +102,7 @@ SET(SOUNDS
 )
 
 SET(SCRIPTS
+	Scripts/test.py
 )
 
 INCLUDE_DIRECTORIES( Toolkit )

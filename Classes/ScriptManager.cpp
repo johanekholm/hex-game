@@ -12,6 +12,7 @@
 #include "SceneLoader.h"
 #include "TransitionViewController.h"
 #include "MenuView.h"
+#include "ResourceLoader.h"
 
 #include <sstream>
 #include <python.h>
@@ -52,6 +53,7 @@ ScriptManager::ScriptManager() {
 
 	Py_Initialize();
 
+	std::string pyString = ResourceLoader::loadFileAsString("test.py");
 	PyMethodDef LogMethods[] = {
 	   {"log",  ScriptManager::log, METH_VARARGS,
 	    "Execute a shell command."},
@@ -61,6 +63,7 @@ ScriptManager::ScriptManager() {
 	PyObject *m;
 	m = Py_InitModule("debuglog", LogMethods);
 
+	PyRun_SimpleString(pyString.c_str());
 }
 
 /* Temporary function to log from Python */
