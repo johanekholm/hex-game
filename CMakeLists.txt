@@ -26,7 +26,9 @@ SET( SOURCES
     Classes/MenuView.cpp
     Classes/MessageView.cpp
     Classes/ModelManager.cpp
+    Classes/ObjectBuilder.cpp
     Classes/Observable.cpp
+	Classes/SceneContext.cpp
     Classes/SceneLoader.cpp
     Classes/ScriptManager.cpp
     Classes/ShapeImage.cpp
@@ -36,7 +38,6 @@ SET( SOURCES
 	Classes/TextureCatalog.cpp
 	Classes/TextureMap.cpp
     Classes/TransitionViewController.cpp
-    Classes/UnitFactory.cpp
 	Classes/UnitModel.cpp
 	Classes/UnitView.cpp
 	Classes/ViewControllerManager.cpp
@@ -65,6 +66,8 @@ SET( HEADERS
     Classes/MenuView.h
     Classes/MessageView.h
     Classes/ModelManager.h
+    Classes/ObjectBuilder.h
+	Classes/SceneContext.h
     Classes/SceneLoader.h
     Classes/ScriptManager.h
     Classes/ShapeImage.h
@@ -74,7 +77,6 @@ SET( HEADERS
 	Classes/TextureCatalog.h
 	Classes/TextureMap.h
     Classes/TransitionViewController.h
-    Classes/UnitFactory.h
 	Classes/UnitModel.h
 	Classes/UnitView.h
 	Classes/ViewControllerManager.h

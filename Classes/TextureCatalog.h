@@ -21,14 +21,7 @@ class TextureCatalog {
 
 	
 public:
-	static TextureCatalog* instance() {
-		if (_instance == 0) {
-			_instance = new TextureCatalog();
-		}
-		
-		return _instance;
-	}
-	
+	static TextureCatalog* instance();
 	static void destroy();
 	
 	void add(TextureMap* texMap, const std::string& name);

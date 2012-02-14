@@ -29,13 +29,7 @@ class EventManager : public Observable {
     EventManager();
 
 public:
-    static EventManager* instance() {
-		if (_instance == 0) {
-			_instance = new EventManager();
-		}		
-		return _instance;
-	}
-    
+    static EventManager* instance();
     static void destroy();
     void publishEvent(const ModelEvent& event);
     ModelEvent getEvent();

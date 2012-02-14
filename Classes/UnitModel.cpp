@@ -21,6 +21,8 @@ UnitModel::~UnitModel() {
     this->updateObserversDestroyed();
 }
 
+UnitModel::UnitModel() {}
+
 UnitModel::UnitModel(int x, int y, int owner, int maxHp, int maxAp, int power, int skill, int defense, std::vector<int> actionIds, int visualType) {
     _owner = owner;
 	_pos.x = x;
@@ -34,11 +36,65 @@ UnitModel::UnitModel(int x, int y, int owner, int maxHp, int maxAp, int power, i
     _baseDefense = defense;
     _target = 0;
     _visualType = visualType;
+	_name = "UNIT";
 
     for (std::vector<int>::iterator it = actionIds.begin(); it != actionIds.end(); ++it) {
         this->addAction(*it);
     }
 	
+}
+
+Json::Value UnitModel::serialize() {
+    Json::Value root;
+    
+    Json::Value& actions = root["actions"];
+    Json::Value& equip = root["equip"];
+	
+    root["x"] = _pos.x;
+    root["y"] = _pos.y;
+    root["ap"] = _ap;
+    root["hp"] = _hp;
+    root["basePower"] = _basePower;
+    root["baseSkill"] = _baseSkill;
+    root["baseDefense"] = _baseDefense;
+    root["maxAp"] = _maxAp;
+    root["maxHp"] = _maxHp;
+    root["owner"] = _owner;
+    root["visualType"] = _visualType;
+    root["id"] = _id;
+    
+    // serialize actions
+    for (std::map<int, BattleAction*>::iterator it = _actions.begin(); it != _actions.end(); ++it) {
+        actions.append(it->first);
+    }
+	
+	// serialize items
+	equip = this->serializeEquippedItems();
+
+    return root;
+}
+
+void UnitModel::deserialize(Json::Value& root) {
+    _pos.x = root.get("x", 0.0f).asFloat();
+    _pos.y = root.get("y", 0.0f).asFloat();
+    _ap = root.get("ap", 0).asInt();
+    _hp = root.get("hp", 0).asInt();
+    _basePower = root.get("basePower", 0).asInt();
+    _baseSkill = root.get("baseSkill", 0).asInt();
+    _baseDefense = root.get("baseDefense", 0).asInt();
+    _maxAp = root.get("maxAp", 0).asInt();
+    _maxHp = root.get("maxHp", 0).asInt();
+    _owner = root.get("owner", 0).asInt();
+    _visualType = root.get("visualType", 0).asInt();
+    _id = root.get("id", 0).asInt();
+	_name = "UNIT";
+    
+    // deserialize actions
+    for (Json::ValueIterator it = root["actions"].begin(); it != root["actions"].end(); it++) {
+        this->addAction((*it).asInt());
+    }
+	
+	this->deserializeEquippedItems(root["equip"]);
 }
 
 
@@ -72,11 +128,10 @@ void UnitModel::defend(UnitModel* attacker, int power, int skill, int attackType
     int skillDiff, damage, roll;
     
     damage = 0;
-    skillDiff = skill - this->getStat(STAT_DEFENSE);
+    skillDiff = skill - this->getStat(StatNS::DEFENSE);
     
     for (int i=0; i < power; i++) {
         roll = rand() % 8 + 1;
-        DEBUGLOG("%i + %i", roll, skillDiff);
         
         if (roll + skillDiff >= 5 || roll == 8) {
             damage++;
@@ -85,37 +140,6 @@ void UnitModel::defend(UnitModel* attacker, int power, int skill, int attackType
     
     //attacker->reportHits(damage);
     this->inflictDamage(damage);
-}
-
-void UnitModel::serialize(Json::Value& root) {
-    root["x"] = _pos.x;
-    root["y"] = _pos.y;
-    root["ap"] = _ap;
-    root["hp"] = _hp;
-    root["basePower"] = _basePower;
-    root["baseSkill"] = _baseSkill;
-    root["baseDefense"] = _baseDefense;
-    root["maxAp"] = _maxAp;
-    root["maxHp"] = _maxHp;
-    root["owner"] = _owner;
-    root["visualType"] = _visualType;
-    root["id"] = _id;
-}
-
-void UnitModel::deserialize(Json::Value& root) {
-    _pos.x = root.get("x", 0.0f).asFloat();
-    _pos.y = root.get("y", 0.0f).asFloat();
-    _ap = root.get("ap", 0).asInt();
-    _hp = root.get("hp", 0).asInt();
-    _basePower = root.get("basePower", 0).asInt();
-    _baseSkill = root.get("baseSkill", 0).asInt();
-    _baseDefense = root.get("baseDefense", 0).asInt();
-    _maxAp = root.get("maxAp", 0).asInt();
-    _maxHp = root.get("maxHp", 0).asInt();
-    _owner = root.get("owner", 0).asInt();
-    _visualType = root.get("visualType", 0).asInt();
-    _id = root.get("id", 0).asInt();
-
 }
 
 void UnitModel::doAction(const ActionState& statePoint) {
@@ -174,7 +198,7 @@ void UnitModel::fire(const MPoint& targetPos) {
     target = ModelManager::instance()->getUnitAtPos(targetPos);
     
     if (target != 0) {
-        target->defend(this, this->getStat(STAT_POWER), this->getStat(STAT_SKILL), ATTACK_TYPE_PIERCE);    
+        target->defend(this, this->getStat(StatNS::POWER), this->getStat(StatNS::SKILL), ATTACK_TYPE_PIERCE);    
     }
 }
 
@@ -186,7 +210,7 @@ std::vector<ActionState> UnitModel::getActions() {
     //ActionState a;
     
     
-    hexes = ModelManager::instance()->getBattleMap()->getAllHexes();
+    hexes = ModelManager::instance()->getMap()->getAllHexes();
 	units = ModelManager::instance()->getAllUnits();
     
 	for (std::map<int, BattleAction*>::iterator it = _actions.begin(); it != _actions.end(); ++it) {
@@ -196,6 +220,18 @@ std::vector<ActionState> UnitModel::getActions() {
     }
     
 	return actionPoints;
+}
+
+std::string UnitModel::getDescription() {
+    std::stringstream stream;
+	
+    stream << _name << " " << _hp << "/" << _maxHp;
+    return stream.str();
+}
+
+
+int UnitModel::getId() {
+	return _id;
 }
 
 int UnitModel::getOwner() {
@@ -209,19 +245,19 @@ MPoint UnitModel::getPosition() {
 
 int UnitModel::getStat(int stat) {
     switch (stat) {
-        case STAT_POWER:
-            return _basePower;
+        case StatNS::POWER:
+            return _basePower + this->getStatBonus(stat);
 
-        case STAT_SKILL:
-            return _baseSkill;
+        case StatNS::SKILL:
+            return _baseSkill + this->getStatBonus(stat);
 
-        case STAT_DEFENSE:
-            return _baseDefense;
+        case StatNS::DEFENSE:
+            return _baseDefense + this->getStatBonus(stat);
 
-        case STAT_MAXHP:
-            return _maxHp;
+        case StatNS::MAXHP:
+            return _maxHp + this->getStatBonus(stat);
 
-        case STAT_MAXAP:
+        case StatNS::MAXAP:
             return _maxAp;
 
         default:
@@ -300,12 +336,12 @@ void UnitModel::strike(const MPoint& targetPos) {
     
     target = ModelManager::instance()->getUnitAtPos(targetPos);
     if (target != 0) {
-        target->defend(this, this->getStat(STAT_POWER), this->getStat(STAT_SKILL), ATTACK_TYPE_SLICE);    
+        target->defend(this, this->getStat(StatNS::POWER), this->getStat(StatNS::SKILL), ATTACK_TYPE_SLICE);    
     }
 }
 
 void UnitModel::tick() {
-    if (this->_ap < this->getStat(STAT_MAXAP)) {
+    if (this->_ap < this->getStat(StatNS::MAXAP)) {
         this->_ap += 1;
         this->doAI();
         this->updateObservers();

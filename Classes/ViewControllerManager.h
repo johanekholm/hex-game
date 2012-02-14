@@ -16,7 +16,7 @@ class ShapeImage;
 class ViewControllerManager {
     static ViewControllerManager* _instance;
 	std::vector<ViewController*> _views, _stagedViews;
-    HexMap *_mapView, *_pushedMapView;
+    HexMap *_mapView;
     ViewController* _focus;
     GPoint _cameraPos;
     ShapeImage *_hudBackground;
@@ -24,18 +24,13 @@ class ViewControllerManager {
     ViewControllerManager();
 
 public:
-    static ViewControllerManager* instance() {
-		if (_instance == 0) {
-			_instance = new ViewControllerManager();
-		}		
-		return _instance;
-	}
-    
+    static ViewControllerManager* instance();
     static void destroy();
 
 	void add(ViewController* view);
     GPoint adjustForCamera(const GPoint& pos);
     void centerCamera(const GPoint& pos);
+	void centerCamera(const MPoint& pos);
     void draw();
     void drawGUI();
     void drawMap();
@@ -43,9 +38,7 @@ public:
     ViewController* getTouched(const GPoint& point);
 	void insert(ViewController* view);
     void moveCamera(const GPoint& pos);
-    void popMapView();
     void purge();
-    void pushMapView(HexMap* mapView);
     void remove(ViewController* view);
     void removeAllSoftly();
     void removeSoft(ViewController* view);

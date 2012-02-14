@@ -16,10 +16,16 @@
 
 ViewControllerManager* ViewControllerManager::_instance = 0;
 
+ViewControllerManager* ViewControllerManager::instance() {
+    if (_instance == 0) {
+        _instance = new ViewControllerManager();
+    }		
+    return _instance;
+}
+
 void ViewControllerManager::destroy() {
 	if (_instance != 0) {
         delete _instance->_mapView;
-        delete _instance->_pushedMapView;
         
         for (std::vector<ViewController*>::iterator it = _instance->_views.begin(); it != _instance->_views.end(); ++it) {
             delete *it;
@@ -36,7 +42,6 @@ void ViewControllerManager::destroy() {
 ViewControllerManager::ViewControllerManager() {
     _focus = 0;
     _mapView = 0;
-    _pushedMapView = 0;
     _cameraPos = 0;
     _hudBackground = new RectangleImage(RGBAMake(0.1f, 0.1f, 0.1f, 1.0f), 320.0f, 80.0f, true);
 }
@@ -56,6 +61,10 @@ GPoint ViewControllerManager::adjustForCamera(const GPoint& pos) {
 
 void ViewControllerManager::centerCamera(const GPoint& pos) {
     this->setCameraPosition(pos - GPointMake(160.0f, 240.0f));
+}
+
+void ViewControllerManager::centerCamera(const MPoint& pos) {
+    this->setCameraPosition(this->transformModelPositionToView(pos) - GPointMake(160.0f, 240.0f));
 }
 
 void ViewControllerManager::draw() {
@@ -99,7 +108,6 @@ ViewController* ViewControllerManager::getTouched(const GPoint& point) {
 }
 
 void ViewControllerManager::insert(ViewController* view) {
-    DEBUGLOG("Insert view: %x", view);
     std::vector<ViewController*>::iterator it = _views.begin();
 	while (true) {
 		if (it == _views.end() || (*it != 0 && (*it)->getLayer() >= view->getLayer())) {
@@ -116,27 +124,12 @@ void ViewControllerManager::moveCamera(const GPoint& pos) {
     this->setCameraPosition(_cameraPos + pos);
 }
 
-
-void ViewControllerManager::popMapView() {
-    delete _mapView;
-    _mapView = _pushedMapView;
-    _pushedMapView = 0;
-}
-
 void ViewControllerManager::purge() {
     for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end(); ++it) {
         delete *it;
     }
     
     _views.clear();
-}
-
-void ViewControllerManager::pushMapView(HexMap* mapView) {
-    if (_pushedMapView != 0) {
-        delete _pushedMapView;
-    }
-    _pushedMapView = _mapView;
-    _mapView = mapView;
 }
 
 void ViewControllerManager::remove(ViewController* view) {
@@ -166,6 +159,14 @@ void ViewControllerManager::removeSoft(ViewController* view) {
     if (view == _focus) {
         _focus = 0;
     }
+
+	for (std::vector<ViewController*>::iterator it = _stagedViews.begin(); it != _stagedViews.end(); ++it) {
+        if (*it == view) {
+            delete (*it);
+            it = _stagedViews.erase(it);
+            return;
+        }
+	}
 
 	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end(); ++it) {
         if (*it == view) {
@@ -204,6 +205,7 @@ void ViewControllerManager::setFocus(ViewController* view) {
 }
 
 void ViewControllerManager::setMapView(HexMap* mapView) {
+    delete _mapView;    
     _mapView = mapView;
 }
 

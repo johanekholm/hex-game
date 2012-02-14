@@ -9,10 +9,10 @@
 #define MENUVIEWCONTROLLER_H
 
 #include "ViewController.h"
+#include "ControlCallback.h"
 #include <vector>
 #include <string>
 
-class ControlCallback;
 class ShapeImage;
 class GameImage;
 class StringImage;
@@ -23,6 +23,7 @@ struct MenuChoice {
 };
 
 class BaseMenuNodeVC;
+class ParentMenuNodeVC;
 
 /*---------------------------------------------------------------*/
 
@@ -35,12 +36,23 @@ protected:
 public:
 	~MenuViewController();
 	MenuViewController();
+	MenuViewController(BaseMenuNodeVC* root);
 	void draw(const GPoint& cameraPos);
 	void drawGUI(const GPoint& cameraPos);
     void goUp();
 	bool handleEvent(const TouchEvent& event);
     virtual void reportChoice(int choiceId);
     void setFocus(BaseMenuNodeVC* focus);
+};
+
+/*---------------------------------------------------------------*/
+
+class MenuActionCallback : public ControlCallback {
+public:
+	virtual ~MenuActionCallback() {}
+	virtual bool isInputRequired() = 0;
+    virtual std::vector<MenuChoice> getChoices() = 0;
+	virtual void reset() = 0;
 };
 
 /*---------------------------------------------------------------*/
@@ -55,10 +67,20 @@ public:
 
 /*---------------------------------------------------------------*/
 
+class TextboxMenuVC : public MenuViewController {
+    ControlCallback& _returnControl;
+    
+public:
+	TextboxMenuVC(ControlCallback& control, const std::string& text, const std::string& buttonLabel);
+    virtual void reportChoice(int choiceId);    
+};
+
+/*---------------------------------------------------------------*/
+
 class BaseMenuNodeVC : public ViewController {
 protected:
     MenuViewController* _menuVC;
-    BaseMenuNodeVC* _parentNode;
+    ParentMenuNodeVC* _parentNode;
     int _choiceId;
     StringImage* _label;
     ShapeImage* _button;
@@ -68,23 +90,45 @@ public:
 	BaseMenuNodeVC(MenuViewController* menuVC, const std::string& label, int choiceId, const GPoint& pos, GLfloat width, GLfloat height);
 	void draw(const GPoint& cameraPos);
 	virtual void drawGUI(const GPoint& cameraPos);
-    BaseMenuNodeVC* getParent();
+    ParentMenuNodeVC* getParent();
 	virtual bool handleEvent(const TouchEvent& event) = 0;
-    void setMenu(MenuViewController* menuVC);
-    void setParent(BaseMenuNodeVC* parent);
+    virtual void setMenu(MenuViewController* menuVC);
+    void setParent(ParentMenuNodeVC* parent);
 };
 
 
 /*---------------------------------------------------------------*/
 
 class ParentMenuNodeVC : public BaseMenuNodeVC {
+protected:
     std::vector<BaseMenuNodeVC*> _subNodes;
+
+	void destroySubNodes();
 
 public:
 	virtual ~ParentMenuNodeVC();
 	ParentMenuNodeVC(MenuViewController* menuVC, const std::string& label, const std::vector<BaseMenuNodeVC*>& subNodes, const GPoint& pos, GLfloat width, GLfloat height);
 	virtual void drawGUI(const GPoint& cameraPos);
+	virtual void goUp();
 	virtual bool handleEvent(const TouchEvent& event);
+    virtual void reportChoice(int choiceId);
+    virtual void setMenu(MenuViewController* menuVC);
+};
+
+/*---------------------------------------------------------------*/
+
+class ActionMenuNodeVC : public ParentMenuNodeVC {
+protected:
+	MenuActionCallback* _action;
+	
+	void buildSubNodes();
+	
+public:
+	virtual ~ActionMenuNodeVC();
+	ActionMenuNodeVC(MenuActionCallback* action, MenuViewController* menuVC, const std::string& label, const std::vector<BaseMenuNodeVC*>& subNodes, const GPoint& pos, GLfloat width, GLfloat height);
+	virtual void goUp();
+	virtual bool handleEvent(const TouchEvent& event);
+    virtual void reportChoice(int choiceId);
 };
 
 /*---------------------------------------------------------------*/
@@ -103,6 +147,15 @@ class BackButtonMenuNodeVC : public BaseMenuNodeVC {
     
 public:
 	BackButtonMenuNodeVC(MenuViewController* _menuVC, const std::string& label, const GPoint& pos, GLfloat width, GLfloat height);
+	virtual bool handleEvent(const TouchEvent& event);
+};
+
+/*---------------------------------------------------------------*/
+
+class TextMenuNodeVC : public BaseMenuNodeVC {
+    
+public:
+	TextMenuNodeVC(MenuViewController* _menuVC, const std::string& label, const GPoint& pos, GLfloat width, GLfloat height);
 	virtual bool handleEvent(const TouchEvent& event);
 };
 

@@ -14,21 +14,31 @@
 #define ATTACK_TYPE_PIERCE 2
 #define ATTACK_TYPE_FIRE 3
 
-#define STAT_POWER 1
+/*#define STAT_POWER 1
 #define STAT_SKILL 2
 #define STAT_DEFENSE 3
 #define STAT_MAXHP 4
 #define STAT_MAXAP 5
-
+*/
 #include <map>
 #include <vector>
+#include <string>
 #include "toolkit.h"
+#include "Item.h"
 #include "Observable.h"
 #include "json-forwards.h"
 
 class Action;
 class BattleAction;
 struct ActionState;
+
+namespace StatNS {
+	const int POWER = 1;
+	const int SKILL = 2;
+	const int DEFENSE = 3;
+	const int MAXHP = 4;
+	const int MAXAP = 5;
+};
 
 struct UnitState {
     MPoint pos;
@@ -39,7 +49,7 @@ struct UnitState {
     std::vector<ActionState> actions;
 };
 
-class UnitModel : public Observable {
+class UnitModel : public Observable, public ItemEquipper {
 	MPoint _pos;
     int _id;
 	int _ap;
@@ -49,6 +59,7 @@ class UnitModel : public Observable {
     int _baseDefense;
     int _maxAp;
     int _maxHp;
+	std::string _name;
     int _owner;
     int _visualType;
     UnitModel* _target;
@@ -60,16 +71,20 @@ class UnitModel : public Observable {
 public:
 	
 	~UnitModel();
+    UnitModel();
     UnitModel(int x, int y, int owner, int maxHp, int maxAp, int power, int skill, int defense, std::vector<int> actionIds, int visualType);
+    Json::Value serialize();
+    void deserialize(Json::Value& root);
     
 	BattleAction* addAction(int action);
     int chooseMovementTarget(const std::vector<ActionState>& targets);
     void defend(UnitModel* attacker, int power, int skill, int attack_type);
-    void deserialize(Json::Value& root);
 	void doAction(const ActionState& statePoint);
     void doAI();
 	std::vector<ActionState> getActions();
+	std::string getDescription();
     int getOwner();
+	int getId();
 	MPoint getPosition();
     int getStat(int stat);
     bool isFacing(const MPoint& pos);
@@ -78,7 +93,6 @@ public:
     void inflictDamage(int damage);
     void fire(const MPoint& targetPos);
 	void move(const MPoint& targetPos);
-    void serialize(Json::Value& root);
     void setId(int unitId);
 	bool spendAp(int cost);
 	void strike(const MPoint& targetPos);

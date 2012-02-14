@@ -12,6 +12,7 @@
 #include "Action.h"
 #include "Item.h"
 #include "toolkit.h"
+#include "json-forwards.h"
 #include <vector>
 
 namespace MapObjectNS {
@@ -43,44 +44,39 @@ protected:
     MPoint _pos;
     int _id;
     int _owner;
+    int _layer;
+    int _visualType;
     std::map<int, AdventureAction*> _actions;
+    std::vector<UnitModel*> _memberUnits;
     
 
 public:
     virtual ~MapObject();
-    MapObject(int category, MPoint pos, int owner, std::vector<int> actionIds);
+    MapObject();
+    MapObject(int category, MPoint pos, int owner, int layer, int visualType, std::vector<int> actionIds, const std::vector<UnitModel*>& members);
+    Json::Value serialize();
+    void deserialize(Json::Value& root);
+
     MPoint getPosition();
     AdventureAction* addAction(int action);
+	UnitModel* addMember(UnitModel* unit);
     bool canMoveTo(const MPoint& pos);
 	void doAction(const ActionState& statePoint);
+	void doAI();
+	void doTurn();
     std::vector<ActionState> getActions();
+	int getId();
+    int getLayer();
+	UnitModel* getMember(int unitId);
+    std::vector<UnitModel*> getMembers();
     int getOwner();
+    int getVisualType();
     virtual MapObjectState getState();
     bool matchesCategory(int category);
     void move(const MPoint& targetPos);
+    std::vector<UnitModel*> removeMembers();
     void setId(int id);
 };
 
-
-class PartyModel : public MapObject {
-    
-protected:
-    std::vector<UnitModel*> _memberUnits;
-
-    
-public:
-    ~PartyModel();
-    PartyModel(int category, MPoint pos, int owner, std::vector<int> actionIds, const std::vector<UnitModel*>& members);
-    void move(const MPoint& targetPos);
-    std::vector<UnitModel*> getMembers();
-};
-
-/*
-class BuildingModel : public MapObject, public Observable {
-protected:
-    
-public:
-};
- */
 
 #endif

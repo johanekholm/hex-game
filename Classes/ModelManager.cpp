@@ -17,6 +17,13 @@
 
 ModelManager* ModelManager::_instance = 0;
 
+ModelManager* ModelManager::instance() {
+    if (_instance == 0) {
+        _instance = new ModelManager();
+    }		
+    return _instance;
+}
+
 void ModelManager::destroy() {
 	if (_instance != 0) {
        	for (std::map<int, MapObject*>::iterator it = _instance->_mapObjects.begin(); it != _instance->_mapObjects.end(); ++it) {
@@ -29,27 +36,39 @@ void ModelManager::destroy() {
         }
 		_instance->_units.clear();
         
-        delete _instance->_battleMap;
-        delete _instance->_adventureMap;
+        delete _instance->_map;
 		delete _instance;
 		_instance=0;
 	}
 }
 
 ModelManager::ModelManager() {
-    _adventureMap = 0;
-    _battleMap = 0;
+    _map = 0;
 	_unitIdCounter = 0;
+    _objectIdCounter = 0;
+	_abortMapObjectIteration = false;
 }
 
 void ModelManager::addMapObject(MapObject* object) {
+	int objectId;
+	
     if (object == 0) {
         return;
     }
     
-    _objectIdCounter++;
-    _mapObjects[_objectIdCounter] = object;
-    object->setId(_objectIdCounter);
+	objectId = object->getId();
+
+    if (objectId > 0) {
+		if (_objectIdCounter < objectId) {
+			_objectIdCounter = objectId;
+		}
+		
+		_mapObjects[objectId] = object;
+	} else {
+		_objectIdCounter++;
+		_mapObjects[_objectIdCounter] = object;
+		object->setId(_objectIdCounter);
+	}
 }
 
 void ModelManager::addUnit(UnitModel* unit) {
@@ -62,8 +81,20 @@ void ModelManager::addUnit(UnitModel* unit) {
     unit->setId(_unitIdCounter);
 }
 
-HexMapModel* ModelManager::getAdventureMap() {
-    return _adventureMap;
+HexMapModel* ModelManager::getMap() {
+    return _map;
+}
+
+std::vector<MapObject*> ModelManager::getAllMapObjects() {
+    std::vector<MapObject*> objectVector;
+    
+    for (std::map<int, MapObject*>::iterator it = _mapObjects.begin(); it != _mapObjects.end(); ++it) {
+		if (it->second != 0) {
+            objectVector.push_back(it->second);
+        }
+	}
+    
+    return objectVector;    
 }
 
 std::vector<UnitModel*> ModelManager::getAllUnits() {
@@ -76,10 +107,6 @@ std::vector<UnitModel*> ModelManager::getAllUnits() {
 	}
     
     return unitVector;
-}
-
-HexMapModel* ModelManager::getBattleMap() {
-    return _battleMap;
 }
 
 UnitModel* ModelManager::getClosestTo(const MPoint& pos) {
@@ -112,6 +139,18 @@ int ModelManager::getDistanceToClosestEnemy(int owner, const MPoint& pos) {
         }
 	}
     return minDistance;
+}
+
+MapObject* ModelManager::getMapObjectById(int mapObjectId) {
+    std::map<int, MapObject*>::iterator it;
+    
+    it = _mapObjects.find(mapObjectId);
+    
+    if (it != _mapObjects.end()) {
+        return it->second;
+    } else {
+        return 0;
+    }
 }
 
 MapObject* ModelManager::getMapObjectAtPos(const MPoint& pos) {
@@ -181,19 +220,34 @@ bool ModelManager::mapObjectExistAtPos(int category, const MPoint& pos) {
 }
 
 
-void ModelManager::removeAllMapObjects() {
+void ModelManager::deleteAllMapObjects() {
     for (std::map<int, MapObject*>::iterator it = _mapObjects.begin(); it != _mapObjects.end(); ++it) {
 		delete it->second;
 	}
     _mapObjects.clear();
+	_abortMapObjectIteration = true;
 }
 
-void ModelManager::removeAllUnits() {
+void ModelManager::deleteAllUnits() {
     for (std::map<int, UnitModel*>::iterator it = _units.begin(); it != _units.end(); ++it) {
 		delete it->second;
 	}
 	_units.clear();
 }
+
+std::vector<UnitModel*> ModelManager::removeAllUnits() {
+	std::vector<UnitModel*> unitVector;
+	
+    for (std::map<int, UnitModel*>::iterator it = _units.begin(); it != _units.end(); ++it) {
+		if (it->second != 0) {
+			it->second->updateObserversDestroyed();
+            unitVector.push_back(it->second);
+        }
+	}
+	_units.clear();
+	return unitVector;
+}
+
 
 void ModelManager::removeMapObject(int objectId) {
     delete _mapObjects[objectId];
@@ -221,14 +275,9 @@ void ModelManager::removeUnit(int unitId) {
     EventManager::instance()->publishEvent(event);
 }
 
-void ModelManager::setAdventureMap(HexMapModel* map) {
-    delete _adventureMap;
-    _adventureMap = map;
-}
-
-void ModelManager::setBattleMap(HexMapModel* map) {
-    delete _battleMap;
-    _battleMap = map;
+void ModelManager::setMap(HexMapModel* map) {
+    delete _map;
+    _map = map;
 }
 
 void ModelManager::tick() {
@@ -244,4 +293,10 @@ void ModelManager::tick() {
 	}
 }
 
-
+void ModelManager::doTurn() {
+	_abortMapObjectIteration = false;
+	
+	for (std::map<int, MapObject*>::iterator it = _mapObjects.begin(); it != _mapObjects.end() && !_abortMapObjectIteration; it++) {
+		it->second->doTurn();
+	}
+}

@@ -16,6 +16,14 @@
 
 TextureCatalog* TextureCatalog::_instance = 0;
 
+TextureCatalog* TextureCatalog::instance() {
+    if (_instance == 0) {
+        _instance = new TextureCatalog();
+    }
+    
+    return _instance;
+}
+
 void TextureCatalog::destroy() {
 	if (_instance != 0) {
 		_instance->_textureMaps.clear();

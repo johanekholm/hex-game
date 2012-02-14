@@ -11,6 +11,7 @@
 #include "EventManager.h"
 #include "SceneLoader.h"
 #include "TransitionViewController.h"
+#include "MenuView.h"
 
 #include <sstream>
 #include <python.h>
@@ -28,6 +29,13 @@ ScriptManager* ScriptManager::instance() {
 		PrivateData::instance = new ScriptManager();
 	}
 	return PrivateData::instance;
+}
+
+ScriptManager* ScriptManager::instance() {
+    if (_instance == 0) {
+        _instance = new ScriptManager();
+    }		
+    return _instance;
 }
 
 void ScriptManager::destroy() {
@@ -71,6 +79,14 @@ void ScriptManager::activate(std::string& key) {
     d->scriptedActions[key]->doAction();
 }
 
+void ScriptManager::clear() {
+    EventManager* eventManager = EventManager::instance();
+    for (std::map<std::string, ScriptedAction*>::iterator it = _scriptedActions.begin(); it != _scriptedActions.end(); ++it) {
+        eventManager->removeObserver(it->second);
+        delete it->second;
+    }
+    _scriptedActions.clear();
+}
 
 ScriptedAction* ScriptedAction::build(int actionId, int eventType) {
     using namespace ScriptedActionNS;
@@ -87,7 +103,6 @@ ScriptedAction* ScriptedAction::build(int actionId, int eventType) {
 		default:
             return 0;
     }
-    
 }
 
 ScriptedAction::ScriptedAction(const ModelEvent& triggerEvent) {
@@ -112,15 +127,13 @@ void ScriptedAction::destroyed() {}
 EndBattleSA::EndBattleSA(const ModelEvent& triggerEvent) : ScriptedAction(triggerEvent) {}
 
 void EndBattleSA::doAction() {
-    DEBUGLOG("Ending battle - Fade out");
-    SceneLoader::instance()->switchToTransition(new FadeOutTransition(*this));
+	SceneLoader::instance()->switchToMenu(new TextboxMenuVC(*this, "YOU GOT 5 SILVER", "OK"));
     CentralControl::instance()->switchMode(ControlMode::MENU);
 }
 
 void EndBattleSA::callbackVoid() {
-    DEBUGLOG("Ending battle - Load scene");
-    //CentralControl::instance()->switchMode(ControlMode::ADVENTURE);
-    SceneLoader::instance()->switchToAdventureScene();    
+	SceneLoader::instance()->returnFromMenu();
+    SceneLoader::instance()->returnToAdventureScene();
 }
 
 

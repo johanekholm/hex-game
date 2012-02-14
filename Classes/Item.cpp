@@ -7,41 +7,107 @@
 
 #include "Item.h"
 #include "toolkit.h"
+#include "json.h"
+#include "UnitModel.h"
 #include <iostream>
 #include <sstream>
+
+std::map<int, ItemTemplate*> ItemTemplate::_templates = ItemTemplate::initTemplates();
+
+std::map<int, ItemTemplate*> ItemTemplate::initTemplates() {
+	using namespace ItemNS;
+	std::map<int, ItemTemplate*> templates;
+	
+	templates[SILVER] =		new ItemTemplate(SWORD, "SILVER", 0, 0, 0, 0);
+	templates[SWORD] =		new ItemTemplate(SWORD, "SWORD", 0, 0, 1, 0);
+	templates[SHIELD] =		new ItemTemplate(SWORD, "SHIELD", 0, 0, 0, 1);
+	templates[HELMET] =		new ItemTemplate(SWORD, "HELMET", 0, 0, 0, 1);
+	templates[CHAIN_MAIL] = new ItemTemplate(SWORD, "CHAIN MAIL", 0, 0, 0, 1);
+	templates[POTION] =		new ItemTemplate(SWORD, "POTION", 0, 0, 0, 0);
+
+	return templates;
+}
+
+ItemTemplate* ItemTemplate::getTemplate(int type) {
+	if (_templates.find(type) != _templates.end()) {
+        return _templates[type];
+    } else {
+		return 0;
+	}
+}
+
+ItemTemplate::ItemTemplate() {
+	_type = 0;
+	_name = "";
+	_hpBonus = 0;
+	_powerBonus = 0;
+	_skillBonus = 0;
+	_defenseBonus = 0;	
+}
+
+ItemTemplate::ItemTemplate(int type, std::string name, int hp, int power, int skill, int defense) {
+	_type = type;
+	_name = name;
+	_hpBonus = hp;
+	_powerBonus = power;
+	_skillBonus = skill;
+	_defenseBonus = defense;
+}
+
+std::string ItemTemplate::getName() {
+	return _name;
+}
+
+int ItemTemplate::getStatBonus(int stat) {
+	using namespace StatNS;
+	
+	switch (stat) {
+		case POWER:
+			return _powerBonus;
+		case SKILL:
+			return _skillBonus;
+		case DEFENSE:
+			return _defenseBonus;
+		case MAXHP:
+			return _hpBonus;
+			
+		default:
+			return 0;
+	}
+}
+
+/*---------------------------------------------------------------*/
+
 
 Item::~Item() {
 
 }
 
-Item::Item(int type, int count, std::string name, bool equipable) {
+Item::Item() {
+	_type = 0;
+	_count = 0;
+}
+
+Item::Item(int type, int count) {
     _type = type;
-    _name = name;
     _count = count;
-    _equipable = equipable;
+	_template = ItemTemplate::getTemplate(type);
 }
 
-Item* Item::buildItem(int type, int count) {
-    using namespace ItemNS;
-    
-    switch (type) {
-        case SWORD:
-            return new Item(type, count, "SWORD", true);
-        case SHIELD:
-            return new Item(type, count, "SHIELD", true);
-        case POTION:
-            return new Item(type, count, "POTION", false);
-        case RING:
-            return new Item(type, count, "RING", true);
-        case SILVER:
-            return new Item(type, count, "SILVER", true);
-
-        default:
-            break;
-    }
-    
-    return 0;
+Json::Value Item::serialize() {
+    Json::Value root;
+    root["type"] = _type;
+    root["count"] = _count;
+	
+    return root;
 }
+
+void Item::deserialize(Json::Value& root) {
+    _type = root.get("type", 0).asInt();
+    _count = root.get("count", 0).asInt();
+	_template = ItemTemplate::getTemplate(_type);
+}
+
 
 bool Item::decreaseCount(int decrease) {
     if (_count >= decrease) {
@@ -59,8 +125,12 @@ int Item::getCount() {
 std::string Item::getDescription() {
     std::stringstream stream;
 
-    stream << _count << " " << _name;
+    stream << _count << " " << _template->getName();
     return stream.str();
+}
+
+int Item::getStatBonus(int stat) {
+	return _template->getStatBonus(stat);
 }
 
 int Item::getType() {
@@ -80,6 +150,27 @@ ItemHandler::~ItemHandler() {
     _items.clear();
 }
 
+Json::Value ItemHandler::serializeItems() {
+	Json::Value root;
+
+    for (std::map<int, Item*>::iterator it = _items.begin(); it != _items.end(); ++it) {
+        root.append(it->second->serialize());
+    }
+	
+	return root;
+}
+
+void ItemHandler::deserializeItems(Json::Value& root) {
+	Item* item;
+	
+    for (Json::ValueIterator it = root.begin(); it != root.end(); it++) {
+		item = new Item();
+		item->deserialize(*it);
+        this->addItem(item);
+    }
+}
+
+
 void ItemHandler::addItem(Item* item) {
     if (item != 0) {
         if (_items.find(item->getType()) == _items.end()) {
@@ -88,10 +179,6 @@ void ItemHandler::addItem(Item* item) {
             _items[item->getType()]->increaseCount(item->getCount());
         }
     }
-    
-    /*for (std::map<int, Item*>::iterator it = _items.begin(); it != _items.end(); ++it) {
-        DEBUGLOG("An Item: %s", it->second->getDescription().c_str());
-    }*/
 }
 
 std::map<int, Item*> ItemHandler::getItems() {
@@ -99,7 +186,7 @@ std::map<int, Item*> ItemHandler::getItems() {
 }
 
 bool ItemHandler::hasItem(int type, int count) {
-    if (_items.find(type) == _items.end()) {
+    if (_items.find(type) != _items.end()) {
         return (_items[type]->getCount() >= count);
     }
     return false;
@@ -115,5 +202,71 @@ bool ItemHandler::removeItem(int type, int count) {
         }
     }
     return false;
+}
+
+
+/*---------------------------------------------------------------*/
+
+ItemEquipper::~ItemEquipper() {
+    for (std::map<int, Item*>::iterator it = _equippedItems.begin(); it != _equippedItems.end(); ++it) {
+        delete it->second;
+    }
+    _equippedItems.clear();
+}
+
+Json::Value ItemEquipper::serializeEquippedItems() {
+	Json::Value root;
+	
+    for (std::map<int, Item*>::iterator it = _equippedItems.begin(); it != _equippedItems.end(); ++it) {
+        root[it->first] = it->second->serialize();
+    }
+	
+	return root;
+}
+
+void ItemEquipper::deserializeEquippedItems(Json::Value& root) {
+	Item* item;
+	
+    for (Json::ValueIterator it = root.begin(); it != root.end(); it++) {
+		item = new Item();
+		item->deserialize(*it);
+        _equippedItems[it.key().asInt()] = item;
+    }
+}
+
+Item* ItemEquipper::replaceEquipment(Item* item, int slot) {
+	Item* oldItem = 0;
+	
+    if (_equippedItems.find(slot) != _equippedItems.end()) {
+        oldItem = _equippedItems[slot];
+    }
+	
+	_equippedItems[slot] = item;
+	return oldItem;
+}
+
+std::map<int, Item*> ItemEquipper::getEquippedItems() {
+	return _equippedItems;
+}
+
+Item* ItemEquipper::getItemInSlot(int slot) {
+    if (_equippedItems.find(slot) != _equippedItems.end()) {
+        return _equippedItems[slot];
+    } else {
+		return 0;
+	}
+}
+
+int ItemEquipper::getStatBonus(int stat) {
+	int bonus = 0;
+	
+	for (std::map<int, Item*>::iterator it = _equippedItems.begin(); it != _equippedItems.end(); ++it) {
+        bonus += (it->second == 0) ? 0 : it->second->getStatBonus(stat);
+    }
+	return bonus;
+}
+
+Item* ItemEquipper::removeEquipment(int slot){
+	return this->replaceEquipment(0, slot);
 }
 

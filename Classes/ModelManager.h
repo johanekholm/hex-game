@@ -19,39 +19,36 @@ class ModelManager {
     static ModelManager* _instance;
 	std::map<int, UnitModel*> _units;
 	std::map<int, MapObject*> _mapObjects;
-    HexMapModel *_battleMap, *_adventureMap;
+    HexMapModel *_map;
     int _unitIdCounter, _objectIdCounter;
-    
+    bool _abortMapObjectIteration;
+	
     ModelManager();
 
 public:
-    static ModelManager* instance() {
-		if (_instance == 0) {
-			_instance = new ModelManager();
-		}		
-		return _instance;
-	}
-    
+    static ModelManager* instance();
     static void destroy();
 
     void addMapObject(MapObject* object);
 	void addUnit(UnitModel*);
-    HexMapModel* getAdventureMap();    
+    HexMapModel* getMap();    
+    std::vector<MapObject*> getAllMapObjects();
     std::vector<UnitModel*> getAllUnits();
-    HexMapModel* getBattleMap();
     UnitModel* getClosestTo(const MPoint& pos);
     int getDistanceToClosestEnemy(int owner, const MPoint& pos);
     MapObject* getMapObjectAtPos(const MPoint& pos);
+    MapObject* getMapObjectById(int mapObjectId);
     int getOwnerWithNoUnits();
     UnitModel* getUnitAtPos(const MPoint& pos);
     UnitModel* getUnitById(int unitId);
     bool mapObjectExistAtPos(int category, const MPoint& pos);
-    void removeAllMapObjects();
-    void removeAllUnits();
+    void deleteAllMapObjects();
+    void deleteAllUnits();
+    std::vector<UnitModel*> removeAllUnits();
     void removeMapObject(int objectId);
     void removeUnit(int unitId);
-    void setAdventureMap(HexMapModel* map);
-    void setBattleMap(HexMapModel* map);
+    void setMap(HexMapModel* map);
     void tick();
+	void doTurn();
 };
 
