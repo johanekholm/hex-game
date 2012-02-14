@@ -81,11 +81,11 @@ void ScriptManager::activate(std::string& key) {
 
 void ScriptManager::clear() {
     EventManager* eventManager = EventManager::instance();
-    for (std::map<std::string, ScriptedAction*>::iterator it = _scriptedActions.begin(); it != _scriptedActions.end(); ++it) {
+    for (std::map<std::string, ScriptedAction*>::iterator it = d->scriptedActions.begin(); it != d->scriptedActions.end(); ++it) {
         eventManager->removeObserver(it->second);
         delete it->second;
     }
-    _scriptedActions.clear();
+    d->scriptedActions.clear();
 }
 
 ScriptedAction* ScriptedAction::build(int actionId, int eventType) {
