@@ -23,6 +23,7 @@
 #include "ViewController.h"
 #include "ViewControllerManager.h"
 #include "SceneLoader.h"
+#include "ScriptManager.h"
 #include "StateManager.h"
 #include "toolkit.h"
 #include "geometry.h"
@@ -171,6 +172,8 @@ void CentralControl::init() {
 	d->input = new InputManager();
 
 	this->switchMode(ControlMode::ADVENTURE);
+
+	ScriptManager::instance();
 }
 
 void CentralControl::touchesBegan(const GPoint& touchPoint) {
