@@ -16,7 +16,7 @@ public:
     virtual ~AbstractResourceLoader();
     
     void load();
-    static std::string loadLuaScript(const std::string &scriptName);
+    static std::string loadFileAsString(const std::string &fileName);
 protected:
     virtual GLuint loadTexture(const std::string &filename) = 0;
 };

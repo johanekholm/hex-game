@@ -25,6 +25,16 @@ GLuint ResourceLoader::loadTexture(const std::string &filename) {
 	return texRef;
 }
 
-std::string ResourceLoader::loadLuaScript(const std::string &filename) {
-    //TODO: Implement
+std::string ResourceLoader::loadFileAsString(const std::string &filename) {
+	NSString * path;
+
+	path = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent: [NSString stringWithCString:filename.c_str() encoding:[NSString defaultCStringEncoding]]];
+
+	if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+		NSString *pythonString = [NSString stringWithContentsOfFile:path encoding:[NSString defaultCStringEncoding] error:NULL ];
+		if (pythonString) {
+			return [pythonString UTF8String];
+		}
+	}
+	return "";
 }
