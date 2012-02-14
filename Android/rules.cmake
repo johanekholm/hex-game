@@ -51,6 +51,16 @@ FOREACH(sound ${SOUNDS})
 	LIST(APPEND SOURCES ${CMAKE_BINARY_DIR}/apk/assets/${soundName})
 ENDFOREACH()
 
+FOREACH(script ${SCRIPTS})
+	GET_FILENAME_COMPONENT(scriptName ${script} NAME)
+	ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_BINARY_DIR}/apk/assets/${scriptName}
+			COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/${script} ${CMAKE_BINARY_DIR}/apk/assets/${scriptName}
+			DEPENDS ${script}
+			COMMENT "Copying ${script}"
+	)
+	LIST(APPEND SOURCES ${CMAKE_BINARY_DIR}/apk/assets/${scriptName})
+ENDFOREACH()
+
 FOREACH(javaSource ${JAVASOURCES})
 	GET_FILENAME_COMPONENT(sourceName ${javaSource} NAME)
 	ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_BINARY_DIR}/apk/src/com/hexgame/game/${sourceName}
