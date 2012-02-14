@@ -13,6 +13,7 @@
 #include "Item.h"
 #include "json.h"
 #include <iostream>
+#include <stdlib.h>
 
 MapObject::~MapObject() {
     this->updateObserversDestroyed();
