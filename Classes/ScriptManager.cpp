@@ -52,7 +52,15 @@ ScriptManager::ScriptManager() {
 
 	Py_Initialize();
 
-	PyRun_SimpleString("print 'Hello from CentralControl in python'\n");
+	PyMethodDef LogMethods[] = {
+	   {"log",  ScriptManager::log, METH_VARARGS,
+	    "Execute a shell command."},
+	   {NULL, NULL, 0, NULL}        /* Sentinel */
+	};
+
+	PyObject *m;
+	m = Py_InitModule("debuglog", LogMethods);
+
 }
 
 /* Temporary function to log from Python */
