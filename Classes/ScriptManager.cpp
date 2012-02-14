@@ -55,6 +55,19 @@ ScriptManager::ScriptManager() {
 	PyRun_SimpleString("print 'Hello from CentralControl in python'\n");
 }
 
+/* Temporary function to log from Python */
+PyObject* ScriptManager::log(PyObject *self, PyObject *args)
+{
+	const char *logString;
+
+	if (!PyArg_ParseTuple(args, "s", &logString))
+       return NULL;
+	DEBUGLOG("%s", logString);
+	return NULL;
+/*   sts = system(command);
+   return Py_BuildValue("i", sts);*/
+}
+
 void ScriptManager::add(ScriptedAction* script) {
     std::stringstream stream;
     stream << "DEF-" << d->scriptedActions.size();

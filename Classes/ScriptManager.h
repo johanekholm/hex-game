@@ -15,6 +15,7 @@
 #include "EventManager.h"
 #include "IObserver.h"
 #include "ControlCallback.h"
+#include <python.h>
 
 namespace ScriptedActionNS {
     const int END_BATTLE = 1;
@@ -41,6 +42,7 @@ public:
     void add(std::string& key, ScriptedAction* script);
     void activate(std::string& key);
     void clear();
+    static PyObject* log(PyObject *self, PyObject *args);
 protected:
     ScriptManager();
 private:
