@@ -34,20 +34,20 @@ void MapObjectView::draw(const GPoint& cameraPos) {
 }
 
 bool MapObjectView::handleEvent(const TouchEvent& event) {
-    ActionState* statePoint;
+	ActionView* action;
         
 	if (event.type == 3) {
-        statePoint = this->getTouchedActionState(event.translatedPoint);
+		action = this->getTouchedActionView(event);
         
-        if (statePoint != 0) {
-            _objectModel->doAction(*statePoint);
+        if (action != 0) {
+            _objectModel->doAction(*(action->statePoint));
             _selectedActionView = 0;
             return true;
         }
 	}
     
     if (event.type == 1) {
-        _selectedActionView = this->getTouchedActionView(event.translatedPoint);
+        _selectedActionView = this->getTouchedActionView(event);
         return true;
 	}
 	return false;

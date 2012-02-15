@@ -68,23 +68,20 @@ void BaseUnitViewController::drawGUI(const GPoint& cameraPos) {
     }
 }
 
-ActionState* BaseUnitViewController::getTouchedActionState(GPoint point) {
-	for (std::vector<ActionView>::iterator it = _actionPoints.begin(); it != _actionPoints.end(); ++it) {
-		if (PointWithin(point, (*it).pos, 32.0f)) {
-			return (*it).statePoint;
+ActionView* BaseUnitViewController::getTouchedActionView(const TouchEvent& event) {
+	
+	for (std::vector<ActionView>::iterator it = _actionPoints.begin(); it != _actionPoints.end(); ++it) {		
+        if ((*it).statePoint->targetType == ActionNS::TARGET_SELF) {
+			if (PointWithin(event.point, (*it).pos, 32.0f)) {
+				return &(*it);
+			}						
+		} else {
+			if (PointWithin(event.translatedPoint, (*it).pos, 32.0f)) {
+				return &(*it);
+			}			
 		}
 	}
 	return 0;
-}
-
-ActionView* BaseUnitViewController::getTouchedActionView(GPoint point) {
-	
-	for (std::vector<ActionView>::iterator it = _actionPoints.begin(); it != _actionPoints.end(); ++it) {		
-		if (PointWithin(point, (*it).pos, 32.0f)) {
-			return &(*it);
-		}
-	}
-	return (0);
 }
 
 void BaseUnitViewController::setFocus(bool hasFocus) {
