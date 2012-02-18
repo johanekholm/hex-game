@@ -162,7 +162,7 @@ UnitModel* ModelManager::getClosestTo(const MPoint& pos) {
 	for (std::map<int, UnitModel*>::iterator it = _units.begin(); it != _units.end(); ++it) {
 		if (it->second != 0) {
             distance = hexDistance(pos, it->second->getPosition());
-            if (it->second->getOwner() == 1 && distance < minDistance) {
+            if (it->second->getOwner() == FactionNS::PLAYER && distance < minDistance) {
                 minDistance = distance;
                 closestUnit = it->second;
             }            
@@ -230,18 +230,18 @@ int ModelManager::getOwnerWithNoUnits() {
     
     for (std::map<int, UnitModel*>::const_iterator it = _units.begin(); it != _units.end(); ++it) {
 		if (it->second != 0) {
-            if (it->second->getOwner() == 1) {
+            if (it->second->getOwner() == FactionNS::PLAYER) {
                 owner1 = true;
-            } else if (it->second->getOwner() == 2) {
+            } else if (it->second->getOwner() == FactionNS::ENEMY) {
                 owner2 = true;
             }
         }
 	}
     
     if (!owner1) {
-        return 1;
+        return FactionNS::PLAYER;
     } else if (!owner2) {
-        return 2;
+        return FactionNS::ENEMY;
     } else {
         return 0;
     }

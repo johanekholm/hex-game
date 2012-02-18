@@ -15,6 +15,13 @@ class UnitModel;
 class HexMapModel;
 class MapObject;
 
+namespace FactionNS {
+	const int PLAYER = 1;
+	const int ENEMY = 2;
+	const int NEUTRAL = 3;
+	const int FRIENDLY = 4;
+};
+
 class ModelManager {
     static ModelManager* _instance;
 	std::map<int, UnitModel*> _units;

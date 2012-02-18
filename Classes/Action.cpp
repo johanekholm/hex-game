@@ -282,7 +282,7 @@ void AdvActionMove::doIt(const ActionState& statePoint) {
     _object->move(statePoint.pos);
 	
 	// advance to next turn if player party moves
-	if (_object->getOwner() == 1) {
+	if (_object->getOwner() == FactionNS::PLAYER) {
 		CentralControl::instance()->nextTurn();
 		//ViewControllerManager::instance()->centerCamera(_object->getPosition());
 	}

@@ -143,9 +143,9 @@ void SceneLoader::returnUnitsToParties(std::vector<UnitModel*> units) {
 	bool isEmptyParty2 = true;	
 	ModelManager* modelManager = ModelManager::instance();
 
-	MapObject* party1 = modelManager->getFirstMapObjectWithOwner(1); 
+	MapObject* party1 = modelManager->getFirstMapObjectWithOwner(FactionNS::PLAYER); 
 	//modelManager->getMapObjectById(SceneContext::instance()->getPartyId1());
-	MapObject* party2 = modelManager->getFirstMapObjectWithOwner(2);  
+	MapObject* party2 = modelManager->getFirstMapObjectWithOwner(FactionNS::ENEMY);  
 	//modelManager->getMapObjectById(SceneContext::instance()->getPartyId2());
 	
 	// re-insert units to parties
@@ -162,13 +162,13 @@ void SceneLoader::returnUnitsToParties(std::vector<UnitModel*> units) {
 	}
 	
 	if (isEmptyParty1) {
-		if (party1->getOwner() != 1) {
+		if (party1->getOwner() != FactionNS::PLAYER) {
 			modelManager->deleteMapObject(party1->getId());			
 		}
 	}
 
 	if (isEmptyParty2) {
-		if (party2->getOwner() != 1) {
+		if (party2->getOwner() != FactionNS::PLAYER) {
 			modelManager->deleteMapObject(party2->getId());			
 		}
 	}
