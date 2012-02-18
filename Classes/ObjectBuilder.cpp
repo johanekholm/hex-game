@@ -68,7 +68,7 @@ UnitModel* ObjectBuilder::produceUnit(const std::string& unitClass, int owner, c
     UnitModel* unit;
     int hp, ap, power, skill, defense, image;
     std::vector<int> actions;
-    
+    DEBUGLOG("Produce unit: %s", unitClass.c_str());
     if (unitClass == "swordsman") {
         hp = 10; ap = 30; power = 3; skill = 2; defense = 3; image = 0;
         actions.push_back(ActionNS::BACTION_MOVE); actions.push_back(ActionNS::BACTION_STRIKE);

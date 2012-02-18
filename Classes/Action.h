@@ -32,6 +32,7 @@ namespace ActionNS {
     const int AACTION_ENTERDUNGEON  = 7;
     const int AACTION_INVENTORY     = 8;
 	const int AACTION_PARTYOPTIONS	= 9;
+	const int AACTION_CITY			= 10;
     
     const int TARGET_HEX =      1;
     const int TARGET_UNIT =     2;
@@ -230,6 +231,18 @@ public:
 
 /*---------------------------------------------------------------*/
 
+class AActionCity : public AdventureAction {
+protected:
+	virtual bool isAvailable();
+	
+public:
+	AActionCity(int anId, MapObject* object);
+	virtual void doIt(const ActionState& statePoint);
+};
+
+
+/*---------------------------------------------------------------*/
+
 class CallbackActionUseItemOnMap : public ControlCallback {
 protected:
     int _item;
@@ -257,6 +270,23 @@ public:
 	std::vector<MenuChoice> getChoices();
 	void reset();
 };
+
+/*---------------------------------------------------------------*/
+
+class CallbackActionRecruit : public MenuActionCallback {
+protected:
+    MapObject* _object;
+    int _unit;
+	
+public:
+    CallbackActionRecruit(MapObject* object);
+	void callbackVoid();
+    void callbackNumber(int num);
+	bool isInputRequired();
+	std::vector<MenuChoice> getChoices();
+	void reset();
+};
+
 
 /*---------------------------------------------------------------*/
 
