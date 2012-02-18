@@ -30,27 +30,32 @@ public:
     static void destroy();
 
     void addMapObject(MapObject* object);
-	void addUnit(UnitModel*);
-    HexMapModel* getMap();    
+	void addUnit(UnitModel* unit);
+	
+    void deleteAllMapObjects();
+    void deleteAllUnits();
+    void deleteMapObject(int objectId);
+    void deleteUnit(int unitId);
+
+	void doTurn();
+
     std::vector<MapObject*> getAllMapObjects();
     std::vector<UnitModel*> getAllUnits();
     UnitModel* getClosestTo(const MPoint& pos);
     int getDistanceToClosestEnemy(int owner, const MPoint& pos);
-    MapObject* getMapObjectAtPos(const MPoint& pos);
-    MapObject* getMapObjectById(int mapObjectId);
     MapObject* getFirstMapObjectWithOwner(int owner);
+    HexMapModel* getMap();    
+    MapObject* getMapObjectAtPos(const MPoint& pos);
+    MapObject* getMapObjectById(int objectId);
     int getOwnerWithNoUnits();
     UnitModel* getUnitAtPos(const MPoint& pos);
     UnitModel* getUnitById(int unitId);
     bool mapObjectExistAtPos(int category, const MPoint& pos);
-    void deleteAllMapObjects();
-    void deleteAllUnits();
-    std::vector<UnitModel*> removeAllUnits();
-    void removeMapObject(int objectId);
-    void removeUnit(int unitId);
+
     void setMap(HexMapModel* map);
     void tick();
-	void doTurn();
+
+    std::vector<UnitModel*> unregisterAllUnits();
 	MapObject* unregisterMapObject(int objectId);
 };
 

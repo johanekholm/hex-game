@@ -163,13 +163,13 @@ void SceneLoader::returnUnitsToParties(std::vector<UnitModel*> units) {
 	
 	if (isEmptyParty1) {
 		if (party1->getOwner() != 1) {
-			modelManager->removeMapObject(party1->getId());			
+			modelManager->deleteMapObject(party1->getId());			
 		}
 	}
 
 	if (isEmptyParty2) {
 		if (party2->getOwner() != 1) {
-			modelManager->removeMapObject(party2->getId());			
+			modelManager->deleteMapObject(party2->getId());			
 		}
 	}
 	
@@ -251,7 +251,7 @@ void SceneLoader::returnToAdventureScene() {
 	std::vector<UnitModel*> allUnits;
 	ModelManager* modelManager = ModelManager::instance();
 	
-	allUnits = modelManager->removeAllUnits();
+	allUnits = modelManager->unregisterAllUnits();
 
 	this->returnUnitsToParties(allUnits);
 

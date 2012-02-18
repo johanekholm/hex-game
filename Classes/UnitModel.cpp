@@ -301,7 +301,7 @@ void UnitModel::inflictDamage(int damage) {
     
     if (_hp <= 0) {
         _hp = 0;
-        ModelManager::instance()->removeUnit(_id);
+        ModelManager::instance()->deleteUnit(_id);
         return;
     } else if (_hp > _maxHp) {
         _hp = _maxHp;

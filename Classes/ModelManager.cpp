@@ -81,8 +81,53 @@ void ModelManager::addUnit(UnitModel* unit) {
     unit->setId(_unitIdCounter);
 }
 
-HexMapModel* ModelManager::getMap() {
-    return _map;
+void ModelManager::deleteAllMapObjects() {
+    for (std::map<int, MapObject*>::iterator it = _mapObjects.begin(); it != _mapObjects.end(); ++it) {
+		delete it->second;
+	}
+    _mapObjects.clear();
+	_abortMapObjectIteration = true;
+}
+
+void ModelManager::deleteAllUnits() {
+    for (std::map<int, UnitModel*>::iterator it = _units.begin(); it != _units.end(); ++it) {
+		delete it->second;
+	}
+	_units.clear();
+}
+
+void ModelManager::deleteMapObject(int objectId) {
+    delete _mapObjects[objectId];
+    _mapObjects.erase(objectId);
+}
+
+void ModelManager::deleteUnit(int unitId) {
+    int owner = _units[unitId]->getOwner();
+    
+    delete _units[unitId];
+    _units.erase(unitId);
+	
+    // check for wipe-out
+    for (std::map<int, UnitModel*>::const_iterator it = _units.begin(); it != _units.end(); ++it) {
+		if (it->second != 0) {
+            if (it->second->getOwner() == owner) {
+                return;
+            }
+        }
+	}
+    
+    ModelEvent event;
+    event.type = ModelEventNS::PARTY_WIPEOUT;
+    
+    EventManager::instance()->publishEvent(event);
+}
+
+void ModelManager::doTurn() {
+	_abortMapObjectIteration = false;
+	
+	for (std::map<int, MapObject*>::iterator it = _mapObjects.begin(); it != _mapObjects.end() && !_abortMapObjectIteration; it++) {
+		it->second->doTurn();
+	}
 }
 
 std::vector<MapObject*> ModelManager::getAllMapObjects() {
@@ -141,10 +186,25 @@ int ModelManager::getDistanceToClosestEnemy(int owner, const MPoint& pos) {
     return minDistance;
 }
 
-MapObject* ModelManager::getMapObjectById(int mapObjectId) {
+MapObject* ModelManager::getFirstMapObjectWithOwner(int owner) {
+	for (std::map<int, MapObject*>::iterator it = _mapObjects.begin(); it != _mapObjects.end(); ++it) {
+		if (it->second != 0) {
+            if (it->second->getOwner() == owner) {
+                return it->second;
+            }
+        }
+	}
+    return 0;	
+}
+
+HexMapModel* ModelManager::getMap() {
+    return _map;
+}
+
+MapObject* ModelManager::getMapObjectById(int objectId) {
     std::map<int, MapObject*>::iterator it;
     
-    it = _mapObjects.find(mapObjectId);
+    it = _mapObjects.find(objectId);
     
     if (it != _mapObjects.end()) {
         return it->second;
@@ -163,18 +223,6 @@ MapObject* ModelManager::getMapObjectAtPos(const MPoint& pos) {
 	}
     return 0;
 }
-
-MapObject* ModelManager::getFirstMapObjectWithOwner(int owner) {
-	for (std::map<int, MapObject*>::iterator it = _mapObjects.begin(); it != _mapObjects.end(); ++it) {
-		if (it->second != 0) {
-            if (it->second->getOwner() == owner) {
-                return it->second;
-            }
-        }
-	}
-    return 0;	
-}
-
 
 int ModelManager::getOwnerWithNoUnits() {
     bool owner1 = false;
@@ -231,23 +279,7 @@ bool ModelManager::mapObjectExistAtPos(int category, const MPoint& pos) {
     return false;
 }
 
-
-void ModelManager::deleteAllMapObjects() {
-    for (std::map<int, MapObject*>::iterator it = _mapObjects.begin(); it != _mapObjects.end(); ++it) {
-		delete it->second;
-	}
-    _mapObjects.clear();
-	_abortMapObjectIteration = true;
-}
-
-void ModelManager::deleteAllUnits() {
-    for (std::map<int, UnitModel*>::iterator it = _units.begin(); it != _units.end(); ++it) {
-		delete it->second;
-	}
-	_units.clear();
-}
-
-std::vector<UnitModel*> ModelManager::removeAllUnits() {
+std::vector<UnitModel*> ModelManager::unregisterAllUnits() {
 	std::vector<UnitModel*> unitVector;
 	
     for (std::map<int, UnitModel*>::iterator it = _units.begin(); it != _units.end(); ++it) {
@@ -258,33 +290,6 @@ std::vector<UnitModel*> ModelManager::removeAllUnits() {
 	}
 	_units.clear();
 	return unitVector;
-}
-
-
-void ModelManager::removeMapObject(int objectId) {
-    delete _mapObjects[objectId];
-    _mapObjects.erase(objectId);
-}
-
-void ModelManager::removeUnit(int unitId) {
-    int owner = _units[unitId]->getOwner();
-    
-    delete _units[unitId];
-    _units.erase(unitId);
-
-    // check for wipe-out
-    for (std::map<int, UnitModel*>::const_iterator it = _units.begin(); it != _units.end(); ++it) {
-		if (it->second != 0) {
-            if (it->second->getOwner() == owner) {
-                return;
-            }
-        }
-	}
-    
-    ModelEvent event;
-    event.type = ModelEventNS::PARTY_WIPEOUT;
-    
-    EventManager::instance()->publishEvent(event);
 }
 
 void ModelManager::setMap(HexMapModel* map) {
@@ -305,15 +310,8 @@ void ModelManager::tick() {
 	}
 }
 
-void ModelManager::doTurn() {
-	_abortMapObjectIteration = false;
-	
-	for (std::map<int, MapObject*>::iterator it = _mapObjects.begin(); it != _mapObjects.end() && !_abortMapObjectIteration; it++) {
-		it->second->doTurn();
-	}
-}
-
 MapObject* ModelManager::unregisterMapObject(int objectId) {
-	//_mapObjects[objectId]->updateObserversDestroyed();
+	MapObject* object = this->getMapObjectById(objectId);
 	_mapObjects.erase(objectId);
+	return object;
 }
