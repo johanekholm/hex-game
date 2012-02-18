@@ -164,6 +164,18 @@ MapObject* ModelManager::getMapObjectAtPos(const MPoint& pos) {
     return 0;
 }
 
+MapObject* ModelManager::getFirstMapObjectWithOwner(int owner) {
+	for (std::map<int, MapObject*>::iterator it = _mapObjects.begin(); it != _mapObjects.end(); ++it) {
+		if (it->second != 0) {
+            if (it->second->getOwner() == owner) {
+                return it->second;
+            }
+        }
+	}
+    return 0;	
+}
+
+
 int ModelManager::getOwnerWithNoUnits() {
     bool owner1 = false;
     bool owner2 = false;
@@ -299,4 +311,9 @@ void ModelManager::doTurn() {
 	for (std::map<int, MapObject*>::iterator it = _mapObjects.begin(); it != _mapObjects.end() && !_abortMapObjectIteration; it++) {
 		it->second->doTurn();
 	}
+}
+
+MapObject* ModelManager::unregisterMapObject(int objectId) {
+	//_mapObjects[objectId]->updateObserversDestroyed();
+	_mapObjects.erase(objectId);
 }

@@ -38,6 +38,7 @@ public:
     int getDistanceToClosestEnemy(int owner, const MPoint& pos);
     MapObject* getMapObjectAtPos(const MPoint& pos);
     MapObject* getMapObjectById(int mapObjectId);
+    MapObject* getFirstMapObjectWithOwner(int owner);
     int getOwnerWithNoUnits();
     UnitModel* getUnitAtPos(const MPoint& pos);
     UnitModel* getUnitById(int unitId);
@@ -50,5 +51,6 @@ public:
     void setMap(HexMapModel* map);
     void tick();
 	void doTurn();
+	MapObject* unregisterMapObject(int objectId);
 };
 
