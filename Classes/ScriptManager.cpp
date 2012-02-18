@@ -12,6 +12,9 @@
 #include "SceneLoader.h"
 #include "TransitionViewController.h"
 #include "MenuView.h"
+#include "ModelManager.h"
+#include "MapObject.h"
+#include "Item.h"
 
 #include <sstream>
 
@@ -105,6 +108,12 @@ void ScriptedAction::destroyed() {}
 EndBattleSA::EndBattleSA(const ModelEvent& triggerEvent) : ScriptedAction(triggerEvent) {}
 
 void EndBattleSA::doAction() {
+	MapObject* player = ModelManager::instance()->getFirstMapObjectWithOwner(FactionNS::PLAYER);
+	
+	if (player != 0) {
+		player->addItem(new Item(ItemNS::SILVER, 5));
+	}
+
 	SceneLoader::instance()->switchToMenu(new TextboxMenuVC(*this, "YOU GOT 5 SILVER", "OK"));
     CentralControl::instance()->switchMode(ControlMode::MENU);
 }
