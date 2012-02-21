@@ -29,6 +29,7 @@ protected:
 	static std::map<int, ItemTemplate*> _templates;
 
     int _type;
+	int _cost;
     bool _equipable;
     std::string _name;
 	int _hpBonus;
@@ -40,7 +41,8 @@ public:
 	static std::map<int, ItemTemplate*> initTemplates();
 	static ItemTemplate* getTemplate(int type);
 	ItemTemplate();
-	ItemTemplate(int type, std::string name, int hp, int power, int skill, int defense);
+	ItemTemplate(int type, std::string name, int cost, int hp, int power, int skill, int defense);
+	int getCost();
 	std::string getName();
 	int getStatBonus(int stat);
 };
@@ -60,7 +62,7 @@ public:
     void deserialize(Json::Value& root);
 
     bool decreaseCount(int decrease);
-    std::string getDescription();
+    std::string getDescription(bool includeCost=false);
     int getCount();
 	int getStatBonus(int stat);
     int getType();

@@ -213,10 +213,10 @@ MapObject* ModelManager::getMapObjectById(int objectId) {
     }
 }
 
-MapObject* ModelManager::getMapObjectAtPos(const MPoint& pos) {
+MapObject* ModelManager::getMapObjectAtPos(const MPoint& pos, int category) {
 	for (std::map<int, MapObject*>::iterator it = _mapObjects.begin(); it != _mapObjects.end(); ++it) {
 		if (it->second != 0) {
-            if (it->second->getPosition() == pos) {
+            if (it->second->getPosition() == pos && (category == 0 || it->second->matchesCategory(category))) {
                 return it->second;
             }
         }

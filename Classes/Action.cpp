@@ -466,8 +466,10 @@ void AActionCity::doIt(const ActionState& statePoint) {
 	std::vector<BaseMenuNodeVC*> actionNodes, empty;
 	MenuActionCallback* shop = 0;
 	MenuActionCallback* recruit = 0;
+	MapObject* city = ModelManager::instance()->getMapObjectAtPos(_object->getPosition(), MapObjectCategory::CITY);
 	
 	recruit = new CallbackActionRecruit(_object);
+	shop = new CallbackActionShop(_object, city);
 	
 	actionNodes.clear();
 	actionNodes.push_back(new ActionMenuNodeVC(recruit, 0, "RECRUIT", empty, GPointMake(160.0f, 320.0f), 120.0f, 32.0f));
@@ -642,4 +644,58 @@ std::vector<MenuChoice> CallbackActionRecruit::getChoices() {
 
 void CallbackActionRecruit::reset() {
 	_unit = 0;
+}
+
+
+/*---------------------------------------------------------------*/
+
+CallbackActionShop::CallbackActionShop(MapObject* object, MapObject* shop) {
+	_object = object;
+	_shop = shop;
+	_item = 0;
+}
+
+void CallbackActionShop::callbackVoid() {
+	std::string unitClass;
+	ItemTemplate* itemTemplate = ItemTemplate::getTemplate(_item);
+	
+	if (itemTemplate != 0 && _object->removeItem(ItemNS::SILVER, itemTemplate->getCost())) {
+		_shop->addItem(new Item(ItemNS::SILVER, itemTemplate->getCost()));
+		_shop->removeItem(_item, 1);
+		_object->addItem(new Item(_item, 1));
+	}
+	
+	SceneLoader::instance()->returnFromMenu();
+}
+
+void CallbackActionShop::callbackNumber(int num) {
+	if (_item == 0) {
+		_item = num;		
+	}
+}
+
+bool CallbackActionShop::isInputRequired() {
+	return (_item == 0);
+}
+
+std::vector<MenuChoice> CallbackActionShop::getChoices() {
+	MenuChoice node;
+    std::vector<MenuChoice> choices;
+    std::map<int, Item*> items;
+    
+	if (_shop != 0) {
+		items = _shop->getItems();
+		
+		for (std::map<int, Item*>::iterator it = items.begin(); it != items.end(); ++it) {
+			node.choiceId = it->second->getType(); 
+			node.label = it->second->getDescription(true);
+			choices.push_back(node);
+		}		
+	}
+		
+	return choices;		
+}
+
+void CallbackActionShop::reset() {
+	_item = 0;
 }

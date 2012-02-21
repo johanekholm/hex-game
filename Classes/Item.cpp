@@ -18,12 +18,13 @@ std::map<int, ItemTemplate*> ItemTemplate::initTemplates() {
 	using namespace ItemNS;
 	std::map<int, ItemTemplate*> templates;
 	
-	templates[SILVER] =		new ItemTemplate(SWORD, "SILVER", 0, 0, 0, 0);
-	templates[SWORD] =		new ItemTemplate(SWORD, "SWORD", 0, 0, 1, 0);
-	templates[SHIELD] =		new ItemTemplate(SWORD, "SHIELD", 0, 0, 0, 1);
-	templates[HELMET] =		new ItemTemplate(SWORD, "HELMET", 0, 0, 0, 1);
-	templates[CHAIN_MAIL] = new ItemTemplate(SWORD, "CHAIN MAIL", 0, 0, 0, 1);
-	templates[POTION] =		new ItemTemplate(SWORD, "POTION", 0, 0, 0, 0);
+	templates[SILVER] =		new ItemTemplate(SILVER, "SILVER",			1, 0, 0, 0, 0);
+	templates[SWORD] =		new ItemTemplate(SWORD, "SWORD",			10, 0, 0, 1, 0);
+	templates[SHIELD] =		new ItemTemplate(SHIELD, "SHIELD",			8, 0, 0, 0, 1);
+	templates[HELMET] =		new ItemTemplate(HELMET, "HELMET",			5, 0, 0, 0, 1);
+	templates[RING] =		new ItemTemplate(RING, "RING",				12, 1, 0, 0, 0);
+	templates[CHAIN_MAIL] = new ItemTemplate(CHAIN_MAIL, "CHAIN MAIL",	15, 0, 0, 0, 1);
+	templates[POTION] =		new ItemTemplate(POTION, "POTION",			6, 0, 0, 0, 0);
 
 	return templates;
 }
@@ -45,13 +46,18 @@ ItemTemplate::ItemTemplate() {
 	_defenseBonus = 0;	
 }
 
-ItemTemplate::ItemTemplate(int type, std::string name, int hp, int power, int skill, int defense) {
+ItemTemplate::ItemTemplate(int type, std::string name, int cost, int hp, int power, int skill, int defense) {
 	_type = type;
 	_name = name;
+	_cost = cost;
 	_hpBonus = hp;
 	_powerBonus = power;
 	_skillBonus = skill;
 	_defenseBonus = defense;
+}
+
+int ItemTemplate::getCost() {
+	return _cost;
 }
 
 std::string ItemTemplate::getName() {
@@ -122,11 +128,16 @@ int Item::getCount() {
     return _count;
 }
 
-std::string Item::getDescription() {
+std::string Item::getDescription(bool includeCost) {
     std::stringstream stream;
 
     stream << _count << " " << _template->getName();
-    return stream.str();
+
+    if (includeCost) {
+		stream << " " << _template->getCost() << "S";
+	}
+	
+	return stream.str();
 }
 
 int Item::getStatBonus(int stat) {

@@ -290,5 +290,23 @@ public:
 
 /*---------------------------------------------------------------*/
 
+class CallbackActionShop : public MenuActionCallback {
+protected:
+    MapObject* _object;
+    MapObject* _shop;
+    int _item;
+	
+public:
+    CallbackActionShop(MapObject* object, MapObject* shop);
+	void callbackVoid();
+    void callbackNumber(int num);
+	bool isInputRequired();
+	std::vector<MenuChoice> getChoices();
+	void reset();
+};
+
+
+/*---------------------------------------------------------------*/
+
 
 #endif

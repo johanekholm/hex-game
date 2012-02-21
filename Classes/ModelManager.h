@@ -52,7 +52,7 @@ public:
     int getDistanceToClosestEnemy(int owner, const MPoint& pos);
     MapObject* getFirstMapObjectWithOwner(int owner);
     HexMapModel* getMap();    
-    MapObject* getMapObjectAtPos(const MPoint& pos);
+    MapObject* getMapObjectAtPos(const MPoint& pos, int category=0);
     MapObject* getMapObjectById(int objectId);
     int getOwnerWithNoUnits();
     UnitModel* getUnitAtPos(const MPoint& pos);
