@@ -17,6 +17,7 @@
 #include "MenuView.h"
 #include "MessageView.h"
 #include "MapObject.h"
+#include "ObjectBuilder.h"
 #include "SceneLoader.h"
 #include "Sound.h"
 #include "TransitionViewController.h"
@@ -203,6 +204,8 @@ AdventureAction* AdventureAction::build(int actionId, MapObject* object) {
             return new AActionInventory(actionId, object);
         case AACTION_PARTYOPTIONS:
             return new AActionPartyOptions(actionId, object);
+		case AACTION_CITY:
+			return new AActionCity(actionId, object);
 		default:
 			return 0;
 	}
@@ -279,7 +282,7 @@ void AdvActionMove::doIt(const ActionState& statePoint) {
     _object->move(statePoint.pos);
 	
 	// advance to next turn if player party moves
-	if (_object->getOwner() == 1) {
+	if (_object->getOwner() == FactionNS::PLAYER) {
 		CentralControl::instance()->nextTurn();
 		//ViewControllerManager::instance()->centerCamera(_object->getPosition());
 	}
@@ -450,6 +453,35 @@ void AActionPartyOptions::doIt(const ActionState& statePoint) {
     CentralControl::instance()->switchMode(ControlMode::MENU);
 }
 
+/*---------------------------------------------------------------*/
+
+AActionCity::AActionCity(int anId, MapObject* object) : AdventureAction("CITY", anId, object, 0, TARGET_SELF, 0) { }
+
+bool AActionCity::isAvailable() {
+    return (ModelManager::instance()->mapObjectExistAtPos(MapObjectCategory::CITY, _object->getPosition()));
+}
+
+void AActionCity::doIt(const ActionState& statePoint) {
+	BaseMenuNodeVC* rootNode;
+	std::vector<BaseMenuNodeVC*> actionNodes, empty;
+	MenuActionCallback* shop = 0;
+	MenuActionCallback* recruit = 0;
+	MapObject* city = ModelManager::instance()->getMapObjectAtPos(_object->getPosition(), MapObjectCategory::CITY);
+	
+	recruit = new CallbackActionRecruit(_object);
+	shop = new CallbackActionShop(_object, city);
+	
+	actionNodes.clear();
+	actionNodes.push_back(new ActionMenuNodeVC(recruit, 0, "RECRUIT", empty, GPointMake(160.0f, 320.0f), 120.0f, 32.0f));
+	actionNodes.push_back(new ActionMenuNodeVC(shop, 0, "SHOP", empty, GPointMake(160.0f, 360.0f), 120.0f, 32.0f));
+	actionNodes.push_back(new BackButtonMenuNodeVC(0, "BACK", GPointMake(160.0f, 400.0f), 120.0f, 32.0f));
+		
+	rootNode = new ParentMenuNodeVC(0, "ROOT", actionNodes, GPointMake(0.0f, 0.0f), 120.0f, 32.0f);
+	    
+    SceneLoader::instance()->switchToMenu(new MenuViewController(rootNode));
+    CentralControl::instance()->switchMode(ControlMode::MENU);
+}
+
 
 /*---------------------------------------------------------------*/
 
@@ -553,3 +585,117 @@ void CallbackActionEquip::reset() {
 	_item = 0;
 }
 
+
+
+
+/*---------------------------------------------------------------*/
+
+CallbackActionRecruit::CallbackActionRecruit(MapObject* object) {
+	_object = object;
+	_unit = 0;
+}
+
+void CallbackActionRecruit::callbackVoid() {
+	std::string unitClass;
+	int cost = 0;
+	
+	switch (_unit) {
+		case 1:
+			unitClass = "archer"; cost = 8;
+			break;
+		case 2:
+			unitClass = "soldier"; cost = 8;
+			break;
+		case 3:
+			unitClass = "channeler"; cost = 10;
+			break;
+			
+		default:
+			break;
+	}
+
+	if (_object->removeItem(ItemNS::SILVER, cost)) {
+		_object->addMember(ObjectBuilder::produceUnit(unitClass, _object->getOwner(), MPointMake(1,1)));
+	}
+	
+	SceneLoader::instance()->returnFromMenu();
+}
+
+void CallbackActionRecruit::callbackNumber(int num) {
+	if (_unit == 0) {
+		_unit = num;		
+	}
+}
+
+bool CallbackActionRecruit::isInputRequired() {
+	return (_unit == 0);
+}
+
+std::vector<MenuChoice> CallbackActionRecruit::getChoices() {
+	MenuChoice node;
+    std::vector<MenuChoice> choices;
+    
+    node.choiceId = 1; node.label = "ARCHER 8S";	choices.push_back(node);
+    node.choiceId = 2; node.label = "SOLDIER 8S";	choices.push_back(node);
+    node.choiceId = 3; node.label = "MAGE 10S";		choices.push_back(node);
+
+	return choices;		
+}
+
+void CallbackActionRecruit::reset() {
+	_unit = 0;
+}
+
+
+/*---------------------------------------------------------------*/
+
+CallbackActionShop::CallbackActionShop(MapObject* object, MapObject* shop) {
+	_object = object;
+	_shop = shop;
+	_item = 0;
+}
+
+void CallbackActionShop::callbackVoid() {
+	std::string unitClass;
+	ItemTemplate* itemTemplate = ItemTemplate::getTemplate(_item);
+	
+	if (itemTemplate != 0 && _object->removeItem(ItemNS::SILVER, itemTemplate->getCost())) {
+		_shop->addItem(new Item(ItemNS::SILVER, itemTemplate->getCost()));
+		_shop->removeItem(_item, 1);
+		_object->addItem(new Item(_item, 1));
+	}
+	
+	SceneLoader::instance()->returnFromMenu();
+}
+
+void CallbackActionShop::callbackNumber(int num) {
+	if (_item == 0) {
+		_item = num;		
+	}
+}
+
+bool CallbackActionShop::isInputRequired() {
+	return (_item == 0);
+}
+
+std::vector<MenuChoice> CallbackActionShop::getChoices() {
+	MenuChoice node;
+    std::vector<MenuChoice> choices;
+    std::map<int, Item*> items;
+    
+	if (_shop != 0) {
+		items = _shop->getItems();
+		
+		for (std::map<int, Item*>::iterator it = items.begin(); it != items.end(); ++it) {
+			node.choiceId = it->second->getType(); 
+			node.label = it->second->getDescription(true);
+			choices.push_back(node);
+		}		
+	}
+		
+	return choices;		
+}
+
+void CallbackActionShop::reset() {
+	_item = 0;
+}

@@ -56,6 +56,8 @@ void SceneLoader::loadScene(std::string sceneId, bool isPersistent) {
         return;
     }
     
+	ViewControllerManager::instance()->setFocus(0);
+	
     this->handleHistory(sceneId);
     
     if (_isLoaded && _isPersistent) {
@@ -141,8 +143,10 @@ void SceneLoader::returnUnitsToParties(std::vector<UnitModel*> units) {
 	bool isEmptyParty2 = true;	
 	ModelManager* modelManager = ModelManager::instance();
 
-	MapObject* party1 = modelManager->getMapObjectById(SceneContext::instance()->getPartyId1());
-	MapObject* party2 = modelManager->getMapObjectById(SceneContext::instance()->getPartyId2());
+	MapObject* party1 = modelManager->getFirstMapObjectWithOwner(FactionNS::PLAYER); 
+	//modelManager->getMapObjectById(SceneContext::instance()->getPartyId1());
+	MapObject* party2 = modelManager->getFirstMapObjectWithOwner(FactionNS::ENEMY);  
+	//modelManager->getMapObjectById(SceneContext::instance()->getPartyId2());
 	
 	// re-insert units to parties
 	for (std::vector<UnitModel*>::iterator it = units.begin(); it != units.end(); it++) {
@@ -158,14 +162,14 @@ void SceneLoader::returnUnitsToParties(std::vector<UnitModel*> units) {
 	}
 	
 	if (isEmptyParty1) {
-		if (party1->getOwner() != 1) {
-			modelManager->removeMapObject(party1->getId());			
+		if (party1->getOwner() != FactionNS::PLAYER) {
+			modelManager->deleteMapObject(party1->getId());			
 		}
 	}
 
 	if (isEmptyParty2) {
-		if (party2->getOwner() != 1) {
-			modelManager->removeMapObject(party2->getId());			
+		if (party2->getOwner() != FactionNS::PLAYER) {
+			modelManager->deleteMapObject(party2->getId());			
 		}
 	}
 	
@@ -173,14 +177,23 @@ void SceneLoader::returnUnitsToParties(std::vector<UnitModel*> units) {
 
 void SceneLoader::loadBattleScene(const std::string& sceneId, MapObject* party1, MapObject* party2) {
     std::vector<UnitModel*> party1Members, party2Members;
-	
+		
+	ModelManager::instance()->unregisterMapObject(party1->getId());
+	ModelManager::instance()->unregisterMapObject(party2->getId());
+
 	this->removeUnitsFromParties(party1, party2, &party1Members, &party2Members);
-	
+
     // load new scene, clear model
     this->loadScene(sceneId, false);
-	
+
+	party1->move(party1->getPosition() * -1);
+	party2->move(party2->getPosition() * -1);
+
 	this->insertUnitsIntoScene(&party1Members, &party2Members);
-    
+
+    ModelManager::instance()->addMapObject(party1);
+    ModelManager::instance()->addMapObject(party2);
+	
     CentralControl::instance()->switchMode(ControlMode::BATTLE);
 }
 
@@ -238,10 +251,33 @@ void SceneLoader::returnToAdventureScene() {
 	std::vector<UnitModel*> allUnits;
 	ModelManager* modelManager = ModelManager::instance();
 	
-	allUnits = modelManager->removeAllUnits();
-	
-	this->loadRoot();
+	allUnits = modelManager->unregisterAllUnits();
+
 	this->returnUnitsToParties(allUnits);
+
+	MapObject* party1 = modelManager->getFirstMapObjectWithOwner(1); 
+	MapObject* party2 = modelManager->getFirstMapObjectWithOwner(2);  
+	
+	if (party1 != 0) {
+		ModelManager::instance()->unregisterMapObject(party1->getId());		
+	}
+
+	if (party2 != 0) {
+		ModelManager::instance()->unregisterMapObject(party2->getId());		
+	}
+
+	this->loadRoot();
+	
+	ModelManager::instance()->addMapObject(party1);
+    ModelManager::instance()->addMapObject(party2);
+
+	if (party1 != 0) {
+		party1->move(party1->getPosition() * -1);
+	}
+	
+	if (party2 != 0) {
+		party2->move(party2->getPosition() * -1);		
+	}
 	
 	CentralControl::instance()->switchMode(ControlMode::ADVENTURE);
 }

@@ -15,6 +15,13 @@ class UnitModel;
 class HexMapModel;
 class MapObject;
 
+namespace FactionNS {
+	const int PLAYER = 1;
+	const int ENEMY = 2;
+	const int NEUTRAL = 3;
+	const int FRIENDLY = 4;
+};
+
 class ModelManager {
     static ModelManager* _instance;
 	std::map<int, UnitModel*> _units;
@@ -30,25 +37,32 @@ public:
     static void destroy();
 
     void addMapObject(MapObject* object);
-	void addUnit(UnitModel*);
-    HexMapModel* getMap();    
+	void addUnit(UnitModel* unit);
+	
+    void deleteAllMapObjects();
+    void deleteAllUnits();
+    void deleteMapObject(int objectId);
+    void deleteUnit(int unitId);
+
+	void doTurn();
+
     std::vector<MapObject*> getAllMapObjects();
     std::vector<UnitModel*> getAllUnits();
     UnitModel* getClosestTo(const MPoint& pos);
     int getDistanceToClosestEnemy(int owner, const MPoint& pos);
-    MapObject* getMapObjectAtPos(const MPoint& pos);
-    MapObject* getMapObjectById(int mapObjectId);
+    MapObject* getFirstMapObjectWithOwner(int owner);
+    HexMapModel* getMap();    
+    MapObject* getMapObjectAtPos(const MPoint& pos, int category=0);
+    MapObject* getMapObjectById(int objectId);
     int getOwnerWithNoUnits();
     UnitModel* getUnitAtPos(const MPoint& pos);
     UnitModel* getUnitById(int unitId);
     bool mapObjectExistAtPos(int category, const MPoint& pos);
-    void deleteAllMapObjects();
-    void deleteAllUnits();
-    std::vector<UnitModel*> removeAllUnits();
-    void removeMapObject(int objectId);
-    void removeUnit(int unitId);
+
     void setMap(HexMapModel* map);
     void tick();
-	void doTurn();
+
+    std::vector<UnitModel*> unregisterAllUnits();
+	MapObject* unregisterMapObject(int objectId);
 };
 

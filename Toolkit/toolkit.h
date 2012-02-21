@@ -113,6 +113,13 @@ struct MPoint {
 		return result;
 	}
 
+	MPoint operator*(int scalar) { 
+		MPoint result;
+		result.x = this->x * scalar;
+		result.y = this->y * scalar;
+		return result;
+	}
+
 	GPoint operator*(GLfloat scalar) { 
 		GPoint result;
 		result.x = this->x * scalar;
