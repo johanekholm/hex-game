@@ -67,6 +67,25 @@ ScriptManager::ScriptManager() {
 	m = Py_InitModule("debuglog", LogMethods);
 
 	PyRun_SimpleString(pyString.c_str());
+
+	std::string actionPyString = ResourceLoader::loadFileAsString("Action.py");
+	DEBUGLOG(actionPyString.c_str());
+	PyRun_SimpleString(actionPyString.c_str());
+
+	PyObject *main_module, *global_dict, *actionClass, *actionInstance, *returnValue;
+
+	main_module = PyImport_AddModule("__main__");
+	global_dict = PyModule_GetDict(main_module);
+
+	actionClass = PyDict_GetItemString(global_dict, "BattleActionHeal");
+
+	if (PyCallable_Check(actionClass))
+	{
+		DEBUGLOG("Callable!");
+        actionInstance = PyObject_CallObject(actionClass, NULL);
+	}
+
+	returnValue = PyObject_CallMethod(actionInstance, "doAction", NULL);
 }
 
 /* Temporary function to log from Python */
