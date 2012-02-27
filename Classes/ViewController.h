@@ -37,11 +37,14 @@ public:
     ViewController(const GPoint& pos, GLfloat width, GLfloat height, int layer);
 	bool isWithin(const GPoint& point);
     int getLayer();
+	int getHeight();
     GPoint getPosition();
+	int getWidth();
     virtual void setFocus(bool hasFocus);
 	virtual bool handleEvent(const TouchEvent& event) = 0;
 	virtual void draw(const GPoint& cameraPos) = 0;
 	virtual void drawGUI(const GPoint& cameraPos) = 0;
+	void setPosition(const GPoint& pos);
     virtual void update();
 };
 

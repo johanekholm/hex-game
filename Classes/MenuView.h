@@ -107,7 +107,8 @@ protected:
 
 public:
 	virtual ~ParentMenuNodeVC();
-	ParentMenuNodeVC(MenuViewController* menuVC, const std::string& label, const std::vector<BaseMenuNodeVC*>& subNodes, const GPoint& pos, GLfloat width, GLfloat height);
+	ParentMenuNodeVC(MenuViewController* menuVC, const std::string& label, const std::vector<BaseMenuNodeVC*>& subNodes, const GPoint& pos, GLfloat width, GLfloat height, bool doAutoPosition);
+	void registerAndAutoPositionSubNodes(bool doAutoPosition, GLfloat verticalSpacing);
 	virtual void drawGUI(const GPoint& cameraPos);
 	virtual void goUp();
 	virtual bool handleEvent(const TouchEvent& event);

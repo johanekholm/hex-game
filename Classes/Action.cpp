@@ -434,20 +434,21 @@ void AActionPartyOptions::doIt(const ActionState& statePoint) {
 	int counter = 1;
 
     units = _object->getMembers();
-	
+
+	unitNodes.push_back(new BackButtonMenuNodeVC(0, "BACK", GPointMake(0.0f, 0.0f), 120.0f, 32.0f));
+
 	for (std::vector<UnitModel*>::iterator it = units.begin(); it != units.end(); ++it) {
 		equip = new CallbackActionEquip(_object, *it);
 		actionNodes.clear();
-		actionNodes.push_back(new ActionMenuNodeVC(equip, 0, "EQUIP", empty, GPointMake(160.0f, 360.0f), 120.0f, 32.0f));
-		actionNodes.push_back(new BackButtonMenuNodeVC(0, "BACK", GPointMake(160.0f, 400.0f), 120.0f, 32.0f));
+		actionNodes.push_back(new BackButtonMenuNodeVC(0, "BACK", GPointMake(0.0f, 0.0f), 120.0f, 32.0f));
+		actionNodes.push_back(new ActionMenuNodeVC(equip, 0, "EQUIP", empty, GPointMake(0.0f, 0.0f), 120.0f, 32.0f));
 		
-		unitNodes.push_back(new ParentMenuNodeVC(0, (*it)->getDescription(), actionNodes, GPointMake(160.0f, 400.0f - counter * 40.0f), 120.0f, 32.0f));
+		unitNodes.push_back(new ParentMenuNodeVC(0, (*it)->getDescription(), actionNodes, GPointMake(0.0f, 0.0f), 120.0f, 32.0f, true));
 		counter++;
 	}
 	
-	unitNodes.push_back(new BackButtonMenuNodeVC(0, "BACK", GPointMake(160.0f, 400.0f), 120.0f, 32.0f));
 	
-    rootNode = new ParentMenuNodeVC(0, "ROOT", unitNodes, GPointMake(0.0f, 0.0f), 80.0f, 32.0f);
+    rootNode = new ParentMenuNodeVC(0, "ROOT", unitNodes, GPointMake(0.0f, 0.0f), 80.0f, 32.0f, true);
     
     SceneLoader::instance()->switchToMenu(new MenuViewController(rootNode));
     CentralControl::instance()->switchMode(ControlMode::MENU);
@@ -472,11 +473,11 @@ void AActionCity::doIt(const ActionState& statePoint) {
 	shop = new CallbackActionShop(_object, city);
 	
 	actionNodes.clear();
-	actionNodes.push_back(new ActionMenuNodeVC(recruit, 0, "RECRUIT", empty, GPointMake(160.0f, 320.0f), 120.0f, 32.0f));
-	actionNodes.push_back(new ActionMenuNodeVC(shop, 0, "SHOP", empty, GPointMake(160.0f, 360.0f), 120.0f, 32.0f));
-	actionNodes.push_back(new BackButtonMenuNodeVC(0, "BACK", GPointMake(160.0f, 400.0f), 120.0f, 32.0f));
+	actionNodes.push_back(new BackButtonMenuNodeVC(0, "BACK", GPointMake(0.0f, 0.0f), 120.0f, 32.0f));
+	actionNodes.push_back(new ActionMenuNodeVC(recruit, 0, "RECRUIT", empty, GPointMake(0.0f, 0.0f), 120.0f, 32.0f));
+	actionNodes.push_back(new ActionMenuNodeVC(shop, 0, "SHOP", empty, GPointMake(0.0f, 0.0f), 120.0f, 32.0f));
 		
-	rootNode = new ParentMenuNodeVC(0, "ROOT", actionNodes, GPointMake(0.0f, 0.0f), 120.0f, 32.0f);
+	rootNode = new ParentMenuNodeVC(0, "ROOT", actionNodes, GPointMake(0.0f, 0.0f), 120.0f, 32.0f, true);
 	    
     SceneLoader::instance()->switchToMenu(new MenuViewController(rootNode));
     CentralControl::instance()->switchMode(ControlMode::MENU);

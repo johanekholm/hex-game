@@ -80,6 +80,14 @@ struct GPoint {
 		this->x = scalar;
 		this->y = scalar;
 	}
+	
+	bool operator==(const GPoint& other) { 
+		return (this->x == other.x && this->y == other.y);
+	}
+
+	bool operator==(GLfloat scalar) { 
+		return (this->x == scalar && this->y == scalar);
+	}
 		
 };
 
