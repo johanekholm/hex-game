@@ -23,7 +23,7 @@ MenuViewController::~MenuViewController() {
     delete _rootNode;
 }
 
-MenuViewController::MenuViewController(BaseMenuNodeVC* root) {
+MenuViewController::MenuViewController(BaseMenuNodeVC* root) : ViewController(GPointMake(0.0f, 0.0f), 320.0f, 480.0f, MapLayer::ABOVE_GUI) {
     _background = new RectangleImage(RGBAMake(0.0f, 0.0f, 0.0f, 0.3f), _width, _height, true);
     _rootNode = root;
 	_rootNode->setMenu(this);
