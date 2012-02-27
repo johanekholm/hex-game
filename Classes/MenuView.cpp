@@ -186,7 +186,7 @@ bool LeafMenuNodeVC::handleEvent(const TouchEvent& event) {
 
 BackButtonMenuNodeVC::BackButtonMenuNodeVC(MenuViewController* menuVC, const std::string& label, const GPoint& pos, GLfloat width, GLfloat height) : BaseMenuNodeVC(menuVC, label, -1, pos, width, height) {
     
-    _button = new RectangleImage(RGBAMake(1.0f, 0.0f, 0.0f, 0.8f), _width, _height, true);
+    _button = new RectangleImage(RGBAMake(1.0f, 0.0f, 0.0f, 1.0f), _width, _height, true);
     _label = new StringImage(label, RGBAMakeWhite());
 }
 
@@ -218,7 +218,7 @@ ParentMenuNodeVC::~ParentMenuNodeVC() {
 
 ParentMenuNodeVC::ParentMenuNodeVC(MenuViewController* menuVC, const std::string& label, const std::vector<BaseMenuNodeVC*>& subNodes, const GPoint& pos, GLfloat width, GLfloat height, bool doAutoPosition) : BaseMenuNodeVC(menuVC, label, -1, pos, width, height){
 
-    _button = new RectangleImage(RGBAMake(0.2f, 0.2f, 1.0f, 0.8f), _width, _height, true);
+    _button = new RectangleImage(RGBAMake(0.2f, 0.2f, 1.0f, 1.0f), _width, _height, true);
     _label = new StringImage(label, RGBAMakeWhite());
     _subNodes = subNodes;
     
