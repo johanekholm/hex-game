@@ -117,7 +117,9 @@ BActionMove::BActionMove(int anId, UnitModel* unit) : BattleAction(anId, unit, "
 
 bool BActionMove::isAvailableAtHex(const MPoint& hex) {
     if (hexDistance(_unit->getPosition(), hex) == 1) {
-        return (ModelManager::instance()->getUnitAtPos(hex) == 0);
+		if (ModelManager::instance()->getMap()->getHexValue(hex) != 6) {
+			return (ModelManager::instance()->getUnitAtPos(hex) == 0);			
+		}
     }
     return false;
 }
