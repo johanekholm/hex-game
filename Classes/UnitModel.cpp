@@ -17,6 +17,87 @@
 #include <cstdlib>
 #include <iostream>
 
+
+std::map<std::string, UnitModelTemplate*> UnitModelTemplate::_templates = UnitModelTemplate::initTemplates();
+
+std::map<std::string, UnitModelTemplate*> UnitModelTemplate::initTemplates() {
+	std::map<std::string, UnitModelTemplate*> templates;
+	std::vector<int> actions;
+	
+	actions.clear();
+	actions.push_back(ActionNS::BACTION_MOVE); actions.push_back(ActionNS::BACTION_STRIKE);
+	templates["hero"] =		new UnitModelTemplate("hero", "HERO",		0, 3, 3, 2, 5, 10, actions);
+
+	actions.clear();
+	actions.push_back(ActionNS::BACTION_MOVE); actions.push_back(ActionNS::BACTION_STRIKE);
+	templates["soldier"] =	new UnitModelTemplate("soldier", "SOLDIER",	1, 2, 3, 1, 3, 4, actions);
+
+	actions.clear();
+	actions.push_back(ActionNS::BACTION_MOVE); actions.push_back(ActionNS::BACTION_FIRE);
+	templates["archer"] =	new UnitModelTemplate("archer", "ARCHER",	3, 2, 2, 1, 3, 4, actions);
+	
+	return templates;
+}
+
+UnitModelTemplate* UnitModelTemplate::getTemplate(const std::string& templateId) {
+	if (_templates.find(templateId) != _templates.end()) {
+        return _templates[templateId];
+    } else {
+		return 0;
+	}
+}
+
+UnitModelTemplate::UnitModelTemplate() {
+	_templateId = "";
+	_name = "";
+    _visualType = 0;
+    _basePower = 0;
+    _baseSkill = 0;
+    _baseDefense = 0;
+    _maxAp = 0;
+    _maxHp = 0;
+}
+
+UnitModelTemplate::UnitModelTemplate(const std::string& templateId, const std::string& name, int visualType, int basePower, int baseSkill, int baseDefense, int maxAp, int maxHp, const std::vector<int>& actionIds) {
+	_templateId = templateId;
+	_name = name;
+    _visualType = visualType;
+    _basePower = basePower;
+    _baseSkill = baseSkill;
+    _baseDefense = baseDefense;
+    _maxAp = maxAp;
+    _maxHp = maxHp;
+	_actionIds = actionIds;
+}
+
+std::string UnitModelTemplate::getName() {
+	return _name;
+}
+
+int UnitModelTemplate::getStat(int stat) {
+	switch (stat) {
+		case StatNS::POWER:
+			return _basePower;
+		case StatNS::SKILL:
+			return _baseSkill;
+		case StatNS::DEFENSE:
+			return _baseDefense;
+		case StatNS::MAXHP:
+			return _maxHp;
+		case StatNS::MAXAP:
+			return _maxAp;
+		default:
+			break;
+	}
+	return 0;
+}
+
+int UnitModelTemplate::getVisualType() {
+	return _visualType;
+}
+
+
+
 UnitModel::~UnitModel() {
     this->updateObserversDestroyed();
 }

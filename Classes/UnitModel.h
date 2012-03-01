@@ -49,6 +49,29 @@ struct UnitState {
     std::vector<ActionState> actions;
 };
 
+class UnitModelTemplate {
+private:
+	static std::map<std::string, UnitModelTemplate*> _templates;
+	std::string _templateId;
+	std::string _name;
+    int _visualType;
+    int _basePower;
+    int _baseSkill;
+    int _baseDefense;
+    int _maxAp;
+    int _maxHp;
+	std::vector<int> _actionIds;
+
+public:
+	static std::map<std::string, UnitModelTemplate*> initTemplates();
+	static UnitModelTemplate* getTemplate(const std::string& templateId);
+	UnitModelTemplate();
+	UnitModelTemplate(const std::string& _templateId, const std::string& _name, int visualType, int basePower, int baseSkill, int baseDefense, int maxAp, int maxHp, const std::vector<int>& actionIds);
+	std::string getName();
+	int getStat(int stat);
+	int getVisualType();
+};
+
 class UnitModel : public Observable, public ItemEquipper {
 	MPoint _pos;
     int _id;
