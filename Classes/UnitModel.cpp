@@ -321,6 +321,10 @@ void UnitModel::setId(int unitId) {
     _id = unitId;
 }
 
+void UnitModel::setPosition(const MPoint& pos) {
+	_pos = pos;
+}
+
 bool UnitModel::spendAp(int cost) {
 	if (_ap >= cost) {
 		_ap -= cost;

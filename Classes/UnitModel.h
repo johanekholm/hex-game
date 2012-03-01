@@ -94,6 +94,7 @@ public:
     void fire(const MPoint& targetPos);
 	void move(const MPoint& targetPos);
     void setId(int unitId);
+	void setPosition(const MPoint& pos);
 	bool spendAp(int cost);
 	void strike(const MPoint& targetPos);
     void tick();

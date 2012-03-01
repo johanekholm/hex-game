@@ -23,6 +23,8 @@
 #include "ScriptManager.h"
 #include "StateManager.h"
 #include "SceneContext.h"
+#include "geometry.h"
+#include <algorithm>
 
 SceneLoader* SceneLoader::_instance = 0;
 
@@ -105,15 +107,34 @@ void SceneLoader::giveContinousControl(ViewController* control) {
 
 
 void SceneLoader::insertUnitsIntoScene(std::vector<UnitModel*>* party1Members, std::vector<UnitModel*>* party2Members) {
-	// register passed units
+	std::map<int, HexState> hexStates = ModelManager::instance()->getMap()->getAllHexes();
+	std::vector<MPoint> hexes;
+	DistanceToHexSorter sorter(MPointMake(0,0));
+	
+	// extract walkable hexes
+	for (std::map<int, HexState>::const_iterator it = hexStates.begin(); it != hexStates.end(); ++it) {
+		// TO-DO: implement scheme to find out hex walkability
+		if ((it->second).value == 5) {
+			hexes.push_back((it->second).pos);
+		}
+	}
+	
+	// sort by distance to origin
+	sort(hexes.begin(), hexes.end(), sorter);
+
+	// register passed units, place parties at one side each
 	if (party1Members != 0) {
 		for (std::vector<UnitModel*>::iterator it = party1Members->begin(); it != party1Members->end(); ++it) {
+			(*it)->setPosition(hexes.front());
+			hexes.erase(hexes.begin());
 			ObjectBuilder::registerUnit(*it);
 		}    		
 	}
 	
 	if (party2Members != 0) {
 		for (std::vector<UnitModel*>::iterator it = party2Members->begin(); it != party2Members->end(); ++it) {
+			(*it)->setPosition(hexes.back());
+			hexes.erase(hexes.end());
 			ObjectBuilder::registerUnit(*it);
 		}		
 	}
