@@ -59,8 +59,10 @@ private:
 public:
 	static std::map<std::string, UnitModelTemplate*> initTemplates();
 	static UnitModelTemplate* getTemplate(const std::string& templateId);
+	static void loadTemplatesFromJson();
 	UnitModelTemplate();
 	UnitModelTemplate(const std::string& _templateId, const std::string& _name, int visualType, int basePower, int baseSkill, int baseDefense, int maxAp, int maxHp, const std::vector<int>& actionIds);
+	void deserialize(Json::Value& root);
 	std::vector<int> getActionIds();
 	std::string getName();
 	int getStat(int stat);

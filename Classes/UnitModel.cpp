@@ -12,6 +12,7 @@
 #include "ModelManager.h"
 #include "MessageView.h"
 #include "HexMapModel.h"
+#include "StateManager.h"
 #include "geometry.h"
 #include "json.h"
 #include <cstdlib>
@@ -51,6 +52,20 @@ UnitModelTemplate* UnitModelTemplate::getTemplate(const std::string& templateId)
 	}
 }
 
+void UnitModelTemplate::loadTemplatesFromJson() {
+    Json::Value root;
+	UnitModelTemplate* unitTemplate;
+    
+    DEBUGLOG("Loading templates from Json");
+	StateManager::loadStateFromFile(root, "UnitTemplates.jsn");
+	
+	for (Json::ValueIterator it = root["templates"].begin(); it != root["templates"].end(); it++) {
+		unitTemplate = new UnitModelTemplate();
+		unitTemplate->deserialize(*it);
+		_templates[unitTemplate->getTemplateId()] = unitTemplate;
+    }
+}
+
 UnitModelTemplate::UnitModelTemplate() {
 	_templateId = "";
 	_name = "";
@@ -73,6 +88,23 @@ UnitModelTemplate::UnitModelTemplate(const std::string& templateId, const std::s
     _maxHp = maxHp;
 	_actionIds = actionIds;
 }
+
+void UnitModelTemplate::deserialize(Json::Value& root) {
+    _templateId = root.get("type", "missing_id").asString();
+    _basePower = root.get("basePower", 0).asInt();
+    _baseSkill = root.get("baseSkill", 0).asInt();
+    _baseDefense = root.get("baseDefense", 0).asInt();
+    _maxAp = root.get("maxAp", 0).asInt();
+    _maxHp = root.get("maxHp", 0).asInt();
+    _visualType = root.get("visualType", 0).asInt();
+	_name = root.get("name", "NONAME").asString();
+    
+    // deserialize actions
+    for (Json::ValueIterator it = root["actions"].begin(); it != root["actions"].end(); it++) {
+        _actionIds.push_back((*it).asInt());
+    }
+}
+
 
 std::vector<int> UnitModelTemplate::getActionIds() {
 	return _actionIds;
