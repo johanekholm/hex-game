@@ -45,7 +45,7 @@ void ObjectBuilder::createMapObjectFromTemplate(const std::string& objectType, i
         layer = MapLayer::UNIT;
         if (owner == 1) {
             image = 1;
-            units.push_back(produceUnit("swordsman", owner, MPointMake(1,1)));
+            units.push_back(produceUnit("hero", owner, MPointMake(1,1)));
             units.push_back(produceUnit("archer", owner, MPointMake(1,0)));
         } else {
             image = 6;
@@ -66,9 +66,8 @@ void ObjectBuilder::createMapObjectFromTemplate(const std::string& objectType, i
 
 UnitModel* ObjectBuilder::produceUnit(const std::string& unitClass, int owner, const MPoint& pos) {
     UnitModel* unit;
-    int hp, ap, power, skill, defense, image;
+    /*int hp, ap, power, skill, defense, image;
     std::vector<int> actions;
-    DEBUGLOG("Produce unit: %s", unitClass.c_str());
     if (unitClass == "swordsman") {
         hp = 10; ap = 30; power = 3; skill = 2; defense = 3; image = 0;
         actions.push_back(ActionNS::BACTION_MOVE); actions.push_back(ActionNS::BACTION_STRIKE);
@@ -83,9 +82,11 @@ UnitModel* ObjectBuilder::produceUnit(const std::string& unitClass, int owner, c
         actions.push_back(ActionNS::BACTION_MOVE); actions.push_back(ActionNS::BACTION_BURN); actions.push_back(ActionNS::BACTION_HEAL);
     } else {
         return 0;
-    }
+    }*/
     
-    unit = new UnitModel(pos.x, pos.y, owner, hp, ap, power, skill, defense, actions, image);
+    DEBUGLOG("Produce unit: %s", unitClass.c_str());
+    unit = new UnitModel(unitClass, pos, owner); 
+	//new UnitModel(pos.x, pos.y, owner, hp, ap, power, skill, defense, actions, image);
     
     return unit;
 }

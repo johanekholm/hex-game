@@ -14,12 +14,6 @@
 #define ATTACK_TYPE_PIERCE 2
 #define ATTACK_TYPE_FIRE 3
 
-/*#define STAT_POWER 1
-#define STAT_SKILL 2
-#define STAT_DEFENSE 3
-#define STAT_MAXHP 4
-#define STAT_MAXAP 5
-*/
 #include <map>
 #include <vector>
 #include <string>
@@ -67,8 +61,10 @@ public:
 	static UnitModelTemplate* getTemplate(const std::string& templateId);
 	UnitModelTemplate();
 	UnitModelTemplate(const std::string& _templateId, const std::string& _name, int visualType, int basePower, int baseSkill, int baseDefense, int maxAp, int maxHp, const std::vector<int>& actionIds);
+	std::vector<int> getActionIds();
 	std::string getName();
 	int getStat(int stat);
+	std::string getTemplateId();
 	int getVisualType();
 };
 
@@ -86,6 +82,7 @@ class UnitModel : public Observable, public ItemEquipper {
     int _owner;
     int _visualType;
     UnitModel* _target;
+	UnitModelTemplate* _template;
 
 	std::map<int, BattleAction*> _actions;
     
@@ -95,7 +92,7 @@ public:
 	
 	~UnitModel();
     UnitModel();
-    UnitModel(int x, int y, int owner, int maxHp, int maxAp, int power, int skill, int defense, std::vector<int> actionIds, int visualType);
+	UnitModel(const std::string& templateId, const MPoint& pos, int owner);
     Json::Value serialize();
     void deserialize(Json::Value& root);
     

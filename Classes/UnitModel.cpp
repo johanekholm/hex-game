@@ -26,15 +26,19 @@ std::map<std::string, UnitModelTemplate*> UnitModelTemplate::initTemplates() {
 	
 	actions.clear();
 	actions.push_back(ActionNS::BACTION_MOVE); actions.push_back(ActionNS::BACTION_STRIKE);
-	templates["hero"] =		new UnitModelTemplate("hero", "HERO",		0, 3, 3, 2, 5, 10, actions);
+	templates["hero"] =		new UnitModelTemplate("hero", "HERO",		0, 3, 3, 2, 30, 10, actions);
 
 	actions.clear();
 	actions.push_back(ActionNS::BACTION_MOVE); actions.push_back(ActionNS::BACTION_STRIKE);
-	templates["soldier"] =	new UnitModelTemplate("soldier", "SOLDIER",	1, 2, 3, 1, 3, 4, actions);
+	templates["soldier"] =	new UnitModelTemplate("soldier", "SOLDIER",	1, 2, 3, 1, 30, 5, actions);
 
 	actions.clear();
+	actions.push_back(ActionNS::BACTION_MOVE); actions.push_back(ActionNS::BACTION_BURN); actions.push_back(ActionNS::BACTION_HEAL);
+	templates["channeler"] = new UnitModelTemplate("channeler", "CHANNELER", 2, 2, 2, 1, 50, 4, actions);
+	
+	actions.clear();
 	actions.push_back(ActionNS::BACTION_MOVE); actions.push_back(ActionNS::BACTION_FIRE);
-	templates["archer"] =	new UnitModelTemplate("archer", "ARCHER",	3, 2, 2, 1, 3, 4, actions);
+	templates["archer"] =	new UnitModelTemplate("archer", "ARCHER",	3, 2, 2, 1, 30, 3, actions);
 	
 	return templates;
 }
@@ -70,6 +74,10 @@ UnitModelTemplate::UnitModelTemplate(const std::string& templateId, const std::s
 	_actionIds = actionIds;
 }
 
+std::vector<int> UnitModelTemplate::getActionIds() {
+	return _actionIds;
+}
+
 std::string UnitModelTemplate::getName() {
 	return _name;
 }
@@ -92,6 +100,10 @@ int UnitModelTemplate::getStat(int stat) {
 	return 0;
 }
 
+std::string UnitModelTemplate::getTemplateId() {
+	return _templateId;
+}
+
 int UnitModelTemplate::getVisualType() {
 	return _visualType;
 }
@@ -104,50 +116,32 @@ UnitModel::~UnitModel() {
 
 UnitModel::UnitModel() {}
 
-UnitModel::UnitModel(int x, int y, int owner, int maxHp, int maxAp, int power, int skill, int defense, std::vector<int> actionIds, int visualType) {
+UnitModel::UnitModel(const std::string& templateId, const MPoint& pos, int owner) {
+	std::vector<int> actionIds;
+	_template = UnitModelTemplate::getTemplate(templateId);
     _owner = owner;
-	_pos.x = x;
-	_pos.y = y;
-    _maxHp = maxHp;
-    _maxAp = maxAp;
-    _hp = _maxHp;
-    _ap = rand() % 8; //_maxAp;
-    _basePower = power;
-    _baseSkill = skill;
-    _baseDefense = defense;
-    _target = 0;
-    _visualType = visualType;
-	_name = "UNIT";
-
+	_pos = pos;
+    _hp = _template->getStat(StatNS::MAXHP);
+    _ap = rand() % 10;
+	
+	actionIds = _template->getActionIds();
     for (std::vector<int>::iterator it = actionIds.begin(); it != actionIds.end(); ++it) {
         this->addAction(*it);
-    }
-	
+    }	
 }
 
 Json::Value UnitModel::serialize() {
     Json::Value root;
     
-    Json::Value& actions = root["actions"];
     Json::Value& equip = root["equip"];
 	
-    root["x"] = _pos.x;
+    root["type"] = _template->getTemplateId();
+    root["id"] = _id;
+	root["x"] = _pos.x;
     root["y"] = _pos.y;
     root["ap"] = _ap;
     root["hp"] = _hp;
-    root["basePower"] = _basePower;
-    root["baseSkill"] = _baseSkill;
-    root["baseDefense"] = _baseDefense;
-    root["maxAp"] = _maxAp;
-    root["maxHp"] = _maxHp;
     root["owner"] = _owner;
-    root["visualType"] = _visualType;
-    root["id"] = _id;
-    
-    // serialize actions
-    for (std::map<int, BattleAction*>::iterator it = _actions.begin(); it != _actions.end(); ++it) {
-        actions.append(it->first);
-    }
 	
 	// serialize items
 	equip = this->serializeEquippedItems();
@@ -156,25 +150,21 @@ Json::Value UnitModel::serialize() {
 }
 
 void UnitModel::deserialize(Json::Value& root) {
+	std::vector<int> actionIds;
+	std::string templateId = root.get("type", "").asString();
+	_template = UnitModelTemplate::getTemplate(templateId);
+    _id = root.get("id", 0).asInt();
+    _owner = root.get("owner", 0).asInt();
     _pos.x = root.get("x", 0.0f).asFloat();
     _pos.y = root.get("y", 0.0f).asFloat();
     _ap = root.get("ap", 0).asInt();
     _hp = root.get("hp", 0).asInt();
-    _basePower = root.get("basePower", 0).asInt();
-    _baseSkill = root.get("baseSkill", 0).asInt();
-    _baseDefense = root.get("baseDefense", 0).asInt();
-    _maxAp = root.get("maxAp", 0).asInt();
-    _maxHp = root.get("maxHp", 0).asInt();
-    _owner = root.get("owner", 0).asInt();
-    _visualType = root.get("visualType", 0).asInt();
-    _id = root.get("id", 0).asInt();
-	_name = "UNIT";
-    
-    // deserialize actions
-    for (Json::ValueIterator it = root["actions"].begin(); it != root["actions"].end(); it++) {
-        this->addAction((*it).asInt());
+
+	actionIds = _template->getActionIds();
+	for (std::vector<int>::iterator it = actionIds.begin(); it != actionIds.end(); ++it) {
+        this->addAction(*it);
     }
-	
+
 	this->deserializeEquippedItems(root["equip"]);
 }
 
@@ -306,7 +296,7 @@ std::vector<ActionState> UnitModel::getActions() {
 std::string UnitModel::getDescription() {
     std::stringstream stream;
 	
-    stream << _name << " " << _hp << "/" << _maxHp;
+    stream << _template->getName() << " " << _hp << "/" << this->getStat(StatNS::MAXHP);
     return stream.str();
 }
 
@@ -325,26 +315,7 @@ MPoint UnitModel::getPosition() {
 
 
 int UnitModel::getStat(int stat) {
-    switch (stat) {
-        case StatNS::POWER:
-            return _basePower + this->getStatBonus(stat);
-
-        case StatNS::SKILL:
-            return _baseSkill + this->getStatBonus(stat);
-
-        case StatNS::DEFENSE:
-            return _baseDefense + this->getStatBonus(stat);
-
-        case StatNS::MAXHP:
-            return _maxHp + this->getStatBonus(stat);
-
-        case StatNS::MAXAP:
-            return _maxAp;
-
-        default:
-            break;
-    }
-    return 0;
+	return _template->getStat(stat) + this->getStatBonus(stat);
 }
 
 UnitState UnitModel::getState() {
@@ -353,20 +324,20 @@ UnitState UnitModel::getState() {
     state.pos = _pos;
     state.ap = _ap;
     state.hp = _hp;
-    state.maxAp = _maxAp;
-    state.maxHp = _maxHp;
+    state.maxAp = this->getStat(StatNS::MAXAP);
+    state.maxHp = this->getStat(StatNS::MAXHP);
     state.actions = this->getActions();
     
     return state;
 }
 
 int UnitModel::getVisualType() {
-    return _visualType;
+    return _template->getVisualType();
 }
 
 void UnitModel::inflictDamage(int damage) {
     std::stringstream ss;
-    
+    int maxHp = _template->getStat(StatNS::MAXHP);
 
     if (damage > 0) {
         ss << damage;
@@ -384,8 +355,8 @@ void UnitModel::inflictDamage(int damage) {
         _hp = 0;
         ModelManager::instance()->deleteUnit(_id);
         return;
-    } else if (_hp > _maxHp) {
-        _hp = _maxHp;
+    } else if (_hp > maxHp) {
+        _hp = maxHp;
     }
     this->updateObservers();
 }
