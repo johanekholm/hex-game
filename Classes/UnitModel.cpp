@@ -19,16 +19,16 @@
 #include <iostream>
 
 
-std::map<std::string, UnitModelTemplate*> UnitModelTemplate::_templates = UnitModelTemplate::initTemplates();
+std::map<std::string, UnitModelTemplate> UnitModelTemplate::_templates = UnitModelTemplate::initTemplates();
 
-std::map<std::string, UnitModelTemplate*> UnitModelTemplate::initTemplates() {
-	std::map<std::string, UnitModelTemplate*> templates;
+std::map<std::string, UnitModelTemplate> UnitModelTemplate::initTemplates() {
+	std::map<std::string, UnitModelTemplate> templates;
 	return templates;
 }
 
 UnitModelTemplate* UnitModelTemplate::getTemplate(const std::string& templateId) {
 	if (_templates.find(templateId) != _templates.end()) {
-        return _templates[templateId];
+        return &_templates[templateId];
     } else {
 		return 0;
 	}
@@ -36,14 +36,14 @@ UnitModelTemplate* UnitModelTemplate::getTemplate(const std::string& templateId)
 
 void UnitModelTemplate::loadTemplatesFromJson() {
     Json::Value root;
-	UnitModelTemplate* unitTemplate;
+	UnitModelTemplate unitTemplate;
     
 	StateManager::loadStateFromFile(root, "UnitModelTemplates.jsn");
 	
 	for (Json::ValueIterator it = root["templates"].begin(); it != root["templates"].end(); it++) {
-		unitTemplate = new UnitModelTemplate();
-		unitTemplate->deserialize(*it);
-		_templates[unitTemplate->getTemplateId()] = unitTemplate;
+		//unitTemplate = new UnitModelTemplate();
+		unitTemplate.deserialize(*it);
+		_templates[unitTemplate.getTemplateId()] = unitTemplate;
     }
 }
 
@@ -80,6 +80,8 @@ void UnitModelTemplate::deserialize(Json::Value& root) {
     _maxHp = root.get("maxHp", 0).asInt();
     _visualType = root.get("visualType", 0).asInt();
 
+	_actionIds.clear();
+	
     // deserialize actions
     for (Json::ValueIterator it = root["actions"].begin(); it != root["actions"].end(); it++) {
         _actionIds.push_back((*it).asInt());

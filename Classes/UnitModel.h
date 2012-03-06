@@ -45,7 +45,7 @@ struct UnitState {
 
 class UnitModelTemplate {
 private:
-	static std::map<std::string, UnitModelTemplate*> _templates;
+	static std::map<std::string, UnitModelTemplate> _templates;
 	std::string _templateId;
 	std::string _name;
     int _visualType;
@@ -57,7 +57,7 @@ private:
 	std::vector<int> _actionIds;
 
 public:
-	static std::map<std::string, UnitModelTemplate*> initTemplates();
+	static std::map<std::string, UnitModelTemplate> initTemplates();
 	static UnitModelTemplate* getTemplate(const std::string& templateId);
 	static void loadTemplatesFromJson();
 	UnitModelTemplate();
