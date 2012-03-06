@@ -30,17 +30,22 @@ std::map<std::string, std::string> StateManager::initStaticMap() {
 	std::string dungeonMap1 = "{'map':{'height':4,'hexes':[{'v':4,'x':0,'y':0},{'v':5,'x':1,'y':0},{'v':5,'x':2,'y':0},{'v':5,'x':3,'y':0},{'v':5,'x':0,'y':1},{'v':5,'x':1,'y':1},{'v':5,'x':2,'y':1},{'v':5,'x':3,'y':1},{'v':5,'x':0,'y':2},{'v':5,'x':1,'y':2},{'v':5,'x':2,'y':2},{'v':5,'x':3,'y':2},{'v':5,'x':0,'y':3},{'v':5,'x':1,'y':3},{'v':5,'x':2,'y':3},{'v':4,'x':3,'y':3}],'scale':1.0,'width':4},'units':[{'actions':[0,1],'ap':6,'baseDefense':2,'basePower':2,'baseSkill':2,'hp':1,'id':3,'maxAp':30,'maxHp':1,'owner':2,'visualType':1,'x':2,'y':2},{'actions':[0,1],'ap':6,'baseDefense':2,'basePower':2,'baseSkill':2,'hp':1,'id':3,'maxAp':30,'maxHp':1,'owner':2,'visualType':1,'x':2,'y':3}]}";
     
     std::string battleMap = "{'map':{'height':4,'hexes':[{'v':4,'x':0,'y':0},{'v':5,'x':1,'y':0},{'v':5,'x':2,'y':0},{'v':5,'x':3,'y':0},{'v':5,'x':0,'y':1},{'v':5,'x':1,'y':1},{'v':5,'x':2,'y':1},{'v':5,'x':3,'y':1},{'v':5,'x':0,'y':2},{'v':5,'x':1,'y':2},{'v':6,'x':2,'y':2},{'v':5,'x':3,'y':2},{'v':5,'x':0,'y':3},{'v':5,'x':1,'y':3},{'v':5,'x':2,'y':3},{'v':4,'x':3,'y':3}],'scale':1.0,'width':4},'units':null}";
+	
+	std::string unitModelTemplates = 
+	"{'templates':[{'type':'hero','name':'HERO','actions':[0,1],'defense':3,'power':3,'skill':2,'maxAp':30,'maxHp':8,'visualType':0}, {'type':'soldier','name':'SOLDIER','actions':[0,1],'defense':3,'power':3,'skill':2,'maxAp':30,'maxHp':5,'visualType':1}, {'type':'channeler','name':'CHANNELER','actions':[0,5],'defense':3,'power':3,'skill':2,'maxAp':30,'maxHp':3,'visualType':2}, {'type':'archer','name':'ARCHER','actions':[0,2],'defense':3,'power':3,'skill':2,'maxAp':30,'maxHp':3,'visualType':3}]}";
 
     // replace single with double qoutes, as per json standard
     std::replace(adventureState.begin(), adventureState.end(), '\'', '"');
     std::replace(battleState.begin(), battleState.end(), '\'', '"');
     std::replace(dungeonMap1.begin(), dungeonMap1.end(), '\'', '"');
     std::replace(battleMap.begin(), battleMap.end(), '\'', '"');
+    std::replace(unitModelTemplates.begin(), unitModelTemplates.end(), '\'', '"');
 
     states["newgame.jsn"] = adventureState;
     states["battle1.jsn"] = battleState;
     states["dungeon1.jsn"] = dungeonMap1;
     states["battleMap1.jsn"] = battleMap;
+    states["UnitModelTemplates.jsn"] = unitModelTemplates;
 
     return states;
 }

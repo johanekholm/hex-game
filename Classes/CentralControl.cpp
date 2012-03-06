@@ -165,6 +165,7 @@ void CentralControl::init() {
 	sound->add("fire", "fireball1");
 	sound->add("music1", "grotta");
 
+	UnitModelTemplate::loadTemplatesFromJson();
 	SceneLoader::instance()->loadAdventureScene();
 
 	d->viewControllerManager = ViewControllerManager::instance();

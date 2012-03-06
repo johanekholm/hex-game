@@ -23,24 +23,6 @@ std::map<std::string, UnitModelTemplate*> UnitModelTemplate::_templates = UnitMo
 
 std::map<std::string, UnitModelTemplate*> UnitModelTemplate::initTemplates() {
 	std::map<std::string, UnitModelTemplate*> templates;
-	std::vector<int> actions;
-	
-	actions.clear();
-	actions.push_back(ActionNS::BACTION_MOVE); actions.push_back(ActionNS::BACTION_STRIKE);
-	templates["hero"] =		new UnitModelTemplate("hero", "HERO",		0, 3, 3, 2, 30, 10, actions);
-
-	actions.clear();
-	actions.push_back(ActionNS::BACTION_MOVE); actions.push_back(ActionNS::BACTION_STRIKE);
-	templates["soldier"] =	new UnitModelTemplate("soldier", "SOLDIER",	1, 2, 3, 1, 30, 5, actions);
-
-	actions.clear();
-	actions.push_back(ActionNS::BACTION_MOVE); actions.push_back(ActionNS::BACTION_BURN); actions.push_back(ActionNS::BACTION_HEAL);
-	templates["channeler"] = new UnitModelTemplate("channeler", "CHANNELER", 2, 2, 2, 1, 50, 4, actions);
-	
-	actions.clear();
-	actions.push_back(ActionNS::BACTION_MOVE); actions.push_back(ActionNS::BACTION_FIRE);
-	templates["archer"] =	new UnitModelTemplate("archer", "ARCHER",	3, 2, 2, 1, 30, 3, actions);
-	
 	return templates;
 }
 
@@ -56,8 +38,7 @@ void UnitModelTemplate::loadTemplatesFromJson() {
     Json::Value root;
 	UnitModelTemplate* unitTemplate;
     
-    DEBUGLOG("Loading templates from Json");
-	StateManager::loadStateFromFile(root, "UnitTemplates.jsn");
+	StateManager::loadStateFromFile(root, "UnitModelTemplates.jsn");
 	
 	for (Json::ValueIterator it = root["templates"].begin(); it != root["templates"].end(); it++) {
 		unitTemplate = new UnitModelTemplate();
@@ -91,14 +72,14 @@ UnitModelTemplate::UnitModelTemplate(const std::string& templateId, const std::s
 
 void UnitModelTemplate::deserialize(Json::Value& root) {
     _templateId = root.get("type", "missing_id").asString();
-    _basePower = root.get("basePower", 0).asInt();
-    _baseSkill = root.get("baseSkill", 0).asInt();
-    _baseDefense = root.get("baseDefense", 0).asInt();
+	_name = root.get("name", "NONAME").asString();
+    _basePower = root.get("power", 0).asInt();
+    _baseSkill = root.get("skill", 0).asInt();
+    _baseDefense = root.get("defense", 0).asInt();
     _maxAp = root.get("maxAp", 0).asInt();
     _maxHp = root.get("maxHp", 0).asInt();
     _visualType = root.get("visualType", 0).asInt();
-	_name = root.get("name", "NONAME").asString();
-    
+
     // deserialize actions
     for (Json::ValueIterator it = root["actions"].begin(); it != root["actions"].end(); it++) {
         _actionIds.push_back((*it).asInt());
