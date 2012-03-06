@@ -217,6 +217,7 @@ MapObjectState MapObject::getState() {
     std::vector<ActionState> actions;
     
     state.pos = _pos;
+	state.owner = _owner;
     state.actions = this->getActions();
     
     return state;

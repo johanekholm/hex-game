@@ -14,6 +14,7 @@
 #include "Action.h"
 #include "ShapeImage.h"
 #include "GameImage.h"
+#include "ModelManager.h"
 
 #include <math.h>
 #include <iostream>
@@ -28,6 +29,12 @@ MapObjectView::MapObjectView(MapObject* model, GLfloat width, GLfloat height, in
 	_objectModel = model;
     _objectImage = new GameImage(width, height, TextureCatalog::instance()->get("units"), index);
 }
+
+bool MapObjectView::catchFocus() {
+    // catch focus if player
+	return (_state.owner == FactionNS::PLAYER);
+}
+
 
 void MapObjectView::draw(const GPoint& cameraPos) {
 	_objectImage->drawAt(_pos - cameraPos);

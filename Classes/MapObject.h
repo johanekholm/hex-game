@@ -35,6 +35,7 @@ namespace MapObjectCategory {
 struct MapObjectState {
     MPoint pos;
     std::vector<ActionState> actions;
+	int owner;
 };
 
 class MapObject : public ItemHandler, public Observable {

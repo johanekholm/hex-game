@@ -47,6 +47,10 @@ bool ViewController::isWithin(const GPoint& point) {
 	}
 }
 
+bool ViewController::catchFocus() {
+    return false;
+}
+
 void ViewController::setFocus(bool hasFocus) {
     _hasFocus = hasFocus;
 }

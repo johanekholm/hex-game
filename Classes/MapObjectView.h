@@ -23,6 +23,7 @@ class MapObjectView : public BaseUnitViewController {
 public:
 	~MapObjectView();
 	MapObjectView(MapObject* model, GLfloat width, GLfloat height, int index, int layer);
+	virtual bool catchFocus();
 	void draw(const GPoint& cameraPos);
 	bool handleEvent(const TouchEvent& event);
 	void updateState();

@@ -40,6 +40,7 @@ public:
 	int getHeight();
     GPoint getPosition();
 	int getWidth();
+	virtual bool catchFocus();
     virtual void setFocus(bool hasFocus);
 	virtual bool handleEvent(const TouchEvent& event) = 0;
 	virtual void draw(const GPoint& cameraPos) = 0;

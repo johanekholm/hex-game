@@ -119,10 +119,16 @@ void ViewControllerManager::insert(ViewController* view) {
 	}
 }
 
-
-
 void ViewControllerManager::moveCamera(const GPoint& pos) {
     this->setCameraPosition(_cameraPos + pos);
+}
+
+void ViewControllerManager::passFocus() {
+	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end(); ++it) {
+		if (*it != 0 && *it != _focus && (*it)->catchFocus()) {
+            this->setFocus(*it);
+        }
+	}
 }
 
 void ViewControllerManager::purge() {

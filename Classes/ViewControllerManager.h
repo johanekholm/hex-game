@@ -39,6 +39,7 @@ public:
     ViewController* getTouched(const GPoint& point);
 	void insert(ViewController* view);
     void moveCamera(const GPoint& pos);
+	void passFocus();
     void purge();
     void remove(ViewController* view);
     void removeAllSoftly();

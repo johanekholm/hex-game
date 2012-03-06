@@ -71,7 +71,7 @@ void SceneLoader::loadScene(std::string sceneId, bool isPersistent) {
     StateManager::load(sceneId);
     _isPersistent = isPersistent;
     _isLoaded = true;
-    
+	
     // To-Do: scripts should be loaded with state
     ScriptManager::instance()->add(ScriptedAction::build(ScriptedActionNS::END_BATTLE, ModelEventNS::PARTY_WIPEOUT));
 }
@@ -89,6 +89,7 @@ void SceneLoader::clearScene() {
     ModelManager::instance()->deleteAllUnits();
     ScriptManager::instance()->clear();
     ViewControllerManager::instance()->setCameraPosition(GPointMake(0.0f, 0.0f));
+    ViewControllerManager::instance()->setCameraTargetPosition(GPointMake(0.0f, 0.0f));
 }
 
 void SceneLoader::handleHistory(std::string sceneId) {
@@ -300,6 +301,7 @@ void SceneLoader::returnToAdventureScene() {
 		party2->move(party2->getPosition() * -1);		
 	}
 	
+	ViewControllerManager::instance()->passFocus();
 	CentralControl::instance()->switchMode(ControlMode::ADVENTURE);
 }
 
@@ -324,6 +326,7 @@ void SceneLoader::switchToTransition(TransitionViewController* transition) {
 void SceneLoader::returnFromMenu() {
     ViewControllerManager* viewControllerManager = ViewControllerManager::instance();
     viewControllerManager->remove(viewControllerManager->getFocus());
+	ViewControllerManager::instance()->passFocus();
 	CentralControl::instance()->switchMode(ControlMode::ADVENTURE);                
 }
 
