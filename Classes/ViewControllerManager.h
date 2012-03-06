@@ -19,6 +19,7 @@ class ViewControllerManager {
     HexMap *_mapView;
     ViewController* _focus;
     GPoint _cameraPos;
+    GPoint _cameraTargetPos;	
     ShapeImage *_hudBackground;
 
     ViewControllerManager();
@@ -43,11 +44,13 @@ public:
     void removeAllSoftly();
     void removeSoft(ViewController* view);
     void setCameraPosition(const GPoint& pos);
+    void setCameraTargetPosition(const GPoint& pos);
     void setFocus(ViewController* view);
     void setMapView(HexMap* mapView);
     GPoint transformModelPositionToView(const MPoint& pos);
     void translateToCamera();
     void translateToCameraAndPosition(const GPoint& pos);
     void update();
+	void updateCamera();
 };
 

@@ -43,6 +43,7 @@ ViewControllerManager::ViewControllerManager() {
     _focus = 0;
     _mapView = 0;
     _cameraPos = 0;
+	_cameraTargetPos = 0;
     _hudBackground = new RectangleImage(RGBAMake(0.1f, 0.1f, 0.1f, 1.0f), 320.0f, 80.0f, true);
 }
 
@@ -60,11 +61,11 @@ GPoint ViewControllerManager::adjustForCamera(const GPoint& pos) {
 }
 
 void ViewControllerManager::centerCamera(const GPoint& pos) {
-    this->setCameraPosition(pos - GPointMake(160.0f, 240.0f));
+    this->setCameraTargetPosition(pos - GPointMake(160.0f, 240.0f));
 }
 
 void ViewControllerManager::centerCamera(const MPoint& pos) {
-    this->setCameraPosition(this->transformModelPositionToView(pos) - GPointMake(160.0f, 240.0f));
+    this->setCameraTargetPosition(this->transformModelPositionToView(pos) - GPointMake(160.0f, 240.0f));
 }
 
 void ViewControllerManager::draw() {
@@ -189,6 +190,18 @@ void ViewControllerManager::setCameraPosition(const GPoint& pos) {
     }    
 }
 
+void ViewControllerManager::setCameraTargetPosition(const GPoint& pos) {
+    _cameraTargetPos = pos;
+    
+    if (_cameraTargetPos.x < 0) {
+        _cameraTargetPos.x = 0;
+    }
+    
+    if (_cameraTargetPos.y < 0) {
+        _cameraTargetPos.y = 0;
+    }    
+}
+
 void ViewControllerManager::setFocus(ViewController* view) {
     // notify of focus lost
     if (_focus != 0) {
@@ -233,6 +246,8 @@ void ViewControllerManager::translateToCameraAndPosition(const GPoint& pos) {
 }
 
 void ViewControllerManager::update() {
+	this->updateCamera();
+	
     // insert newly added views before starting loop 
     if (_stagedViews.size() > 0) {
         for (std::vector<ViewController*>::iterator it = _stagedViews.begin(); it != _stagedViews.end(); ++it) {
@@ -250,5 +265,13 @@ void ViewControllerManager::update() {
             it = _views.erase(it);
         }
 	}
+}
+
+void ViewControllerManager::updateCamera() {
+	GPoint delta;
+	
+	delta = (_cameraTargetPos - _cameraPos) * 0.05f;
+	_cameraPos += delta;
+	
 }
 
