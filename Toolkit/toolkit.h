@@ -28,6 +28,8 @@
     inline void DEBUGLOG(...) { } // TODO: Implement
 #endif
 
+#include <cmath>
+
 struct GPointInTime {
 	GLfloat x;
 	GLfloat	y;
@@ -85,8 +87,20 @@ struct GPoint {
 		return (this->x == other.x && this->y == other.y);
 	}
 
+	bool operator!=(const GPoint& other) { 
+		return (this->x != other.x || this->y != other.y);
+	}
+
 	bool operator==(GLfloat scalar) { 
 		return (this->x == scalar && this->y == scalar);
+	}
+
+	bool operator!=(GLfloat scalar) { 
+		return (this->x != scalar || this->y != scalar);
+	}
+
+	GLfloat length() {
+		return sqrt(this->x*this->x + this->y*this->y);
 	}
 		
 };

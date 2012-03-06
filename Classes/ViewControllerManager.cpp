@@ -269,9 +269,25 @@ void ViewControllerManager::update() {
 
 void ViewControllerManager::updateCamera() {
 	GPoint delta;
+	GPoint toTarget;
+	GLfloat length, speed;
 	
-	delta = (_cameraTargetPos - _cameraPos) * 0.05f;
-	_cameraPos += delta;
+	toTarget = _cameraTargetPos - _cameraPos;
 	
+	if (toTarget != 0) {
+		length = toTarget.length();
+
+		if (length < 0.1f) {
+			_cameraPos = _cameraTargetPos;
+		} else {
+			speed = 0.001f * length;
+			
+			if (speed < 0.05f) {
+				speed = 0.05f;
+			}
+			delta = (_cameraTargetPos - _cameraPos) * speed;
+			_cameraPos += delta;			
+		}
+	}
 }
 
