@@ -350,6 +350,15 @@ int UnitModel::getVisualType() {
     return _template->getVisualType();
 }
 
+void UnitModel::increaseAp(int points) {
+	int maxAp = this->getStat(StatNS::MAXAP);
+	_ap += points;
+	
+	if (_ap > maxAp) {
+		_ap = maxAp;
+	}
+}
+
 void UnitModel::inflictDamage(int damage) {
     std::stringstream ss;
     int maxHp = _template->getStat(StatNS::MAXHP);

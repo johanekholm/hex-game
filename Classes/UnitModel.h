@@ -109,6 +109,7 @@ public:
 	int getId();
 	MPoint getPosition();
     int getStat(int stat);
+	void increaseAp(int points);
     bool isFacing(const MPoint& pos);
     UnitState getState();
     int getVisualType();
