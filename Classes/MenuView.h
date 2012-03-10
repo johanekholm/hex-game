@@ -20,6 +20,8 @@ class StringImage;
 struct MenuChoice {
     int choiceId;
     std::string label;
+	
+	static MenuChoice makeChoice(int choiceId, const std::string& label);
 };
 
 class BaseMenuNodeVC;

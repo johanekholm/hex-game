@@ -118,7 +118,7 @@ ScriptedAction* ScriptedAction::build(int actionId, int eventType) {
 		case END_BATTLE:
             return new EndBattleSA(event);
 		case LOAD_BATTLE:
-            return new LoadNewBattleSA(event);
+            return new EndDungeonRoomSA(event);
             
 		default:
             return 0;
@@ -164,8 +164,25 @@ void EndBattleSA::callbackVoid() {
 
 
 
-LoadNewBattleSA::LoadNewBattleSA(const ModelEvent& triggerEvent) : ScriptedAction(triggerEvent) {}
+EndDungeonRoomSA::EndDungeonRoomSA(const ModelEvent& triggerEvent) : ScriptedAction(triggerEvent) {}
 
-void LoadNewBattleSA::doAction() {
+void EndDungeonRoomSA::doAction() {
     
+}
+
+void EndDungeonRoomSA::callbackNum(int num) {
+	switch (num) {
+		case 1:
+			
+			break;
+			
+		case 2:
+			
+			break;
+			
+		default:
+			break;
+	}
+	SceneLoader::instance()->returnFromMenu();
+    SceneLoader::instance()->returnToAdventureScene();
 }

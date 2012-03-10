@@ -59,10 +59,11 @@ public:
     void callbackVoid();
 };
 
-class LoadNewBattleSA : public ScriptedAction {
+class EndDungeonRoomSA : public ScriptedAction, public ControlCallback {
 public:
-    LoadNewBattleSA(const ModelEvent& triggerEvent);
+    EndDungeonRoomSA(const ModelEvent& triggerEvent);
     void doAction();    
+    void callbackNum(int num);
 };
 
 #endif

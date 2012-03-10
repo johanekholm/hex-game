@@ -18,6 +18,14 @@
 #include <string>
 #include <iostream>
 
+MenuChoice MenuChoice::makeChoice(int choiceId, const std::string& label) {
+	MenuChoice choice;
+	
+	choice.choiceId = choiceId;
+	choice.label = label;
+	return choice;
+}
+
 MenuViewController::~MenuViewController() {
 	delete _background;
     delete _rootNode;
