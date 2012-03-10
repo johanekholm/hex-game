@@ -116,6 +116,7 @@ public:
     void inflictDamage(int damage);
     void fire(const MPoint& targetPos);
 	void move(const MPoint& targetPos);
+	void setAp(int ap);
     void setId(int unitId);
 	void setPosition(const MPoint& pos);
 	bool spendAp(int cost);

@@ -127,7 +127,7 @@ void SceneLoader::insertUnitsIntoScene(std::vector<UnitModel*>* party1Members, s
 	if (party1Members != 0) {
 		for (std::vector<UnitModel*>::iterator it = party1Members->begin(); it != party1Members->end(); ++it) {
 			(*it)->setPosition(hexes.front());
-			(*it)->increaseAp(100);
+			(*it)->setAp((*it)->getStat(StatNS::MAXAP) / 2 + rand() % 10);
 			hexes.erase(hexes.begin());
 			ObjectBuilder::registerUnit(*it);
 		}    		
@@ -136,7 +136,7 @@ void SceneLoader::insertUnitsIntoScene(std::vector<UnitModel*>* party1Members, s
 	if (party2Members != 0) {
 		for (std::vector<UnitModel*>::iterator it = party2Members->begin(); it != party2Members->end(); ++it) {
 			(*it)->setPosition(hexes.back());
-			(*it)->increaseAp(100);
+			(*it)->setAp((*it)->getStat(StatNS::MAXAP) / 2 + rand() % 10);
 			hexes.erase(hexes.end());
 			ObjectBuilder::registerUnit(*it);
 		}		

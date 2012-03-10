@@ -392,6 +392,16 @@ void UnitModel::move(const MPoint& targetPos) {
 	this->updateObservers();
 }
 
+void UnitModel::setAp(int ap) {
+	int maxAp = this->getStat(StatNS::MAXAP);
+
+	_ap = ap;
+	
+	if (_ap > maxAp) {
+		_ap = maxAp;
+	}
+}
+
 void UnitModel::setId(int unitId) {
     _id = unitId;
 }
@@ -420,9 +430,7 @@ void UnitModel::strike(const MPoint& targetPos) {
 }
 
 void UnitModel::tick() {
-    if (this->_ap < this->getStat(StatNS::MAXAP)) {
-        this->_ap += 1;
-    }
+	this->increaseAp(1);
 	this->doAI();
 	this->updateObservers();
 	
