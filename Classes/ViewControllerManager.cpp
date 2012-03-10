@@ -60,12 +60,20 @@ GPoint ViewControllerManager::adjustForCamera(const GPoint& pos) {
     return pos + _cameraPos;
 }
 
-void ViewControllerManager::centerCamera(const GPoint& pos) {
+void ViewControllerManager::centerCamera(const GPoint& pos, bool sweep) {
     this->setCameraTargetPosition(pos - GPointMake(160.0f, 240.0f));
+	
+	if (!sweep) {
+		this->setCameraPosition(pos - GPointMake(160.0f, 240.0f));		
+	}
 }
 
-void ViewControllerManager::centerCamera(const MPoint& pos) {
+void ViewControllerManager::centerCamera(const MPoint& pos, bool sweep) {
     this->setCameraTargetPosition(this->transformModelPositionToView(pos) - GPointMake(160.0f, 240.0f));
+
+	if (!sweep) {
+		this->setCameraPosition(this->transformModelPositionToView(pos) - GPointMake(160.0f, 240.0f));
+	}
 }
 
 void ViewControllerManager::draw() {

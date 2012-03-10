@@ -60,6 +60,14 @@ bool MapObjectView::handleEvent(const TouchEvent& event) {
 	return false;
 }
 
+void MapObjectView::setFocus(bool hasFocus) {
+	ViewController::setFocus(hasFocus);
+	
+	if (_state.owner == FactionNS::PLAYER) {
+		ViewControllerManager::instance()->centerCamera(_state.pos, false);
+	}
+}
+
 void MapObjectView::updateState() {
     _state = _objectModel->getState();
 	this->updatePosition(_state.pos);

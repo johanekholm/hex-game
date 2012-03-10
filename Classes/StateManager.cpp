@@ -32,7 +32,7 @@ std::map<std::string, std::string> StateManager::initStaticMap() {
     std::string battleMap = "{'map':{'height':4,'hexes':[{'v':4,'x':0,'y':0},{'v':5,'x':1,'y':0},{'v':5,'x':2,'y':0},{'v':5,'x':3,'y':0},{'v':5,'x':0,'y':1},{'v':5,'x':1,'y':1},{'v':5,'x':2,'y':1},{'v':5,'x':3,'y':1},{'v':5,'x':0,'y':2},{'v':5,'x':1,'y':2},{'v':6,'x':2,'y':2},{'v':5,'x':3,'y':2},{'v':5,'x':0,'y':3},{'v':5,'x':1,'y':3},{'v':5,'x':2,'y':3},{'v':4,'x':3,'y':3}],'scale':1.0,'width':4},'units':null}";
 	
 	std::string unitModelTemplates = 
-	"{'templates':[{'type':'hero','name':'HERO','actions':[0,1],'defense':3,'power':3,'skill':2,'maxAp':30,'maxHp':8,'visualType':0}, {'type':'soldier','name':'SOLDIER','actions':[0,1],'defense':3,'power':3,'skill':2,'maxAp':30,'maxHp':5,'visualType':1}, {'type':'channeler','name':'CHANNELER','actions':[0,5],'defense':3,'power':3,'skill':2,'maxAp':30,'maxHp':3,'visualType':2}, {'type':'archer','name':'ARCHER','actions':[0,2],'defense':3,'power':3,'skill':2,'maxAp':30,'maxHp':3,'visualType':3}]}";
+	"{'templates':[{'type':'hero','name':'HERO','actions':[0,1],'defense':5,'power':5,'skill':4,'maxAp':30,'maxHp':10,'visualType':0}, {'type':'soldier','name':'SOLDIER','actions':[0,1],'defense':3,'power':3,'skill':2,'maxAp':30,'maxHp':5,'visualType':1}, {'type':'channeler','name':'CHANNELER','actions':[0,5],'defense':3,'power':3,'skill':2,'maxAp':30,'maxHp':3,'visualType':2}, {'type':'archer','name':'ARCHER','actions':[0,2],'defense':3,'power':3,'skill':2,'maxAp':30,'maxHp':3,'visualType':3}]}";
 
     // replace single with double qoutes, as per json standard
     std::replace(adventureState.begin(), adventureState.end(), '\'', '"');
