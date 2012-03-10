@@ -262,7 +262,6 @@ void UnitModel::doAI() {
         }
         
         if (hasOffensiveAction) {
-            
             // choose offensive action randomly
             if (offensives.size() > 0) {
                 this->doAction(offensives.at(rand() % offensives.size()));
@@ -423,9 +422,9 @@ void UnitModel::strike(const MPoint& targetPos) {
 void UnitModel::tick() {
     if (this->_ap < this->getStat(StatNS::MAXAP)) {
         this->_ap += 1;
-        this->doAI();
-        this->updateObservers();
     }
+	this->doAI();
+	this->updateObservers();
 	
 }
 
