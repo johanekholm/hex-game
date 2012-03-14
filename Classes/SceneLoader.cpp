@@ -72,8 +72,6 @@ void SceneLoader::loadScene(std::string sceneId, bool isPersistent) {
     _isPersistent = isPersistent;
     _isLoaded = true;
 	
-    // To-Do: scripts should be loaded with state
-    ScriptManager::instance()->add(ScriptedAction::build(ScriptedActionNS::END_BATTLE, ModelEventNS::PARTY_WIPEOUT));
 }
 
 void SceneLoader::loadPrevious() {
@@ -186,13 +184,13 @@ void SceneLoader::returnUnitsToParties(std::vector<UnitModel*> units) {
 	}
 	
 	if (isEmptyParty1) {
-		if (party1->getOwner() != FactionNS::PLAYER) {
+		if (party1 != 0 && party1->getOwner() != FactionNS::PLAYER) {
 			modelManager->deleteMapObject(party1->getId());			
 		}
 	}
 
 	if (isEmptyParty2) {
-		if (party2->getOwner() != FactionNS::PLAYER) {
+		if (party2 != 0 && party2->getOwner() != FactionNS::PLAYER) {
 			modelManager->deleteMapObject(party2->getId());			
 		}
 	}
@@ -218,6 +216,9 @@ void SceneLoader::loadBattleScene(const std::string& sceneId, MapObject* party1,
     ModelManager::instance()->addMapObject(party1);
     ModelManager::instance()->addMapObject(party2);
 	
+	// To-Do: scripts should be loaded with state
+    ScriptManager::instance()->add(ScriptedAction::build(ScriptedActionNS::END_BATTLE, ModelEventNS::PARTY_WIPEOUT));
+
     CentralControl::instance()->switchMode(ControlMode::BATTLE);
 }
 
@@ -245,11 +246,32 @@ void SceneLoader::loadBattleSceneFromTemplate(const std::string& mapName, MapObj
 void SceneLoader::loadDungeonScene(const std::string& sceneId, MapObject* party) {
 	std::vector<UnitModel*> partyMembers;
 	
+	ModelManager::instance()->unregisterMapObject(party->getId());
 	this->removeUnitsFromParties(party, 0, &partyMembers, 0);
 	this->loadScene(sceneId, true);
 	this->insertUnitsIntoScene(&partyMembers, 0);
+	party->move(party->getPosition() * -1);
+	ModelManager::instance()->addMapObject(party);
+
+
+	// To-Do: scripts should be loaded with state
+    ScriptManager::instance()->add(ScriptedAction::build(ScriptedActionNS::NEXT_DUNGEON_ROOM, ModelEventNS::PARTY_WIPEOUT));
 
     CentralControl::instance()->switchMode(ControlMode::BATTLE);
+}
+
+void SceneLoader::loadNextDungeonScene(const std::string& sceneId, MapObject* party) {
+	std::vector<UnitModel*> allUnits = ModelManager::instance()->unregisterAllUnits();
+	
+	this->returnUnitsToParties(allUnits);
+	MapObject* party1 = ModelManager::instance()->getFirstMapObjectWithOwner(1); 
+	
+	if (party1 != 0) {
+		DEBUGLOG("De-invert player party");
+		party1->move(party1->getPosition() * -1);
+	}
+
+	this->loadDungeonScene("dungeon2.jsn", party1);
 }
 
 void SceneLoader::loadAdventureScene() {
@@ -296,6 +318,7 @@ void SceneLoader::returnToAdventureScene() {
     ModelManager::instance()->addMapObject(party2);
 
 	if (party1 != 0) {
+		DEBUGLOG("Invert player party");
 		party1->move(party1->getPosition() * -1);
 	}
 	
@@ -318,6 +341,7 @@ void SceneLoader::switchToMainMenu() {
 void SceneLoader::switchToMenu(MenuViewController* menu) {
     ViewControllerManager::instance()->add(menu);
     ViewControllerManager::instance()->setFocus(menu);
+	CentralControl::instance()->switchMode(ControlMode::MENU);
 }
 
 void SceneLoader::switchToTransition(TransitionViewController* transition) {

@@ -117,7 +117,7 @@ ScriptedAction* ScriptedAction::build(int actionId, int eventType) {
     switch (actionId) {
 		case END_BATTLE:
             return new EndBattleSA(event);
-		case LOAD_BATTLE:
+		case NEXT_DUNGEON_ROOM:
             return new EndDungeonRoomSA(event);
             
 		default:
@@ -167,22 +167,30 @@ void EndBattleSA::callbackVoid() {
 EndDungeonRoomSA::EndDungeonRoomSA(const ModelEvent& triggerEvent) : ScriptedAction(triggerEvent) {}
 
 void EndDungeonRoomSA::doAction() {
+    std::vector<MenuChoice> choices;
     
+	choices.push_back(MenuChoice::makeChoice(1, "CONTINUE"));
+	choices.push_back(MenuChoice::makeChoice(2, "EXIT DUNGEON"));
+    
+    SceneLoader::instance()->switchToMenu(new ChoiceMenuVC(*this, choices));
 }
 
-void EndDungeonRoomSA::callbackNum(int num) {
+void EndDungeonRoomSA::callbackNumber(int num) {
+    DEBUGLOG("Report to action");
+	SceneLoader::instance()->returnFromMenu();
 	switch (num) {
 		case 1:
-			
+			DEBUGLOG("Next room");
+			SceneLoader::instance()->loadNextDungeonScene("", 0);			
 			break;
 			
 		case 2:
-			
+			SceneLoader::instance()->returnToAdventureScene();
+			DEBUGLOG("Return");
 			break;
 			
 		default:
+			DEBUGLOG("None");
 			break;
 	}
-	SceneLoader::instance()->returnFromMenu();
-    SceneLoader::instance()->returnToAdventureScene();
 }

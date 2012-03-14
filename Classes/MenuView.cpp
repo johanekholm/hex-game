@@ -112,7 +112,7 @@ ChoiceMenuVC::ChoiceMenuVC(ControlCallback& control, std::vector<MenuChoice> cho
 }
 
 void ChoiceMenuVC::reportChoice(int choiceId) {
-    _returnControl.callbackNumber(choiceId);
+	_returnControl.callbackNumber(choiceId);
 }
 
 

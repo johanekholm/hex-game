@@ -19,7 +19,7 @@
 
 namespace ScriptedActionNS {
     const int END_BATTLE = 1;
-    const int LOAD_BATTLE = 2;
+    const int NEXT_DUNGEON_ROOM = 2;
 };
 
 class ScriptedAction : public IObserver {
@@ -63,7 +63,7 @@ class EndDungeonRoomSA : public ScriptedAction, public ControlCallback {
 public:
     EndDungeonRoomSA(const ModelEvent& triggerEvent);
     void doAction();    
-    void callbackNum(int num);
+    virtual void callbackNumber(int num);
 };
 
 #endif

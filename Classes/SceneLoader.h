@@ -51,6 +51,7 @@ public:
 	void loadBattleScene(const std::string& sceneId, MapObject* party1, MapObject* party2);
 	void loadBattleSceneFromTemplate(const std::string& mapName, MapObject* party1, int enemyPartyType);
 	void loadDungeonScene(const std::string& sceneId, MapObject* party);
+	void loadNextDungeonScene(const std::string& sceneId, MapObject* party);
     void returnFromMenu();
     void switchToMainMenu();
     void switchToMenu(MenuViewController* menu);
