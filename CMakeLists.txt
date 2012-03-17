@@ -13,6 +13,7 @@ SET( SOURCES
 	Classes/Action.cpp
     Classes/BaseUnitViewController.cpp
 	Classes/CentralControl.cpp
+	Classes/ControlBeanDirector.cpp
     Classes/EventManager.cpp
 	Classes/GameImage.cpp
 	Classes/geometry.cpp
@@ -50,6 +51,7 @@ SET( HEADERS
 	Classes/Action.h
     Classes/BaseUnitViewController.h
 	Classes/CentralControl.h
+	Classes/ControlBeanDirector.h
     Classes/ControlCallback.h
     Classes/EventManager.h
     Classes/GameImage.h
