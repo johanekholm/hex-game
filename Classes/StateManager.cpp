@@ -12,6 +12,7 @@
 #include "ObjectBuilder.h"
 #include "HexMapModel.h"
 #include "SceneContext.h"
+#include "ScriptManager.h"
 #include "json.h"
 #include <string>
 #include <vector>
@@ -27,10 +28,12 @@ std::map<std::string, std::string> StateManager::initStaticMap() {
     
     std::string battleState = "{'map':{'height':4,'hexes':[{'v':4,'x':0,'y':0},{'v':5,'x':1,'y':0},{'v':5,'x':2,'y':0},{'v':5,'x':3,'y':0},{'v':5,'x':0,'y':1},{'v':5,'x':1,'y':1},{'v':5,'x':2,'y':1},{'v':5,'x':3,'y':1},{'v':5,'x':0,'y':2},{'v':5,'x':1,'y':2},{'v':5,'x':2,'y':2},{'v':5,'x':3,'y':2},{'v':5,'x':0,'y':3},{'v':5,'x':1,'y':3},{'v':5,'x':2,'y':3},{'v':4,'x':3,'y':3}],'scale':1.0,'width':4},'units':[{'ap':1,'equip':null,'hp':3,'id':8,'owner':2,'type':'archer','x':1,'y':1},{'ap':1,'equip':null,'hp':3,'id':8,'owner':2,'type':'archer','x':2,'y':1},{'ap':1,'equip':null,'hp':3,'id':8,'owner':2,'type':'archer','x':2,'y':2}]}";
 	
-	std::string dungeon1 = "{'map':{'height':4,'hexes':[{'v':4,'x':0,'y':0},{'v':5,'x':1,'y':0},{'v':5,'x':2,'y':0},{'v':5,'x':3,'y':0},{'v':5,'x':0,'y':1},{'v':5,'x':1,'y':1},{'v':5,'x':2,'y':1},{'v':5,'x':3,'y':1},{'v':5,'x':0,'y':2},{'v':5,'x':1,'y':2},{'v':5,'x':2,'y':2},{'v':5,'x':3,'y':2},{'v':5,'x':0,'y':3},{'v':5,'x':1,'y':3},{'v':5,'x':2,'y':3},{'v':4,'x':3,'y':3}],'scale':1.0,'width':4},'units':[{'ap':1,'equip':null,'hp':3,'id':8,'owner':2,'type':'archer','x':1,'y':1}]}";
+	std::string dungeon1 = "{'map':{'height':4,'hexes':[{'v':4,'x':0,'y':0},{'v':5,'x':1,'y':0},{'v':5,'x':2,'y':0},{'v':5,'x':3,'y':0},{'v':5,'x':0,'y':1},{'v':5,'x':1,'y':1},{'v':5,'x':2,'y':1},{'v':5,'x':3,'y':1},{'v':5,'x':0,'y':2},{'v':5,'x':1,'y':2},{'v':5,'x':2,'y':2},{'v':5,'x':3,'y':2},{'v':5,'x':0,'y':3},{'v':5,'x':1,'y':3},{'v':5,'x':2,'y':3},{'v':4,'x':3,'y':3}],'scale':1.0,'width':4},'units':[{'ap':1,'equip':null,'hp':3,'id':8,'owner':2,'type':'archer','x':1,'y':1}],'scriptedActions':[{'eventId':1,'actionId':'NEXT_DUNGEON_ROOM','sceneId':'dungeon2.jsn'}]}";
 
-	std::string dungeon2 = "{'map':{'height':4,'hexes':[{'v':4,'x':0,'y':0},{'v':5,'x':1,'y':0},{'v':5,'x':2,'y':0},{'v':5,'x':3,'y':0},{'v':5,'x':0,'y':1},{'v':5,'x':1,'y':1},{'v':5,'x':2,'y':1},{'v':5,'x':3,'y':1},{'v':5,'x':0,'y':2},{'v':5,'x':1,'y':2},{'v':5,'x':2,'y':2},{'v':5,'x':3,'y':2},{'v':5,'x':0,'y':3},{'v':5,'x':1,'y':3},{'v':5,'x':2,'y':3},{'v':4,'x':3,'y':3}],'scale':1.0,'width':4},'units':[{'ap':1,'equip':null,'hp':3,'id':8,'owner':2,'type':'archer','x':2,'y':2}]}";
+	std::string dungeon2 = "{'map':{'height':4,'hexes':[{'v':4,'x':0,'y':0},{'v':5,'x':1,'y':0},{'v':5,'x':2,'y':0},{'v':5,'x':3,'y':0},{'v':5,'x':0,'y':1},{'v':5,'x':1,'y':1},{'v':5,'x':2,'y':1},{'v':5,'x':3,'y':1},{'v':5,'x':0,'y':2},{'v':5,'x':1,'y':2},{'v':5,'x':2,'y':2},{'v':5,'x':3,'y':2},{'v':5,'x':0,'y':3},{'v':5,'x':1,'y':3},{'v':5,'x':2,'y':3},{'v':4,'x':3,'y':3}],'scale':1.0,'width':4},'units':[{'ap':1,'equip':null,'hp':3,'id':8,'owner':2,'type':'archer','x':2,'y':2}],'scriptedActions':[{'eventId':1,'actionId':'NEXT_DUNGEON_ROOM','sceneId':'dungeon3.jsn'}]}";
     
+	std::string dungeon3 = "{'map':{'height':4,'hexes':[{'v':4,'x':0,'y':0},{'v':5,'x':1,'y':0},{'v':5,'x':2,'y':0},{'v':5,'x':3,'y':0},{'v':5,'x':0,'y':1},{'v':5,'x':1,'y':1},{'v':5,'x':2,'y':1},{'v':5,'x':3,'y':1},{'v':5,'x':0,'y':2},{'v':5,'x':1,'y':2},{'v':5,'x':2,'y':2},{'v':5,'x':3,'y':2},{'v':5,'x':0,'y':3},{'v':5,'x':1,'y':3},{'v':5,'x':2,'y':3},{'v':4,'x':3,'y':3}],'scale':1.0,'width':4},'units':[{'ap':1,'equip':null,'hp':5,'id':8,'owner':2,'type':'hero','x':2,'y':2}],'scriptedActions':[{'eventId':1,'actionId':'NEXT_DUNGEON_ROOM','sceneId':'dungeon3.jsn'}]}";
+
     std::string battleMap = "{'map':{'height':4,'hexes':[{'v':4,'x':0,'y':0},{'v':5,'x':1,'y':0},{'v':5,'x':2,'y':0},{'v':5,'x':3,'y':0},{'v':5,'x':0,'y':1},{'v':5,'x':1,'y':1},{'v':5,'x':2,'y':1},{'v':5,'x':3,'y':1},{'v':5,'x':0,'y':2},{'v':5,'x':1,'y':2},{'v':6,'x':2,'y':2},{'v':5,'x':3,'y':2},{'v':5,'x':0,'y':3},{'v':5,'x':1,'y':3},{'v':5,'x':2,'y':3},{'v':4,'x':3,'y':3}],'scale':1.0,'width':4},'units':null}";
 	
 	std::string unitModelTemplates = 
@@ -41,6 +44,7 @@ std::map<std::string, std::string> StateManager::initStaticMap() {
     std::replace(battleState.begin(), battleState.end(), '\'', '"');
     std::replace(dungeon1.begin(), dungeon1.end(), '\'', '"');
     std::replace(dungeon2.begin(), dungeon2.end(), '\'', '"');
+    std::replace(dungeon3.begin(), dungeon3.end(), '\'', '"');
     std::replace(battleMap.begin(), battleMap.end(), '\'', '"');
     std::replace(unitModelTemplates.begin(), unitModelTemplates.end(), '\'', '"');
 
@@ -48,6 +52,7 @@ std::map<std::string, std::string> StateManager::initStaticMap() {
     states["battle1.jsn"] = battleState;
     states["dungeon1.jsn"] = dungeon1;
     states["dungeon2.jsn"] = dungeon2;
+    states["dungeon3.jsn"] = dungeon3;
     states["battleMap1.jsn"] = battleMap;
     states["UnitModelTemplates.jsn"] = unitModelTemplates;
 
@@ -151,5 +156,11 @@ void StateManager::recreateFromState(Json::Value& root) {
     for (Json::ValueIterator itr = root["mapObjects"].begin(); itr != root["mapObjects"].end(); itr++) {
         ObjectBuilder::createMapObjectFromJson(*itr);
     }
+	
+	// recreate scripted actions
+    for (Json::ValueIterator itr = root["scriptedActions"].begin(); itr != root["scriptedActions"].end(); itr++) {
+        ScriptManager::instance()->add(ScriptedAction::createScriptedActionFromJson(*itr));
+    }
+
 }
 

@@ -217,7 +217,7 @@ void SceneLoader::loadBattleScene(const std::string& sceneId, MapObject* party1,
     ModelManager::instance()->addMapObject(party2);
 	
 	// To-Do: scripts should be loaded with state
-    ScriptManager::instance()->add(ScriptedAction::build(ScriptedActionNS::END_BATTLE, ModelEventNS::PARTY_WIPEOUT));
+    //ScriptManager::instance()->add(ScriptedAction::build(ScriptedActionNS::END_BATTLE, ModelEventNS::PARTY_WIPEOUT));
 
     CentralControl::instance()->switchMode(ControlMode::BATTLE);
 }
@@ -245,7 +245,7 @@ void SceneLoader::loadBattleSceneFromTemplate(const std::string& mapName, MapObj
 
 void SceneLoader::loadDungeonScene(const std::string& sceneId, MapObject* party) {
 	std::vector<UnitModel*> partyMembers;
-	
+	DEBUGLOG("Load dungeon scene with id: %s", sceneId.c_str());
 	ModelManager::instance()->unregisterMapObject(party->getId());
 	this->removeUnitsFromParties(party, 0, &partyMembers, 0);
 	this->loadScene(sceneId, true);
@@ -255,7 +255,7 @@ void SceneLoader::loadDungeonScene(const std::string& sceneId, MapObject* party)
 
 
 	// To-Do: scripts should be loaded with state
-    ScriptManager::instance()->add(ScriptedAction::build(ScriptedActionNS::NEXT_DUNGEON_ROOM, ModelEventNS::PARTY_WIPEOUT));
+    //ScriptManager::instance()->add(ScriptedAction::build(ScriptedActionNS::NEXT_DUNGEON_ROOM, ModelEventNS::PARTY_WIPEOUT));
 
     CentralControl::instance()->switchMode(ControlMode::BATTLE);
 }
@@ -271,7 +271,7 @@ void SceneLoader::loadNextDungeonScene(const std::string& sceneId, MapObject* pa
 		party1->move(party1->getPosition() * -1);
 	}
 
-	this->loadDungeonScene("dungeon2.jsn", party1);
+	this->loadDungeonScene(sceneId, party1);
 }
 
 void SceneLoader::loadAdventureScene() {

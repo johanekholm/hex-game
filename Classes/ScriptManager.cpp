@@ -17,6 +17,7 @@
 #include "MapObject.h"
 #include "Item.h"
 
+#include "json.h"
 #include <sstream>
 #include <python.h>
 
@@ -86,13 +87,14 @@ void ScriptManager::add(ScriptedAction* script) {
     std::stringstream stream;
     stream << "DEF-" << d->scriptedActions.size();
 
-    d->scriptedActions[stream.str()] = script;
-    EventManager::instance()->addObserver(script);
+	this->add(stream.str(), script);
 }
 
-void ScriptManager::add(std::string& key, ScriptedAction* script) {
-    d->scriptedActions[key] = script;
-    EventManager::instance()->addObserver(script);
+void ScriptManager::add(const std::string& key, ScriptedAction* script) {
+	if (script != 0) {
+		d->scriptedActions[key] = script;
+		EventManager::instance()->addObserver(script);
+	}
 }
 
 void ScriptManager::activate(std::string& key) {
@@ -123,6 +125,21 @@ ScriptedAction* ScriptedAction::build(int actionId, int eventType) {
 		default:
             return 0;
     }
+}
+
+ScriptedAction* ScriptedAction::createScriptedActionFromJson(Json::Value& root) {
+	ScriptedAction* action;
+	std::string actionId = root.get("actionId", "MISSING").asString();
+	
+    ModelEvent event;
+    event.type = root.get("eventId", 0).asInt();
+
+	if (actionId == "END_BATTLE") {
+		action = new EndBattleSA(event);
+	} else if (actionId == "NEXT_DUNGEON_ROOM") {
+		action = new EndDungeonRoomSA(event, root);
+	}
+	return action;
 }
 
 ScriptedAction::ScriptedAction(const ModelEvent& triggerEvent) {
@@ -166,9 +183,12 @@ void EndBattleSA::callbackVoid() {
 
 EndDungeonRoomSA::EndDungeonRoomSA(const ModelEvent& triggerEvent) : ScriptedAction(triggerEvent) {}
 
+EndDungeonRoomSA::EndDungeonRoomSA(const ModelEvent& triggerEvent, Json::Value& root) : ScriptedAction(triggerEvent) {
+	_sceneId = root.get("sceneId", "MISSING").asString();
+}
+
 void EndDungeonRoomSA::doAction() {
     std::vector<MenuChoice> choices;
-    
 	choices.push_back(MenuChoice::makeChoice(1, "CONTINUE"));
 	choices.push_back(MenuChoice::makeChoice(2, "EXIT DUNGEON"));
     
@@ -176,21 +196,17 @@ void EndDungeonRoomSA::doAction() {
 }
 
 void EndDungeonRoomSA::callbackNumber(int num) {
-    DEBUGLOG("Report to action");
 	SceneLoader::instance()->returnFromMenu();
 	switch (num) {
 		case 1:
-			DEBUGLOG("Next room");
-			SceneLoader::instance()->loadNextDungeonScene("", 0);			
+			SceneLoader::instance()->loadNextDungeonScene(_sceneId, 0);			
 			break;
 			
 		case 2:
 			SceneLoader::instance()->returnToAdventureScene();
-			DEBUGLOG("Return");
 			break;
 			
 		default:
-			DEBUGLOG("None");
 			break;
 	}
 }

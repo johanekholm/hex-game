@@ -16,6 +16,7 @@
 #include "IObserver.h"
 #include "ControlCallback.h"
 #include <python.h>
+#include "json-forwards.h"
 
 namespace ScriptedActionNS {
     const int END_BATTLE = 1;
@@ -28,6 +29,7 @@ class ScriptedAction : public IObserver {
 
 public:
     static ScriptedAction* build(int actionId, int eventType);
+	static ScriptedAction* createScriptedActionFromJson(Json::Value& root);
     ScriptedAction(const ModelEvent& triggerEvent);
     virtual void doAction();
 	void updateState();
@@ -39,7 +41,7 @@ public:
     static ScriptManager* instance();
     static void destroy();
     void add(ScriptedAction* script);
-    void add(std::string& key, ScriptedAction* script);
+    void add(const std::string& key, ScriptedAction* script);
     void activate(std::string& key);
     void clear();
     static PyObject* log(PyObject *self, PyObject *args);
@@ -60,8 +62,12 @@ public:
 };
 
 class EndDungeonRoomSA : public ScriptedAction, public ControlCallback {
+private:
+	std::string _sceneId;
+	
 public:
     EndDungeonRoomSA(const ModelEvent& triggerEvent);
+    EndDungeonRoomSA(const ModelEvent& triggerEvent, Json::Value& root);
     void doAction();    
     virtual void callbackNumber(int num);
 };
