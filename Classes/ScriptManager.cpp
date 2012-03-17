@@ -16,6 +16,7 @@
 #include "ModelManager.h"
 #include "MapObject.h"
 #include "Item.h"
+#include "ControlBeanDirector.h"
 
 #include "json.h"
 #include <sstream>
@@ -196,14 +197,23 @@ void EndDungeonRoomSA::doAction() {
 }
 
 void EndDungeonRoomSA::callbackNumber(int num) {
+	MapObject* player;
+	ControlBeanDirector* director = ControlBeanDirector::instance();
 	SceneLoader::instance()->returnFromMenu();
+	
 	switch (num) {
 		case 1:
-			SceneLoader::instance()->loadNextDungeonScene(_sceneId, 0);			
+			player = ModelManager::instance()->getFirstMapObjectWithOwner(FactionNS::PLAYER);
+			director->addBean(new GiveItemBean(new Item(ItemNS::SILVER, 2), player));
+			director->addBean(new FadeOutBean());
+			director->addBean(new NextDungeonSceneBean(_sceneId));
+			//SceneLoader::instance()->loadNextDungeonScene(_sceneId, 0);			
 			break;
 			
 		case 2:
-			SceneLoader::instance()->returnToAdventureScene();
+			director->addBean(new FadeOutBean());
+			director->addBean(new ReturnToAdventureSceneBean());
+			//SceneLoader::instance()->returnToAdventureScene();
 			break;
 			
 		default:

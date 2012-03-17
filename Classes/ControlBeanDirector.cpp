@@ -7,6 +7,7 @@
  */
 
 #include "ControlBeanDirector.h"
+#include "toolkit.h"
 
 ControlBeanDirector* ControlBeanDirector::_instance = 0;
 
@@ -31,9 +32,10 @@ void ControlBeanDirector::destroy() {
 ControlBeanDirector::ControlBeanDirector() {
 }
 
-ControlBeanDirector* ControlBeanDirector::add(ControlBean* bean) {
+ControlBeanDirector* ControlBeanDirector::addBean(ControlBean* bean) {
+	bean->setControlBeanDirector(this);
     _beans.push_back(bean);
-	
+
 	// if first bean then start directly
 	if (_beans.size() == 1) {
 		bean->start();
@@ -51,6 +53,10 @@ void ControlBeanDirector::beanDidFinish(ControlBean* bean) {
 			_beans.front()->start();
 		}
 	}
+}
+
+ControlBean::ControlBean() {
+	_director = 0;	
 }
 
 void ControlBean::setControlBeanDirector(ControlBeanDirector* director) {

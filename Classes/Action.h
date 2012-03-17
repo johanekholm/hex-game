@@ -324,5 +324,29 @@ public:
 
 /*---------------------------------------------------------------*/
 
+class FadeOutBean : public ControlBean, public ControlCallback {
+protected:
+	
+public:
+	void start();
+	void callbackVoid();
+};
+
+/*---------------------------------------------------------------*/
+
+class ReturnToAdventureSceneBean : public ControlBean {
+public:
+	void start();
+};
+
+/*---------------------------------------------------------------*/
+
+class NextDungeonSceneBean : public ControlBean {
+protected:
+	std::string _sceneId;
+public:
+	NextDungeonSceneBean(const std::string& sceneId);
+	void start();
+};
 
 #endif

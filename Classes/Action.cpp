@@ -726,3 +726,31 @@ void GiveItemBean::callbackVoid() {
 }
 
 /*---------------------------------------------------------------*/
+
+void FadeOutBean::start() {
+	SceneLoader::instance()->switchToTransition(new FadeOutTransition(*this));
+}
+
+void FadeOutBean::callbackVoid() {
+	_director->beanDidFinish(this);
+}
+
+/*---------------------------------------------------------------*/
+
+void ReturnToAdventureSceneBean::start() {
+	SceneLoader::instance()->returnToAdventureScene();
+	_director->beanDidFinish(this);
+}
+
+/*---------------------------------------------------------------*/
+
+NextDungeonSceneBean::NextDungeonSceneBean(const std::string& sceneId) : ControlBean() {
+	_sceneId = sceneId;
+}
+
+void NextDungeonSceneBean::start() {
+	SceneLoader::instance()->loadNextDungeonScene(_sceneId, 0);
+	_director->beanDidFinish(this);
+}
+
+/*---------------------------------------------------------------*/

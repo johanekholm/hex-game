@@ -48,7 +48,7 @@ void FadeOutTransition::update() {
         _alpha = 1.0f;
         if (++_counter > 30) {
             ViewControllerManager::instance()->removeSoft(this);
-            CentralControl::instance()->switchMode(ControlMode::ADVENTURE);
+            //CentralControl::instance()->switchMode(ControlMode::ADVENTURE);
             _returnControl.callbackVoid();
             return;            
         }

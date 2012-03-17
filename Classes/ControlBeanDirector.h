@@ -18,6 +18,7 @@ protected:
 	ControlBeanDirector* _director;
 	
 public:
+	ControlBean();
 	virtual void start() = 0;
 	void setControlBeanDirector(ControlBeanDirector* director);
 };
@@ -33,7 +34,7 @@ public:
     static ControlBeanDirector* instance();
     static void destroy();
 
-	ControlBeanDirector* add(ControlBean* bean);
+	ControlBeanDirector* addBean(ControlBean* bean);
 	void beanDidFinish(ControlBean* bean);
 };
 
