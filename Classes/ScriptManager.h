@@ -61,7 +61,7 @@ public:
     void callbackVoid();
 };
 
-class EndDungeonRoomSA : public ScriptedAction, public ControlCallback {
+class EndDungeonRoomSA : public ScriptedAction {
 private:
 	std::string _sceneId;
 	
@@ -69,7 +69,6 @@ public:
     EndDungeonRoomSA(const ModelEvent& triggerEvent);
     EndDungeonRoomSA(const ModelEvent& triggerEvent, Json::Value& root);
     void doAction();    
-    virtual void callbackNumber(int num);
 };
 
 #endif

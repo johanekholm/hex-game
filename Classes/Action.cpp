@@ -755,6 +755,44 @@ void ReturnToAdventureSceneBean::start() {
 
 /*---------------------------------------------------------------*/
 
+DungeonChoiceBean::DungeonChoiceBean(const std::string& sceneId) : ControlBean() {
+	_sceneId = sceneId;
+}
+
+void DungeonChoiceBean::start() {
+	std::vector<MenuChoice> choices;
+	choices.push_back(MenuChoice::makeChoice(2, "EXIT DUNGEON"));
+	choices.push_back(MenuChoice::makeChoice(1, "CONTINUE"));
+    
+    SceneLoader::instance()->switchToMenu(new ChoiceMenuVC(*this, choices));
+}
+
+void DungeonChoiceBean::callbackNumber(int num) {
+	ControlBeanDirector* director = ControlBeanDirector::instance();
+	SceneLoader::instance()->returnFromMenu();
+
+	switch (num) {
+		case 1:
+			director->addBean(new FadeOutBean());
+			director->addBean(new NextDungeonSceneBean(_sceneId));
+			director->addBean(new FadeInBean());
+			break;
+			
+		case 2:
+			director->addBean(new FadeOutBean());
+			director->addBean(new ReturnToAdventureSceneBean());
+			director->addBean(new FadeInBean());
+			break;
+			
+		default:
+			break;
+	}
+
+	_director->beanDidFinish(this);	
+}
+
+/*---------------------------------------------------------------*/
+
 NextDungeonSceneBean::NextDungeonSceneBean(const std::string& sceneId) : ControlBean() {
 	_sceneId = sceneId;
 }

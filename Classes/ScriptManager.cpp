@@ -189,35 +189,10 @@ EndDungeonRoomSA::EndDungeonRoomSA(const ModelEvent& triggerEvent, Json::Value& 
 }
 
 void EndDungeonRoomSA::doAction() {
-    std::vector<MenuChoice> choices;
-	choices.push_back(MenuChoice::makeChoice(2, "EXIT DUNGEON"));
-	choices.push_back(MenuChoice::makeChoice(1, "CONTINUE"));
-    
-    SceneLoader::instance()->switchToMenu(new ChoiceMenuVC(*this, choices));
+	ControlBeanDirector* director = ControlBeanDirector::instance();
+	MapObject* player = ModelManager::instance()->getFirstMapObjectWithOwner(FactionNS::PLAYER);
+	
+	director->addBean(new GiveItemBean(new Item(ItemNS::SILVER, 2), player));
+	director->addBean(new DungeonChoiceBean(_sceneId));
 }
 
-void EndDungeonRoomSA::callbackNumber(int num) {
-	MapObject* player;
-	ControlBeanDirector* director = ControlBeanDirector::instance();
-	SceneLoader::instance()->returnFromMenu();
-	
-	switch (num) {
-		case 1:
-			player = ModelManager::instance()->getFirstMapObjectWithOwner(FactionNS::PLAYER);
-			director->addBean(new GiveItemBean(new Item(ItemNS::SILVER, 2), player));
-			director->addBean(new FadeOutBean());
-			director->addBean(new NextDungeonSceneBean(_sceneId));
-			director->addBean(new FadeInBean());
-			//SceneLoader::instance()->loadNextDungeonScene(_sceneId, 0);			
-			break;
-			
-		case 2:
-			director->addBean(new FadeOutBean());
-			director->addBean(new ReturnToAdventureSceneBean());
-			//SceneLoader::instance()->returnToAdventureScene();
-			break;
-			
-		default:
-			break;
-	}
-}

@@ -347,6 +347,17 @@ public:
 
 /*---------------------------------------------------------------*/
 
+class DungeonChoiceBean : public ControlBean, public ControlCallback {
+protected:
+	std::string _sceneId;
+public:
+	DungeonChoiceBean(const std::string& sceneId);
+	void start();
+	void callbackNumber(int num);
+};
+
+/*---------------------------------------------------------------*/
+
 class NextDungeonSceneBean : public ControlBean {
 protected:
 	std::string _sceneId;
