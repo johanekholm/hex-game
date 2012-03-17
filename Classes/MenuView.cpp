@@ -120,14 +120,14 @@ void ChoiceMenuVC::reportChoice(int choiceId) {
 
 TextboxMenuVC::TextboxMenuVC(ControlCallback& control, const std::string& text, const std::string& buttonLabel) : _returnControl(control) {
     std::vector<BaseMenuNodeVC*> nodes;
-    GLfloat yStart = 340.0f;
+    GLfloat yStart = 420.0f;
     
     _width = 320.0f;
     _height = 480.0f;
     _background = new RectangleImage(RGBAMake(0.0f, 0.0f, 0.0f, 0.3f), _width, _height, true);
 	
     nodes.push_back(new LeafMenuNodeVC(this, buttonLabel, -1, GPointMake(160.0f, yStart), 120.0f, 25.0f));
-    nodes.push_back(new TextMenuNodeVC(this, text, GPointMake(160.0f, yStart - 100.0f), 240.0f, 60.0f));
+    nodes.push_back(new TextMenuNodeVC(this, text, GPointMake(160.0f, yStart - 50.0f), 280.0f, 60.0f));
 	
     _rootNode = new ParentMenuNodeVC(this, "ROOT", nodes, GPointMake(0.0f, 0.0f), 80.0f, 32.0f, true);
     _focus = _rootNode;
