@@ -412,7 +412,7 @@ bool AActionEnterDungeon::isAvailable() {
 }
 
 void AActionEnterDungeon::doIt(const ActionState& statePoint) {
-    SceneLoader::instance()->switchToTransition(new FadeOutTransition(*this));
+    SceneLoader::instance()->switchToTransition(new FadeOutTransition(*this, true));
     CentralControl::instance()->switchMode(ControlMode::MENU);
 }
 
@@ -727,8 +727,18 @@ void GiveItemBean::callbackVoid() {
 
 /*---------------------------------------------------------------*/
 
+void FadeInBean::start() {
+	SceneLoader::instance()->switchToTransition(new FadeOutTransition(*this, false));
+}
+
+void FadeInBean::callbackVoid() {
+	_director->beanDidFinish(this);
+}
+
+/*---------------------------------------------------------------*/
+
 void FadeOutBean::start() {
-	SceneLoader::instance()->switchToTransition(new FadeOutTransition(*this));
+	SceneLoader::instance()->switchToTransition(new FadeOutTransition(*this, true));
 }
 
 void FadeOutBean::callbackVoid() {

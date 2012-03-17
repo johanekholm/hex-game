@@ -207,6 +207,7 @@ void EndDungeonRoomSA::callbackNumber(int num) {
 			director->addBean(new GiveItemBean(new Item(ItemNS::SILVER, 2), player));
 			director->addBean(new FadeOutBean());
 			director->addBean(new NextDungeonSceneBean(_sceneId));
+			director->addBean(new FadeInBean());
 			//SceneLoader::instance()->loadNextDungeonScene(_sceneId, 0);			
 			break;
 			

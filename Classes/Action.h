@@ -324,9 +324,15 @@ public:
 
 /*---------------------------------------------------------------*/
 
+class FadeInBean : public ControlBean, public ControlCallback {
+public:
+	void start();
+	void callbackVoid();
+};
+
+/*---------------------------------------------------------------*/
+
 class FadeOutBean : public ControlBean, public ControlCallback {
-protected:
-	
 public:
 	void start();
 	void callbackVoid();

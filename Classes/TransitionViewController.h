@@ -34,12 +34,15 @@ public:
 
 class FadeOutTransition : public TransitionViewController {
 protected:
+	bool _fadeOut;
     ShapeImage* _background;
     GLfloat _alpha;
+	GLfloat _delta;
+	GLfloat _targetAlpha;
     
 public:
 	virtual ~FadeOutTransition();
-	FadeOutTransition(ControlCallback& control);
+	FadeOutTransition(ControlCallback& control, bool fadeOut);
 	void draw(const GPoint& cameraPos);
 	void drawGUI(const GPoint& cameraPos);
     void update();

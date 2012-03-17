@@ -29,8 +29,12 @@ FadeOutTransition::~FadeOutTransition() {
 	delete _background;
 }
 
-FadeOutTransition::FadeOutTransition(ControlCallback& control) : TransitionViewController(control) {
-    _alpha = 0.0f;
+FadeOutTransition::FadeOutTransition(ControlCallback& control, bool fadeOut) : TransitionViewController(control) {
+	_fadeOut = fadeOut;
+    _alpha = (fadeOut) ? 0.0f : 1.0f;
+	_targetAlpha = (fadeOut) ? 1.0f : 0.0f;
+	_delta = 0.04f;
+    _delta = (fadeOut) ? _delta : -_delta;
     _background = new RectangleImage(RGBAMake(0.0f, 0.0f, 0.0f, _alpha), _width, _height, true);
 }
 
@@ -42,10 +46,10 @@ void FadeOutTransition::drawGUI(const GPoint& cameraPos) {
 }
 
 void FadeOutTransition::update() {
-    _alpha += 0.04f;
+    _alpha += _delta;
         
-    if (_alpha > 1.0f) {
-        _alpha = 1.0f;
+    if ((_fadeOut && _alpha > _targetAlpha) || (!_fadeOut && _alpha < _targetAlpha)) {
+        _alpha = _targetAlpha;
         if (++_counter > 30) {
             ViewControllerManager::instance()->removeSoft(this);
             //CentralControl::instance()->switchMode(ControlMode::ADVENTURE);

@@ -262,14 +262,6 @@ void ViewControllerManager::translateToCameraAndPosition(const GPoint& pos) {
 void ViewControllerManager::update() {
 	this->updateCamera();
 	
-    // insert newly added views before starting loop 
-    if (_stagedViews.size() > 0) {
-        for (std::vector<ViewController*>::iterator it = _stagedViews.begin(); it != _stagedViews.end(); ++it) {
-            this->insert(*it);
-        }
-        _stagedViews.clear();        
-    }
-
     // update viewcontrollers, erase those that have been soft-removed in a controlled fashion
 	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end();) {
 		if ((*it) != 0) {
@@ -279,6 +271,14 @@ void ViewControllerManager::update() {
             it = _views.erase(it);
         }
 	}
+	
+	// insert newly added views before starting loop 
+    if (_stagedViews.size() > 0) {
+        for (std::vector<ViewController*>::iterator it = _stagedViews.begin(); it != _stagedViews.end(); ++it) {
+            this->insert(*it);
+        }
+        _stagedViews.clear();        
+    }
 }
 
 void ViewControllerManager::updateCamera() {
