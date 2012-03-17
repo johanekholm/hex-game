@@ -715,9 +715,10 @@ GiveItemBean::GiveItemBean(Item* item, MapObject* object) {
 }
 
 void GiveItemBean::start() {
+	std::string text = "YOU GOT ";
 	_object->addItem(_item);
+	SceneLoader::instance()->switchToMenu(new TextboxMenuVC(*this, text + _item->getDescription(), "OK"));
 	_item = 0;
-	SceneLoader::instance()->switchToMenu(new TextboxMenuVC(*this, "YOU GOT SOME ITEM", "OK"));
 }
 
 void GiveItemBean::callbackVoid() {
