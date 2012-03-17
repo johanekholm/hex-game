@@ -189,8 +189,8 @@ EndDungeonRoomSA::EndDungeonRoomSA(const ModelEvent& triggerEvent, Json::Value& 
 
 void EndDungeonRoomSA::doAction() {
     std::vector<MenuChoice> choices;
-	choices.push_back(MenuChoice::makeChoice(1, "CONTINUE"));
 	choices.push_back(MenuChoice::makeChoice(2, "EXIT DUNGEON"));
+	choices.push_back(MenuChoice::makeChoice(1, "CONTINUE"));
     
     SceneLoader::instance()->switchToMenu(new ChoiceMenuVC(*this, choices));
 }

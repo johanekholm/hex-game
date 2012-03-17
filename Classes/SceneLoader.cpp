@@ -267,7 +267,6 @@ void SceneLoader::loadNextDungeonScene(const std::string& sceneId, MapObject* pa
 	MapObject* party1 = ModelManager::instance()->getFirstMapObjectWithOwner(1); 
 	
 	if (party1 != 0) {
-		DEBUGLOG("De-invert player party");
 		party1->move(party1->getPosition() * -1);
 	}
 
@@ -318,7 +317,6 @@ void SceneLoader::returnToAdventureScene() {
     ModelManager::instance()->addMapObject(party2);
 
 	if (party1 != 0) {
-		DEBUGLOG("Invert player party");
 		party1->move(party1->getPosition() * -1);
 	}
 	
