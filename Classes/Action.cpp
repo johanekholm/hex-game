@@ -702,3 +702,27 @@ std::vector<MenuChoice> CallbackActionShop::getChoices() {
 void CallbackActionShop::reset() {
 	_item = 0;
 }
+
+/*---------------------------------------------------------------*/
+
+GiveItemBean::~GiveItemBean() {
+	delete _item;
+}
+
+GiveItemBean::GiveItemBean(Item* item, MapObject* object) {
+	_item = item;
+	_object = object;
+}
+
+void GiveItemBean::start() {
+	_object->addItem(_item);
+	_item = 0;
+	SceneLoader::instance()->switchToMenu(new TextboxMenuVC(*this, "YOU GOT SOME ITEM", "OK"));
+}
+
+void GiveItemBean::callbackVoid() {
+	SceneLoader::instance()->returnFromMenu();
+	_director->beanDidFinish(this);
+}
+
+/*---------------------------------------------------------------*/

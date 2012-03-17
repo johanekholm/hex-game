@@ -52,3 +52,7 @@ void ControlBeanDirector::beanDidFinish(ControlBean* bean) {
 		}
 	}
 }
+
+void ControlBean::setControlBeanDirector(ControlBeanDirector* director) {
+	_director = director;
+}

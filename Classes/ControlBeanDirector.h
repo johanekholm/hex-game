@@ -19,6 +19,7 @@ protected:
 	
 public:
 	virtual void start() = 0;
+	void setControlBeanDirector(ControlBeanDirector* director);
 };
 
 class ControlBeanDirector {

@@ -17,6 +17,8 @@
 #include "toolkit.h"
 #include "MenuView.h"
 #include "ControlCallback.h"
+#include "ControlBeanDirector.h"
+#include "Item.h"
 
 namespace ActionNS {
     const int BACTION_MOVE =    0;
@@ -305,6 +307,20 @@ public:
 	void reset();
 };
 
+
+/*---------------------------------------------------------------*/
+
+class GiveItemBean : public ControlBean, public ControlCallback {
+protected:
+	Item* _item;
+	MapObject* _object;
+	
+public:
+	~GiveItemBean();
+	GiveItemBean(Item* item, MapObject* object);
+	void start();
+	void callbackVoid();
+};
 
 /*---------------------------------------------------------------*/
 
