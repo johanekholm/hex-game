@@ -63,7 +63,7 @@ class ChoiceMenuVC : public MenuViewController {
     ControlCallback& _returnControl;
     
 public:
-	ChoiceMenuVC(ControlCallback& control, std::vector<MenuChoice> choices);
+	ChoiceMenuVC(ControlCallback& control, std::vector<MenuChoice> choices, bool addCancelButton=true);
     virtual void reportChoice(int choiceId);    
 };
 

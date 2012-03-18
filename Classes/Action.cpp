@@ -764,7 +764,7 @@ void DungeonChoiceBean::start() {
 	choices.push_back(MenuChoice::makeChoice(2, "EXIT DUNGEON"));
 	choices.push_back(MenuChoice::makeChoice(1, "CONTINUE"));
     
-    SceneLoader::instance()->switchToMenu(new ChoiceMenuVC(*this, choices));
+    SceneLoader::instance()->switchToMenu(new ChoiceMenuVC(*this, choices, false));
 }
 
 void DungeonChoiceBean::callbackNumber(int num) {

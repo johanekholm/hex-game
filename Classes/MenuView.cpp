@@ -92,14 +92,16 @@ void MenuViewController::setFocus(BaseMenuNodeVC* focus) {
 
 /*---------------------------------------------------------------*/
 
-ChoiceMenuVC::ChoiceMenuVC(ControlCallback& control, std::vector<MenuChoice> choices) : _returnControl(control) {
+ChoiceMenuVC::ChoiceMenuVC(ControlCallback& control, std::vector<MenuChoice> choices, bool addCancelButton) : _returnControl(control) {
     std::vector<BaseMenuNodeVC*> nodes;
     
     _width = 320.0f;
     _height = 480.0f;
     _background = new RectangleImage(RGBAMake(0.0f, 0.0f, 0.0f, 0.3f), _width, _height, true);
     
-    nodes.push_back(new LeafMenuNodeVC(this, "CANCEL", -1, GPointMake(0.0f, 0.0f), 120.0f, 25.0f));
+	if (addCancelButton) {
+		nodes.push_back(new LeafMenuNodeVC(this, "CANCEL", -1, GPointMake(0.0f, 0.0f), 120.0f, 25.0f));		
+	}
 
     for (std::vector<MenuChoice>::iterator it = choices.begin(); it != choices.end(); ++it) {
 		nodes.push_back(new LeafMenuNodeVC(this, (*it).label, (*it).choiceId, GPointMake(0.0f, 0.0f), 120.0f, 25.0f));
