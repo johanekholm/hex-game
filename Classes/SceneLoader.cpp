@@ -72,6 +72,8 @@ void SceneLoader::loadScene(std::string sceneId, bool isPersistent) {
     _isPersistent = isPersistent;
     _isLoaded = true;
 	
+	ViewControllerManager::instance()->setCameraPosition(GPointMake(0.0f, 0.0f));
+    ViewControllerManager::instance()->setCameraTargetPosition(GPointMake(0.0f, 0.0f));
 }
 
 void SceneLoader::loadPrevious() {
@@ -86,8 +88,6 @@ void SceneLoader::clearScene() {
     ModelManager::instance()->deleteAllMapObjects();
     ModelManager::instance()->deleteAllUnits();
     ScriptManager::instance()->clear();
-    ViewControllerManager::instance()->setCameraPosition(GPointMake(0.0f, 0.0f));
-    ViewControllerManager::instance()->setCameraTargetPosition(GPointMake(0.0f, 0.0f));
 }
 
 void SceneLoader::handleHistory(std::string sceneId) {

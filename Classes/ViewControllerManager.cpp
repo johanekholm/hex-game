@@ -60,6 +60,27 @@ GPoint ViewControllerManager::adjustForCamera(const GPoint& pos) {
     return pos + _cameraPos;
 }
 
+void ViewControllerManager::applyCameraBoundaries(GPoint& pos) {
+	GPoint nwBoundary = _mapView->getNWBoundary(); //GPointMake(64.0f, 40.0f);
+	GPoint seBoundary = _mapView->getSEBoundary() - GPointMake(320.0f, 400.0f);
+	
+	if (pos.x < nwBoundary.x) {
+        pos.x = nwBoundary.x;
+    }
+    
+    if (pos.y < nwBoundary.y) {
+        pos.y = nwBoundary.y;
+    }    
+
+	if (pos.x > seBoundary.x) {
+        pos.x = seBoundary.x;
+    }
+    
+    if (pos.y > seBoundary.y) {
+        pos.y = seBoundary.y;
+    }    
+}
+
 void ViewControllerManager::centerCamera(const GPoint& pos, bool sweep) {
     this->setCameraTargetPosition(pos - GPointMake(160.0f, 240.0f));
 	
@@ -129,6 +150,7 @@ void ViewControllerManager::insert(ViewController* view) {
 
 void ViewControllerManager::moveCamera(const GPoint& pos) {
     this->setCameraPosition(_cameraPos + pos);
+    this->setCameraTargetPosition(_cameraPos + pos);
 }
 
 void ViewControllerManager::passFocus() {
@@ -195,25 +217,13 @@ void ViewControllerManager::removeSoft(ViewController* view) {
 void ViewControllerManager::setCameraPosition(const GPoint& pos) {
     _cameraPos = pos;
     
-    if (_cameraPos.x < 0) {
-        _cameraPos.x = 0;
-    }
-    
-    if (_cameraPos.y < 0) {
-        _cameraPos.y = 0;
-    }    
+	this->applyCameraBoundaries(_cameraPos);
 }
 
 void ViewControllerManager::setCameraTargetPosition(const GPoint& pos) {
     _cameraTargetPos = pos;
-    
-    if (_cameraTargetPos.x < 0) {
-        _cameraTargetPos.x = 0;
-    }
-    
-    if (_cameraTargetPos.y < 0) {
-        _cameraTargetPos.y = 0;
-    }    
+	
+	this->applyCameraBoundaries(_cameraTargetPos);
 }
 
 void ViewControllerManager::setFocus(ViewController* view) {
@@ -227,7 +237,6 @@ void ViewControllerManager::setFocus(ViewController* view) {
     // notify of focus won
     if (view != 0) {
         view->setFocus(true);
-        //this->centerCamera(view->getPosition());
     }
 }
 

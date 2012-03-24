@@ -30,6 +30,7 @@ public:
 
 	void add(ViewController* view);
     GPoint adjustForCamera(const GPoint& pos);
+	void applyCameraBoundaries(GPoint& pos);
     void centerCamera(const GPoint& pos, bool sweep=true);
 	void centerCamera(const MPoint& pos, bool sweep=true);
     void draw();
