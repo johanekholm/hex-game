@@ -64,6 +64,14 @@ void ViewControllerManager::applyCameraBoundaries(GPoint& pos) {
 	GPoint nwBoundary = _mapView->getNWBoundary(); //GPointMake(64.0f, 40.0f);
 	GPoint seBoundary = _mapView->getSEBoundary() - GPointMake(320.0f, 400.0f);
 	
+	if (seBoundary.x < 0.0f) {
+		seBoundary.x = 0.0f;
+	}
+	
+	if (seBoundary.y < 0.0f) {
+		seBoundary.y = 0.0f;
+	}
+
 	if (pos.x < nwBoundary.x) {
         pos.x = nwBoundary.x;
     }
