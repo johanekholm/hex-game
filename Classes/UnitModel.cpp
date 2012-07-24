@@ -174,7 +174,8 @@ void UnitModel::deserialize(Json::Value& root) {
     _pos.y = root.get("y", 0.0f).asFloat();
     _ap = root.get("ap", 0).asInt();
     _hp = root.get("hp", 0).asInt();
-
+	_hp = (_hp > _template->getStat(StatNS::MAXHP)) ? _template->getStat(StatNS::MAXHP) : _hp; 
+	
 	actionIds = _template->getActionIds();
 	for (std::vector<int>::iterator it = actionIds.begin(); it != actionIds.end(); ++it) {
         this->addAction(*it);
