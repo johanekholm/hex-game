@@ -444,6 +444,7 @@ void AActionPartyOptions::doIt(const ActionState& statePoint) {
 		actionNodes.clear();
 		actionNodes.push_back(new BackButtonMenuNodeVC(0, "BACK", GPointMake(0.0f, 0.0f), 120.0f, 32.0f));
 		actionNodes.push_back(new ActionMenuNodeVC(equip, 0, "EQUIP", empty, GPointMake(0.0f, 0.0f), 120.0f, 32.0f));
+		actionNodes.push_back(new UnitInfoMenuNodeVC(0, *it, GPointMake(0.0f, 0.0f)));
 		
 		unitNodes.push_back(new ParentMenuNodeVC(0, (*it)->getDescription(), actionNodes, GPointMake(0.0f, 0.0f), 120.0f, 32.0f, true));
 		counter++;

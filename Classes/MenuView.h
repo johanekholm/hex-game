@@ -10,12 +10,15 @@
 
 #include "ViewController.h"
 #include "ControlCallback.h"
+#include "IObserver.h"
 #include <vector>
 #include <string>
 
 class ShapeImage;
 class GameImage;
 class StringImage;
+class UnitModel;
+struct UnitState;
 
 struct MenuChoice {
     int choiceId;
@@ -161,5 +164,26 @@ public:
 	TextMenuNodeVC(MenuViewController* _menuVC, const std::string& label, const GPoint& pos, GLfloat width, GLfloat height);
 	virtual bool handleEvent(const TouchEvent& event);
 };
+
+/*---------------------------------------------------------------*/
+
+class UnitInfoMenuNodeVC : public BaseMenuNodeVC, public IObserver {
+private:
+	UnitModel* _unit;
+	StringImage *_stringName, *_stringPower, *_stringSkill, *_stringDefense, *_stringAp;
+
+	void buildStrings();
+
+public:
+	virtual ~UnitInfoMenuNodeVC();
+	UnitInfoMenuNodeVC(MenuViewController* _menuVC, UnitModel* unit, const GPoint& pos);
+	virtual void drawGUI(const GPoint& cameraPos);
+	virtual bool handleEvent(const TouchEvent& event);
+	void destroyed();
+	void updateState();
+	
+};
+
+/*---------------------------------------------------------------*/
 
 #endif

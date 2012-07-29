@@ -15,7 +15,9 @@
 #include "SceneLoader.h"
 #include "ShapeImage.h"
 #include "StringImage.h"
+#include "UnitModel.h"
 #include <string>
+#include <sstream>
 #include <iostream>
 
 MenuChoice MenuChoice::makeChoice(int choiceId, const std::string& label) {
@@ -369,5 +371,73 @@ void ActionMenuNodeVC::reportChoice(int choiceId) {
 }
 
 /*---------------------------------------------------------------*/
+
+UnitInfoMenuNodeVC::~UnitInfoMenuNodeVC() {
+	delete _stringName;
+	delete _stringPower;
+	delete _stringSkill;
+	delete _stringDefense;
+	delete _stringAp;
+}
+
+UnitInfoMenuNodeVC::UnitInfoMenuNodeVC(MenuViewController* menuVC, UnitModel* unit, const GPoint& pos) : BaseMenuNodeVC(menuVC, "", -1, pos, 200.0f, 200.0f) {
+    
+	_stringName = NULL;
+	_stringPower = NULL;
+	_stringSkill = NULL;
+	_stringDefense = NULL;
+	_stringAp = NULL;
+	_unit = unit;
+	_unit->addObserver(this);
+    _button = new RectangleImage(RGBAMake(0.5f, 0.5f, 0.5f, 1.0f), _width, _height, true);
+}
+
+void UnitInfoMenuNodeVC::buildStrings() {
+	std::stringstream power, skill, defense, ap;
+	
+	if (_stringPower || _stringSkill || _stringDefense || _stringName || _stringAp) {
+		delete _stringName;
+		delete _stringPower;
+		delete _stringSkill;
+		delete _stringDefense;
+		delete _stringAp;
+	}
+	
+    power << "POWER: " << _unit->getStat(StatNS::POWER);
+    skill << "SKILL: " << _unit->getStat(StatNS::SKILL);
+    defense << "DEFENSE: " << _unit->getStat(StatNS::DEFENSE);
+    ap << "AP: " << _unit->getStat(StatNS::MAXAP);
+	
+    _stringName = new StringImage(_unit->getDescription(), RGBAMakeWhite());
+	_stringPower = new StringImage(power.str(), RGBAMakeWhite());
+    _stringSkill = new StringImage(skill.str(), RGBAMakeWhite());
+    _stringDefense = new StringImage(defense.str(), RGBAMakeWhite());
+    _stringAp = new StringImage(ap.str(), RGBAMakeWhite());
+}
+
+void UnitInfoMenuNodeVC::drawGUI(const GPoint& cameraPos) {
+    _button->drawCenteredAt(_pos);
+    _stringName->drawCenteredAt(_pos - GPointMake(0.0f, 80.0f));
+    _stringPower->drawAt(_pos - GPointMake(90.0f, 50.0f));
+    _stringSkill->drawAt(_pos - GPointMake(90.0f, 30.0f));
+    _stringDefense->drawAt(_pos - GPointMake(90.0f, 10.0f));
+    _stringAp->drawAt(_pos - GPointMake(90.0f, -10.0f));
+}
+
+bool UnitInfoMenuNodeVC::handleEvent(const TouchEvent& event) {
+    return false;
+}
+
+void UnitInfoMenuNodeVC::updateState() {
+	this->buildStrings();
+}
+
+void UnitInfoMenuNodeVC::destroyed() {
+	ViewControllerManager::instance()->removeSoft(this);	
+}
+
+
+/*---------------------------------------------------------------*/
+
 
 
