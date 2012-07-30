@@ -27,9 +27,12 @@ namespace ItemNS {
 class ItemTemplate {
 protected:
 	static std::map<int, ItemTemplate*> _templates;
+	static std::map<std::string, std::map<int, ItemTemplate*> > _dropMap;
+	static std::map<std::string, int> _dropWeightSums;
 
     int _type;
 	int _cost;
+	int _dropWeight;
     bool _equipable;
     std::string _name;
 	int _hpBonus;
@@ -39,10 +42,14 @@ protected:
 	
 public:
 	static std::map<int, ItemTemplate*> initTemplates();
+	static std::map<std::string, std::map<int, ItemTemplate*> > initDropMap();
+	static std::map<std::string, int> initDropWeightSums();
 	static ItemTemplate* getTemplate(int type);
+	static ItemTemplate* generateDrop(int level);
 	ItemTemplate();
-	ItemTemplate(int type, std::string name, int cost, int hp, int power, int skill, int defense);
+	ItemTemplate(int type, std::string name, int dropWeight, int cost, int hp, int power, int skill, int defense);
 	int getCost();
+	int getDropWeight();
 	std::string getName();
 	int getStatBonus(int stat);
 };
@@ -80,6 +87,7 @@ public:
     void deserializeItems(Json::Value& root);
 
     void addItem(Item* item);
+    void addItems(const std::vector<Item*>& items);
     std::map<int, Item*> getItems();
     bool hasItem(int type, int count);
     bool removeItem(int type, int count);

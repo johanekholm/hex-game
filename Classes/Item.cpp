@@ -11,22 +11,50 @@
 #include "UnitModel.h"
 #include <iostream>
 #include <sstream>
+#include <cstdlib>
 
 std::map<int, ItemTemplate*> ItemTemplate::_templates = ItemTemplate::initTemplates();
+std::map<std::string, std::map<int, ItemTemplate*> > ItemTemplate::_dropMap = ItemTemplate::initDropMap();
+std::map<std::string, int> ItemTemplate::_dropWeightSums = ItemTemplate::initDropWeightSums();
 
 std::map<int, ItemTemplate*> ItemTemplate::initTemplates() {
 	using namespace ItemNS;
 	std::map<int, ItemTemplate*> templates;
 	
-	templates[SILVER] =		new ItemTemplate(SILVER, "SILVER",			1, 0, 0, 0, 0);
-	templates[SWORD] =		new ItemTemplate(SWORD, "SWORD",			10, 0, 0, 1, 0);
-	templates[SHIELD] =		new ItemTemplate(SHIELD, "SHIELD",			8, 0, 0, 0, 1);
-	templates[HELMET] =		new ItemTemplate(HELMET, "HELMET",			5, 0, 0, 0, 1);
-	templates[RING] =		new ItemTemplate(RING, "RING",				12, 1, 0, 0, 0);
-	templates[CHAIN_MAIL] = new ItemTemplate(CHAIN_MAIL, "CHAIN MAIL",	15, 0, 0, 0, 1);
-	templates[POTION] =		new ItemTemplate(POTION, "POTION",			6, 0, 0, 0, 0);
+	templates[SILVER] =		new ItemTemplate(SILVER, "SILVER",			0, 1, 0, 0, 0, 0);
+	templates[SWORD] =		new ItemTemplate(SWORD, "SWORD",			5, 10, 0, 0, 1, 0);
+	templates[SHIELD] =		new ItemTemplate(SHIELD, "SHIELD",			5, 8, 0, 0, 0, 1);
+	templates[HELMET] =		new ItemTemplate(HELMET, "HELMET",			10, 5, 0, 0, 0, 1);
+	templates[RING] =		new ItemTemplate(RING, "RING",				5, 12, 1, 0, 0, 0);
+	templates[CHAIN_MAIL] = new ItemTemplate(CHAIN_MAIL, "CHAIN MAIL",	5, 15, 0, 0, 0, 1);
+	templates[POTION] =		new ItemTemplate(POTION, "POTION",			10, 6, 0, 0, 0, 0);
 
 	return templates;
+}
+
+std::map<std::string, std::map<int, ItemTemplate*> > ItemTemplate::initDropMap() {
+	std::map<std::string, std::map<int, ItemTemplate*> > dropMap;
+	int sum = 0;
+	
+	for (std::map<int, ItemTemplate*>::iterator it = _templates.begin(); it != _templates.end(); ++it) {
+		sum += it->second->getDropWeight();
+		dropMap["basic"][sum] = it->second;
+	}
+	
+	return dropMap;
+}
+
+std::map<std::string, int> ItemTemplate::initDropWeightSums() {
+	std::map<std::string, int> dropWeightSums;
+	
+	dropWeightSums["basic"] = 0;
+	dropWeightSums["advanced"] = 0;
+	
+	for (std::map<int, ItemTemplate*>::iterator it = _templates.begin(); it != _templates.end(); ++it) {
+		dropWeightSums["basic"] += it->second->getDropWeight();
+	}
+	
+	return dropWeightSums;
 }
 
 ItemTemplate* ItemTemplate::getTemplate(int type) {
@@ -37,6 +65,22 @@ ItemTemplate* ItemTemplate::getTemplate(int type) {
 	}
 }
 
+ItemTemplate* ItemTemplate::generateDrop(int level) {
+	std::string category = "basic";
+	int random;
+	
+	random = rand() % _dropWeightSums[category];
+
+	for (std::map<int, ItemTemplate*>::iterator it = _dropMap[category].begin(); it != _dropMap[category].end(); ++it) {
+		if (random < it->first ) {
+			return it->second;
+		}
+	}
+	
+	return 0;
+}
+
+
 ItemTemplate::ItemTemplate() {
 	_type = 0;
 	_name = "";
@@ -46,9 +90,10 @@ ItemTemplate::ItemTemplate() {
 	_defenseBonus = 0;	
 }
 
-ItemTemplate::ItemTemplate(int type, std::string name, int cost, int hp, int power, int skill, int defense) {
+ItemTemplate::ItemTemplate(int type, std::string name, int dropWeight, int cost, int hp, int power, int skill, int defense) {
 	_type = type;
 	_name = name;
+	_dropWeight = dropWeight;
 	_cost = cost;
 	_hpBonus = hp;
 	_powerBonus = power;
@@ -58,6 +103,10 @@ ItemTemplate::ItemTemplate(int type, std::string name, int cost, int hp, int pow
 
 int ItemTemplate::getCost() {
 	return _cost;
+}
+
+int ItemTemplate::getDropWeight() {
+	return _dropWeight;
 }
 
 std::string ItemTemplate::getName() {
@@ -190,6 +239,12 @@ void ItemHandler::addItem(Item* item) {
             _items[item->getType()]->increaseCount(item->getCount());
         }
     }
+}
+
+void ItemHandler::addItems(const std::vector<Item*>& items) {
+	for (std::vector<Item*>::const_iterator it = items.begin(); it != items.end(); ++it) {
+		this->addItem(*it);
+	}
 }
 
 std::map<int, Item*> ItemHandler::getItems() {
