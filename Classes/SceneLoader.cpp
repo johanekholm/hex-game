@@ -212,7 +212,8 @@ void SceneLoader::loadBattleScene(const std::string& sceneId, MapObject* party1,
 	party2->move(party2->getPosition() * -1);
 
 	this->insertUnitsIntoScene(&party1Members, &party2Members);
-
+	this->prepLoot();
+	
     ModelManager::instance()->addMapObject(party1);
     ModelManager::instance()->addMapObject(party2);
 	
@@ -252,7 +253,7 @@ void SceneLoader::loadDungeonScene(const std::string& sceneId, MapObject* party)
 	this->insertUnitsIntoScene(&partyMembers, 0);
 	party->move(party->getPosition() * -1);
 	ModelManager::instance()->addMapObject(party);
-
+	this->prepLoot();
 
 	// To-Do: scripts should be loaded with state
     //ScriptManager::instance()->add(ScriptedAction::build(ScriptedActionNS::NEXT_DUNGEON_ROOM, ModelEventNS::PARTY_WIPEOUT));
@@ -290,6 +291,18 @@ void SceneLoader::loadAdventureScene() {
     ObjectBuilder::createMapObjectFromTemplate("dungeon", 1, MPointMake(0, 3));
     
     StateManager::save("temp1.jsn");*/
+}
+
+void SceneLoader::prepLoot() {
+	std::vector<UnitModel*> units;
+	
+	units = ModelManager::instance()->getAllUnits();
+	
+	for (std::vector<UnitModel*>::iterator it = units.begin(); it != units.end(); ++it) {
+		if ((*it)->getOwner() == FactionNS::ENEMY) {
+			SceneContext::instance()->getItemStack()->addItems((*it)->getLoot());
+		}
+	}
 }
 
 void SceneLoader::returnToAdventureScene() {

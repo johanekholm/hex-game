@@ -52,6 +52,7 @@ public:
 	int getDropWeight();
 	std::string getName();
 	int getStatBonus(int stat);
+	int getType();
 };
 
 class Item {
@@ -63,6 +64,7 @@ public:
 	~Item();
 	Item();
 	Item(int type, int count);
+	Item(ItemTemplate* itemTemplate, int count);
     
     //static Item* buildItem(int type, int count);
 	Json::Value serialize();
@@ -89,7 +91,9 @@ public:
     void addItem(Item* item);
     void addItems(const std::vector<Item*>& items);
     std::map<int, Item*> getItems();
+	std::vector<Item*> getItemsAsVector();
     bool hasItem(int type, int count);
+	void removeAllItems();
     bool removeItem(int type, int count);
 };
 

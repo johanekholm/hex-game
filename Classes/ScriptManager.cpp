@@ -192,7 +192,8 @@ void EndDungeonRoomSA::doAction() {
 	ControlBeanDirector* director = ControlBeanDirector::instance();
 	MapObject* player = ModelManager::instance()->getFirstMapObjectWithOwner(FactionNS::PLAYER);
 	
-	director->addBean(new GiveItemBean(new Item(ItemNS::SILVER, 2), player));
+	//director->addBean(new GiveItemBean(new Item(ItemNS::SILVER, 2), player));
+	director->addBean(new GetLootBean());
 	director->addBean(new DungeonChoiceBean(_sceneId));
 }
 

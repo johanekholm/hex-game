@@ -73,6 +73,7 @@ ItemTemplate* ItemTemplate::generateDrop(int level) {
 
 	for (std::map<int, ItemTemplate*>::iterator it = _dropMap[category].begin(); it != _dropMap[category].end(); ++it) {
 		if (random < it->first ) {
+			DEBUGLOG("Generated 1 %s", it->second->getName().c_str());
 			return it->second;
 		}
 	}
@@ -131,6 +132,10 @@ int ItemTemplate::getStatBonus(int stat) {
 	}
 }
 
+int ItemTemplate::getType() {
+	return _type;
+}
+
 /*---------------------------------------------------------------*/
 
 
@@ -147,6 +152,14 @@ Item::Item(int type, int count) {
     _type = type;
     _count = count;
 	_template = ItemTemplate::getTemplate(type);
+}
+
+Item::Item(ItemTemplate* itemTemplate, int count) {
+	if (itemTemplate != 0) {
+		_type = itemTemplate->getType();		
+	}
+    _count = count;
+	_template = itemTemplate;
 }
 
 Json::Value Item::serialize() {
@@ -251,6 +264,14 @@ std::map<int, Item*> ItemHandler::getItems() {
     return _items;
 }
 
+std::vector<Item*> ItemHandler::getItemsAsVector() {
+	std::vector<Item*> itemVector;
+	for (std::map<int, Item*>::iterator it = _items.begin(); it != _items.end(); ++it) {
+		itemVector.push_back(it->second);
+	}
+	return itemVector;
+}
+
 bool ItemHandler::hasItem(int type, int count) {
     if (_items.find(type) != _items.end()) {
         return (_items[type]->getCount() >= count);
@@ -268,6 +289,10 @@ bool ItemHandler::removeItem(int type, int count) {
         }
     }
     return false;
+}
+
+void ItemHandler::removeAllItems() {
+    _items.clear();
 }
 
 

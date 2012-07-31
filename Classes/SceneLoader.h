@@ -34,6 +34,7 @@ private:
     void handleHistory(std::string sceneId);
 	void insertUnitsIntoScene(std::vector<UnitModel*>* party1Members, std::vector<UnitModel*>* party2Members);
 	void removeUnitsFromParties(MapObject* party1, MapObject* party2, std::vector<UnitModel*> *party1Members, std::vector<UnitModel*> *party2Members);
+	void prepLoot();
 	void returnUnitsToParties(std::vector<UnitModel*> units);
     
 public:

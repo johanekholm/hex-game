@@ -8,6 +8,7 @@
  */
 
 #include "SceneContext.h"
+#include "Item.h"
 #include "json.h"
 #include <iostream>
 
@@ -16,6 +17,7 @@ public:
 	static SceneContext* instance;
 	int partyId1;	
 	int partyId2;
+	ItemHandler itemStack;
 };
 
 SceneContext* SceneContext::PrivateData::instance = 0;
@@ -46,6 +48,7 @@ Json::Value SceneContext::serialize() {
     
     root["partyId1"] = d->partyId1;
     root["partyId2"] = d->partyId2;
+	root["items"] = d->itemStack.serializeItems();
     
     return root;
 }
@@ -53,8 +56,12 @@ Json::Value SceneContext::serialize() {
 void SceneContext::deserialize(Json::Value& root) {
     d->partyId1 = root.get("partyId1", 0).asInt();
     d->partyId2 = root.get("partyId2", 0).asInt();
+	d->itemStack.deserializeItems(root["items"]);
 }
 
+ItemHandler* SceneContext::getItemStack() {
+	return &(d->itemStack);
+}
 
 void SceneContext::setPartyId1(int partyId) {
 	d->partyId1 = partyId;

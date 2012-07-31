@@ -18,6 +18,7 @@
 #include "MessageView.h"
 #include "MapObject.h"
 #include "ObjectBuilder.h"
+#include "SceneContext.h"
 #include "SceneLoader.h"
 #include "Sound.h"
 #include "TransitionViewController.h"
@@ -707,19 +708,28 @@ void CallbackActionShop::reset() {
 /*---------------------------------------------------------------*/
 
 GiveItemBean::~GiveItemBean() {
-	delete _item;
+	_items.clear();
 }
 
 GiveItemBean::GiveItemBean(Item* item, MapObject* object) {
-	_item = item;
+	_items.push_back(item);
+	_object = object;
+}
+
+GiveItemBean::GiveItemBean(const std::vector<Item*>& items, MapObject* object) {
+	_items = items;
 	_object = object;
 }
 
 void GiveItemBean::start() {
 	std::string text = "YOU GOT ";
-	_object->addItem(_item);
-	SceneLoader::instance()->switchToMenu(new TextboxMenuVC(*this, text + _item->getDescription(), "OK"));
-	_item = 0;
+	for (std::vector<Item*>::iterator it = _items.begin(); it != _items.end(); it++) {
+		_object->addItem(*it);
+		text += (*it)->getDescription();
+		text += " ";
+	}
+	SceneLoader::instance()->switchToMenu(new TextboxMenuVC(*this, text, "OK"));
+	_items.clear();
 }
 
 void GiveItemBean::callbackVoid() {
@@ -804,3 +814,14 @@ void NextDungeonSceneBean::start() {
 }
 
 /*---------------------------------------------------------------*/
+
+void GetLootBean::start() {
+	ItemHandler* stack = SceneContext::instance()->getItemStack();
+	MapObject* player = ModelManager::instance()->getFirstMapObjectWithOwner(FactionNS::PLAYER);
+	_director->addBean(new GiveItemBean(stack->getItemsAsVector(), player));
+	stack->removeAllItems();
+	_director->beanDidFinish(this);
+}
+
+/*---------------------------------------------------------------*/
+

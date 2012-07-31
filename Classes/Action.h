@@ -312,12 +312,13 @@ public:
 
 class GiveItemBean : public ControlBean, public ControlCallback {
 protected:
-	Item* _item;
+	std::vector<Item*> _items;
 	MapObject* _object;
 	
 public:
 	~GiveItemBean();
 	GiveItemBean(Item* item, MapObject* object);
+	GiveItemBean(const std::vector<Item*>& items, MapObject* object);
 	void start();
 	void callbackVoid();
 };
@@ -363,6 +364,13 @@ protected:
 	std::string _sceneId;
 public:
 	NextDungeonSceneBean(const std::string& sceneId);
+	void start();
+};
+
+/*---------------------------------------------------------------*/
+
+class GetLootBean : public ControlBean {
+public:
 	void start();
 };
 

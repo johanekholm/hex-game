@@ -93,6 +93,24 @@ std::vector<int> UnitModelTemplate::getActionIds() {
 	return _actionIds;
 }
 
+std::vector<Item*> UnitModelTemplate::getLoot() {
+	int numSilver = 0;
+	std::vector<Item*> items;
+	ItemTemplate* drop = 0;
+	
+	numSilver = rand() % 6 + 1;
+	items.push_back(new Item(ItemNS::SILVER, numSilver));
+
+	if (_templateId == "brute") {
+		items.push_back(new Item(ItemNS::POTION, 1));
+	}
+	
+	drop = ItemTemplate::generateDrop(1);
+	items.push_back(new Item(drop, 1));
+	
+	return items;
+}
+
 std::string UnitModelTemplate::getName() {
 	return _name;
 }
@@ -318,6 +336,10 @@ std::string UnitModel::getDescription() {
 
 int UnitModel::getId() {
 	return _id;
+}
+
+std::vector<Item*> UnitModel::getLoot() {
+	return _template->getLoot();
 }
 
 int UnitModel::getOwner() {

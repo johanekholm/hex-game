@@ -64,6 +64,7 @@ public:
 	UnitModelTemplate(const std::string& _templateId, const std::string& _name, int visualType, int basePower, int baseSkill, int baseDefense, int maxAp, int maxHp, const std::vector<int>& actionIds);
 	void deserialize(Json::Value& root);
 	std::vector<int> getActionIds();
+	std::vector<Item*> getLoot();
 	std::string getName();
 	int getStat(int stat);
 	std::string getTemplateId();
@@ -105,6 +106,7 @@ public:
     void doAI();
 	std::vector<ActionState> getActions();
 	std::string getDescription();
+	std::vector<Item*> getLoot();
     int getOwner();
 	int getId();
 	MPoint getPosition();
