@@ -50,9 +50,6 @@ void StringImage::buildVertices() {
     GLfloat texHeight = 0.07617f;
     GLfloat tx = 0.04f;
     GLfloat ty = 0.0f;
-    int charWidthsPixels[] = {10,10,14,22,18,30,24,6,12,12,16,24,10,12,8,14,   18,16,17,16,18,17,17,17,17,17, 12,12,18,26,18,   
-        16,26,  20,20,20,20,20,18,20,20,12,14,  20,18,22,20,22,20, 24,20,18,20,20,20,26,
-        20,19,18};
     int charRow[] = { 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,
         1,1,1,1,1,1,1,1,1,1, 1,1,1,1,1,1,1,1,1,1, 1,1,1,1,1,
         2,2,2 };
@@ -70,7 +67,7 @@ void StringImage::buildVertices() {
     charTexPos[0] = 0.0f;
     
     for (int i=0; i<59; i++) {
-        charWidths[i] = charWidthsPixels[i]/512.0f;
+		charWidths[i] = StringImage::_fontPixelWidths.at(i)/512.0f;
         
         charTexPosY[i] = charRow[i] * texHeight;
         
@@ -111,7 +108,7 @@ void StringImage::buildVertices() {
     for (int i=0; i < _size; i++) {
         character = cString[i] - 32;
         
-        width = charWidthsPixels[character] * scale;
+        width = StringImage::_fontPixelWidths.at(character) * scale;
         
         _vertices[i*18 + 0] = caret + 0.0f;
         _vertices[i*18 + 1] = 0.0f;
