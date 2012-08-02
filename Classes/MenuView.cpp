@@ -212,10 +212,19 @@ bool BackButtonMenuNodeVC::handleEvent(const TouchEvent& event) {
 
 /*---------------------------------------------------------------*/
 
+TextMenuNodeVC::~TextMenuNodeVC() {
+	delete _text;
+}
+
 TextMenuNodeVC::TextMenuNodeVC(MenuViewController* menuVC, const std::string& label, const GPoint& pos, GLfloat width, GLfloat height) : BaseMenuNodeVC(menuVC, label, -1, pos, width, height) {
     
     _button = new RectangleImage(RGBAMake(0.5f, 0.5f, 0.5f, 1.0f), _width, _height, true);
-    _label = new StringImage(label, RGBAMakeWhite());
+    _text = new MultiRowStringImage(label, RGBAMakeWhite(), _width - 20.0f, 20.0f);
+}
+
+void TextMenuNodeVC::drawGUI(const GPoint& cameraPos) {
+    _button->drawCenteredAt(_pos);
+    _text->drawAt(_pos + GPointMake(-_width/2.0f + 10.0f, -_height/2.0f + 5.0f));
 }
 
 bool TextMenuNodeVC::handleEvent(const TouchEvent& event) {

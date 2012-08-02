@@ -17,6 +17,7 @@
 class ShapeImage;
 class GameImage;
 class StringImage;
+class MultiRowStringImage;
 class UnitModel;
 struct UnitState;
 
@@ -159,9 +160,12 @@ public:
 /*---------------------------------------------------------------*/
 
 class TextMenuNodeVC : public BaseMenuNodeVC {
-    
+private:
+	MultiRowStringImage* _text;
 public:
+	~TextMenuNodeVC();
 	TextMenuNodeVC(MenuViewController* _menuVC, const std::string& label, const GPoint& pos, GLfloat width, GLfloat height);
+	virtual void drawGUI(const GPoint& cameraPos);
 	virtual bool handleEvent(const TouchEvent& event);
 };
 

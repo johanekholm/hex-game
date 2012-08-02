@@ -100,7 +100,7 @@ std::vector<Item*> UnitModelTemplate::getLoot() {
 	
 	numSilver = rand() % 6 + 1;
 	items.push_back(new Item(ItemNS::SILVER, numSilver));
-
+	
 	if (_templateId == "brute") {
 		items.push_back(new Item(ItemNS::POTION, 1));
 	}

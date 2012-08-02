@@ -726,7 +726,7 @@ void GiveItemBean::start() {
 	for (std::vector<Item*>::iterator it = _items.begin(); it != _items.end(); it++) {
 		_object->addItem(*it);
 		text += (*it)->getDescription();
-		text += " ";
+		text += ", ";
 	}
 	SceneLoader::instance()->switchToMenu(new TextboxMenuVC(*this, text, "OK"));
 	_items.clear();
