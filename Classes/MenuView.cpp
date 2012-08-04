@@ -131,7 +131,7 @@ TextboxMenuVC::TextboxMenuVC(ControlCallback& control, const std::string& text, 
     _background = new RectangleImage(RGBAMake(0.0f, 0.0f, 0.0f, 0.3f), _width, _height, true);
 	
     nodes.push_back(new LeafMenuNodeVC(this, buttonLabel, -1, GPointMake(160.0f, yStart), 120.0f, 25.0f));
-    nodes.push_back(new TextMenuNodeVC(this, text, GPointMake(160.0f, yStart - 50.0f), 280.0f, 60.0f));
+    nodes.push_back(new TextMenuNodeVC(this, text, GPointMake(160.0f, yStart - 70.0f), 280.0f, 80.0f));
 	
     _rootNode = new ParentMenuNodeVC(this, "ROOT", nodes, GPointMake(0.0f, 0.0f), 80.0f, 32.0f, true);
     _focus = _rootNode;
