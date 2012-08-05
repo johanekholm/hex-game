@@ -96,6 +96,11 @@ SET(RESOURCES
 	Resources/texmap_hex.png
 	Resources/icons.png
 	Resources/newgame.txt
+	Resources/dungeon1.txt
+	Resources/dungeon2.txt
+	Resources/dungeon3.txt
+	Resources/battleMap1.txt
+	Resources/UnitModelTemplates.txt
 )
 
 SET(SOUNDS
