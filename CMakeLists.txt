@@ -9,7 +9,6 @@ ENDIF(COMMAND CMAKE_POLICY)
 SET(PRODUCT_NAME HexGame)
 
 SET( SOURCES
-	Classes/AbstractFileManager.cpp
 	Classes/AbstractResourceLoader.cpp
 	Classes/Action.cpp
     Classes/BaseUnitViewController.cpp
@@ -48,7 +47,6 @@ SET( SOURCES
 )
 
 SET( HEADERS
-	Classes/AbstractFileManager.h
 	Classes/AbstractResourceLoader.h
 	Classes/Action.h
     Classes/BaseUnitViewController.h
