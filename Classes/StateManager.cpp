@@ -120,7 +120,14 @@ void StateManager::loadStateFromFile(Json::Value& root, const std::string& filen
     
 	if (STATEMANAGER_USE_FILESTORE) {
 		// load from file system
-		jsonString = ResourceLoader::loadFileAsString(filename, DirNS::SAVE);
+		if (ResourceLoader::doesFileExist(filename, DirNS::SAVE)) {
+			DEBUGLOG("Load from save");
+			jsonString = ResourceLoader::loadFileAsString(filename, DirNS::SAVE);			
+		} else {
+			DEBUGLOG("Load from resource");
+			jsonString = ResourceLoader::loadFileAsString(filename, DirNS::RESOURCE);			
+		}
+		
 		reader.parse(jsonString, root);		
 	} else {
 		// load from in-memory filestore
