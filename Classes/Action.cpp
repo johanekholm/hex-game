@@ -304,8 +304,8 @@ bool AActionFight::isAvailableAtHex(const MPoint& hex) {
 void AActionFight::doIt(const ActionState& statePoint) {
     MapObject* target = ModelManager::instance()->getMapObjectAtPos(statePoint.pos);
     _object->move(statePoint.pos);
-    //SceneLoader::instance()->loadBattleScene("battleMap1.jsn", *_object, *target);
-	SceneLoader::instance()->loadBattleScene("battleMap1.jsn", _object, target);
+    //SceneLoader::instance()->loadBattleScene("battleMap1.txt", *_object, *target);
+	SceneLoader::instance()->loadBattleScene("battleMap1.txt", _object, target);
 }
 
 /*---------------------------------------------------------------*/
@@ -418,7 +418,7 @@ void AActionEnterDungeon::doIt(const ActionState& statePoint) {
 }
 
 void AActionEnterDungeon::callbackVoid() {
-	SceneLoader::instance()->loadDungeonScene("dungeon1.jsn", _object);
+	SceneLoader::instance()->loadDungeonScene("dungeon1.txt", _object);
 }
 
 /*---------------------------------------------------------------*/

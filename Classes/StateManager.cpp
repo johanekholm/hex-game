@@ -29,9 +29,9 @@ std::map<std::string, std::string> StateManager::initStaticMap() {
     
     std::string battleState = "{'map':{'height':4,'hexes':[{'v':4,'x':0,'y':0},{'v':5,'x':1,'y':0},{'v':5,'x':2,'y':0},{'v':5,'x':3,'y':0},{'v':5,'x':0,'y':1},{'v':5,'x':1,'y':1},{'v':5,'x':2,'y':1},{'v':5,'x':3,'y':1},{'v':5,'x':0,'y':2},{'v':5,'x':1,'y':2},{'v':5,'x':2,'y':2},{'v':5,'x':3,'y':2},{'v':5,'x':0,'y':3},{'v':5,'x':1,'y':3},{'v':5,'x':2,'y':3},{'v':4,'x':3,'y':3}],'scale':1.0,'width':4},'units':[{'ap':1,'equip':null,'hp':3,'id':8,'owner':2,'type':'archer','x':1,'y':1},{'ap':1,'equip':null,'hp':3,'id':8,'owner':2,'type':'archer','x':2,'y':1},{'ap':1,'equip':null,'hp':3,'id':8,'owner':2,'type':'archer','x':2,'y':2}]}";
 	
-	std::string dungeon1 = "{'map':{'height':4,'hexes':[{'v':4,'x':0,'y':0},{'v':5,'x':1,'y':0},{'v':5,'x':2,'y':0},{'v':5,'x':3,'y':0},{'v':5,'x':0,'y':1},{'v':5,'x':1,'y':1},{'v':5,'x':2,'y':1},{'v':5,'x':3,'y':1},{'v':5,'x':0,'y':2},{'v':5,'x':1,'y':2},{'v':5,'x':2,'y':2},{'v':5,'x':3,'y':2},{'v':5,'x':0,'y':3},{'v':5,'x':1,'y':3},{'v':5,'x':2,'y':3},{'v':4,'x':3,'y':3}],'scale':1.0,'width':4},'units':[{'ap':1,'equip':null,'hp':3,'id':8,'owner':2,'type':'wildling','x':1,'y':1}],'scriptedActions':[{'eventId':1,'actionId':'NEXT_DUNGEON_ROOM','sceneId':'dungeon2.jsn'}]}";
+	std::string dungeon1 = "{'map':{'height':4,'hexes':[{'v':4,'x':0,'y':0},{'v':5,'x':1,'y':0},{'v':5,'x':2,'y':0},{'v':5,'x':3,'y':0},{'v':5,'x':0,'y':1},{'v':5,'x':1,'y':1},{'v':5,'x':2,'y':1},{'v':5,'x':3,'y':1},{'v':5,'x':0,'y':2},{'v':5,'x':1,'y':2},{'v':5,'x':2,'y':2},{'v':5,'x':3,'y':2},{'v':5,'x':0,'y':3},{'v':5,'x':1,'y':3},{'v':5,'x':2,'y':3},{'v':4,'x':3,'y':3}],'scale':1.0,'width':4},'units':[{'ap':1,'equip':null,'hp':3,'id':8,'owner':2,'type':'wildling','x':1,'y':1}],'scriptedActions':[{'eventId':1,'actionId':'NEXT_DUNGEON_ROOM','sceneId':'dungeon2.txt'}]}";
 
-	std::string dungeon2 = "{'map':{'height':4,'hexes':[{'v':4,'x':0,'y':0},{'v':5,'x':1,'y':0},{'v':5,'x':2,'y':0},{'v':5,'x':3,'y':0},{'v':5,'x':0,'y':1},{'v':5,'x':1,'y':1},{'v':5,'x':2,'y':1},{'v':5,'x':3,'y':1},{'v':5,'x':0,'y':2},{'v':5,'x':1,'y':2},{'v':5,'x':2,'y':2},{'v':5,'x':3,'y':2},{'v':5,'x':0,'y':3},{'v':5,'x':1,'y':3},{'v':5,'x':2,'y':3},{'v':4,'x':3,'y':3}],'scale':1.0,'width':4},'units':[{'ap':1,'equip':null,'hp':3,'id':8,'owner':2,'type':'brute','x':2,'y':2}],'scriptedActions':[{'eventId':1,'actionId':'NEXT_DUNGEON_ROOM','sceneId':'dungeon3.jsn'}]}";
+	std::string dungeon2 = "{'map':{'height':4,'hexes':[{'v':4,'x':0,'y':0},{'v':5,'x':1,'y':0},{'v':5,'x':2,'y':0},{'v':5,'x':3,'y':0},{'v':5,'x':0,'y':1},{'v':5,'x':1,'y':1},{'v':5,'x':2,'y':1},{'v':5,'x':3,'y':1},{'v':5,'x':0,'y':2},{'v':5,'x':1,'y':2},{'v':5,'x':2,'y':2},{'v':5,'x':3,'y':2},{'v':5,'x':0,'y':3},{'v':5,'x':1,'y':3},{'v':5,'x':2,'y':3},{'v':4,'x':3,'y':3}],'scale':1.0,'width':4},'units':[{'ap':1,'equip':null,'hp':3,'id':8,'owner':2,'type':'brute','x':2,'y':2}],'scriptedActions':[{'eventId':1,'actionId':'NEXT_DUNGEON_ROOM','sceneId':'dungeon3.txt'}]}";
     
 	std::string dungeon3 = "{'map':{'height':4,'hexes':[{'v':4,'x':0,'y':0},{'v':5,'x':1,'y':0},{'v':5,'x':2,'y':0},{'v':5,'x':3,'y':0},{'v':5,'x':0,'y':1},{'v':5,'x':1,'y':1},{'v':5,'x':2,'y':1},{'v':5,'x':3,'y':1},{'v':5,'x':0,'y':2},{'v':5,'x':1,'y':2},{'v':5,'x':2,'y':2},{'v':5,'x':3,'y':2},{'v':5,'x':0,'y':3},{'v':5,'x':1,'y':3},{'v':5,'x':2,'y':3},{'v':4,'x':3,'y':3}],'scale':1.0,'width':4},'units':[{'ap':1,'equip':null,'hp':5,'id':8,'owner':2,'type':'hero','x':2,'y':2}],'scriptedActions':[{'eventId':1,'actionId':'END_BATTLE'}]}";
 
@@ -49,13 +49,13 @@ std::map<std::string, std::string> StateManager::initStaticMap() {
     std::replace(battleMap.begin(), battleMap.end(), '\'', '"');
     std::replace(unitModelTemplates.begin(), unitModelTemplates.end(), '\'', '"');
 
-    states["newgame.jsn"] = adventureState;
-    states["battle1.jsn"] = battleState;
-    states["dungeon1.jsn"] = dungeon1;
-    states["dungeon2.jsn"] = dungeon2;
-    states["dungeon3.jsn"] = dungeon3;
-    states["battleMap1.jsn"] = battleMap;
-    states["UnitModelTemplates.jsn"] = unitModelTemplates;
+    states["newgame.txt"] = adventureState;
+    states["battle1.txt"] = battleState;
+    states["dungeon1.txt"] = dungeon1;
+    states["dungeon2.txt"] = dungeon2;
+    states["dungeon3.txt"] = dungeon3;
+    states["battleMap1.txt"] = battleMap;
+    states["UnitModelTemplates.txt"] = unitModelTemplates;
 
     return states;
 }

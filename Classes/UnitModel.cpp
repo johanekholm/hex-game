@@ -38,7 +38,7 @@ void UnitModelTemplate::loadTemplatesFromJson() {
     Json::Value root;
 	UnitModelTemplate unitTemplate;
     
-	StateManager::loadStateFromFile(root, "UnitModelTemplates.jsn");
+	StateManager::loadStateFromFile(root, "UnitModelTemplates.txt");
 	
 	for (Json::ValueIterator it = root["templates"].begin(); it != root["templates"].end(); it++) {
 		//unitTemplate = new UnitModelTemplate();

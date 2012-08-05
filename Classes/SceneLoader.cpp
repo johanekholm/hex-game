@@ -275,7 +275,7 @@ void SceneLoader::loadNextDungeonScene(const std::string& sceneId, MapObject* pa
 }
 
 void SceneLoader::loadAdventureScene() {
-    this->loadScene("newgame.jsn", true);
+    this->loadScene("newgame.txt", true);
     
     /*HexMapModel* mapModel;
     
@@ -290,7 +290,7 @@ void SceneLoader::loadAdventureScene() {
     ObjectBuilder::createMapObjectFromTemplate("village", 1, MPointMake(0, 0));
     ObjectBuilder::createMapObjectFromTemplate("dungeon", 1, MPointMake(0, 3));
     
-    StateManager::save("temp1.jsn");*/
+    StateManager::save("temp1.txt");*/
 }
 
 void SceneLoader::prepLoot() {
