@@ -25,6 +25,30 @@ GLuint ResourceLoader::loadTexture(const std::string &filename) {
 	return texRef;
 }
 
+bool ResourceLoader::doesFileExist(const std::string& filename, int dir) {
+	NSString * path;
+	
+	path = [ResourceLoader::getPathToDir(dir) stringByAppendingPathComponent: [NSString stringWithCString:filename.c_str() encoding:[NSString defaultCStringEncoding]]];
+		
+	return [[NSFileManager defaultManager] fileExistsAtPath:path];
+}
+
+NSString* ResourceLoader::getPathToDir(int dir) {
+	NSArray *dirPaths;
+
+	switch (dir) {
+		case DirNS::RESOURCE:
+			return [[NSBundle mainBundle] resourcePath];
+
+		case DirNS::SAVE:
+			dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+			return [dirPaths objectAtIndex:0];
+
+		default:
+			return @"";
+	}
+}
+
 std::string ResourceLoader::loadFileAsString(const std::string &filename) {
 	NSString * path;
 
@@ -38,3 +62,34 @@ std::string ResourceLoader::loadFileAsString(const std::string &filename) {
 	}
 	return "";
 }
+
+std::string ResourceLoader::loadFileAsString(const std::string &filename, int dir) {
+	NSString * path;
+	NSFileManager* fileManager;
+	
+	path = [ResourceLoader::getPathToDir(dir) stringByAppendingPathComponent: [NSString stringWithCString:filename.c_str() encoding:[NSString defaultCStringEncoding]]];
+
+	DEBUGLOG("Load-file path: %s", [path UTF8String]);
+
+	fileManager = [NSFileManager defaultManager];
+		 
+	if ([fileManager fileExistsAtPath:path]) {
+		NSString *fileContent = [NSString stringWithContentsOfFile:path encoding:[NSString defaultCStringEncoding] error:NULL ];
+		if (fileContent) {
+			return [fileContent UTF8String];
+		}
+	}
+	return "";
+}
+
+void ResourceLoader::writeStringToFile(const std::string& textString, const std::string& filename, int dir) {
+	NSString * path;
+	
+	path = [ResourceLoader::getPathToDir(dir) stringByAppendingPathComponent: [NSString stringWithCString:filename.c_str() encoding:[NSString defaultCStringEncoding]]];
+	
+	DEBUGLOG("Write-file path: %s", [path UTF8String]);
+		
+	[[NSString stringWithCString:textString.c_str() encoding:[NSString defaultCStringEncoding]] writeToFile:path atomically:TRUE encoding:NSUTF8StringEncoding error:NULL];
+
+}
+

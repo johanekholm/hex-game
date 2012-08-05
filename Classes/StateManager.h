@@ -8,6 +8,8 @@
 #ifndef STATEMANAGER_H
 #define STATEMANAGER_H
 
+#define STATEMANAGER_USE_FILESTORE true
+
 #include "json-forwards.h"
 #include <vector>
 #include <map>

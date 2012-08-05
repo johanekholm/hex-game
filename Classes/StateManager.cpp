@@ -13,6 +13,7 @@
 #include "HexMapModel.h"
 #include "SceneContext.h"
 #include "ScriptManager.h"
+#include "ResourceLoader.h"
 #include "json.h"
 #include <string>
 #include <vector>
@@ -113,18 +114,24 @@ void StateManager::createState(Json::Value& root) {
 }
 
 void StateManager::loadStateFromFile(Json::Value& root, const std::string& filename) {
-    // To-Do: implement load from file
     Json::Reader reader;
     std::string jsonString;
     std::map<std::string, std::string>::iterator it;
     
-    it = _inMemoryFileStore.find(filename);
-    
-    if (it != _inMemoryFileStore.end()) {
-        jsonString = it->second;
-        reader.parse(jsonString, root);
-    }
-
+	if (STATEMANAGER_USE_FILESTORE) {
+		// load from file system
+		jsonString = ResourceLoader::loadFileAsString(filename, DirNS::SAVE);
+		reader.parse(jsonString, root);		
+	} else {
+		// load from in-memory filestore
+		it = _inMemoryFileStore.find(filename);
+		 
+		if (it != _inMemoryFileStore.end()) {
+			jsonString = it->second;
+			reader.parse(jsonString, root);
+		}		
+	}
+	
 }
 
 void StateManager::saveStateToFile(Json::Value& root, const std::string& filename) {
@@ -136,8 +143,13 @@ void StateManager::saveStateToFile(Json::Value& root, const std::string& filenam
     jsonString = writer.write(root);
     DEBUGLOG("State saved with data: %s", jsonString.c_str());
     
-    // save to in-memory filestore
-    _inMemoryFileStore[filename] = jsonString;
+	if (STATEMANAGER_USE_FILESTORE) {
+		// save to file system
+		ResourceLoader::writeStringToFile(jsonString, filename, DirNS::SAVE);		
+	} else {
+		// save to in-memory filestore
+		_inMemoryFileStore[filename] = jsonString;		
+	}
 }
 
 void StateManager::recreateFromState(Json::Value& root) {
