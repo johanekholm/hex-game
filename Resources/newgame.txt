@@ -17,5 +17,5 @@
 		{"ap":1,"equip":null,"hp":3,"id":8,"owner":2,"type":"brute","x":2,"y":3}
 	],"owner":2,"visualType":8,"x":7,"y":1},
 	{"actions":null,"category":2,"id":5,"items":[{"count":1,"type":1},{"count":10,"type":5}],"layer":1,"members":null,"owner":1,"visualType":4,"x":0,"y":0},
-	{"actions":null,"category":3,"id":6,"items":[{"count":1,"type":1},{"count":10,"type":5}],"layer":1,"members":null,"owner":1,"visualType":5,"x":0,"y":3}],
+	{"actions":null,"category":3,"id":6,"items":null,"layer":1,"members":null,"owner":1,"text":"dungeon2.txt","visualType":5,"x":0,"y":3}],
 "units":null}

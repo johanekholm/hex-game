@@ -211,6 +211,7 @@ public:
 
 class AActionEnterDungeon : public AdventureAction, public ControlCallback {
 protected:
+	std::string _sceneId;
     virtual bool isAvailable();
     
 public:

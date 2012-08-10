@@ -413,12 +413,13 @@ bool AActionEnterDungeon::isAvailable() {
 }
 
 void AActionEnterDungeon::doIt(const ActionState& statePoint) {
+	_sceneId = ModelManager::instance()->getMapObjectAtPos(_object->getPosition(), MapObjectCategory::DUNGEON)->getText();
     SceneLoader::instance()->switchToTransition(new FadeOutTransition(*this, true));
     CentralControl::instance()->switchMode(ControlMode::MENU);
 }
 
 void AActionEnterDungeon::callbackVoid() {
-	SceneLoader::instance()->loadDungeonScene("dungeon1.txt", _object);
+	SceneLoader::instance()->loadDungeonScene(_sceneId, _object);
 }
 
 /*---------------------------------------------------------------*/
