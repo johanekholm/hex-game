@@ -16,7 +16,9 @@
 #include "ModelManager.h"
 #include "MapObject.h"
 #include "Item.h"
+#include "ControlBeanDirector.h"
 
+#include "json.h"
 #include <sstream>
 #include <python.h>
 
@@ -105,13 +107,14 @@ void ScriptManager::add(ScriptedAction* script) {
     std::stringstream stream;
     stream << "DEF-" << d->scriptedActions.size();
 
-    d->scriptedActions[stream.str()] = script;
-    EventManager::instance()->addObserver(script);
+	this->add(stream.str(), script);
 }
 
-void ScriptManager::add(std::string& key, ScriptedAction* script) {
-    d->scriptedActions[key] = script;
-    EventManager::instance()->addObserver(script);
+void ScriptManager::add(const std::string& key, ScriptedAction* script) {
+	if (script != 0) {
+		d->scriptedActions[key] = script;
+		EventManager::instance()->addObserver(script);
+	}
 }
 
 void ScriptManager::activate(std::string& key) {
@@ -136,12 +139,27 @@ ScriptedAction* ScriptedAction::build(int actionId, int eventType) {
     switch (actionId) {
 		case END_BATTLE:
             return new EndBattleSA(event);
-		case LOAD_BATTLE:
-            return new LoadNewBattleSA(event);
+		case NEXT_DUNGEON_ROOM:
+            return new EndDungeonRoomSA(event);
             
 		default:
             return 0;
     }
+}
+
+ScriptedAction* ScriptedAction::createScriptedActionFromJson(Json::Value& root) {
+	ScriptedAction* action;
+	std::string actionId = root.get("actionId", "MISSING").asString();
+	
+    ModelEvent event;
+    event.type = root.get("eventId", 0).asInt();
+
+	if (actionId == "END_BATTLE") {
+		action = new EndBattleSA(event);
+	} else if (actionId == "NEXT_DUNGEON_ROOM") {
+		action = new EndDungeonRoomSA(event, root);
+	}
+	return action;
 }
 
 ScriptedAction::ScriptedAction(const ModelEvent& triggerEvent) {
@@ -183,8 +201,18 @@ void EndBattleSA::callbackVoid() {
 
 
 
-LoadNewBattleSA::LoadNewBattleSA(const ModelEvent& triggerEvent) : ScriptedAction(triggerEvent) {}
+EndDungeonRoomSA::EndDungeonRoomSA(const ModelEvent& triggerEvent) : ScriptedAction(triggerEvent) {}
 
-void LoadNewBattleSA::doAction() {
-    
+EndDungeonRoomSA::EndDungeonRoomSA(const ModelEvent& triggerEvent, Json::Value& root) : ScriptedAction(triggerEvent) {
+	_sceneId = root.get("sceneId", "MISSING").asString();
 }
+
+void EndDungeonRoomSA::doAction() {
+	ControlBeanDirector* director = ControlBeanDirector::instance();
+	MapObject* player = ModelManager::instance()->getFirstMapObjectWithOwner(FactionNS::PLAYER);
+	
+	//director->addBean(new GiveItemBean(new Item(ItemNS::SILVER, 2), player));
+	director->addBean(new GetLootBean());
+	director->addBean(new DungeonChoiceBean(_sceneId));
+}
+

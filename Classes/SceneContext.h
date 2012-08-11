@@ -9,6 +9,8 @@
 
 #include "json-forwards.h"
 
+class ItemHandler;
+
 class SceneContext {
 private:
 	class PrivateData;
@@ -22,6 +24,8 @@ public:
     Json::Value serialize();
     void deserialize(Json::Value& root);
 
+	ItemHandler* getItemStack();
+	
 	void setPartyId1(int partyId);
 	void setPartyId2(int partyId);
 	

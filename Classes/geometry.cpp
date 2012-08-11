@@ -189,3 +189,11 @@ int directionTowards(const int& currentDirection, const MPoint& subject, const M
         }
     }
 }
+
+DistanceToHexSorter::DistanceToHexSorter(const MPoint& pos) {
+	origin = pos;
+}
+
+bool DistanceToHexSorter::operator() (const MPoint& first, const MPoint& second) {
+	return hexDistance(origin, first) < hexDistance(origin, second);
+}

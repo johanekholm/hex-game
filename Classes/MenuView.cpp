@@ -15,15 +15,25 @@
 #include "SceneLoader.h"
 #include "ShapeImage.h"
 #include "StringImage.h"
+#include "UnitModel.h"
 #include <string>
+#include <sstream>
 #include <iostream>
+
+MenuChoice MenuChoice::makeChoice(int choiceId, const std::string& label) {
+	MenuChoice choice;
+	
+	choice.choiceId = choiceId;
+	choice.label = label;
+	return choice;
+}
 
 MenuViewController::~MenuViewController() {
 	delete _background;
     delete _rootNode;
 }
 
-MenuViewController::MenuViewController(BaseMenuNodeVC* root) {
+MenuViewController::MenuViewController(BaseMenuNodeVC* root) : ViewController(GPointMake(0.0f, 0.0f), 320.0f, 480.0f, MapLayer::ABOVE_GUI) {
     _background = new RectangleImage(RGBAMake(0.0f, 0.0f, 0.0f, 0.3f), _width, _height, true);
     _rootNode = root;
 	_rootNode->setMenu(this);
@@ -42,9 +52,9 @@ MenuViewController::MenuViewController() : ViewController(GPointMake(0.0f, 0.0f)
     games.push_back(new BackButtonMenuNodeVC(this, "BACK", GPointMake(160.0f, 200.0f), 80.0f, 32.0f));
     
     main.push_back(new LeafMenuNodeVC(this, "NEW", 1, GPointMake(160.0f, 80.0f), 80.0f, 32.0f));
-    main.push_back(new ParentMenuNodeVC(this, "OPEN", games, GPointMake(160.0f, 120.0f), 80.0f, 32.0f));
+    main.push_back(new ParentMenuNodeVC(this, "OPEN", games, GPointMake(160.0f, 120.0f), 80.0f, 32.0f, false));
     
-    _rootNode = new ParentMenuNodeVC(this, "ROOT", main, GPointMake(0.0f, 0.0f), 80.0f, 32.0f);
+    _rootNode = new ParentMenuNodeVC(this, "ROOT", main, GPointMake(0.0f, 0.0f), 80.0f, 32.0f, false);
     _focus = _rootNode;
     _focus->setFocus(true);    
 }
@@ -84,30 +94,29 @@ void MenuViewController::setFocus(BaseMenuNodeVC* focus) {
 
 /*---------------------------------------------------------------*/
 
-ChoiceMenuVC::ChoiceMenuVC(ControlCallback& control, std::vector<MenuChoice> choices) : _returnControl(control) {
+ChoiceMenuVC::ChoiceMenuVC(ControlCallback& control, std::vector<MenuChoice> choices, bool addCancelButton) : _returnControl(control) {
     std::vector<BaseMenuNodeVC*> nodes;
-    int counter = 1;
-    GLfloat yStart = 440.0f;
     
     _width = 320.0f;
     _height = 480.0f;
     _background = new RectangleImage(RGBAMake(0.0f, 0.0f, 0.0f, 0.3f), _width, _height, true);
     
-    nodes.push_back(new LeafMenuNodeVC(this, "CANCEL", -1, GPointMake(160.0f, yStart), 120.0f, 25.0f));
+	if (addCancelButton) {
+		nodes.push_back(new LeafMenuNodeVC(this, "CANCEL", -1, GPointMake(0.0f, 0.0f), 120.0f, 25.0f));		
+	}
 
     for (std::vector<MenuChoice>::iterator it = choices.begin(); it != choices.end(); ++it) {
-        nodes.push_back(new LeafMenuNodeVC(this, (*it).label, (*it).choiceId, GPointMake(160.0f, yStart - counter*30.0f), 120.0f, 25.0f));
-        counter++;
+		nodes.push_back(new LeafMenuNodeVC(this, (*it).label, (*it).choiceId, GPointMake(0.0f, 0.0f), 120.0f, 25.0f));
     }
 
 
-    _rootNode = new ParentMenuNodeVC(this, "ROOT", nodes, GPointMake(0.0f, 0.0f), 80.0f, 32.0f);
+    _rootNode = new ParentMenuNodeVC(this, "ROOT", nodes, GPointMake(0.0f, 0.0f), 80.0f, 32.0f, true);
     _focus = _rootNode;
     _focus->setFocus(true);    
 }
 
 void ChoiceMenuVC::reportChoice(int choiceId) {
-    _returnControl.callbackNumber(choiceId);
+	_returnControl.callbackNumber(choiceId);
 }
 
 
@@ -115,16 +124,16 @@ void ChoiceMenuVC::reportChoice(int choiceId) {
 
 TextboxMenuVC::TextboxMenuVC(ControlCallback& control, const std::string& text, const std::string& buttonLabel) : _returnControl(control) {
     std::vector<BaseMenuNodeVC*> nodes;
-    GLfloat yStart = 340.0f;
+    GLfloat yStart = 420.0f;
     
     _width = 320.0f;
     _height = 480.0f;
     _background = new RectangleImage(RGBAMake(0.0f, 0.0f, 0.0f, 0.3f), _width, _height, true);
 	
     nodes.push_back(new LeafMenuNodeVC(this, buttonLabel, -1, GPointMake(160.0f, yStart), 120.0f, 25.0f));
-    nodes.push_back(new TextMenuNodeVC(this, text, GPointMake(160.0f, yStart - 100.0f), 240.0f, 60.0f));
+    nodes.push_back(new TextMenuNodeVC(this, text, GPointMake(160.0f, yStart - 70.0f), 280.0f, 80.0f));
 	
-    _rootNode = new ParentMenuNodeVC(this, "ROOT", nodes, GPointMake(0.0f, 0.0f), 80.0f, 32.0f);
+    _rootNode = new ParentMenuNodeVC(this, "ROOT", nodes, GPointMake(0.0f, 0.0f), 80.0f, 32.0f, true);
     _focus = _rootNode;
     _focus->setFocus(true);    
 }
@@ -189,7 +198,7 @@ bool LeafMenuNodeVC::handleEvent(const TouchEvent& event) {
 
 BackButtonMenuNodeVC::BackButtonMenuNodeVC(MenuViewController* menuVC, const std::string& label, const GPoint& pos, GLfloat width, GLfloat height) : BaseMenuNodeVC(menuVC, label, -1, pos, width, height) {
     
-    _button = new RectangleImage(RGBAMake(1.0f, 0.0f, 0.0f, 0.8f), _width, _height, true);
+    _button = new RectangleImage(RGBAMake(1.0f, 0.0f, 0.0f, 1.0f), _width, _height, true);
     _label = new StringImage(label, RGBAMakeWhite());
 }
 
@@ -203,10 +212,19 @@ bool BackButtonMenuNodeVC::handleEvent(const TouchEvent& event) {
 
 /*---------------------------------------------------------------*/
 
+TextMenuNodeVC::~TextMenuNodeVC() {
+	delete _text;
+}
+
 TextMenuNodeVC::TextMenuNodeVC(MenuViewController* menuVC, const std::string& label, const GPoint& pos, GLfloat width, GLfloat height) : BaseMenuNodeVC(menuVC, label, -1, pos, width, height) {
     
     _button = new RectangleImage(RGBAMake(0.5f, 0.5f, 0.5f, 1.0f), _width, _height, true);
-    _label = new StringImage(label, RGBAMakeWhite());
+    _text = new MultiRowStringImage(label, RGBAMakeWhite(), _width - 20.0f, 20.0f);
+}
+
+void TextMenuNodeVC::drawGUI(const GPoint& cameraPos) {
+    _button->drawCenteredAt(_pos);
+    _text->drawAt(_pos + GPointMake(-_width/2.0f + 10.0f, -_height/2.0f + 5.0f));
 }
 
 bool TextMenuNodeVC::handleEvent(const TouchEvent& event) {
@@ -219,15 +237,33 @@ ParentMenuNodeVC::~ParentMenuNodeVC() {
 	this->destroySubNodes();
 }
 
-ParentMenuNodeVC::ParentMenuNodeVC(MenuViewController* menuVC, const std::string& label, const std::vector<BaseMenuNodeVC*>& subNodes, const GPoint& pos, GLfloat width, GLfloat height) : BaseMenuNodeVC(menuVC, label, -1, pos, width, height){
+ParentMenuNodeVC::ParentMenuNodeVC(MenuViewController* menuVC, const std::string& label, const std::vector<BaseMenuNodeVC*>& subNodes, const GPoint& pos, GLfloat width, GLfloat height, bool doAutoPosition) : BaseMenuNodeVC(menuVC, label, -1, pos, width, height){
 
-    _button = new RectangleImage(RGBAMake(0.2f, 0.2f, 1.0f, 0.8f), _width, _height, true);
+    _button = new RectangleImage(RGBAMake(0.2f, 0.2f, 1.0f, 1.0f), _width, _height, true);
     _label = new StringImage(label, RGBAMakeWhite());
     _subNodes = subNodes;
     
+	this->registerAndAutoPositionSubNodes(doAutoPosition, 6.0f);
+}
+
+void ParentMenuNodeVC::registerAndAutoPositionSubNodes(bool doAutoPosition, GLfloat verticalSpacing) {
+    int counter = 0;
+    GLfloat yStart = 420.0f;
+	GLfloat lastHeight = 0.0f;
+	GLfloat verticalDelta = 0.0f;
+
     for (std::vector<BaseMenuNodeVC*>::iterator it = _subNodes.begin(); it != _subNodes.end(); ++it) {
         (*it)->setParent(this);
-    }
+		
+		if (doAutoPosition) {
+			if ((*it)->getPosition() == 0.0f) {
+				verticalDelta = (lastHeight + (*it)->getHeight()) / 2.0f + verticalSpacing;
+				(*it)->setPosition(GPointMake(160.0f, yStart - counter*verticalDelta));
+				counter++;				
+				lastHeight = (*it)->getHeight();
+			}
+		}
+    }	
 }
 
 void ParentMenuNodeVC::destroySubNodes() {
@@ -288,25 +324,20 @@ ActionMenuNodeVC::~ActionMenuNodeVC() {
 	delete _action;
 }
 
-ActionMenuNodeVC::ActionMenuNodeVC(MenuActionCallback* action, MenuViewController* menuVC, const std::string& label, const std::vector<BaseMenuNodeVC*>& subNodes, const GPoint& pos, GLfloat width, GLfloat height) : ParentMenuNodeVC(menuVC, label, subNodes, pos, width, height) {
+ActionMenuNodeVC::ActionMenuNodeVC(MenuActionCallback* action, MenuViewController* menuVC, const std::string& label, const std::vector<BaseMenuNodeVC*>& subNodes, const GPoint& pos, GLfloat width, GLfloat height) : ParentMenuNodeVC(menuVC, label, subNodes, pos, width, height, true) {
 	_action = action;
 }
 
 void ActionMenuNodeVC::buildSubNodes() {
 	std::vector<MenuChoice> choices = _action->getChoices();
-	int counter = 1;
-    GLfloat yStart = 440.0f;
     
-	_subNodes.push_back(new BackButtonMenuNodeVC(_menuVC, "CANCEL", GPointMake(160.0f, yStart), 120.0f, 25.0f)); 
+	_subNodes.push_back(new BackButtonMenuNodeVC(_menuVC, "CANCEL", GPointMake(0.0f, 0.0f), 120.0f, 25.0f)); 
 	
     for (std::vector<MenuChoice>::iterator it = choices.begin(); it != choices.end(); ++it) {
-        _subNodes.push_back(new LeafMenuNodeVC(_menuVC, (*it).label, (*it).choiceId, GPointMake(160.0f, yStart - counter*30.0f), 120.0f, 25.0f));
-        counter++;
+        _subNodes.push_back(new LeafMenuNodeVC(_menuVC, (*it).label, (*it).choiceId, GPointMake(0.0f, 0.0f), 120.0f, 25.0f));
     }
 	
-	for (std::vector<BaseMenuNodeVC*>::iterator it = _subNodes.begin(); it != _subNodes.end(); ++it) {
-        (*it)->setParent(this);
-    }
+	this->registerAndAutoPositionSubNodes(true, 6.0f);
 }
 
 void ActionMenuNodeVC::goUp() {
@@ -349,5 +380,73 @@ void ActionMenuNodeVC::reportChoice(int choiceId) {
 }
 
 /*---------------------------------------------------------------*/
+
+UnitInfoMenuNodeVC::~UnitInfoMenuNodeVC() {
+	delete _stringName;
+	delete _stringPower;
+	delete _stringSkill;
+	delete _stringDefense;
+	delete _stringAp;
+}
+
+UnitInfoMenuNodeVC::UnitInfoMenuNodeVC(MenuViewController* menuVC, UnitModel* unit, const GPoint& pos) : BaseMenuNodeVC(menuVC, "", -1, pos, 200.0f, 200.0f) {
+    
+	_stringName = NULL;
+	_stringPower = NULL;
+	_stringSkill = NULL;
+	_stringDefense = NULL;
+	_stringAp = NULL;
+	_unit = unit;
+	_unit->addObserver(this);
+    _button = new RectangleImage(RGBAMake(0.5f, 0.5f, 0.5f, 1.0f), _width, _height, true);
+}
+
+void UnitInfoMenuNodeVC::buildStrings() {
+	std::stringstream power, skill, defense, ap;
+	
+	if (_stringPower || _stringSkill || _stringDefense || _stringName || _stringAp) {
+		delete _stringName;
+		delete _stringPower;
+		delete _stringSkill;
+		delete _stringDefense;
+		delete _stringAp;
+	}
+	
+    power << "POWER: " << _unit->getStat(StatNS::POWER);
+    skill << "SKILL: " << _unit->getStat(StatNS::SKILL);
+    defense << "DEFENSE: " << _unit->getStat(StatNS::DEFENSE);
+    ap << "AP: " << _unit->getStat(StatNS::MAXAP);
+	
+    _stringName = new StringImage(_unit->getDescription(), RGBAMakeWhite());
+	_stringPower = new StringImage(power.str(), RGBAMakeWhite());
+    _stringSkill = new StringImage(skill.str(), RGBAMakeWhite());
+    _stringDefense = new StringImage(defense.str(), RGBAMakeWhite());
+    _stringAp = new StringImage(ap.str(), RGBAMakeWhite());
+}
+
+void UnitInfoMenuNodeVC::drawGUI(const GPoint& cameraPos) {
+    _button->drawCenteredAt(_pos);
+    _stringName->drawCenteredAt(_pos - GPointMake(0.0f, 80.0f));
+    _stringPower->drawAt(_pos - GPointMake(90.0f, 50.0f));
+    _stringSkill->drawAt(_pos - GPointMake(90.0f, 30.0f));
+    _stringDefense->drawAt(_pos - GPointMake(90.0f, 10.0f));
+    _stringAp->drawAt(_pos - GPointMake(90.0f, -10.0f));
+}
+
+bool UnitInfoMenuNodeVC::handleEvent(const TouchEvent& event) {
+    return false;
+}
+
+void UnitInfoMenuNodeVC::updateState() {
+	this->buildStrings();
+}
+
+void UnitInfoMenuNodeVC::destroyed() {
+	ViewControllerManager::instance()->removeSoft(this);	
+}
+
+
+/*---------------------------------------------------------------*/
+
 
 

@@ -11,6 +11,21 @@
 #include "TextureCatalog.h"
 #include <iostream>
 
+std::vector<int> StringImage::_fontPixelWidths = StringImage::initFontPixelWidths();
+
+std::vector<int> StringImage::initFontPixelWidths() {
+	std::vector<int> widths;
+	int charWidthsPixels[] = {10,10,14,22,18,30,24,6,12,12,16,24,10,12,8,14,   18,16,17,16,18,17,17,17,17,17, 12,12,18,26,18,   
+        16,26,  20,20,20,20,20,18,20,20,12,14,  20,18,22,20,22,20, 24,20,18,20,20,20,26,
+        20,19,18};
+	
+	for (unsigned int index = 0; index < sizeof(charWidthsPixels); index++) {
+		widths.push_back(charWidthsPixels[index]);
+	}
+	
+	return widths;
+}
+
 StringImage::~StringImage() {
     delete [] _texCoords;
     delete [] _vertices;
@@ -35,9 +50,6 @@ void StringImage::buildVertices() {
     GLfloat texHeight = 0.07617f;
     GLfloat tx = 0.04f;
     GLfloat ty = 0.0f;
-    int charWidthsPixels[] = {10,10,14,22,18,30,24,6,12,12,16,24,10,12,8,14,   18,16,17,16,18,17,17,17,17,17, 12,12,18,26,18,   
-        16,26,  20,20,20,20,20,18,20,20,12,14,  20,18,22,20,22,20, 24,20,18,20,20,20,26,
-        20,19,18};
     int charRow[] = { 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,
         1,1,1,1,1,1,1,1,1,1, 1,1,1,1,1,1,1,1,1,1, 1,1,1,1,1,
         2,2,2 };
@@ -55,7 +67,7 @@ void StringImage::buildVertices() {
     charTexPos[0] = 0.0f;
     
     for (int i=0; i<59; i++) {
-        charWidths[i] = charWidthsPixels[i]/512.0f;
+		charWidths[i] = StringImage::_fontPixelWidths.at(i)/512.0f;
         
         charTexPosY[i] = charRow[i] * texHeight;
         
@@ -96,30 +108,30 @@ void StringImage::buildVertices() {
     for (int i=0; i < _size; i++) {
         character = cString[i] - 32;
         
-        width = charWidthsPixels[character] * scale;
+        width = StringImage::_fontPixelWidths.at(character) * scale;
         
         _vertices[i*18 + 0] = caret + 0.0f;
-        _vertices[i*18 + 1] = -height/2.0f;
+        _vertices[i*18 + 1] = 0.0f;
         _vertices[i*18 + 2] = 0.0f;
         
         _vertices[i*18 + 3] = caret + width;
-        _vertices[i*18 + 4] = -height/2.0f;
+        _vertices[i*18 + 4] = 0.0f;
         _vertices[i*18 + 5] = 0.0f;
         
         _vertices[i*18 + 6] = caret + 0.0f;
-        _vertices[i*18 + 7] = height/2.0f;
+        _vertices[i*18 + 7] = height;
         _vertices[i*18 + 8] = 0.0f;
         
         _vertices[i*18 + 9] = caret + 0.0f;
-        _vertices[i*18 + 10] = height/2.0f;
+        _vertices[i*18 + 10] = height;
         _vertices[i*18 + 11] = 0.0f;
         
         _vertices[i*18 + 12] = caret + width;
-        _vertices[i*18 + 13] = -height/2.0f;
+        _vertices[i*18 + 13] = 0.0f;
         _vertices[i*18 + 14] = 0.0f;
         
         _vertices[i*18 + 15] = caret + width;
-        _vertices[i*18 + 16] = height/2.0f;
+        _vertices[i*18 + 16] = height;
         _vertices[i*18 + 17] = 0.0f;
         
         caret += width;
@@ -127,6 +139,7 @@ void StringImage::buildVertices() {
     }
     
     _width = caret;
+	_height = height;
 }
 
 void StringImage::drawAt(const GPoint &pos) {
@@ -144,7 +157,7 @@ void StringImage::drawAt(const GPoint &pos) {
 
 void StringImage::drawCenteredAt(const GPoint &pos) {
 	glLoadIdentity();
-	glTranslatef(pos.x - _width/2.0f, pos.y, 0.0f);
+	glTranslatef(pos.x - _width/2.0f, pos.y - _height/2.0f, 0.0f);
     glColor4f(_color.red, _color.green, _color.blue, _color.alpha);
     
 	_texture->bind();
@@ -166,6 +179,71 @@ void StringImage::drawAtRotated(const GPoint &pos, GLfloat angle) {
 	glVertexPointer(3, GL_FLOAT, 0, _vertices);
 	glTexCoordPointer(2, GL_FLOAT, 0, _texCoords);
 	glDrawArrays(GL_TRIANGLES, 0, _size*6);	
+}
+
+
+MultiRowStringImage::~MultiRowStringImage() {
+	for (std::vector<StringImage*>::iterator it = _strings.begin(); it != _strings.end(); it++) {
+		delete *it;
+	}
+	_strings.clear();
+}
+
+MultiRowStringImage::MultiRowStringImage(const std::string& string, const RGBA& color, GLfloat rowLength, GLfloat rowOffset) {
+	int character = 0;
+	int lastSpace = 0;
+	int rowStart = 0;
+	unsigned int index = 0;
+	GLfloat sumLengthLastSpace = 0.0f;
+	GLfloat sumLength = 0.0f;
+	
+    _color = color;
+    _string = string;
+	_rowLength = rowLength;
+	_rowOffset = GPointMake(0.0f, rowOffset);
+	_numRows = 0;
+	    
+	for (std::string::iterator it = _string.begin(); it != _string.end(); it++, index++) {
+		character = *it - 32;
+		
+		if (character > 0) {
+			sumLength += 0.5f * StringImage::_fontPixelWidths.at(character);			
+		}
+		
+		// remember last possible break point
+		if (character == 0) {
+			lastSpace = index;
+			sumLengthLastSpace = sumLength;
+		}
+		
+		// create new row and corresponding StringImage
+		if (sumLength >= rowLength || index == _string.length()-1) {
+			_numRows++;
+			
+			// create StringImage from substring: rowStart -> lastSpace
+			_strings.push_back(new StringImage(_string.substr(rowStart, lastSpace-rowStart), color));
+			
+			rowStart = lastSpace + 1;
+			sumLength -= sumLengthLastSpace;
+		}
+	}
+}
+
+void MultiRowStringImage::drawAt(const GPoint &pos) {
+	GLfloat i=0.0f;
+	
+	for (std::vector<StringImage*>::iterator it = _strings.begin(); it != _strings.end(); it++, i+=1.0f) {
+		(*it)->drawAt(pos + _rowOffset * i);
+	}
+}
+
+
+void MultiRowStringImage::drawCenteredAt(const GPoint &pos) {
+	GLfloat i=0.0f;
+
+	for (std::vector<StringImage*>::iterator it = _strings.begin(); it != _strings.end(); it++, i+=1.0f) {
+		(*it)->drawCenteredAt(pos + _rowOffset * i);
+	}
 }
 
 

@@ -18,6 +18,7 @@
 #include "MessageView.h"
 #include "MapObject.h"
 #include "ObjectBuilder.h"
+#include "SceneContext.h"
 #include "SceneLoader.h"
 #include "Sound.h"
 #include "TransitionViewController.h"
@@ -117,7 +118,9 @@ BActionMove::BActionMove(int anId, UnitModel* unit) : BattleAction(anId, unit, "
 
 bool BActionMove::isAvailableAtHex(const MPoint& hex) {
     if (hexDistance(_unit->getPosition(), hex) == 1) {
-        return (ModelManager::instance()->getUnitAtPos(hex) == 0);
+		if (ModelManager::instance()->getMap()->getHexValue(hex) != 6) {
+			return (ModelManager::instance()->getUnitAtPos(hex) == 0);			
+		}
     }
     return false;
 }
@@ -284,7 +287,7 @@ void AdvActionMove::doIt(const ActionState& statePoint) {
 	// advance to next turn if player party moves
 	if (_object->getOwner() == FactionNS::PLAYER) {
 		CentralControl::instance()->nextTurn();
-		//ViewControllerManager::instance()->centerCamera(_object->getPosition());
+		ViewControllerManager::instance()->centerCamera(_object->getPosition());
 	}
 }
 
@@ -301,8 +304,8 @@ bool AActionFight::isAvailableAtHex(const MPoint& hex) {
 void AActionFight::doIt(const ActionState& statePoint) {
     MapObject* target = ModelManager::instance()->getMapObjectAtPos(statePoint.pos);
     _object->move(statePoint.pos);
-    //SceneLoader::instance()->loadBattleScene("battleMap1.jsn", *_object, *target);
-	SceneLoader::instance()->loadBattleScene("battleMap1.jsn", _object, target);
+    //SceneLoader::instance()->loadBattleScene("battleMap1.txt", *_object, *target);
+	SceneLoader::instance()->loadBattleScene("battleMap1.txt", _object, target);
 }
 
 /*---------------------------------------------------------------*/
@@ -410,12 +413,13 @@ bool AActionEnterDungeon::isAvailable() {
 }
 
 void AActionEnterDungeon::doIt(const ActionState& statePoint) {
-    SceneLoader::instance()->switchToTransition(new FadeOutTransition(*this));
+	_sceneId = ModelManager::instance()->getMapObjectAtPos(_object->getPosition(), MapObjectCategory::DUNGEON)->getText();
+    SceneLoader::instance()->switchToTransition(new FadeOutTransition(*this, true));
     CentralControl::instance()->switchMode(ControlMode::MENU);
 }
 
 void AActionEnterDungeon::callbackVoid() {
-	SceneLoader::instance()->loadDungeonScene("dungeon1.jsn", _object);
+	SceneLoader::instance()->loadDungeonScene(_sceneId, _object);
 }
 
 /*---------------------------------------------------------------*/
@@ -434,20 +438,22 @@ void AActionPartyOptions::doIt(const ActionState& statePoint) {
 	int counter = 1;
 
     units = _object->getMembers();
-	
+
+	unitNodes.push_back(new BackButtonMenuNodeVC(0, "BACK", GPointMake(0.0f, 0.0f), 120.0f, 32.0f));
+
 	for (std::vector<UnitModel*>::iterator it = units.begin(); it != units.end(); ++it) {
 		equip = new CallbackActionEquip(_object, *it);
 		actionNodes.clear();
-		actionNodes.push_back(new ActionMenuNodeVC(equip, 0, "EQUIP", empty, GPointMake(160.0f, 360.0f), 120.0f, 32.0f));
-		actionNodes.push_back(new BackButtonMenuNodeVC(0, "BACK", GPointMake(160.0f, 400.0f), 120.0f, 32.0f));
+		actionNodes.push_back(new BackButtonMenuNodeVC(0, "BACK", GPointMake(0.0f, 0.0f), 120.0f, 32.0f));
+		actionNodes.push_back(new ActionMenuNodeVC(equip, 0, "EQUIP", empty, GPointMake(0.0f, 0.0f), 120.0f, 32.0f));
+		actionNodes.push_back(new UnitInfoMenuNodeVC(0, *it, GPointMake(0.0f, 0.0f)));
 		
-		unitNodes.push_back(new ParentMenuNodeVC(0, (*it)->getDescription(), actionNodes, GPointMake(160.0f, 400.0f - counter * 40.0f), 120.0f, 32.0f));
+		unitNodes.push_back(new ParentMenuNodeVC(0, (*it)->getDescription(), actionNodes, GPointMake(0.0f, 0.0f), 120.0f, 32.0f, true));
 		counter++;
 	}
 	
-	unitNodes.push_back(new BackButtonMenuNodeVC(0, "BACK", GPointMake(160.0f, 400.0f), 120.0f, 32.0f));
 	
-    rootNode = new ParentMenuNodeVC(0, "ROOT", unitNodes, GPointMake(0.0f, 0.0f), 80.0f, 32.0f);
+    rootNode = new ParentMenuNodeVC(0, "ROOT", unitNodes, GPointMake(0.0f, 0.0f), 80.0f, 32.0f, true);
     
     SceneLoader::instance()->switchToMenu(new MenuViewController(rootNode));
     CentralControl::instance()->switchMode(ControlMode::MENU);
@@ -472,11 +478,11 @@ void AActionCity::doIt(const ActionState& statePoint) {
 	shop = new CallbackActionShop(_object, city);
 	
 	actionNodes.clear();
-	actionNodes.push_back(new ActionMenuNodeVC(recruit, 0, "RECRUIT", empty, GPointMake(160.0f, 320.0f), 120.0f, 32.0f));
-	actionNodes.push_back(new ActionMenuNodeVC(shop, 0, "SHOP", empty, GPointMake(160.0f, 360.0f), 120.0f, 32.0f));
-	actionNodes.push_back(new BackButtonMenuNodeVC(0, "BACK", GPointMake(160.0f, 400.0f), 120.0f, 32.0f));
+	actionNodes.push_back(new BackButtonMenuNodeVC(0, "BACK", GPointMake(0.0f, 0.0f), 120.0f, 32.0f));
+	actionNodes.push_back(new ActionMenuNodeVC(recruit, 0, "RECRUIT", empty, GPointMake(0.0f, 0.0f), 120.0f, 32.0f));
+	actionNodes.push_back(new ActionMenuNodeVC(shop, 0, "SHOP", empty, GPointMake(0.0f, 0.0f), 120.0f, 32.0f));
 		
-	rootNode = new ParentMenuNodeVC(0, "ROOT", actionNodes, GPointMake(0.0f, 0.0f), 120.0f, 32.0f);
+	rootNode = new ParentMenuNodeVC(0, "ROOT", actionNodes, GPointMake(0.0f, 0.0f), 120.0f, 32.0f, true);
 	    
     SceneLoader::instance()->switchToMenu(new MenuViewController(rootNode));
     CentralControl::instance()->switchMode(ControlMode::MENU);
@@ -699,3 +705,124 @@ std::vector<MenuChoice> CallbackActionShop::getChoices() {
 void CallbackActionShop::reset() {
 	_item = 0;
 }
+
+/*---------------------------------------------------------------*/
+
+GiveItemBean::~GiveItemBean() {
+	_items.clear();
+}
+
+GiveItemBean::GiveItemBean(Item* item, MapObject* object) {
+	_items.push_back(item);
+	_object = object;
+}
+
+GiveItemBean::GiveItemBean(const std::vector<Item*>& items, MapObject* object) {
+	_items = items;
+	_object = object;
+}
+
+void GiveItemBean::start() {
+	std::string text = "YOU GOT ";
+	for (std::vector<Item*>::iterator it = _items.begin(); it != _items.end(); it++) {
+		_object->addItem(*it);
+		text += (*it)->getDescription();
+		text += ", ";
+	}
+	SceneLoader::instance()->switchToMenu(new TextboxMenuVC(*this, text, "OK"));
+	_items.clear();
+}
+
+void GiveItemBean::callbackVoid() {
+	SceneLoader::instance()->returnFromMenu();
+	_director->beanDidFinish(this);
+}
+
+/*---------------------------------------------------------------*/
+
+void FadeInBean::start() {
+	SceneLoader::instance()->switchToTransition(new FadeOutTransition(*this, false));
+}
+
+void FadeInBean::callbackVoid() {
+	_director->beanDidFinish(this);
+}
+
+/*---------------------------------------------------------------*/
+
+void FadeOutBean::start() {
+	SceneLoader::instance()->switchToTransition(new FadeOutTransition(*this, true));
+}
+
+void FadeOutBean::callbackVoid() {
+	_director->beanDidFinish(this);
+}
+
+/*---------------------------------------------------------------*/
+
+void ReturnToAdventureSceneBean::start() {
+	SceneLoader::instance()->returnToAdventureScene();
+	_director->beanDidFinish(this);
+}
+
+/*---------------------------------------------------------------*/
+
+DungeonChoiceBean::DungeonChoiceBean(const std::string& sceneId) : ControlBean() {
+	_sceneId = sceneId;
+}
+
+void DungeonChoiceBean::start() {
+	std::vector<MenuChoice> choices;
+	choices.push_back(MenuChoice::makeChoice(2, "EXIT DUNGEON"));
+	choices.push_back(MenuChoice::makeChoice(1, "CONTINUE"));
+    
+    SceneLoader::instance()->switchToMenu(new ChoiceMenuVC(*this, choices, false));
+}
+
+void DungeonChoiceBean::callbackNumber(int num) {
+	ControlBeanDirector* director = ControlBeanDirector::instance();
+	SceneLoader::instance()->returnFromMenu();
+
+	switch (num) {
+		case 1:
+			director->addBean(new FadeOutBean());
+			director->addBean(new NextDungeonSceneBean(_sceneId));
+			director->addBean(new FadeInBean());
+			break;
+			
+		case 2:
+			director->addBean(new FadeOutBean());
+			director->addBean(new ReturnToAdventureSceneBean());
+			director->addBean(new FadeInBean());
+			break;
+			
+		default:
+			break;
+	}
+
+	_director->beanDidFinish(this);	
+}
+
+/*---------------------------------------------------------------*/
+
+NextDungeonSceneBean::NextDungeonSceneBean(const std::string& sceneId) : ControlBean() {
+	_sceneId = sceneId;
+}
+
+void NextDungeonSceneBean::start() {
+	SceneLoader::instance()->loadNextDungeonScene(_sceneId, 0);
+	_director->beanDidFinish(this);
+}
+
+/*---------------------------------------------------------------*/
+
+void GetLootBean::start() {
+	ItemHandler* stack = SceneContext::instance()->getItemStack();
+	MapObject* player = ModelManager::instance()->getFirstMapObjectWithOwner(FactionNS::PLAYER);
+	_director->addBean(new GiveItemBean(stack->getItemsAsVector(), player));
+	stack->removeAllItems();
+	_director->beanDidFinish(this);
+}
+
+/*---------------------------------------------------------------*/
+

@@ -1,0 +1,8 @@
+{"templates":[
+{"type":"hero","name":"HERO","actions":[0,1],"defense":5,"power":5,"skill":4,"maxAp":30,"maxHp":10,"visualType":0}, 
+{"type":"soldier","name":"SOLDIER","actions":[0,1],"defense":3,"power":3,"skill":2,"maxAp":30,"maxHp":5,"visualType":1}, 
+{"type":"channeler","name":"CHANNELER","actions":[0,1,5],"defense":3,"power":3,"skill":2,"maxAp":30,"maxHp":3,"visualType":2}, 
+{"type":"archer","name":"ARCHER","actions":[0,2],"defense":3,"power":3,"skill":2,"maxAp":30,"maxHp":3,"visualType":3}, 
+{"type":"wildling","name":"WILDLING","actions":[0,1],"defense":2,"power":2,"skill":3,"maxAp":30,"maxHp":3,"visualType":8}, 
+{"type":"brute","name":"BRUTE","actions":[0,1],"defense":4,"power":3,"skill":3,"maxAp":30,"maxHp":4,"visualType":9}
+]}

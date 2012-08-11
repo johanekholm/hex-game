@@ -17,6 +17,8 @@
 #include "toolkit.h"
 #include "MenuView.h"
 #include "ControlCallback.h"
+#include "ControlBeanDirector.h"
+#include "Item.h"
 
 namespace ActionNS {
     const int BACTION_MOVE =    0;
@@ -209,6 +211,7 @@ public:
 
 class AActionEnterDungeon : public AdventureAction, public ControlCallback {
 protected:
+	std::string _sceneId;
     virtual bool isAvailable();
     
 public:
@@ -308,5 +311,68 @@ public:
 
 /*---------------------------------------------------------------*/
 
+class GiveItemBean : public ControlBean, public ControlCallback {
+protected:
+	std::vector<Item*> _items;
+	MapObject* _object;
+	
+public:
+	~GiveItemBean();
+	GiveItemBean(Item* item, MapObject* object);
+	GiveItemBean(const std::vector<Item*>& items, MapObject* object);
+	void start();
+	void callbackVoid();
+};
+
+/*---------------------------------------------------------------*/
+
+class FadeInBean : public ControlBean, public ControlCallback {
+public:
+	void start();
+	void callbackVoid();
+};
+
+/*---------------------------------------------------------------*/
+
+class FadeOutBean : public ControlBean, public ControlCallback {
+public:
+	void start();
+	void callbackVoid();
+};
+
+/*---------------------------------------------------------------*/
+
+class ReturnToAdventureSceneBean : public ControlBean {
+public:
+	void start();
+};
+
+/*---------------------------------------------------------------*/
+
+class DungeonChoiceBean : public ControlBean, public ControlCallback {
+protected:
+	std::string _sceneId;
+public:
+	DungeonChoiceBean(const std::string& sceneId);
+	void start();
+	void callbackNumber(int num);
+};
+
+/*---------------------------------------------------------------*/
+
+class NextDungeonSceneBean : public ControlBean {
+protected:
+	std::string _sceneId;
+public:
+	NextDungeonSceneBean(const std::string& sceneId);
+	void start();
+};
+
+/*---------------------------------------------------------------*/
+
+class GetLootBean : public ControlBean {
+public:
+	void start();
+};
 
 #endif

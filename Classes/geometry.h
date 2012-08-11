@@ -34,4 +34,10 @@ MPoint arrayToHex(const MPoint& arrayPos);
 int sightDirection(const MPoint& subject, const MPoint& object);
 int directionTowards(const int& currentDirection, const MPoint& subject, const MPoint& object);
 
+struct DistanceToHexSorter {
+	MPoint origin;
+	DistanceToHexSorter(const MPoint& pos);
+	bool operator() (const MPoint& first, const MPoint& second);
+};
+
 #endif

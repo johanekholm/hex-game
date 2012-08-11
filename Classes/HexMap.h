@@ -45,6 +45,8 @@ public:
 	void draw(const GPoint& cameraPos);
     std::vector<MPoint> getAllHexes();
     GLfloat getScale();
+	GPoint getNWBoundary();
+	GPoint getSEBoundary();
 	//void drawAt(const GPoint &pos);
 	//void setPosition(GPoint point);
 };

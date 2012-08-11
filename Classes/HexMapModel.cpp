@@ -109,7 +109,7 @@ Json::Value HexMapModel::serialize() {
     
     // serialize hex data
     for (std::map<int, HexState>::iterator it = _hexes.begin(); it != _hexes.end(); it++) {
-        hexes[it->first] = (it->second).serialize();
+		hexes[it->first] = (it->second).serialize();
     }
     return root;
 }
@@ -119,9 +119,11 @@ void HexMapModel::deserialize(Json::Value& root) {
     _height = root.get("height", 0).asInt();
     _scale = root.get("scale", 1.0f).asFloat();
 
+	_hexes.clear();
+	
     // deserialize hex data
     for (Json::ValueIterator it = root["hexes"].begin(); it != root["hexes"].end(); it++) {
-        _hexes[it.key().asInt()] = HexState::deserialize(*it);
+		_hexes[it.key().asInt()] = HexState::deserialize(*it);
     }
 }
 
@@ -134,11 +136,17 @@ int HexMapModel::getHeight() {
 }
 
 int HexMapModel::getHexValue(const MPoint& hex) {
-    return _hexes[hex.y * _width + hex.x].value;
+    if (_hexes.find(hex.y * _width + hex.x) != _hexes.end()) {
+		return _hexes[hex.y * _width + hex.x].value;
+    }
+	return 0;
 }
 
 int HexMapModel::getHexValue(int x, int y) {
-    return _hexes[y * _width + x].value;
+    if (_hexes.find(y * _width + x) != _hexes.end()) {
+		return _hexes[y * _width + x].value;
+	}
+	return 0;
 }
 
 int HexMapModel::getWidth() {

@@ -14,12 +14,6 @@
 #define ATTACK_TYPE_PIERCE 2
 #define ATTACK_TYPE_FIRE 3
 
-/*#define STAT_POWER 1
-#define STAT_SKILL 2
-#define STAT_DEFENSE 3
-#define STAT_MAXHP 4
-#define STAT_MAXAP 5
-*/
 #include <map>
 #include <vector>
 #include <string>
@@ -49,6 +43,34 @@ struct UnitState {
     std::vector<ActionState> actions;
 };
 
+class UnitModelTemplate {
+private:
+	static std::map<std::string, UnitModelTemplate> _templates;
+	std::string _templateId;
+	std::string _name;
+    int _visualType;
+    int _basePower;
+    int _baseSkill;
+    int _baseDefense;
+    int _maxAp;
+    int _maxHp;
+	std::vector<int> _actionIds;
+
+public:
+	static std::map<std::string, UnitModelTemplate> initTemplates();
+	static UnitModelTemplate* getTemplate(const std::string& templateId);
+	static void loadTemplatesFromJson();
+	UnitModelTemplate();
+	UnitModelTemplate(const std::string& _templateId, const std::string& _name, int visualType, int basePower, int baseSkill, int baseDefense, int maxAp, int maxHp, const std::vector<int>& actionIds);
+	void deserialize(Json::Value& root);
+	std::vector<int> getActionIds();
+	std::vector<Item*> getLoot();
+	std::string getName();
+	int getStat(int stat);
+	std::string getTemplateId();
+	int getVisualType();
+};
+
 class UnitModel : public Observable, public ItemEquipper {
 	MPoint _pos;
     int _id;
@@ -63,6 +85,7 @@ class UnitModel : public Observable, public ItemEquipper {
     int _owner;
     int _visualType;
     UnitModel* _target;
+	UnitModelTemplate* _template;
 
 	std::map<int, BattleAction*> _actions;
     
@@ -72,7 +95,7 @@ public:
 	
 	~UnitModel();
     UnitModel();
-    UnitModel(int x, int y, int owner, int maxHp, int maxAp, int power, int skill, int defense, std::vector<int> actionIds, int visualType);
+	UnitModel(const std::string& templateId, const MPoint& pos, int owner);
     Json::Value serialize();
     void deserialize(Json::Value& root);
     
@@ -83,17 +106,21 @@ public:
     void doAI();
 	std::vector<ActionState> getActions();
 	std::string getDescription();
+	std::vector<Item*> getLoot();
     int getOwner();
 	int getId();
 	MPoint getPosition();
     int getStat(int stat);
+	void increaseAp(int points);
     bool isFacing(const MPoint& pos);
     UnitState getState();
     int getVisualType();
     void inflictDamage(int damage);
     void fire(const MPoint& targetPos);
 	void move(const MPoint& targetPos);
+	void setAp(int ap);
     void setId(int unitId);
+	void setPosition(const MPoint& pos);
 	bool spendAp(int cost);
 	void strike(const MPoint& targetPos);
     void tick();

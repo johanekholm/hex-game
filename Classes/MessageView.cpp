@@ -77,7 +77,7 @@ void MessageView::draw(const GPoint& cameraPos) {
 }
 
 void MessageView::drawGUI(const GPoint& cameraPos) {
-    _stringImage->drawCenteredAt(_pos + _posOffset);
+    _stringImage->drawCenteredAt(_pos - cameraPos + _posOffset);
 }
 
 bool MessageView::handleEvent(const TouchEvent& event) {

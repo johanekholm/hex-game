@@ -125,6 +125,14 @@ std::vector<MPoint> HexMap::getAllHexes() {
     return v;
 }
 
+GPoint HexMap::getNWBoundary() {
+	return GPointMake(64.0f, 64.0f - HEX_HALF_HEIGHT * _scale);
+}
+	
+GPoint HexMap::getSEBoundary() {
+	return GPointMake(64.0f + (_width * HEX_WIDTH - HEX_HALF_WIDTH) * _scale, 64.0f + (_height * (HEX_HEIGHT + HEX_POINTINESS) - HEX_HALF_HEIGHT - HEX_POINTINESS) * _scale);	
+}
+
 GLfloat HexMap::getScale() {
     return _scale;
 }

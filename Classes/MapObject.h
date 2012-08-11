@@ -35,6 +35,7 @@ namespace MapObjectCategory {
 struct MapObjectState {
     MPoint pos;
     std::vector<ActionState> actions;
+	int owner;
 };
 
 class MapObject : public ItemHandler, public Observable {
@@ -46,6 +47,7 @@ protected:
     int _owner;
     int _layer;
     int _visualType;
+	std::string _text;
     std::map<int, AdventureAction*> _actions;
     std::vector<UnitModel*> _memberUnits;
     
@@ -70,6 +72,7 @@ public:
 	UnitModel* getMember(int unitId);
     std::vector<UnitModel*> getMembers();
     int getOwner();
+	std::string getText();
     int getVisualType();
     virtual MapObjectState getState();
     bool matchesCategory(int category);

@@ -43,6 +43,7 @@ ViewControllerManager::ViewControllerManager() {
     _focus = 0;
     _mapView = 0;
     _cameraPos = 0;
+	_cameraTargetPos = 0;
     _hudBackground = new RectangleImage(RGBAMake(0.1f, 0.1f, 0.1f, 1.0f), 320.0f, 80.0f, true);
 }
 
@@ -59,12 +60,49 @@ GPoint ViewControllerManager::adjustForCamera(const GPoint& pos) {
     return pos + _cameraPos;
 }
 
-void ViewControllerManager::centerCamera(const GPoint& pos) {
-    this->setCameraPosition(pos - GPointMake(160.0f, 240.0f));
+void ViewControllerManager::applyCameraBoundaries(GPoint& pos) {
+	GPoint nwBoundary = _mapView->getNWBoundary(); //GPointMake(64.0f, 40.0f);
+	GPoint seBoundary = _mapView->getSEBoundary() - GPointMake(320.0f, 400.0f);
+	
+	if (seBoundary.x < 0.0f) {
+		seBoundary.x = 0.0f;
+	}
+	
+	if (seBoundary.y < 0.0f) {
+		seBoundary.y = 0.0f;
+	}
+
+	if (pos.x < nwBoundary.x) {
+        pos.x = nwBoundary.x;
+    }
+    
+    if (pos.y < nwBoundary.y) {
+        pos.y = nwBoundary.y;
+    }    
+
+	if (pos.x > seBoundary.x) {
+        pos.x = seBoundary.x;
+    }
+    
+    if (pos.y > seBoundary.y) {
+        pos.y = seBoundary.y;
+    }    
 }
 
-void ViewControllerManager::centerCamera(const MPoint& pos) {
-    this->setCameraPosition(this->transformModelPositionToView(pos) - GPointMake(160.0f, 240.0f));
+void ViewControllerManager::centerCamera(const GPoint& pos, bool sweep) {
+    this->setCameraTargetPosition(pos - GPointMake(160.0f, 240.0f));
+	
+	if (!sweep) {
+		this->setCameraPosition(pos - GPointMake(160.0f, 240.0f));		
+	}
+}
+
+void ViewControllerManager::centerCamera(const MPoint& pos, bool sweep) {
+    this->setCameraTargetPosition(this->transformModelPositionToView(pos) - GPointMake(160.0f, 240.0f));
+
+	if (!sweep) {
+		this->setCameraPosition(this->transformModelPositionToView(pos) - GPointMake(160.0f, 240.0f));
+	}
 }
 
 void ViewControllerManager::draw() {
@@ -118,10 +156,17 @@ void ViewControllerManager::insert(ViewController* view) {
 	}
 }
 
-
-
 void ViewControllerManager::moveCamera(const GPoint& pos) {
     this->setCameraPosition(_cameraPos + pos);
+    this->setCameraTargetPosition(_cameraPos + pos);
+}
+
+void ViewControllerManager::passFocus() {
+	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end(); ++it) {
+		if (*it != 0 && *it != _focus && (*it)->catchFocus()) {
+            this->setFocus(*it);
+        }
+	}
 }
 
 void ViewControllerManager::purge() {
@@ -180,13 +225,13 @@ void ViewControllerManager::removeSoft(ViewController* view) {
 void ViewControllerManager::setCameraPosition(const GPoint& pos) {
     _cameraPos = pos;
     
-    if (_cameraPos.x < 0) {
-        _cameraPos.x = 0;
-    }
-    
-    if (_cameraPos.y < 0) {
-        _cameraPos.y = 0;
-    }    
+	this->applyCameraBoundaries(_cameraPos);
+}
+
+void ViewControllerManager::setCameraTargetPosition(const GPoint& pos) {
+    _cameraTargetPos = pos;
+	
+	this->applyCameraBoundaries(_cameraTargetPos);
 }
 
 void ViewControllerManager::setFocus(ViewController* view) {
@@ -200,7 +245,6 @@ void ViewControllerManager::setFocus(ViewController* view) {
     // notify of focus won
     if (view != 0) {
         view->setFocus(true);
-        //this->centerCamera(view->getPosition());
     }
 }
 
@@ -233,14 +277,8 @@ void ViewControllerManager::translateToCameraAndPosition(const GPoint& pos) {
 }
 
 void ViewControllerManager::update() {
-    // insert newly added views before starting loop 
-    if (_stagedViews.size() > 0) {
-        for (std::vector<ViewController*>::iterator it = _stagedViews.begin(); it != _stagedViews.end(); ++it) {
-            this->insert(*it);
-        }
-        _stagedViews.clear();        
-    }
-
+	this->updateCamera();
+	
     // update viewcontrollers, erase those that have been soft-removed in a controlled fashion
 	for (std::vector<ViewController*>::iterator it = _views.begin(); it != _views.end();) {
 		if ((*it) != 0) {
@@ -249,6 +287,38 @@ void ViewControllerManager::update() {
         } else {
             it = _views.erase(it);
         }
+	}
+	
+	// insert newly added views before starting loop 
+    if (_stagedViews.size() > 0) {
+        for (std::vector<ViewController*>::iterator it = _stagedViews.begin(); it != _stagedViews.end(); ++it) {
+            this->insert(*it);
+        }
+        _stagedViews.clear();        
+    }
+}
+
+void ViewControllerManager::updateCamera() {
+	GPoint delta;
+	GPoint toTarget;
+	GLfloat length, speed;
+	
+	toTarget = _cameraTargetPos - _cameraPos;
+	
+	if (toTarget != 0) {
+		length = toTarget.length();
+
+		if (length < 0.1f) {
+			_cameraPos = _cameraTargetPos;
+		} else {
+			speed = 0.001f * length;
+			
+			if (speed < 0.05f) {
+				speed = 0.05f;
+			}
+			delta = (_cameraTargetPos - _cameraPos) * speed;
+			_cameraPos += delta;			
+		}
 	}
 }
 

@@ -51,6 +51,7 @@ Json::Value MapObject::serialize() {
     root["id"] = _id;
     root["x"] = _pos.x;
     root["y"] = _pos.y;
+    root["text"] = _text;
     
     // serialize actions
     for (std::map<int, AdventureAction*>::iterator it = _actions.begin(); it != _actions.end(); ++it) {
@@ -76,6 +77,7 @@ void MapObject::deserialize(Json::Value& root) {
     _id = root.get("id", 0).asInt();
     _pos.x = root.get("x", 0.0f).asFloat();
     _pos.y = root.get("y", 0.0f).asFloat();
+	_text = root.get("text", "no_text").asString();
     
     // deserialize actions
     for (Json::ValueIterator it = root["actions"].begin(); it != root["actions"].end(); it++) {
@@ -217,10 +219,16 @@ MapObjectState MapObject::getState() {
     std::vector<ActionState> actions;
     
     state.pos = _pos;
+	state.owner = _owner;
     state.actions = this->getActions();
     
     return state;
 }
+
+std::string MapObject::getText() {
+	return _text;
+}
+
 
 int MapObject::getVisualType() {
     return _visualType;

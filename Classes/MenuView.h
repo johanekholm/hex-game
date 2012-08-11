@@ -10,16 +10,22 @@
 
 #include "ViewController.h"
 #include "ControlCallback.h"
+#include "IObserver.h"
 #include <vector>
 #include <string>
 
 class ShapeImage;
 class GameImage;
 class StringImage;
+class MultiRowStringImage;
+class UnitModel;
+struct UnitState;
 
 struct MenuChoice {
     int choiceId;
     std::string label;
+	
+	static MenuChoice makeChoice(int choiceId, const std::string& label);
 };
 
 class BaseMenuNodeVC;
@@ -61,7 +67,7 @@ class ChoiceMenuVC : public MenuViewController {
     ControlCallback& _returnControl;
     
 public:
-	ChoiceMenuVC(ControlCallback& control, std::vector<MenuChoice> choices);
+	ChoiceMenuVC(ControlCallback& control, std::vector<MenuChoice> choices, bool addCancelButton=true);
     virtual void reportChoice(int choiceId);    
 };
 
@@ -107,7 +113,8 @@ protected:
 
 public:
 	virtual ~ParentMenuNodeVC();
-	ParentMenuNodeVC(MenuViewController* menuVC, const std::string& label, const std::vector<BaseMenuNodeVC*>& subNodes, const GPoint& pos, GLfloat width, GLfloat height);
+	ParentMenuNodeVC(MenuViewController* menuVC, const std::string& label, const std::vector<BaseMenuNodeVC*>& subNodes, const GPoint& pos, GLfloat width, GLfloat height, bool doAutoPosition);
+	void registerAndAutoPositionSubNodes(bool doAutoPosition, GLfloat verticalSpacing);
 	virtual void drawGUI(const GPoint& cameraPos);
 	virtual void goUp();
 	virtual bool handleEvent(const TouchEvent& event);
@@ -153,10 +160,34 @@ public:
 /*---------------------------------------------------------------*/
 
 class TextMenuNodeVC : public BaseMenuNodeVC {
-    
+private:
+	MultiRowStringImage* _text;
 public:
+	~TextMenuNodeVC();
 	TextMenuNodeVC(MenuViewController* _menuVC, const std::string& label, const GPoint& pos, GLfloat width, GLfloat height);
+	virtual void drawGUI(const GPoint& cameraPos);
 	virtual bool handleEvent(const TouchEvent& event);
 };
+
+/*---------------------------------------------------------------*/
+
+class UnitInfoMenuNodeVC : public BaseMenuNodeVC, public IObserver {
+private:
+	UnitModel* _unit;
+	StringImage *_stringName, *_stringPower, *_stringSkill, *_stringDefense, *_stringAp;
+
+	void buildStrings();
+
+public:
+	virtual ~UnitInfoMenuNodeVC();
+	UnitInfoMenuNodeVC(MenuViewController* _menuVC, UnitModel* unit, const GPoint& pos);
+	virtual void drawGUI(const GPoint& cameraPos);
+	virtual bool handleEvent(const TouchEvent& event);
+	void destroyed();
+	void updateState();
+	
+};
+
+/*---------------------------------------------------------------*/
 
 #endif

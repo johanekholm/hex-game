@@ -34,6 +34,7 @@ private:
     void handleHistory(std::string sceneId);
 	void insertUnitsIntoScene(std::vector<UnitModel*>* party1Members, std::vector<UnitModel*>* party2Members);
 	void removeUnitsFromParties(MapObject* party1, MapObject* party2, std::vector<UnitModel*> *party1Members, std::vector<UnitModel*> *party2Members);
+	void prepLoot();
 	void returnUnitsToParties(std::vector<UnitModel*> units);
     
 public:
@@ -51,6 +52,7 @@ public:
 	void loadBattleScene(const std::string& sceneId, MapObject* party1, MapObject* party2);
 	void loadBattleSceneFromTemplate(const std::string& mapName, MapObject* party1, int enemyPartyType);
 	void loadDungeonScene(const std::string& sceneId, MapObject* party);
+	void loadNextDungeonScene(const std::string& sceneId, MapObject* party);
     void returnFromMenu();
     void switchToMainMenu();
     void switchToMenu(MenuViewController* menu);

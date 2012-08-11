@@ -27,8 +27,16 @@ int ViewController::getLayer() {
     return _layer;
 }
 
+int ViewController::getHeight() {
+	return _height;
+}
+
 GPoint ViewController::getPosition() {
     return _pos;
+}
+
+int ViewController::getWidth() {
+	return _width;
 }
 
 bool ViewController::isWithin(const GPoint& point) {
@@ -39,6 +47,10 @@ bool ViewController::isWithin(const GPoint& point) {
 	}
 }
 
+bool ViewController::catchFocus() {
+    return false;
+}
+
 void ViewController::setFocus(bool hasFocus) {
     _hasFocus = hasFocus;
 }
@@ -46,6 +58,11 @@ void ViewController::setFocus(bool hasFocus) {
 void ViewController::update() {
     return;
 }
+
+void ViewController::setPosition(const GPoint& pos) {
+	_pos = pos;
+}
+
 
 /*bool ViewController::handleEvent(const TouchEvent& event) {
 	if (this->isWithin(event.point)) {

@@ -45,7 +45,7 @@ void ObjectBuilder::createMapObjectFromTemplate(const std::string& objectType, i
         layer = MapLayer::UNIT;
         if (owner == 1) {
             image = 1;
-            units.push_back(produceUnit("swordsman", owner, MPointMake(1,1)));
+            units.push_back(produceUnit("hero", owner, MPointMake(1,1)));
             units.push_back(produceUnit("archer", owner, MPointMake(1,0)));
         } else {
             image = 6;
@@ -54,7 +54,7 @@ void ObjectBuilder::createMapObjectFromTemplate(const std::string& objectType, i
         }
         
         actions.push_back(ActionNS::AACTION_MOVE); actions.push_back(ActionNS::AACTION_FIGHT);
-        actions.push_back(ActionNS::AACTION_SHOP); actions.push_back(ActionNS::AACTION_ENTERDUNGEON);
+        actions.push_back(ActionNS::AACTION_CITY); actions.push_back(ActionNS::AACTION_ENTERDUNGEON);
         actions.push_back(ActionNS::AACTION_INVENTORY); actions.push_back(ActionNS::AACTION_PARTYOPTIONS);
         object = new MapObject(MapObjectCategory::PARTY, pos, owner, layer, image, actions, units);
     } else {
@@ -66,26 +66,8 @@ void ObjectBuilder::createMapObjectFromTemplate(const std::string& objectType, i
 
 UnitModel* ObjectBuilder::produceUnit(const std::string& unitClass, int owner, const MPoint& pos) {
     UnitModel* unit;
-    int hp, ap, power, skill, defense, image;
-    std::vector<int> actions;
-    DEBUGLOG("Produce unit: %s", unitClass.c_str());
-    if (unitClass == "swordsman") {
-        hp = 10; ap = 30; power = 3; skill = 2; defense = 3; image = 0;
-        actions.push_back(ActionNS::BACTION_MOVE); actions.push_back(ActionNS::BACTION_STRIKE);
-    } else if (unitClass == "soldier") {
-        hp = 1; ap = 30; power = 2; skill = 2; defense = 2; image = 1;
-        actions.push_back(ActionNS::BACTION_MOVE); actions.push_back(ActionNS::BACTION_STRIKE);
-    } else if (unitClass == "archer") {
-        hp = 4; ap = 30; power = 2; skill = 3; defense = 1; image = 3;
-        actions.push_back(ActionNS::BACTION_MOVE); actions.push_back(ActionNS::BACTION_FIRE);
-    } else if (unitClass == "channeler") {
-        hp = 4; ap = 50; power = 2; skill = 3; defense = 1; image = 2;
-        actions.push_back(ActionNS::BACTION_MOVE); actions.push_back(ActionNS::BACTION_BURN); actions.push_back(ActionNS::BACTION_HEAL);
-    } else {
-        return 0;
-    }
     
-    unit = new UnitModel(pos.x, pos.y, owner, hp, ap, power, skill, defense, actions, image);
+    unit = new UnitModel(unitClass, pos, owner); 
     
     return unit;
 }
