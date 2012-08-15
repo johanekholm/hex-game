@@ -40,11 +40,13 @@ for y in range(height):
         pixel = image.getpixel((x,y))
         if pixel == VILLAGE:
             mapObjects.append('{"id":%d,"x":%d,"y":%d,"visualType":%d,"category":2,"layer":1,"actions":null,"members":null,"items":null,"units":null,"texts":null}' % (id, x, y, 4))
+            id += 1
         if pixel == CAVEMOUTH:
             mapObjects.append('{"id":%d,"x":%d,"y":%d,"visualType":%d,"category":3,"layer":1,"actions":null,"members":null,"items":null,"units":null,"texts":null}' % (id, x, y, 5))
+            id += 1
         if pixel == FORTRESS:
             mapObjects.append('{"id":%d,"x":%d,"y":%d,"visualType":%d,"category":3,"layer":1,"actions":null,"members":null,"items":null,"units":null,"texts":null}' % (id, x, y, 4))
-        
+            id += 1
         tileData = '{"v":%d,"x":%d,"y":%d}' % (value[pixel],x,y)
         row.append(tileData)
     mapData.append(','.join(row))
