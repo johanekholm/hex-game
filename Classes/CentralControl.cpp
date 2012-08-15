@@ -57,6 +57,7 @@ CentralControl* CentralControl::instance() {
 }
 
 void CentralControl::destroy() {
+	DEBUGLOG("CC->destroy()");
 	if (PrivateData::instance != 0) {
 		delete PrivateData::instance->d->stringImage;
 		delete PrivateData::instance->d->input;
