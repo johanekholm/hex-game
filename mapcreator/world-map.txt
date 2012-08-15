@@ -1,8 +1,8 @@
-{"actions":[0,1,7,8,9,10],"category":1,"id":1,"items":[{"count":1,"type":1},{"count":10,"type":5}],"layer":2,"members":[
+{"actions":[0,1,7,8,9,10],"category":1,"id":101,"items":[{"count":1,"type":1},{"count":10,"type":5}],"layer":2,"members":[
 	{"ap":6,"equip":null,"hp":10,"id":1,"owner":1,"type":"hero","x":1,"y":1},
 	{"ap":0,"equip":null,"hp":3,"id":1,"owner":1,"type":"channeler","x":1,"y":0}
 ],"owner":1,"visualType":11,"x":1,"y":3},
-{"actions":[0,1,7,8,9,10],"category":1,"id":2,"items":[{"count":1,"type":1},{"count":10,"type":5}],"layer":2,"members":[
+{"actions":[0,1,7,8,9,10],"category":1,"id":102,"items":[{"count":1,"type":1},{"count":10,"type":5}],"layer":2,"members":[
 	{"ap":0,"equip":null,"hp":4,"id":0,"owner":2,"type":"wildling","x":2,"y":2},
 	{"ap":5,"equip":null,"hp":3,"id":1,"owner":2,"type":"brute","x":2,"y":3}
 ],"owner":2,"visualType":9,"x":5,"y":4},
