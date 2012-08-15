@@ -402,6 +402,40 @@ void AActionShop::callbackNumber(int num) {
         CentralControl::instance()->switchMode(ControlMode::ADVENTURE);                
     }
 }
+/*---------------------------------------------------------------*/
+
+
+CallbackActionUseItemOnMap::CallbackActionUseItemOnMap(MapObject* object, int item) {
+	_object = object;
+	_item = item;
+}
+
+void CallbackActionUseItemOnMap::callbackNumber(int num) {
+	std::vector<UnitModel*> units = _object->getMembers();
+	UnitModel* unit = 0;
+	
+	SceneLoader::instance()->returnFromMenu();
+    CentralControl::instance()->switchMode(ControlMode::ADVENTURE);
+	
+	for (std::vector<UnitModel*>::iterator it = units.begin(); it != units.end(); it++) {
+		if ((*it)->getId() == num) {
+			unit = *it;
+			break;
+		}
+	}
+	
+	if (unit != 0) {
+		switch (_item) {
+			case ItemNS::POTION:
+				unit->inflictDamage(-3);
+				_object->removeItem(ItemNS::POTION, 1);
+				break;
+				
+			default:
+				break;
+		}
+	}
+}
 
 /*---------------------------------------------------------------*/
 
@@ -470,58 +504,22 @@ bool AActionCity::isAvailable() {
 void AActionCity::doIt(const ActionState& statePoint) {
 	BaseMenuNodeVC* rootNode;
 	std::vector<BaseMenuNodeVC*> actionNodes, empty;
-	MenuAction* shop = 0;
-	MenuAction* recruit = 0;
+	MenuAction* shopAction = 0;
+	MenuAction* recruitAction = 0;
 	MapObject* city = ModelManager::instance()->getMapObjectAtPos(_object->getPosition(), MapObjectCategory::CITY);
 	
-	recruit = new MenuActionRecruit(_object);
-	shop = new MenuActionShop(_object, city);
+	recruitAction = new MenuActionRecruit(_object);
+	shopAction = new MenuActionShop(_object, city);
 	
 	actionNodes.clear();
 	actionNodes.push_back(new BackButtonMenuNodeVC(0, "BACK", GPointMake(0.0f, 0.0f), 120.0f, 32.0f));
-	actionNodes.push_back(new ActionMenuNodeVC(recruit, 0, "RECRUIT", empty, GPointMake(0.0f, 0.0f), 120.0f, 32.0f));
-	actionNodes.push_back(new ActionMenuNodeVC(shop, 0, "SHOP", empty, GPointMake(0.0f, 0.0f), 120.0f, 32.0f));
+	actionNodes.push_back(new ActionMenuNodeVC(recruitAction, 0, "RECRUIT", empty, GPointMake(0.0f, 0.0f), 120.0f, 32.0f));
+	actionNodes.push_back(new ActionMenuNodeVC(shopAction, 0, "SHOP", empty, GPointMake(0.0f, 0.0f), 120.0f, 32.0f));
 		
 	rootNode = new ParentMenuNodeVC(0, "ROOT", actionNodes, GPointMake(0.0f, 0.0f), 120.0f, 32.0f, true);
 	    
     SceneLoader::instance()->switchToMenu(new MenuViewController(rootNode));
     CentralControl::instance()->switchMode(ControlMode::MENU);
-}
-
-
-/*---------------------------------------------------------------*/
-
-
-CallbackActionUseItemOnMap::CallbackActionUseItemOnMap(MapObject* object, int item) {
-	_object = object;
-	_item = item;
-}
-
-void CallbackActionUseItemOnMap::callbackNumber(int num) {
-	std::vector<UnitModel*> units = _object->getMembers();
-	UnitModel* unit = 0;
-
-	SceneLoader::instance()->returnFromMenu();
-    CentralControl::instance()->switchMode(ControlMode::ADVENTURE);
-
-	for (std::vector<UnitModel*>::iterator it = units.begin(); it != units.end(); it++) {
-		if ((*it)->getId() == num) {
-			unit = *it;
-			break;
-		}
-	}
-	
-	if (unit != 0) {
-		switch (_item) {
-			case ItemNS::POTION:
-				unit->inflictDamage(-3);
-				_object->removeItem(ItemNS::POTION, 1);
-				break;
-				
-			default:
-				break;
-		}
-	}
 }
 
 /*---------------------------------------------------------------*/
