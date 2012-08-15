@@ -308,6 +308,24 @@ public:
 	void reset();
 };
 
+/*---------------------------------------------------------------*/
+
+class MenuActionChat : public MenuAction, public ControlCallback {
+protected:
+    MapObject* _object;
+	MapObject* _village;
+	int _speaker;
+	
+public:
+    MenuActionChat(MapObject* object, MapObject* village);
+	void callbackVoid();
+	void doIt();
+    void reportChoice(int choiceId);
+	bool isInputRequired();
+	std::vector<MenuChoice> getChoices();
+	void reset();
+};
+
 
 /*---------------------------------------------------------------*/
 

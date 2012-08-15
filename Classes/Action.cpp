@@ -506,15 +506,18 @@ void AActionCity::doIt(const ActionState& statePoint) {
 	std::vector<BaseMenuNodeVC*> actionNodes, empty;
 	MenuAction* shopAction = 0;
 	MenuAction* recruitAction = 0;
+	MenuAction* chatAction = 0;
 	MapObject* city = ModelManager::instance()->getMapObjectAtPos(_object->getPosition(), MapObjectCategory::CITY);
 	
 	recruitAction = new MenuActionRecruit(_object);
 	shopAction = new MenuActionShop(_object, city);
+	chatAction = new MenuActionChat(_object, city);
 	
 	actionNodes.clear();
 	actionNodes.push_back(new BackButtonMenuNodeVC(0, "BACK", GPointMake(0.0f, 0.0f), 120.0f, 32.0f));
 	actionNodes.push_back(new ActionMenuNodeVC(recruitAction, 0, "RECRUIT", empty, GPointMake(0.0f, 0.0f), 120.0f, 32.0f));
 	actionNodes.push_back(new ActionMenuNodeVC(shopAction, 0, "SHOP", empty, GPointMake(0.0f, 0.0f), 120.0f, 32.0f));
+	actionNodes.push_back(new ActionMenuNodeVC(chatAction, 0, "CHAT", empty, GPointMake(0.0f, 0.0f), 120.0f, 32.0f));
 		
 	rootNode = new ParentMenuNodeVC(0, "ROOT", actionNodes, GPointMake(0.0f, 0.0f), 120.0f, 32.0f, true);
 	    
@@ -703,6 +706,64 @@ std::vector<MenuChoice> MenuActionShop::getChoices() {
 void MenuActionShop::reset() {
 	_item = 0;
 }
+
+/*---------------------------------------------------------------*/
+
+MenuActionChat::MenuActionChat(MapObject* object, MapObject* village) {
+	_object = object;
+	_village = village;
+	_speaker = 0;
+}
+
+void MenuActionChat::doIt() {
+	//std::string dialogue;
+	std::stringstream dialogue; 
+	int id = 0;
+	std::map<std::string,std::string> texts = _village->getTexts();
+
+	for (std::map<std::string, std::string>::iterator it = texts.begin(); it != texts.end(); ++it) {
+		if (++id == _speaker) {
+			dialogue << it->first << ": " << it->second;
+			break;
+		}
+	}		
+	
+	SceneLoader::instance()->returnFromMenu();
+	SceneLoader::instance()->switchToMenu(new TextboxMenuVC(*this, dialogue.str(), "OK"));
+}
+
+void MenuActionChat::reportChoice(int choiceId) {
+	_speaker = choiceId;		
+}
+
+bool MenuActionChat::isInputRequired() {
+	return (_speaker == 0);
+}
+
+std::vector<MenuChoice> MenuActionChat::getChoices() {
+	MenuChoice node;
+    std::vector<MenuChoice> choices;
+    
+	std::map<std::string,std::string> texts = _village->getTexts();
+	int id = 0;
+	
+	for (std::map<std::string, std::string>::iterator it = texts.begin(); it != texts.end(); ++it) {
+		node.choiceId = ++id;
+		node.label = it->first;
+		choices.push_back(node);
+	}		
+	
+	return choices;		
+}
+
+void MenuActionChat::reset() {
+	_speaker = 0;
+}
+
+void MenuActionChat::callbackVoid() {
+	SceneLoader::instance()->returnFromMenu();
+}
+
 
 /*---------------------------------------------------------------*/
 
