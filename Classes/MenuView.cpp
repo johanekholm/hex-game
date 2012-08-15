@@ -353,7 +353,7 @@ bool ActionMenuNodeVC::handleEvent(const TouchEvent& event) {
 				_menuVC->setFocus(this);
 				return true;         				
 			} else {
-				_action->callbackVoid();
+				_action->doIt();
 			}
         }
         return false;
@@ -370,12 +370,12 @@ bool ActionMenuNodeVC::handleEvent(const TouchEvent& event) {
 void ActionMenuNodeVC::reportChoice(int choiceId) {
 	this->destroySubNodes();
 	
-	_action->callbackNumber(choiceId);
+	_action->reportChoice(choiceId);
 	
 	if (_action->isInputRequired()) {
 		this->buildSubNodes();
 	} else {
-		_action->callbackVoid();
+		_action->doIt();
 	}
 }
 

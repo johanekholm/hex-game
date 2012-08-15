@@ -531,7 +531,7 @@ MenuActionEquip::MenuActionEquip(MapObject* object, UnitModel* unit) {
 	_item = 0;
 }
 
-void MenuActionEquip::callbackVoid() {
+void MenuActionEquip::doIt() {
 	
 	if (_object->removeItem(_item, 1)) {
 		// add new item to equipment and move old equipment to inventory
@@ -541,11 +541,11 @@ void MenuActionEquip::callbackVoid() {
 	SceneLoader::instance()->returnFromMenu();
 }
 
-void MenuActionEquip::callbackNumber(int num) {
+void MenuActionEquip::reportChoice(int choiceId) {
 	if (_slot == 0) {
-		_slot = num;		
+		_slot = choiceId;		
 	} else {
-		_item = num;
+		_item = choiceId;
 	}
 }
 
@@ -599,7 +599,7 @@ MenuActionRecruit::MenuActionRecruit(MapObject* object) {
 	_unit = 0;
 }
 
-void MenuActionRecruit::callbackVoid() {
+void MenuActionRecruit::doIt() {
 	std::string unitClass;
 	int cost = 0;
 	
@@ -625,9 +625,9 @@ void MenuActionRecruit::callbackVoid() {
 	SceneLoader::instance()->returnFromMenu();
 }
 
-void MenuActionRecruit::callbackNumber(int num) {
+void MenuActionRecruit::reportChoice(int choiceId) {
 	if (_unit == 0) {
-		_unit = num;		
+		_unit = choiceId;		
 	}
 }
 
@@ -659,7 +659,7 @@ MenuActionShop::MenuActionShop(MapObject* object, MapObject* shop) {
 	_item = 0;
 }
 
-void MenuActionShop::callbackVoid() {
+void MenuActionShop::doIt() {
 	std::string unitClass;
 	ItemTemplate* itemTemplate = ItemTemplate::getTemplate(_item);
 	
@@ -672,9 +672,9 @@ void MenuActionShop::callbackVoid() {
 	SceneLoader::instance()->returnFromMenu();
 }
 
-void MenuActionShop::callbackNumber(int num) {
+void MenuActionShop::reportChoice(int choiceId) {
 	if (_item == 0) {
-		_item = num;		
+		_item = choiceId;		
 	}
 }
 

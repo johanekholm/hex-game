@@ -53,11 +53,13 @@ public:
 
 /*---------------------------------------------------------------*/
 
-class MenuAction : public ControlCallback {
+class MenuAction {
 public:
 	virtual ~MenuAction() {}
+	virtual void doIt() = 0;
 	virtual bool isInputRequired() = 0;
     virtual std::vector<MenuChoice> getChoices() = 0;
+	virtual void reportChoice(int choiceId) = 0;
 	virtual void reset() = 0;
 };
 

@@ -267,8 +267,8 @@ protected:
 	
 public:
     MenuActionEquip(MapObject* object, UnitModel* unit);
-	void callbackVoid();
-    void callbackNumber(int num);
+	void doIt();
+    void reportChoice(int choiceId);
 	bool isInputRequired();
 	std::vector<MenuChoice> getChoices();
 	void reset();
@@ -283,8 +283,8 @@ protected:
 	
 public:
     MenuActionRecruit(MapObject* object);
-	void callbackVoid();
-    void callbackNumber(int num);
+	void doIt();
+    void reportChoice(int choiceId);
 	bool isInputRequired();
 	std::vector<MenuChoice> getChoices();
 	void reset();
@@ -301,8 +301,8 @@ protected:
 	
 public:
     MenuActionShop(MapObject* object, MapObject* shop);
-	void callbackVoid();
-    void callbackNumber(int num);
+	void doIt();
+    void reportChoice(int choiceId);
 	bool isInputRequired();
 	std::vector<MenuChoice> getChoices();
 	void reset();
