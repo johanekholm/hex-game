@@ -258,7 +258,7 @@ public:
 
 /*---------------------------------------------------------------*/
 
-class CallbackActionEquip : public MenuActionCallback {
+class MenuActionEquip : public MenuAction {
 protected:
     MapObject* _object;
 	UnitModel* _unit;
@@ -266,7 +266,7 @@ protected:
 	int _slot;
 	
 public:
-    CallbackActionEquip(MapObject* object, UnitModel* unit);
+    MenuActionEquip(MapObject* object, UnitModel* unit);
 	void callbackVoid();
     void callbackNumber(int num);
 	bool isInputRequired();
@@ -276,13 +276,13 @@ public:
 
 /*---------------------------------------------------------------*/
 
-class CallbackActionRecruit : public MenuActionCallback {
+class MenuActionRecruit : public MenuAction {
 protected:
     MapObject* _object;
     int _unit;
 	
 public:
-    CallbackActionRecruit(MapObject* object);
+    MenuActionRecruit(MapObject* object);
 	void callbackVoid();
     void callbackNumber(int num);
 	bool isInputRequired();
@@ -293,14 +293,14 @@ public:
 
 /*---------------------------------------------------------------*/
 
-class CallbackActionShop : public MenuActionCallback {
+class MenuActionShop : public MenuAction {
 protected:
     MapObject* _object;
     MapObject* _shop;
     int _item;
 	
 public:
-    CallbackActionShop(MapObject* object, MapObject* shop);
+    MenuActionShop(MapObject* object, MapObject* shop);
 	void callbackVoid();
     void callbackNumber(int num);
 	bool isInputRequired();

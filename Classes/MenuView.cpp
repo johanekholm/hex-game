@@ -324,7 +324,7 @@ ActionMenuNodeVC::~ActionMenuNodeVC() {
 	delete _action;
 }
 
-ActionMenuNodeVC::ActionMenuNodeVC(MenuActionCallback* action, MenuViewController* menuVC, const std::string& label, const std::vector<BaseMenuNodeVC*>& subNodes, const GPoint& pos, GLfloat width, GLfloat height) : ParentMenuNodeVC(menuVC, label, subNodes, pos, width, height, true) {
+ActionMenuNodeVC::ActionMenuNodeVC(MenuAction* action, MenuViewController* menuVC, const std::string& label, const std::vector<BaseMenuNodeVC*>& subNodes, const GPoint& pos, GLfloat width, GLfloat height) : ParentMenuNodeVC(menuVC, label, subNodes, pos, width, height, true) {
 	_action = action;
 }
 

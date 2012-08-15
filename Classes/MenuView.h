@@ -53,9 +53,9 @@ public:
 
 /*---------------------------------------------------------------*/
 
-class MenuActionCallback : public ControlCallback {
+class MenuAction : public ControlCallback {
 public:
-	virtual ~MenuActionCallback() {}
+	virtual ~MenuAction() {}
 	virtual bool isInputRequired() = 0;
     virtual std::vector<MenuChoice> getChoices() = 0;
 	virtual void reset() = 0;
@@ -126,13 +126,13 @@ public:
 
 class ActionMenuNodeVC : public ParentMenuNodeVC {
 protected:
-	MenuActionCallback* _action;
+	MenuAction* _action;
 	
 	void buildSubNodes();
 	
 public:
 	virtual ~ActionMenuNodeVC();
-	ActionMenuNodeVC(MenuActionCallback* action, MenuViewController* menuVC, const std::string& label, const std::vector<BaseMenuNodeVC*>& subNodes, const GPoint& pos, GLfloat width, GLfloat height);
+	ActionMenuNodeVC(MenuAction* action, MenuViewController* menuVC, const std::string& label, const std::vector<BaseMenuNodeVC*>& subNodes, const GPoint& pos, GLfloat width, GLfloat height);
 	virtual void goUp();
 	virtual bool handleEvent(const TouchEvent& event);
     virtual void reportChoice(int choiceId);
