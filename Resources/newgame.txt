@@ -34,20 +34,20 @@
 {"v":3,"x":0,"y":31},{"v":3,"x":1,"y":31},{"v":3,"x":2,"y":31},{"v":3,"x":3,"y":31},{"v":3,"x":4,"y":31},{"v":3,"x":5,"y":31},{"v":3,"x":6,"y":31},{"v":3,"x":7,"y":31},{"v":3,"x":8,"y":31},{"v":3,"x":9,"y":31},{"v":3,"x":10,"y":31},{"v":3,"x":11,"y":31},{"v":3,"x":12,"y":31},{"v":3,"x":13,"y":31},{"v":3,"x":14,"y":31},{"v":3,"x":15,"y":31},{"v":3,"x":16,"y":31},{"v":3,"x":17,"y":31},{"v":3,"x":18,"y":31},{"v":3,"x":19,"y":31},{"v":3,"x":20,"y":31},{"v":3,"x":21,"y":31},{"v":3,"x":22,"y":31},{"v":3,"x":23,"y":31},{"v":3,"x":24,"y":31},{"v":3,"x":25,"y":31},{"v":3,"x":26,"y":31},{"v":3,"x":27,"y":31},{"v":3,"x":28,"y":31},{"v":3,"x":29,"y":31},{"v":3,"x":30,"y":31},{"v":3,"x":31,"y":31}
 ]},
 "mapObjects":[
-{"actions":[0,1,7,8,9,10],"category":1,"id":1,"items":[{"count":1,"type":1},{"count":10,"type":5}],"layer":2,"members":[
+{"actions":[0,1,7,8,9,10],"category":1,"id":101,"items":[{"count":1,"type":1},{"count":10,"type":5}],"layer":2,"members":[
 	{"ap":6,"equip":null,"hp":10,"id":1,"owner":1,"type":"hero","x":1,"y":1},
 	{"ap":0,"equip":null,"hp":3,"id":1,"owner":1,"type":"channeler","x":1,"y":0}
 ],"owner":1,"visualType":11,"x":1,"y":3},
-{"actions":[0,1,7,8,9,10],"category":1,"id":2,"items":[{"count":1,"type":1},{"count":10,"type":5}],"layer":2,"members":[
+{"actions":[0,1,7,8,9,10],"category":1,"id":102,"items":[{"count":1,"type":1},{"count":10,"type":5}],"layer":2,"members":[
 	{"ap":0,"equip":null,"hp":4,"id":0,"owner":2,"type":"wildling","x":2,"y":2},
 	{"ap":5,"equip":null,"hp":3,"id":1,"owner":2,"type":"brute","x":2,"y":3}
 ],"owner":2,"visualType":9,"x":5,"y":4},
 
 {"id":0,"x":2,"y":2,"visualType":4,"category":2,"layer":1,"actions":null,"members":null,"items":null,"units":null,"texts":null},
-{"id":0,"x":7,"y":3,"visualType":4,"category":2,"layer":1,"actions":null,"members":null,"items":null,"units":null,"texts":null},
-{"id":0,"x":11,"y":3,"visualType":5,"category":3,"layer":1,"actions":null,"members":null,"items":null,"units":null,"texts":null},
-{"id":0,"x":19,"y":3,"visualType":4,"category":3,"layer":1,"actions":null,"members":null,"items":null,"units":null,"texts":null},
-{"id":0,"x":15,"y":5,"visualType":5,"category":3,"layer":1,"actions":null,"members":null,"items":null,"units":null,"texts":null},
-{"id":0,"x":7,"y":7,"visualType":5,"category":3,"layer":1,"actions":null,"members":null,"items":null,"units":null,"texts":null}
+{"id":1,"x":7,"y":3,"visualType":4,"category":2,"layer":1,"actions":null,"members":null,"items":null,"units":null,"texts":null},
+{"id":2,"x":11,"y":3,"visualType":5,"category":3,"layer":1,"actions":null,"members":null,"items":null,"units":null,"texts":null},
+{"id":3,"x":19,"y":3,"visualType":4,"category":3,"layer":1,"actions":null,"members":null,"items":null,"units":null,"texts":null},
+{"id":4,"x":15,"y":5,"visualType":5,"category":3,"layer":1,"actions":null,"members":null,"items":null,"units":null,"texts":null},
+{"id":5,"x":7,"y":7,"visualType":5,"category":3,"layer":1,"actions":null,"members":null,"items":null,"units":null,"texts":null}
 ],
 "units":null}
