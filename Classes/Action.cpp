@@ -413,7 +413,7 @@ bool AActionEnterDungeon::isAvailable() {
 }
 
 void AActionEnterDungeon::doIt(const ActionState& statePoint) {
-	_sceneId = ModelManager::instance()->getMapObjectAtPos(_object->getPosition(), MapObjectCategory::DUNGEON)->getText();
+	_sceneId = ModelManager::instance()->getMapObjectAtPos(_object->getPosition(), MapObjectCategory::DUNGEON)->getText("sceneId");
     SceneLoader::instance()->switchToTransition(new FadeOutTransition(*this, true));
     CentralControl::instance()->switchMode(ControlMode::MENU);
 }

@@ -44,6 +44,7 @@ Json::Value MapObject::serialize() {
     Json::Value& actions = root["actions"];
     Json::Value& members = root["members"];
     Json::Value& items = root["items"];
+    Json::Value& texts = root["texts"];
     root["category"] = _category;
     root["owner"] = _owner;
     root["layer"] = _layer;
@@ -51,7 +52,6 @@ Json::Value MapObject::serialize() {
     root["id"] = _id;
     root["x"] = _pos.x;
     root["y"] = _pos.y;
-    root["text"] = _text;
     
     // serialize actions
     for (std::map<int, AdventureAction*>::iterator it = _actions.begin(); it != _actions.end(); ++it) {
@@ -65,7 +65,12 @@ Json::Value MapObject::serialize() {
 	
 	// serialize items
 	items = this->serializeItems();
-    
+
+	// serialize texts
+    for (std::map<std::string, std::string>::iterator it = _texts.begin(); it != _texts.end(); ++it) {
+        texts[it->first] = it->second;
+    }
+
     return root;
 }
 
@@ -77,7 +82,6 @@ void MapObject::deserialize(Json::Value& root) {
     _id = root.get("id", 0).asInt();
     _pos.x = root.get("x", 0.0f).asFloat();
     _pos.y = root.get("y", 0.0f).asFloat();
-	_text = root.get("text", "no_text").asString();
     
     // deserialize actions
     for (Json::ValueIterator it = root["actions"].begin(); it != root["actions"].end(); it++) {
@@ -93,6 +97,12 @@ void MapObject::deserialize(Json::Value& root) {
 	
 	// deserialize items
 	this->deserializeItems(root["items"]);
+
+	// deserialize texts
+    for (Json::ValueIterator it = root["texts"].begin(); it != root["texts"].end(); it++) {
+		_texts[it.key().asString()] = (*it).asString();
+		DEBUGLOG("Texts: %s: %s", it.key().asString().c_str(), (*it).asString().c_str());
+    }
 
 }
 
@@ -225,11 +235,18 @@ MapObjectState MapObject::getState() {
     return state;
 }
 
-std::string MapObject::getText() {
-	return _text;
+std::string MapObject::getText(std::string key) {
+	if (_texts.find(key) != _texts.end()) {
+		return _texts[key];
+	} else {
+		return "MISSING";
+	}
 }
 
-
+std::map<std::string,std::string> MapObject::getTexts() {
+	return _texts;
+}
+		
 int MapObject::getVisualType() {
     return _visualType;
 }

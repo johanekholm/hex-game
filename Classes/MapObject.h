@@ -47,7 +47,7 @@ protected:
     int _owner;
     int _layer;
     int _visualType;
-	std::string _text;
+    std::map<std::string, std::string> _texts;
     std::map<int, AdventureAction*> _actions;
     std::vector<UnitModel*> _memberUnits;
     
@@ -72,7 +72,8 @@ public:
 	UnitModel* getMember(int unitId);
     std::vector<UnitModel*> getMembers();
     int getOwner();
-	std::string getText();
+	std::string getText(std::string);
+	std::map<std::string,std::string> getTexts();
     int getVisualType();
     virtual MapObjectState getState();
     bool matchesCategory(int category);
