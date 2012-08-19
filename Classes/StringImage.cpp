@@ -202,7 +202,7 @@ MultiRowStringImage::MultiRowStringImage(const std::string& string, const RGBA& 
 	_rowLength = rowLength;
 	_rowOffset = GPointMake(0.0f, rowOffset);
 	_numRows = 0;
-	    
+		    
 	for (std::string::iterator it = _string.begin(); it != _string.end(); it++, index++) {
 		character = *it - 32;
 		
@@ -211,7 +211,7 @@ MultiRowStringImage::MultiRowStringImage(const std::string& string, const RGBA& 
 		}
 		
 		// remember last possible break point
-		if (character == 0) {
+		if (character == 0 || index == _string.length()-1) {
 			lastSpace = index;
 			sumLengthLastSpace = sumLength;
 		}
@@ -219,9 +219,9 @@ MultiRowStringImage::MultiRowStringImage(const std::string& string, const RGBA& 
 		// create new row and corresponding StringImage
 		if (sumLength >= rowLength || index == _string.length()-1) {
 			_numRows++;
-			
+
 			// create StringImage from substring: rowStart -> lastSpace
-			_strings.push_back(new StringImage(_string.substr(rowStart, lastSpace-rowStart), color));
+			_strings.push_back(new StringImage(_string.substr(rowStart, lastSpace-rowStart+1), color));
 			
 			rowStart = lastSpace + 1;
 			sumLength -= sumLengthLastSpace;

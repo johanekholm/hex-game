@@ -219,7 +219,7 @@ TextMenuNodeVC::~TextMenuNodeVC() {
 TextMenuNodeVC::TextMenuNodeVC(MenuViewController* menuVC, const std::string& label, const GPoint& pos, GLfloat width, GLfloat height) : BaseMenuNodeVC(menuVC, label, -1, pos, width, height) {
     
     _button = new RectangleImage(RGBAMake(0.5f, 0.5f, 0.5f, 1.0f), _width, _height, true);
-    _text = new MultiRowStringImage(label, RGBAMakeWhite(), _width - 20.0f, 20.0f);
+    _text = new MultiRowStringImage(label, RGBAMakeWhite(), _width - 30.0f, 20.0f);
 }
 
 void TextMenuNodeVC::drawGUI(const GPoint& cameraPos) {
